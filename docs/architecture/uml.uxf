@@ -1,0 +1,705 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="13.2">
+  <zoom_level>2</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>228</x>
+      <y>194</y>
+      <w>62</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>DataReader
+--
+-builder: DataModelBuilder
+--
++readData(fileName: String): DataModel</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>384</x>
+      <y>204</y>
+      <w>50</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>DataModel
+--
+-data: HashMap&lt;DataColumn, [DataRow]&gt;
+--
++getRow():DataRow
++getRows():Iterator&lt;DataRow&gt;
++getColumns():[DataColumn]</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>450</x>
+      <y>226</y>
+      <w>42</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>/DataValue/
+--
+type: DataType</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>486</x>
+      <y>254</y>
+      <w>42</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>EmptyValue
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>468</x>
+      <y>238</y>
+      <w>22</w>
+      <h>22</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0;90.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>486</x>
+      <y>270</y>
+      <w>42</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>StringValue
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>486</x>
+      <y>286</y>
+      <w>42</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>IntValue
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>468</x>
+      <y>238</y>
+      <w>22</w>
+      <h>38</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;170.0;90.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>468</x>
+      <y>238</y>
+      <w>22</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;250.0;90.0;250.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>486</x>
+      <y>302</y>
+      <w>42</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>FloatValue
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>486</x>
+      <y>318</y>
+      <w>42</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>DateValue
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>486</x>
+      <y>334</y>
+      <w>42</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>TimeValue
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>468</x>
+      <y>238</y>
+      <w>22</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;330.0;90.0;330.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>468</x>
+      <y>238</y>
+      <w>22</w>
+      <h>86</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;410.0;90.0;410.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>468</x>
+      <y>238</y>
+      <w>22</w>
+      <h>102</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;490.0;90.0;490.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>486</x>
+      <y>350</y>
+      <w>42</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>DateTimeValue
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>468</x>
+      <y>238</y>
+      <w>22</w>
+      <h>118</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;570.0;90.0;570.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>432</x>
+      <y>210</y>
+      <w>44</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=0..n
+</panel_attributes>
+    <additional_attributes>10.0;20.0;180.0;20.0;180.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>408</x>
+      <y>260</y>
+      <w>42</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>DataColumn
+--
+-type: DataType
+-name: String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>432</x>
+      <y>214</y>
+      <w>18</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=0..n
+</panel_attributes>
+    <additional_attributes>10.0;20.0;50.0;20.0;50.0;230.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>322</x>
+      <y>204</y>
+      <w>52</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>DataModelBuilder
+--
++build():DataModel
++addRow(row: DataRow)
++addColumn(column: DataColumn)
++getRow(): DataRow
++getColumn(): DataColumn</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>288</x>
+      <y>196</y>
+      <w>42</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1
+</panel_attributes>
+    <additional_attributes>10.0;20.0;190.0;20.0;190.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>322</x>
+      <y>256</y>
+      <w>76</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>DataRow
+--
+-values: HashMap&lt;DataColumn, DataValue&gt;
+--
++setValue(column: DataColumn, value: DataValue)
++getValue(column: DataColumn): DataValue
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>318</x>
+      <y>190</y>
+      <w>220</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>DateModel
+--
+bg=orange
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>198</x>
+      <y>180</y>
+      <w>98</w>
+      <h>38</h>
+    </coordinates>
+    <panel_attributes>Reader
+--
+bg=blue
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>378</x>
+      <y>208</y>
+      <w>10</w>
+      <h>52</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=0..n
+m2=1
+</panel_attributes>
+    <additional_attributes>10.0;240.0;10.0;10.0;30.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>548</x>
+      <y>190</y>
+      <w>158</w>
+      <h>164</h>
+    </coordinates>
+    <panel_attributes>DataAnalyse
+--
+
+bg=red
+
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>568</x>
+      <y>226</y>
+      <w>50</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>/DataAnalysis/
+--
++analyse(): DataModel
+
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>630</x>
+      <y>222</y>
+      <w>42</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>SerialProcess
+--
+-processes: List&lt;DataProcess&gt;
+--
+
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>562</x>
+      <y>286</y>
+      <w>52</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>Constrains
+--
+
+bg=yellow
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>590</x>
+      <y>266</y>
+      <w>42</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>ConstainAnalyse
+--
+constrain: Constain
+
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>572</x>
+      <y>252</y>
+      <w>22</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0;90.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>566</x>
+      <y>294</y>
+      <w>20</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>/Constraint/
+--
+
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>576</x>
+      <y>266</y>
+      <w>18</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1
+</panel_attributes>
+    <additional_attributes>70.0;20.0;10.0;20.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>586</x>
+      <y>316</y>
+      <w>24</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>EqualityCheck
+--
+
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>574</x>
+      <y>304</y>
+      <w>16</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0;60.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>536</x>
+      <y>230</y>
+      <w>36</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+
+&lt; analyses</panel_attributes>
+    <additional_attributes>10.0;20.0;160.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>720</x>
+      <y>190</y>
+      <w>152</w>
+      <h>162</h>
+    </coordinates>
+    <panel_attributes>AnalysisParser
+--
+bg=green
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>728</x>
+      <y>210</y>
+      <w>42</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>AnalysisParser
+--
+read(s: String): DataAnalysis
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>704</x>
+      <y>212</y>
+      <w>28</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>lt=-
+
+
+&lt; creates</panel_attributes>
+    <additional_attributes>10.0;20.0;120.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>604</x>
+      <y>220</y>
+      <w>30</w>
+      <h>8</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;20.0;130.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>728</x>
+      <y>234</y>
+      <w>42</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>ConstraintsParser
+--
++parse(s: String): Constraint</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>568</x>
+      <y>196</y>
+      <w>50</w>
+      <h>26</h>
+    </coordinates>
+    <panel_attributes>/DataProcess/
+--
+-input: DataModel
+-output: DataModel
+--
++process()
++setInput(dataModel: DataModel)
++getOutput() : DataModel</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>586</x>
+      <y>220</y>
+      <w>6</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>288</x>
+      <y>192</y>
+      <w>34</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+
+creates &gt;
+</panel_attributes>
+    <additional_attributes>150.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>792</x>
+      <y>210</y>
+      <w>42</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>MacroParser
+--
++parse(s: String): String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>488</x>
+      <y>382</y>
+      <w>134</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>Outpu
+--
+bg=pink
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>510</x>
+      <y>392</y>
+      <w>70</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>DataModelWriter
+--
++wirte(dataModel: DataModel, fileName: String)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>644</x>
+      <y>322</y>
+      <w>42</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>FileProcess
+--
+-writer: Writer
+--
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>604</x>
+      <y>220</y>
+      <w>46</w>
+      <h>106</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;20.0;90.0;20.0;90.0;190.0;210.0;190.0;210.0;510.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>572</x>
+      <y>326</y>
+      <w>76</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=-
+
+&lt; uses</panel_attributes>
+    <additional_attributes>10.0;330.0;10.0;230.0;300.0;230.0;300.0;10.0;360.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>456</x>
+      <y>368</y>
+      <w>58</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=-
+
+&lt; writes</panel_attributes>
+    <additional_attributes>270.0;150.0;10.0;150.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>
