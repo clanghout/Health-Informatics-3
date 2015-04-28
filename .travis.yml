@@ -1,4 +1,7 @@
 language: java
+matrix:
+  include:
+  - jdk: oraclejdk8
 notifications:
   webhooks:
     - http://octopull.rmhartog.me/api/travis/webhook
