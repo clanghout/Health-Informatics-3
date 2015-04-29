@@ -1,30 +1,37 @@
 package model.data;
 
 import exceptions.ColumnValueMismatchException;
-import exceptions.ColumnValueTypeMismatchEception;
+import exceptions.ColumnValueTypeMismatchException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Builder used to build a DataModel
  */
 public class DataModelBuilder {
-	private DataModel model;
-	private int currentIndex;
+	private ArrayList<DataRow> rows;
+	private ArrayList<DataColumn> columns;
 
 	/**
 	 * create a new builder
 	 */
 	public DataModelBuilder() {
-		model = new DataModel();
-		currentIndex = 0;
+		 rows =  new ArrayList<DataRow>();
+		 columns = new ArrayList<DataColumn>();
 	}
 
 	/**
-	 * return the datamodel build by the builder
+	 * return the dataModel build by the builder
 	 *
 	 * @return the DataModel that is build by the builder
 	 */
 	public DataModel build() {
-		return model;
+		HashMap<String, DataColumn> columnsMap = new HashMap<String, DataColumn>();
+		for (DataColumn column : columns) {
+			columnsMap.put(column.getName(), column);
+		}
+		return new DataModel(rows, columnsMap);
 	}
 
 	/**
@@ -33,17 +40,16 @@ public class DataModelBuilder {
 	 * @param column the new column
 	 */
 	public void addColumn(DataColumn column) {
-		model.columns.put(column.getName(), column);
+		columns.add(column);
 	}
 
 	/**
-	 * Add a currentIndex the the DataModel
+	 * Add a row to the DataModel
 	 *
-	 * @param row the new currentIndex
+	 * @param row the new row
 	 */
 	public void addRow(DataRow row) {
-		model.data.put(this.currentIndex, row);
-		this.currentIndex++;
+		rows.add(row);
 	}
 
 	/**
@@ -60,14 +66,12 @@ public class DataModelBuilder {
 	/**
 	 * Construct a DataRow. This is not added to the model
 	 *
-	 * @param values list of new values
-	 * @return the ne constructed DataRow
-	 * @throws ColumnValueMismatchException    thrown when the number of columns is not equal to the number of values
-	 * @throws ColumnValueTypeMismatchEception thrown when the value has a different type from what the columns expects
+	 * @param values array of new values
+	 * @return the new constructed DataRow
+	 * @throws ColumnValueMismatchException thrown when the number of columns is not equal to the number of values
+	 * @throws ColumnValueTypeMismatchException thrown when the value has a different type from what the columns expects
 	 */
 	public DataRow createRow(DataValue... values) {
-		//TODO If I remember correctly, since the columns are stored in a hashmap, they can be returned in an different way,
-		//TODO so this will probably not work, but due lack of time, I have not tested it yet, so I'm not sure
-		return new DataRow(model.columns.values().toArray(new DataColumn[0]), values);
+		return new DataRow(columns.toArray(new DataColumn[columns.size()]), values);
 	}
 }

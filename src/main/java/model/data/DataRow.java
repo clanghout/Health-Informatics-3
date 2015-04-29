@@ -3,6 +3,7 @@ package model.data;
 import exceptions.*;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -11,7 +12,7 @@ import java.util.logging.Logger;
 public class DataRow {
 	private Logger log = Logger.getLogger("DataRow");
 
-	protected HashMap<DataColumn, DataValue> values = new HashMap<DataColumn, DataValue>();
+	private Map<DataColumn, DataValue> values = new HashMap<DataColumn, DataValue>();
 
 	/**
 	 * create an empty row
@@ -23,22 +24,22 @@ public class DataRow {
 	/**
 	 * create a row and set for the columns c, the values v
 	 *
-	 * @param c columns that the row should have
-	 * @param v calue of the columns
+	 * @param columnArray columns that the row should have
+	 * @param valueArray value of the columns
 	 * @throws ColumnValueMismatchException    thrown when the number of columns is not equal to the number of values
-	 * @throws ColumnValueTypeMismatchEception thrown when the value has a different type from what the columns expects
+	 * @throws ColumnValueTypeMismatchException thrown when the value has a different type from what the columns expects
 	 */
-	public DataRow(DataColumn[] c, DataValue[] v) throws ColumnValueMismatchException, ColumnValueTypeMismatchEception {
-		if (c.length != v.length) {
+	public DataRow(DataColumn[] columnArray, DataValue[] valueArray) throws ColumnValueMismatchException, ColumnValueTypeMismatchException {
+		if (columnArray.length != valueArray.length) {
 			ColumnValueMismatchException e = new ColumnValueMismatchException("Number of columns is not equal t the number of values");
 			log.throwing(this.getClass().getSimpleName(), "constructor", e);
 			throw e;
 		}
-		for (int i = 0; i < c.length; i++) {
-			if (c[i].getType().isInstance(v[i])) {
-				values.put(c[i], v[i]);
+		for (int i = 0; i < columnArray.length; i++) {
+			if (columnArray[i].getType().isInstance(valueArray[i])) {
+				values.put(columnArray[i], valueArray[i]);
 			} else {
-				ColumnValueTypeMismatchEception e = new ColumnValueTypeMismatchEception("Type of value is not a subtype of column type");
+				ColumnValueTypeMismatchException e = new ColumnValueTypeMismatchException("Type of value is not a subtype of column type");
 				log.throwing(this.getClass().getSimpleName(), "constructor", e);
 				throw e;
 			}
@@ -49,20 +50,20 @@ public class DataRow {
 	 * Add the column with the value to the row
 	 *
 	 * @param column thw column where the value belongs to
-	 * @param v      the value of the added column
+	 * @param value the value of the added column
 	 */
-	public void setValue(DataColumn column, DataValue v) {
-		values.put(column, v);
+	public void setValue(DataColumn column, DataValue value) {
+		values.put(column, value);
 	}
 
 	/**
 	 * get the value of a column
 	 *
-	 * @param c the column where you want the value from
-	 * @return
+	 * @param column the column where you want the value from
+	 * @return the value of the column of this row
 	 */
-	public DataValue getValue(DataColumn c) {
-		return values.get(c);
+	public DataValue getValue(DataColumn column) {
+		return values.get(column);
 	}
 
 }
