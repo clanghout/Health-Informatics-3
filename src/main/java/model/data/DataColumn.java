@@ -1,20 +1,20 @@
-package model.dataModel;
+package model.data;
 
 /**
  * Class that specified what the data in a column is
  */
 public class DataColumn {
-    DataValue type;
-    String name;
+    private String name;
+    private Class<? extends DataValue> type;
 
     /**
      * Create a column
-     * @param t type of the column
-     * @param n name of the column
+     * @param name name of the column
+     * @param type type of the column
      */
-    public DataColumn(DataValue t, String n) {
-        type = t;
-        name = n;
+    public DataColumn(String name, Class<? extends DataValue> type) {
+        this.name = name;
+        this.type = type;
     }
 
     /**
@@ -29,7 +29,7 @@ public class DataColumn {
      * get the type of the column
      * @return the type of the column
      */
-    public DataValue getType() {
+    public Class<? extends DataValue> getType() {
         return type;
     }
 }

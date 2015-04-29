@@ -1,11 +1,11 @@
-package model.dataModel.dataValue;
+package model.data.data.value;
 
-import model.dataModel.DataValue;
+import model.data.DataValue;
 
 /**
  * Data Class containing a value with type String
  */
-public class StringValue extends DataValue{
+public class StringValue extends DataValue {
     private String value;
 
     public StringValue(String value) {
@@ -19,6 +19,6 @@ public class StringValue extends DataValue{
 
     @Override
     public String toString() {
-        return "StringValue<" + value + ">";
+        return String.format("StringValue<%s>", value);
     }
 }

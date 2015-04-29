@@ -1,4 +1,5 @@
-package model.dataModel;
+package model.data;
+
 import java.util.HashMap;
 
 /**
@@ -6,6 +7,6 @@ import java.util.HashMap;
  */
 public abstract class DataValue {
 
-    public abstract String getValue();
-    public abstract String toString();
+	public abstract String getValue();
+	public abstract String toString();
 }

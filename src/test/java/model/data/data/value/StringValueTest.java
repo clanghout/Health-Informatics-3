@@ -1,6 +1,6 @@
-package model.dataModel.dataValue;
+package model.data.data.value;
 
-import model.dataModel.DataValue;
+import model.data.DataValue;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
