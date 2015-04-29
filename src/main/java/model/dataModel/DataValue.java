@@ -2,7 +2,10 @@ package model.dataModel;
 import java.util.HashMap;
 
 /**
- * Created by jens on 4/29/15.
+ * Abstract class DataValue describing the DataValue objects
  */
-public class DataValue {
+public abstract class DataValue {
+
+    public abstract String getValue();
+    public abstract String toString();
 }
