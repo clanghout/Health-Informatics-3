@@ -61,7 +61,7 @@ public class DataReader {
 			Stream<DataValue> values = Arrays.stream(sections).map(e -> new StringValue(e));
 
 			DataRow row = builder.createRow(values.toArray(size -> new DataValue[size]));
-
+			builder.addRow(row);
 		}
 
 		return builder.build();
