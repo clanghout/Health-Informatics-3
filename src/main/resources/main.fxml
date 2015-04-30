@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane fx:controller="ui.MainUI" xmlns:fx="http://javafx.com/fxml">
+	<center>
+		<VBox>
+			<Button text="Analyze" onAction="#handleAnalyzeAction"/>
+			<Text fx:id="buttonTest" text="test"/>
+		</VBox>
+	</center>
+</BorderPane>
