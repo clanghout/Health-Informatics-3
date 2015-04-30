@@ -33,12 +33,12 @@ public class DataModel {
 	/**
 	 * Get a specific row
 	 *
-	 * @param i number of the row
-	 * @return the requested row
+	 * @param i index of the row
+	 * @return index of the requested row
 	 */
-//	public DataRow getRow(int i) {
-//		return data.get(i);
-//	}
+	public DataRow getRow(int i) {
+		return rows.get(i);
+	}
 
 	/**
 	 * return an iterator of the rows
