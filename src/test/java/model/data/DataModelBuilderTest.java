@@ -31,7 +31,7 @@ public class DataModelBuilderTest {
 		DataColumn column = builder.createColumn("test", StringValue.class);
 		builder.addColumn(column);
 		DataRow row = builder.createRow(new StringValue("v1"));
-		assertEquals(row.getValue(column).toString(), "v1");
+		assertEquals(row.getValue(column).getValue(), "v1");
 	}
 
 	@Test
