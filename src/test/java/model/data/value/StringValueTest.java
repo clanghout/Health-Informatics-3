@@ -21,8 +21,8 @@ public class StringValueTest {
     @Test
     public void testToString() throws Exception {
         DataValue value = new StringValue("abc");
-        assertEquals("StringValue<abc>", value.toString());
+        assertEquals("abc", value.toString());
         value = new StringValue("");
-        assertEquals("StringValue<>", value.toString());
+        assertEquals("", value.toString());
     }
 }
