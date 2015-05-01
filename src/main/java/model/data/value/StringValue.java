@@ -1,4 +1,4 @@
-package model.data.data.value;
+package model.data.value;
 
 import model.data.DataValue;
 
@@ -19,6 +19,6 @@ public class StringValue extends DataValue {
 
     @Override
     public String toString() {
-        return String.format("StringValue<%s>", value);
+        return value;
     }
 }

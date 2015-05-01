@@ -2,7 +2,9 @@ package model.data;
 
 import exceptions.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -12,7 +14,7 @@ import java.util.logging.Logger;
 public class DataRow {
 	private Logger log = Logger.getLogger("DataRow");
 
-	private Map<DataColumn, DataValue> values = new HashMap<DataColumn, DataValue>();
+	private Map<String, DataValue> values = new HashMap<String, DataValue>();
 
 	/**
 	 * create an empty row
@@ -37,7 +39,7 @@ public class DataRow {
 		}
 		for (int i = 0; i < columnArray.length; i++) {
 			if (columnArray[i].getType().isInstance(valueArray[i])) {
-				values.put(columnArray[i], valueArray[i]);
+				values.put(columnArray[i].getName(), valueArray[i]);
 			} else {
 				ColumnValueTypeMismatchException e = new ColumnValueTypeMismatchException("Type of value is not a subtype of column type");
 				log.throwing(this.getClass().getSimpleName(), "constructor", e);
@@ -52,9 +54,11 @@ public class DataRow {
 	 * @param column thw column where the value belongs to
 	 * @param value the value of the added column
 	 */
-	public void setValue(DataColumn column, DataValue value) {
+	public void setValue(DataColumn column, DataValue value) {values.put(column.getName(), value);}
+	public void setValue(String column, DataValue value) {
 		values.put(column, value);
 	}
+
 
 	/**
 	 * get the value of a column
@@ -63,7 +67,19 @@ public class DataRow {
 	 * @return the value of the column of this row
 	 */
 	public DataValue getValue(DataColumn column) {
+		return values.get(column.getName());
+	}
+	public DataValue getValue(String column) {
 		return values.get(column);
 	}
+
+//	public ArrayList<String> getRowValues() {
+//		Iterator<Map.Entry<String, DataValue>> iterator = values.entrySet().iterator();
+//		ArrayList<String> res = new ArrayList<String>();
+//		while(iterator.hasNext()){
+//			res.add(iterator.next().getValue().toString());
+//		}
+//		return res;
+//	}
 
 }
