@@ -1,0 +1,9 @@
+.label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.button {
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+}
