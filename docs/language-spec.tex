@@ -1,0 +1,76 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage[colorinlistoftodos]{todonotes}
+\title{Language Specification for SUGAR}
+
+\author{Health Informatics 3}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+
+\section{Introduction}
+This document will describe the language used to describe analyses in our program. The language should be simple and expressive. This will ensure the best usability and improve the user experience. 
+
+We've opted to name her SUGAR, which stands for Simple Usable Great Analysis Reasoner. 
+
+\section{Basic Idea}
+We like the BASH approach to piping input from one process to another, so we'll be borrowing the pipe $|$ command. Don't worry, we'll give it back. Parentheses are great to use for grouping things like parameters and the ; is great for closing things.
+
+\section{Examples}
+Let's start with something like:\\
+
+$from(statSensor)|constraints(idCheck)|is(person1)|save("person1.txt");$\\
+
+Here we run into a couple of things, first of all we have our commands (from, constraints etc.). These are straight forward and should pose no issues. They always have their parameters between parentheses (if they have no parameters parentheses are still required). 
+
+Next we have our pipes, which we have described in the previous section. 
+
+We also have some identifiers: statSensor, idCheck etc. these should pose any problems either as long as they don't contain symbols such as parentheses or spaces. We do find the need to describe the contraints for the constraints analysis, so will be declaring macros later on.
+
+Furthermore we find the string literal, which should be trivial.
+
+Last of all we have a closing ;.
+
+\section{Macros}
+Macros will be useful to describe variables and other things. This will simplify the life of the user, since things like constraints, which could take a couple of lines to declare, won't be mixed with the processing chain.
+
+Let's begin with another example: \\
+
+$def idCheck : Constraint = "id" = 1 AND ("level" > 5) OR NOT(true) AND ("level" > "value");$
+
+Let's say all macros start with def. This will simplify all our lives.
+
+Next we declare the identifier, which in this case is idCheck.
+
+Then we declare the type of macro, in this case it is Constraint, although we expect things like Process, Chunk, what have you. This is seperated by a =.
+
+Next we have our constraint, which is a subject for another section.
+
+\section{Constraints}
+Constraints can be somewhat complicated and rightfully so, therefore the declaration should be powerfull, but not overly complicated.
+
+In the previous example we saw a constraint, let's take a closer look.
+
+In the $"id" = 1$ we declare that the column "id" should be 1, simple enough. 
+
+In the $"level" > 5$ we declare that level thould be larger than 5. 
+
+Furthermore we have $"column" < 3"$, whith that we declare that column should be smaller than 3.
+
+With $"column" <= 2$ and $"column" >= 2$ we declare that the column should be less/larger or equal to 2.
+
+Next we have the AND, OR and NOT statemand. With AND we declare that both constrains should hold. For example when we have $"id" > 2 AND "id" < 4$, than the $id$ should be larger than 2 en less than 4.
+With OR we declare that one or more constrains should hold. So when we have $"name" = "Jan" OR "name" = "Bob"$, than name must be "Jan" or the name must be "Bob".
+
+
+
+
+\end{document}
