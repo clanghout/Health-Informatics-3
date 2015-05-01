@@ -30,18 +30,10 @@ public class MainUI extends Application {
 	public void start(Stage primaryStage) throws Exception {
 
 		Parent root = FXMLLoader.load(getClass().getResource("/main.fxml"));
-		Scene scene = new Scene(root, 320, 240);
+		Scene scene = new Scene(root);
 
 		primaryStage.setTitle("Analysis");
 		primaryStage.setScene(scene);
 		primaryStage.show();
-	}
-	
-	/**
-	 * Called when the analyze button is pressed.
-	 * @param event the event
-	 */
-	@FXML protected void handleAnalyzeAction(ActionEvent event) {
-		buttonTest.setText("analyzed pressed");
 	}
 }
