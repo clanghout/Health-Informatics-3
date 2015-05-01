@@ -19,6 +19,6 @@ public class StringValue extends DataValue {
 
     @Override
     public String toString() {
-        return String.format("StringValue<%s>", value);
+        return value;
     }
 }
