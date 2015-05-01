@@ -6,10 +6,7 @@ import model.data.DataRow;
 import model.data.DataValue;
 import model.data.data.value.StringValue;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -27,7 +24,12 @@ public class DataReader {
 	}
 
 	public DataModel readData(File file) throws IOException {
-		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+		BufferedInputStream stream = new BufferedInputStream(new FileInputStream(file));
+		return readData(stream);
+	}
+
+	public DataModel readData(InputStream stream) throws IOException {
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
 			skipToContent(reader);
 			DataModel model = readRows(reader);
 

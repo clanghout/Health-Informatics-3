@@ -43,10 +43,18 @@ public class DataModel {
 	/**
 	 * return an iterator of the rows
 	 *
-	 * @return an iterator that contains al the rows
+	 * @return an iterator over the rows
 	 */
 	public Iterator<DataRow> getRows() {
 		return rows.iterator();
+	}
+
+	/**
+	 * Returns the amounts of rows
+	 * @return The amount of rows
+	 */
+	public int getRowCount() {
+		return rows.size();
 	}
 
 	/**
