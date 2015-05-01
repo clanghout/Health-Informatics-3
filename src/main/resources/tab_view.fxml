@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Tab text="View" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<content>
+	<AnchorPane>
+		 <children>
+			<Button layoutX="562.0" layoutY="263.0" text="Save" />
+				<ListView fx:id="inputtables" layoutX="14.0" layoutY="18.0" prefHeight="270.0" prefWidth="115.0" />
+				<SplitPane dividerPositions="0.5" layoutX="147.0" layoutY="18.0" orientation="VERTICAL" prefHeight="234.0" prefWidth="479.0">
+					<items>
+						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+							<children>
+								<TableView fx:id="datatable" prefHeight="132.0" prefWidth="485.0">
+								 <columns>
+									<TableColumn prefWidth="75.0" text="Column X" />
+									<TableColumn prefWidth="75.0" text="Column X" />
+									<TableColumn prefWidth="75.0" text="Column X" />
+									<TableColumn prefWidth="75.0" text="Column X" />
+								 </columns>
+								</TableView>
+							</children>
+						</AnchorPane>
+						<AnchorPane fx:id="datafields" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+					</items>
+				</SplitPane>
+		 </children>
+	</AnchorPane>
+</content>
+</Tab>

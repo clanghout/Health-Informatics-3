@@ -29,69 +29,10 @@
 		<children>
 			<TabPane AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" tabClosingPolicy="UNAVAILABLE">
 				<tabs>
-					<Tab text="Data">
-						<content>
-							<AnchorPane>
-								<children>
-									<TextField layoutX="14.0" layoutY="27.0" prefHeight="25.0" prefWidth="447.0" />
-									<Button layoutX="476.0" layoutY="27.0" prefHeight="25.0" prefWidth="150.0" text="Import" />
-									<Label layoutX="14.0" layoutY="7.0" text="Import data" />
-								</children>
-							</AnchorPane>
-						</content>
-					</Tab>
-					<Tab text="View">
-						<content>
-							<AnchorPane>
-								 <children>
-									<Button layoutX="562.0" layoutY="263.0" text="Save" />
-										<ListView fx:id="inputtables" layoutX="14.0" layoutY="18.0" prefHeight="270.0" prefWidth="115.0" />
-										<SplitPane dividerPositions="0.5" layoutX="147.0" layoutY="18.0" orientation="VERTICAL" prefHeight="234.0" prefWidth="479.0">
-											<items>
-												<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-													<children>
-														<TableView fx:id="datatable" prefHeight="132.0" prefWidth="485.0">
-														 <columns>
-															<TableColumn prefWidth="75.0" text="Column X" />
-															<TableColumn prefWidth="75.0" text="Column X" />
-															<TableColumn prefWidth="75.0" text="Column X" />
-															<TableColumn prefWidth="75.0" text="Column X" />
-														 </columns>
-														</TableView>
-													</children>
-												</AnchorPane>
-												<AnchorPane fx:id="datafields" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
-											</items>
-										</SplitPane>
-								 </children>
-							</AnchorPane>
-						</content>
-					</Tab>
-						<Tab text="Analysis">
-						<content>
-							<AnchorPane>
-								<children>
-									<VBox layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
-										<children>
-											<Button text="Load" />
-											<Button text="Save" />
-											<Button text="Execute" />
-										</children>
-									</VBox>
-									<TextFlow layoutX="114.0" layoutY="14.0">
-										<children>
-											<TextArea fx:id="userscript" prefHeight="290.0" prefWidth="500.0" />
-										</children>
-									</TextFlow>
-								</children>
-							</AnchorPane>
-				 		</content>
-					</Tab>
-					<Tab text="Visualization">
-						<content>
-							<Pane />
-						</content>
-					</Tab>
+					<fx:include source="tab_data.fxml"/>
+					<fx:include source="tab_view.fxml"/>
+					<fx:include source="tab_analysis.fxml"/>
+					<fx:include source="tab_visualization.fxml"/>
 				</tabs>
 			</TabPane>
 		</children>
