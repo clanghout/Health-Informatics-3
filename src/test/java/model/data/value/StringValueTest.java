@@ -1,4 +1,4 @@
-package model.data.data.value;
+package model.data.value;
 
 import model.data.DataValue;
 import org.junit.Test;

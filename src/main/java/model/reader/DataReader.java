@@ -4,7 +4,7 @@ import model.data.DataModel;
 import model.data.DataModelBuilder;
 import model.data.DataRow;
 import model.data.DataValue;
-import model.data.data.value.StringValue;
+import model.data.value.StringValue;
 
 import java.io.BufferedReader;
 import java.io.File;

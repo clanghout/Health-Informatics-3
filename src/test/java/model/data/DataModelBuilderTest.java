@@ -1,7 +1,7 @@
 package model.data;
 
 import exceptions.ColumnValueMismatchException;
-import model.data.data.value.StringValue;
+import model.data.value.StringValue;
 import org.junit.Before;
 import org.junit.Test;
 

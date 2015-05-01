@@ -1,10 +1,8 @@
 package model.data;
 
 import exceptions.*;
-import model.data.data.value.StringValue;
+import model.data.value.StringValue;
 import org.junit.Test;
-
-import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
