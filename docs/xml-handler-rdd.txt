@@ -2,15 +2,14 @@ The user story was: As a user I want to specify an xml file to describe the data
 
 1) first the user must be able to choose the xml file. This will be done using the graphical user interface. The user selects an xml file (by using a filechooser) from his drive which contains the description of the datafile and where the datafile can be found.
 
-2) Next the header (description of datafile and header of the columns) from the selected datafile must be filtered so that the data can be loaded into the datamodel. 
+2) Next the header (description of datafile and header of the columns) from the selected datafile must be filtered so that the data can be loaded into the datamodel. For the statsensor datafile this is already done by the dedicated DataReader class.
 
 3) The data will be read from the datafiles using the xml.
 
-The goal of the xml feature is that the end user can save and load settings on how the files he specifies will be imported into the datamodel. The xml file can be chosen by using an "open" button in the GUI's menu. This xml file will then be parsed to determine the user-specified delimiter and location of the datafiles. 
+The goal of the xml feature is that the end user can save and load settings on how the files he specifies will be imported into the datamodel. The xml file can be chosen by using an "open" button in the GUI's menu. This xml file will then be parsed to determine the type and location of the datafiles. 
 
 The following structure will be used for the xml file:
 The root node will be a document element with the attribute the name of the xml file. The children of the root node will be file elements which represent the files that the user selected for analysis. The attribute for the file element will be the name of the file.
 Each file element contains the property elements of the file. These properties are:
 - the type of file it represents
-- the delimiter character used for importing
-- the path to the file
+- the path to the file relative to the main program
