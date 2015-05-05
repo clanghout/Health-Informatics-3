@@ -22,14 +22,7 @@ import org.xml.sax.SAXException;
  */
 public class XMLreader {
 
-	/**
-	 *  The document that is read from the xml file.
-	 */
 	private Document document;
-	
-	/**
-	 *  The arraylist containing the datafiles.
-	 */
 	private  ArrayList<DataFile> dataFiles;
 	
 	/**
@@ -106,7 +99,7 @@ public class XMLreader {
 	}
 	
 	/**
-	 * returns the buffered read document.
+	 * Returns the buffered read document.
 	 * @return the buffered read document
 	 */
 	public Document getDocument() {
