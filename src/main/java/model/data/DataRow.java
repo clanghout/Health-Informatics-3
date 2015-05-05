@@ -1,10 +1,9 @@
 package model.data;
 
-import exceptions.*;
+import exceptions.ColumnValueMismatchException;
+import exceptions.ColumnValueTypeMismatchException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -73,13 +72,5 @@ public class DataRow {
 		return values.get(column);
 	}
 
-//	public ArrayList<String> getRowValues() {
-//		Iterator<Map.Entry<String, DataValue>> iterator = values.entrySet().iterator();
-//		ArrayList<String> res = new ArrayList<String>();
-//		while(iterator.hasNext()){
-//			res.add(iterator.next().getValue().toString());
-//		}
-//		return res;
-//	}
 
 }
