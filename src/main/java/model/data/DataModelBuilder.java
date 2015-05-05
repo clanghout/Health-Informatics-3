@@ -4,7 +4,6 @@ import exceptions.ColumnValueMismatchException;
 import exceptions.ColumnValueTypeMismatchException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Builder used to build a DataModel
@@ -27,11 +26,7 @@ public class DataModelBuilder {
 	 * @return the DataModel that is build by the builder
 	 */
 	public DataModel build() {
-		HashMap<String, DataColumn> columnsMap = new HashMap<String, DataColumn>();
-		for (DataColumn column : columns) {
-			columnsMap.put(column.getName(), column);
-		}
-		return new DataModel(rows, columnsMap);
+		return new DataModel(rows, columns);
 	}
 
 	/**
