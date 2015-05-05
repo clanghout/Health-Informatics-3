@@ -21,57 +21,68 @@ import org.xml.sax.SAXException;
  *
  */
 public class XMLreader {
-	
-	/*
-	 * The document that is read from the xml file.
+
+	/**
+	 *  The document that is read from the xml file.
 	 */
-	protected Document document;
+	private Document document;
 	
-	protected ArrayList<DataFile> dataFiles;
+	/**
+	 *  The arraylist containing the datafiles.
+	 */
+	private  ArrayList<DataFile> dataFiles;
 	
 	/**
 	 * Creates a new XMLreader.
 	 * @throws IOException 
 	 * @throws SAXException 
 	 * @throws ParserConfigurationException 
+	 * @param stream the stream that will be read.
 	 */
-	public XMLreader(InputStream stream) throws ParserConfigurationException, SAXException, IOException {
+	public XMLreader(InputStream stream)
+			throws ParserConfigurationException, SAXException, IOException {
 		read(stream);
 	}
 
 	/**
 	 * Creates a new XMLreader.
-	 * @param file
 	 * @throws ParserConfigurationException
 	 * @throws SAXException
 	 * @throws IOException
+	 * @param file the file that will be read.
 	 */
-	public XMLreader(File file) throws ParserConfigurationException, SAXException, IOException {
+	public XMLreader(File file)
+			throws ParserConfigurationException, SAXException, IOException {
 		read(file);
 	}
 	
 	/**
-	 * Reads the xml file and returns a Document that can be used to extract data from the xml file.
+	 * Reads the xml file and returns a Document that can be used 
+	 * to extract data from the xml file.
+	 * 
 	 * @param file the xml file
-	 * @return
+	 * @return the read document
 	 * @throws ParserConfigurationException 
 	 * @throws IOException 
 	 * @throws SAXException 
 	 */
-	public Document read(File file) throws ParserConfigurationException, SAXException, IOException {
+	public Document read(File file)
+			throws ParserConfigurationException, SAXException, IOException {
 		FileInputStream stream = new FileInputStream(file);
 		return read(stream);
 	}
 	
 	/**
-	 * Reads the xml from an inputstream and returns a Document that can be used to extract data from the xml file.
+	 * Reads the xml from an inputstream and returns a Document that can be used
+	 * to extract data from the xml file.
 	 * @param stream the inputstream
-	 * @return
+	 * @return the read document
 	 * @throws ParserConfigurationException 
 	 * @throws IOException 
 	 * @throws SAXException 
 	 */
-	public Document read(InputStream stream) throws ParserConfigurationException, SAXException, IOException {
+	public Document read(InputStream stream)
+			throws ParserConfigurationException, SAXException, IOException {
 		
 		dataFiles = new ArrayList<DataFile>();
 		
@@ -81,25 +92,32 @@ public class XMLreader {
 		document.normalize();
 		Element root = document.getDocumentElement();
 		NodeList filesList = root.getElementsByTagName("file");
-		for(int i = 0; i < filesList.getLength(); i++) {
+		
+		for (int i = 0; i < filesList.getLength(); i++) {
 			Element elem = (Element) filesList.item(i);
 			String fileName = elem.getAttribute("name");
 			String type = elem.getElementsByTagName("type").item(0).getTextContent();
 			String path = elem.getElementsByTagName("path").item(0).getTextContent();
-			DataFile dataFile = new DataFile(path + "/" + fileName, type);
+			DataFile dataFile = new DataFile(path + File.separator + fileName, type);
 			dataFiles.add(dataFile);
 		}
+		
 		return document;
 	}
 	
 	/**
-	 * returns the read document.
-	 * @return
+	 * returns the buffered read document.
+	 * @return the buffered read document
 	 */
 	public Document getDocument() {
 		return this.document;
 	}
 	
+	/**
+	 * Returns an ArrayList of all the datafiles 
+	 * that were read from the xml file.
+	 * @return
+	 */
 	public ArrayList<DataFile> getDataFiles() {
 		return dataFiles;
 	}
