@@ -1,12 +1,12 @@
 package xml;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -46,6 +46,14 @@ public class XMLreaderTest {
 		assertEquals("Filename attribute does not match:", "ADMIRE.txt", file1.getAttribute("name"));
 		Element pathnode = (Element) file1.getElementsByTagName("path").item(0);
 		String filepath = pathnode.getTextContent();
-		assertEquals("./input", filepath);
+		assertEquals("/input", filepath);
+	}
+	
+	@Test
+	public void testReadDataFiles() {
+		ArrayList<DataFile> dataFiles = reader.getDataFiles();
+		assertEquals("/input/ADMIRE.txt", dataFiles.get(0).getPath());
+		assertEquals("userinput", dataFiles.get(0).getType());
+		assertTrue(getClass().getResourceAsStream(dataFiles.get(0).getPath()) != null);
 	}
 }
