@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<document name="user_save.xml">
+	<file name="ADMIRE.txt">
+		<type>userinput</type>
+		<path>./input</path>
+	</file>
+	<file name="statsensor.txt">
+		<type>statsensor</type>
+		<path>./input</path>
+	</file>
+</document>
