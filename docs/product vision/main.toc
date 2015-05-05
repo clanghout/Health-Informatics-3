@@ -1,0 +1,6 @@
+\select@language {english}
+\contentsline {section}{\numberline {1}Target Customer}{2}
+\contentsline {section}{\numberline {2}Customer's Needs}{2}
+\contentsline {section}{\numberline {3}Crucial Attributes}{2}
+\contentsline {section}{\numberline {4}Unique Selling Points}{3}
+\contentsline {section}{\numberline {5}Time-frame}{3}
