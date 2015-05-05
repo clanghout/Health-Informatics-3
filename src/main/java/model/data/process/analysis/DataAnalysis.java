@@ -11,7 +11,8 @@ import model.data.process.DataProcess;
 public abstract class DataAnalysis extends DataProcess {
 
     /**
-     * The method to be overriden by subclasses to implement the data analysis
+     * The method to be overriden by subclasses to implement the data analysis.
+     *
      * @param input The input for the analysis
      * @return The output of the analysis
      */
