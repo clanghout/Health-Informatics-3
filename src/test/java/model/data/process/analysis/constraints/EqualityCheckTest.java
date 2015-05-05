@@ -14,20 +14,20 @@ import static org.junit.Assert.assertTrue;
  */
 public class EqualityCheckTest {
 
-    @Test
-    public void testCheck() throws Exception {
-        DataRow row = new DataRow();
-        DataColumn column = new DataColumn("test", StringValue.class);
-        DataValue value = new StringValue("Hank");
-        row.setValue(column, value);
+	@Test
+	public void testCheck() throws Exception {
+		DataRow row = new DataRow();
+		DataColumn column = new DataColumn("test", StringValue.class);
+		DataValue value = new StringValue("Hank");
+		row.setValue(column, value);
 
-        EqualityCheck check = new EqualityCheck(column, value);
-        assertTrue(check.check(row));
+		EqualityCheck check = new EqualityCheck(column, value);
+		assertTrue(check.check(row));
 
-        DataRow secondRow = new DataRow();
-        DataValue otherValue = new StringValue("John");
-        secondRow.setValue(column, otherValue);
+		DataRow secondRow = new DataRow();
+		DataValue otherValue = new StringValue("John");
+		secondRow.setValue(column, otherValue);
 
-        assertFalse(check.check(secondRow));
-    }
+		assertFalse(check.check(secondRow));
+	}
 }
