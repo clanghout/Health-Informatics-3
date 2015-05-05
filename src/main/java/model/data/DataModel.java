@@ -1,9 +1,6 @@
 package model.data;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * class that represents the data that should be analyzed
@@ -25,8 +22,8 @@ public class DataModel {
 	 * @param rows rows of the dataModel
 	 * @param columns columns of the dataModel
 	 */
-	public DataModel(ArrayList<DataRow> rows, Map<String, DataColumn> columns) {
-		this.rows = rows;
+	public DataModel(List<DataRow> rows, Map<String, DataColumn> columns) {
+		this.rows = new ArrayList<>(rows);
 		this.columns = columns;
 	}
 
