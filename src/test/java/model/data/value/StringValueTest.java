@@ -25,4 +25,13 @@ public class StringValueTest {
         value = new StringValue("");
         assertEquals("", value.toString());
     }
+
+    @Test
+    public void testEquals() throws Exception {
+        DataValue value = new StringValue("abc");
+        DataValue same = new StringValue("abc");
+        DataValue other = new StringValue("oidsa");
+        assertTrue(value.equals(same));
+        assertFalse(value.equals(other));
+    }
 }
