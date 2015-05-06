@@ -14,6 +14,8 @@ import java.nio.charset.StandardCharsets;
 import static org.junit.Assert.*;
 
 /**
+ * The tests for the DataReader.
+ *
  * Created by Boudewijn on 29-4-2015.
  */
 public class DataReaderTest {
