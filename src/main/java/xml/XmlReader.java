@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -36,7 +38,7 @@ public class XmlReader {
 	 * @throws IOException 
 	 * @throws SAXException 
 	 * @throws ParserConfigurationException 
-	 * @param Stream The stream that will be read.
+	 * @param stream The stream that will be read.
 	 */
 	public XmlReader(InputStream stream)
 			throws ParserConfigurationException, SAXException, IOException {
@@ -48,7 +50,7 @@ public class XmlReader {
 	 * @throws ParserConfigurationException
 	 * @throws SAXException
 	 * @throws IOException
-	 * @param File The file that will be read.
+	 * @param file The file that will be read.
 	 */
 	public XmlReader(File file)
 			throws ParserConfigurationException, SAXException, IOException {
@@ -59,7 +61,7 @@ public class XmlReader {
 	 * Reads the xml file and returns a Document that can be used 
 	 * to extract data from the xml file.
 	 * 
-	 * @param File the xml file
+	 * @param file The xml file
 	 * @return The read document
 	 * @throws ParserConfigurationException 
 	 * @throws IOException 
@@ -74,7 +76,7 @@ public class XmlReader {
 	/**
 	 * Reads the xml from an InputStream and returns a Document that can be used
 	 * to extract data from the xml file.
-	 * @param Stream The InputStream
+	 * @param stream The InputStream
 	 * @return The read document
 	 * @throws ParserConfigurationException 
 	 * @throws IOException 
@@ -132,11 +134,11 @@ public class XmlReader {
 	}
 	
 	/**
-	 * Returns an ArrayList of all the datafiles 
+	 * Returns an List of all the datafiles
 	 * that were read from the xml file.
 	 * @return
 	 */
-	public ArrayList<DataFile> getDataFiles() {
-		return dataFiles;
+	public List<DataFile> getDataFiles() {
+		return Collections.unmodifiableList(dataFiles);
 	}
 }
