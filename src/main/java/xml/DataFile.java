@@ -13,8 +13,6 @@ import java.util.regex.Pattern;
  */
 public class DataFile {
 
-	private static final long serialVersionUID = 1L;
-
 	private String type;
 	private String headerPattern;
 	private String filename;
