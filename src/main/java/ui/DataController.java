@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 import java.io.File;
 
 /**
+ * The controller for the Data tab
+ *
  * Created by Boudewijn on 6-5-2015.
  */
 public class DataController {
@@ -29,7 +31,8 @@ public class DataController {
 				new FileChooser.ExtensionFilter("XML", "*.xml")
 		);
 
-		fileChooser.showOpenDialog(root.getScene().getWindow());
+		File file = fileChooser.showOpenDialog(root.getScene().getWindow());
+
 	}
 
 }
