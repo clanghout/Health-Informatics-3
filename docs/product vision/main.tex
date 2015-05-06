@@ -8,13 +8,18 @@
 %?	In your reference list, do not just include product information (especially if the information consists of no more than a link to a product website).
 %?	The reference list style is APA. Check the information literacy course or TUlib (tulib.tudelft.nl) for examples.
 \documentclass[a4paper]{article}
+\bibliographystyle{apacite}
 
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
-\usepackage{amsmath}
-\usepackage{graphicx}
-\usepackage[colorinlistoftodos]{todonotes}
+%styling of author list
 \usepackage{authblk}
+%citations in APA style
+\usepackage{apacite}
+%standard, unused packages
+%\usepackage{amsmath}
+%\usepackage{graphicx}
+%\usepackage[colorinlistoftodos]{todonotes}
 
 \title{Product Vision}
 
@@ -46,7 +51,7 @@
 
 \section{Target Customer}
 %explain admire project
-The target customer of our software is a group of skilled researching analysts of the ADMIRE project. ADMIRE stands for "Assessment of a Disease management system with Medical devices In REnal disease". ADMIRE aims to create an environment for renal transplant patients to monitor the health of their new organ and keep track of their health values on a website (ADMIRE, 2013)
+The target customer of our software is a group of skilled researching analysts of the ADMIRE project. ADMIRE stands for "Assessment of a Disease management system with Medical devices In REnal disease". ADMIRE aims to create an environment for renal transplant patients to monitor the health of their new organ and keep track of their health values on a website (ADMIRE, 2013).
 The researchers are currently working on a system for renal transplant patients to keep track of their transplanted organ's values and thus keeping track of the organ's health. These researchers want to be able to analyze their patient's behavior. The analysis of the patient's behavior stretches from a case of manipulation of data to the extent of a patient's 'obedience' to a system's advice. 
 \par
 %more extensive description of user, amount of users, amount of patients, position(countries) of these users
@@ -79,29 +84,21 @@ To know what makes our software unique, it is necessary to know which alternativ
 and to create tables and graphs. SPSS has scores of statistical and mathematical functions,
 scores statistical procedures, and a very flexible data handling capability. Some of the
 functionalities of SPSS are: Descriptive Statistics, Reliability tests, Correlation, T-tests,
-Regression and curve estimation." \cite{spssdescription}
+Regression and curve estimation." (Abdelkareem and Al-Mekhlafy, 2014)
 \end{quotation}
 \par 
 This description immediately shows some points on which we can improve with our software. For example; SPSS is windows based. Our software is written in Java and thus it can be used on any operating system. Another point of improvement is the list of functionalities that are given. Our target customer doesn't need these functionalities, so it would make the software needlessly complicated.
 \par
 So the key to what makes our software unique is that it's personalized and therefor extremely usable. It is specifically created for analysts to process the data from renal monitoring devices, hospital records and the renal monitoring website. The provided language for creating analysis can be kept concise and simple because the purpose is so specific, the graphical user interface can be kept clean because it desires not too many extended features, which any other data analysis tool already has. 
 \par 
-The company itself does not yet have software that compares with our software, but there are other groups working on the same assignment. This means we will have to outshine them in some way. Since the other groups have received the exact same assignment and the same description for the software's exact functionality requirements, we will need to create a software of high quality and usability to 'win'. We plan to do this by creating an easy and effective GUI and implementing as much automation in routine actions as possible. This will be achieved by using User Centered Design principles\cite{nielsen}.
+The company itself does not yet have software that compares with our software, but there are other groups working on the same assignment. This means we will have to outshine them in some way. Since the other groups have received the exact same assignment and the same description for the software's exact functionality requirements, we will need to create a software of high quality and usability to 'win'. We plan to do this by creating an easy and effective GUI and implementing as much automation in routine actions as possible. This will be achieved by using User Centered Design principles (Nielsen, 1993).
 %search literature on "web help" systems like mijnnierinzicht.nl
 %search relatable projects combining multiple data sources (to analyze users)
 \section{Time-frame}
 There's a time-frame of 10 weeks for the entire project. We aim to finish the product in week 9 so we will have the time to debug in week 10. Apart from the debugging, week 10 is very chaotic due to presentations and meetings so there will probably not be a lot of time in that week to develop much more. We also aim to have a working version continuously throughout the process of development. There is no budget, the team works free of charge and even pays tuition to be able to do this project.
+\cite{anderson}
 
-\begin{thebibliography}{9}
-%ADMIRE. (2013). retrieved 6-5-2015, 2015, from http://ii.tudelft.nl/admire/
-\bibitem{spssdescription} 
-Khairy H. Abdelkareem and N. AL-Mekhlafy (2014)
-\textit{Roof lateral displacement for gravity load designed rc frames subjected to earthquakes} Assiut, Assiut University.
+\bibliography{ref}
 
-\bibitem{nielsen}
-J. Nielsen (1993) 
-\textit{Usability Engineering}
-Boston, Academic Press.
-\end{thebibliography}
 
 \end{document}
