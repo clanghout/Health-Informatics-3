@@ -2,6 +2,8 @@ package xml;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -14,9 +16,9 @@ import org.xml.sax.SAXException;
 import static org.junit.Assert.*;
 
 public class XMLreaderTest {
-	
+
 	private XMLreader reader;
-	
+
 	@Before
 	public void setUp() {
 		assertNotNull("Test file not found", getClass().getResource("/user_save.xml"));
@@ -26,12 +28,12 @@ public class XMLreaderTest {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void testReadStreamedXMLversion() {
 		assertEquals("1.0", reader.getDocument().getXmlVersion());			
 	}
-	
+
 	@Test
 	public void testReadStreamedXMLamountOfFiles() {
 		NodeList list = reader.getDocument().getElementsByTagName("file");
@@ -48,12 +50,48 @@ public class XMLreaderTest {
 		String filepath = pathnode.getTextContent();
 		assertEquals("/input", filepath);
 	}
-	
+
 	@Test
 	public void testReadDataFiles() {
 		ArrayList<DataFile> dataFiles = reader.getDataFiles();
 		assertEquals("/input/ADMIRE.txt", dataFiles.get(0).getPath());
 		assertEquals("userinput", dataFiles.get(0).getType());
-		assertTrue(getClass().getResourceAsStream(dataFiles.get(0).getPath()) != null);
+		assertEquals("[\\s\\S]+(?=\\[)", dataFiles.get(0).getHeaderPattern());
+		assertNotNull(getClass().getResourceAsStream(dataFiles.get(0).getPath()));
+	}
+
+	@Test
+	public void testCreateDataFile() {
+		DataFile dataFile = reader.createDataFile(reader.getFileElement(0));
+		assertEquals("/input/ADMIRE.txt", dataFile.getPath());
+		assertEquals("[/input/ADMIRE.txt, type=userinput, header=[\\s\\S]+(?=\\[)]", dataFile.toString());
+	}
+
+	@Test
+	public void testReadRegExFilter() {
+		String testStats = 
+				  "This is the header of the statsensor file and will be filtered\n"
+				+ "Board ID: T11024007997w Meter ID: 149033312038\n"
+				+ "Software Version: 1.1\n"
+				+ "Patient Records Read Back From Meter\n"
+				+ "Date: 29-9-2013 Time: 11:20\n"
+				+ "[\n"
+				+ "Crea,	179,umol/L,00,130218,0802\n"
+				+ "Crea,	179,umol/L,00,130218,0803\n"
+				+ "]\n";
+		Element root = reader.getDocument().getDocumentElement();
+		NodeList files = root.getElementsByTagName("file");
+		Element file = (Element) files.item(1);
+		Element pathnode = (Element) file.getElementsByTagName("header").item(0);
+		String regex = pathnode.getTextContent();
+		Pattern p = Pattern.compile(regex);
+		Matcher matcher = p.matcher(testStats);
+		if(matcher.find()) {
+			String filtered = matcher.replaceAll("");
+			assertEquals("[\n"
+				+ "Crea,	179,umol/L,00,130218,0802\n"
+				+ "Crea,	179,umol/L,00,130218,0803\n"
+				+ "]\n", filtered);
+		}
 	}
 }

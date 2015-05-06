@@ -22,15 +22,21 @@ import org.xml.sax.SAXException;
  */
 public class XMLreader {
 
-	private Document document;
-	private  ArrayList<DataFile> dataFiles;
+	private static final String FILE_TAG		= "file";
+	private static final String HEADER_TAG		= "header";
+	private static final String TYPE_TAG		= "type";
+	private static final String PATH_TAG		= "path";
+	private static final String NAME_ATTRIBUTE	= "name";
 	
+	private Document document;
+	private NodeList filesList;
+	private ArrayList<DataFile> dataFiles;
 	/**
 	 * Creates a new XMLreader.
 	 * @throws IOException 
 	 * @throws SAXException 
 	 * @throws ParserConfigurationException 
-	 * @param stream the stream that will be read.
+	 * @param Stream the stream that will be read.
 	 */
 	public XMLreader(InputStream stream)
 			throws ParserConfigurationException, SAXException, IOException {
@@ -42,7 +48,7 @@ public class XMLreader {
 	 * @throws ParserConfigurationException
 	 * @throws SAXException
 	 * @throws IOException
-	 * @param file the file that will be read.
+	 * @param File the file that will be read.
 	 */
 	public XMLreader(File file)
 			throws ParserConfigurationException, SAXException, IOException {
@@ -53,8 +59,8 @@ public class XMLreader {
 	 * Reads the xml file and returns a Document that can be used 
 	 * to extract data from the xml file.
 	 * 
-	 * @param file the xml file
-	 * @return the read document
+	 * @param File the xml file
+	 * @return The read document
 	 * @throws ParserConfigurationException 
 	 * @throws IOException 
 	 * @throws SAXException 
@@ -68,8 +74,8 @@ public class XMLreader {
 	/**
 	 * Reads the xml from an inputstream and returns a Document that can be used
 	 * to extract data from the xml file.
-	 * @param stream the inputstream
-	 * @return the read document
+	 * @param Stream the inputstream
+	 * @return The read document
 	 * @throws ParserConfigurationException 
 	 * @throws IOException 
 	 * @throws SAXException 
@@ -84,18 +90,27 @@ public class XMLreader {
 		document = builder.parse(stream);
 		document.normalize();
 		Element root = document.getDocumentElement();
-		NodeList filesList = root.getElementsByTagName("file");
+		filesList = root.getElementsByTagName(FILE_TAG);
 		
 		for (int i = 0; i < filesList.getLength(); i++) {
-			Element elem = (Element) filesList.item(i);
-			String fileName = elem.getAttribute("name");
-			String type = elem.getElementsByTagName("type").item(0).getTextContent();
-			String path = elem.getElementsByTagName("path").item(0).getTextContent();
-			DataFile dataFile = new DataFile(path + File.separator + fileName, type);
-			dataFiles.add(dataFile);
+			Element elem = getFileElement(i);
+			dataFiles.add(createDataFile(elem));
 		}
 		
 		return document;
+	}
+	
+	/**
+	 * Creates a DataFile from a file Element.
+	 * @return a new DataFile
+	 */
+	public DataFile createDataFile(Element elem) {
+		String fileName	= elem.getAttribute(NAME_ATTRIBUTE);
+		String type		= elem.getElementsByTagName(TYPE_TAG).item(0).getTextContent();
+		String path		= elem.getElementsByTagName(PATH_TAG).item(0).getTextContent();
+		String header	= elem.getElementsByTagName(HEADER_TAG).item(0).getTextContent();
+		
+		return new DataFile(path + File.separator + fileName, type, header);
 	}
 	
 	/**
@@ -104,6 +119,16 @@ public class XMLreader {
 	 */
 	public Document getDocument() {
 		return this.document;
+	}
+	
+	/**
+	 * Returns the i-th file Element of the xml file.
+	 * @param i The index of the file Element
+	 * @return The Element
+	 */
+	public Element getFileElement(int i) {
+		Element elem = (Element) filesList.item(i);
+		return elem;
 	}
 	
 	/**
