@@ -15,15 +15,15 @@ import org.xml.sax.SAXException;
 
 import static org.junit.Assert.*;
 
-public class XMLreaderTest {
+public class XmlReaderTest {
 
-	private XMLreader reader;
+	private XmlReader reader;
 
 	@Before
 	public void setUp() {
 		assertNotNull("Test file not found", getClass().getResource("/user_save.xml"));
 		try {
-			reader = new XMLreader(getClass().getResourceAsStream("/user_save.xml")) ;
+			reader = new XmlReader(getClass().getResourceAsStream("/user_save.xml")) ;
 		} catch (ParserConfigurationException | SAXException | IOException e) {
 			e.printStackTrace();
 		}

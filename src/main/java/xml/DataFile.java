@@ -25,12 +25,12 @@ public class DataFile extends File {
 	 * Creates a new DataFile.
 	 * @param pathname The path to the file.
 	 * @param t The type of the DataFile.
-	 * @param hp The regEx pattern specifying the header of the DataFile.
+	 * @param headerPattern The RegEx pattern specifying the header of the DataFile.
 	 */
-	public DataFile(String pathname, String t, String hp) {
+	public DataFile(String pathname, String type, String headerPattern) {
 		super(pathname);
-		this.type = t;
-		this.headerPattern = hp;
+		this.type = type;
+		this.headerPattern = headerPattern;
 	}
 
 	/**
@@ -39,13 +39,6 @@ public class DataFile extends File {
 	 */
 	public String getType() {
 		return type;
-	}
-
-	/**
-	 * @param t The type to set.
-	 */
-	public void setType(String t) {
-		this.type = t;
 	}
 
 	/**
