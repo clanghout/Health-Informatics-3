@@ -8,8 +8,8 @@
 	<content>
 		<AnchorPane>
 			<children>
-				<TextField layoutX="14.0" layoutY="27.0" prefHeight="25.0" prefWidth="447.0" />
-				<Button layoutX="476.0" layoutY="27.0" prefHeight="25.0" prefWidth="150.0" text="Import" />
+				<TextField styleClass="name-field" layoutX="14.0" layoutY="27.0" />
+				<Button styleClass="import-button" layoutX="476.0" layoutY="27.0" text="Import" />
 				<Label layoutX="14.0" layoutY="7.0" text="Import data" />
 			</children>
 		</AnchorPane>

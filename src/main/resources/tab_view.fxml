@@ -9,22 +9,22 @@
 	<AnchorPane>
 		 <children>
 			<Button layoutX="562.0" layoutY="263.0" text="Save" />
-				<ListView fx:id="inputtables" layoutX="14.0" layoutY="18.0" prefHeight="270.0" prefWidth="115.0" />
-				<SplitPane dividerPositions="0.5" layoutX="147.0" layoutY="18.0" orientation="VERTICAL" prefHeight="234.0" prefWidth="479.0">
+				<ListView styleClass="model-list" fx:id="inputtables" layoutX="14.0" layoutY="18.0" />
+				<SplitPane styleClass="data-container" dividerPositions="0.5" layoutX="147.0" layoutY="18.0">
 					<items>
-						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+						<AnchorPane styleClass="table-container">
 							<children>
-								<TableView fx:id="datatable" prefHeight="132.0" prefWidth="485.0">
+								<TableView styleClass="data-table" fx:id="datatable">
 								 <columns>
-									<TableColumn prefWidth="75.0" text="Column X" />
-									<TableColumn prefWidth="75.0" text="Column X" />
-									<TableColumn prefWidth="75.0" text="Column X" />
-									<TableColumn prefWidth="75.0" text="Column X" />
+									<TableColumn text="Column X" />
+									<TableColumn text="Column X" />
+									<TableColumn text="Column X" />
+									<TableColumn text="Column X" />
 								 </columns>
 								</TableView>
 							</children>
 						</AnchorPane>
-						<AnchorPane fx:id="datafields" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+						<AnchorPane styleClass="data-fields-container" fx:id="datafields" />
 					</items>
 				</SplitPane>
 		 </children>
