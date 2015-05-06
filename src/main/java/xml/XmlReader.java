@@ -20,7 +20,7 @@ import org.xml.sax.SAXException;
  * @author Paul
  *
  */
-public class XMLreader {
+public class XmlReader {
 
 	private static final String FILE_TAG		= "file";
 	private static final String HEADER_TAG		= "header";
@@ -36,9 +36,9 @@ public class XMLreader {
 	 * @throws IOException 
 	 * @throws SAXException 
 	 * @throws ParserConfigurationException 
-	 * @param Stream the stream that will be read.
+	 * @param Stream The stream that will be read.
 	 */
-	public XMLreader(InputStream stream)
+	public XmlReader(InputStream stream)
 			throws ParserConfigurationException, SAXException, IOException {
 		read(stream);
 	}
@@ -48,9 +48,9 @@ public class XMLreader {
 	 * @throws ParserConfigurationException
 	 * @throws SAXException
 	 * @throws IOException
-	 * @param File the file that will be read.
+	 * @param File The file that will be read.
 	 */
-	public XMLreader(File file)
+	public XmlReader(File file)
 			throws ParserConfigurationException, SAXException, IOException {
 		read(file);
 	}
@@ -72,9 +72,9 @@ public class XMLreader {
 	}
 	
 	/**
-	 * Reads the xml from an inputstream and returns a Document that can be used
+	 * Reads the xml from an InputStream and returns a Document that can be used
 	 * to extract data from the xml file.
-	 * @param Stream the inputstream
+	 * @param Stream The InputStream
 	 * @return The read document
 	 * @throws ParserConfigurationException 
 	 * @throws IOException 
