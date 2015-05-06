@@ -66,16 +66,16 @@ public class DataReader {
 
 	private void skipToContent(BufferedReader reader) throws IOException {
 		String line;
-		while ((line = reader.readLine()).indexOf("[") == -1) {}
+		while (!(line = reader.readLine()).contains("[")) {}
 	}
 
 	private DataModel readRows(BufferedReader reader, DataModelBuilder builder) throws IOException {
 		String line;
-		while ((line = reader.readLine()).indexOf("]") == -1) {
+		while (!(line = reader.readLine()).contains("]")) {
 			String[] sections = line.split(",");
-			Stream<DataValue> values = Arrays.stream(sections).map(e -> new StringValue(e));
+			Stream<DataValue> values = Arrays.stream(sections).map(StringValue::new);
 
-			DataRow row = builder.createRow(values.toArray(size -> new DataValue[size]));
+			DataRow row = builder.createRow(values.toArray(DataValue[]::new));
 			builder.addRow(row);
 		}
 
