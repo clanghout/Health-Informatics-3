@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -31,24 +33,13 @@ public class XmlReader {
 	private Document document;
 	private NodeList filesList;
 	private ArrayList<DataFile> dataFiles;
-	/**
-	 * Creates a new XMLreader.
-	 * @throws IOException 
-	 * @throws SAXException 
-	 * @throws ParserConfigurationException 
-	 * @param Stream The stream that will be read.
-	 */
-	public XmlReader(InputStream stream)
-			throws ParserConfigurationException, SAXException, IOException {
-		read(stream);
-	}
 
 	/**
 	 * Creates a new XMLreader.
 	 * @throws ParserConfigurationException
 	 * @throws SAXException
 	 * @throws IOException
-	 * @param File The file that will be read.
+	 * @param file The file that will be read.
 	 */
 	public XmlReader(File file)
 			throws ParserConfigurationException, SAXException, IOException {
@@ -59,7 +50,7 @@ public class XmlReader {
 	 * Reads the xml file and returns a Document that can be used 
 	 * to extract data from the xml file.
 	 * 
-	 * @param File the xml file
+	 * @param file The xml file
 	 * @return The read document
 	 * @throws ParserConfigurationException 
 	 * @throws IOException 
@@ -68,19 +59,19 @@ public class XmlReader {
 	public Document read(File file)
 			throws ParserConfigurationException, SAXException, IOException {
 		FileInputStream stream = new FileInputStream(file);
-		return read(stream);
+		return read(stream, file.getParent());
 	}
 	
 	/**
 	 * Reads the xml from an InputStream and returns a Document that can be used
 	 * to extract data from the xml file.
-	 * @param Stream The InputStream
+	 * @param stream The InputStream
 	 * @return The read document
 	 * @throws ParserConfigurationException 
 	 * @throws IOException 
 	 * @throws SAXException 
 	 */
-	public Document read(InputStream stream)
+	public Document read(InputStream stream, String parentDir)
 			throws ParserConfigurationException, SAXException, IOException {
 		
 		dataFiles = new ArrayList<DataFile>();
@@ -94,7 +85,7 @@ public class XmlReader {
 		
 		for (int i = 0; i < filesList.getLength(); i++) {
 			Element elem = getFileElement(i);
-			dataFiles.add(createDataFile(elem));
+			dataFiles.add(createDataFile(elem, parentDir));
 		}
 		
 		return document;
@@ -104,13 +95,13 @@ public class XmlReader {
 	 * Creates a DataFile from a file Element.
 	 * @return a new DataFile
 	 */
-	public DataFile createDataFile(Element elem) {
+	public DataFile createDataFile(Element elem, String parentDir) {
 		String fileName	= elem.getAttribute(NAME_ATTRIBUTE);
 		String type		= elem.getElementsByTagName(TYPE_TAG).item(0).getTextContent();
 		String path		= elem.getElementsByTagName(PATH_TAG).item(0).getTextContent();
 		String header	= elem.getElementsByTagName(HEADER_TAG).item(0).getTextContent();
 		
-		return new DataFile(path + File.separator + fileName, type, header);
+		return new DataFile(parentDir + File.separator + path + File.separator + fileName, type, header);
 	}
 	
 	/**
@@ -132,11 +123,11 @@ public class XmlReader {
 	}
 	
 	/**
-	 * Returns an ArrayList of all the datafiles 
+	 * Returns an List of all the datafiles
 	 * that were read from the xml file.
 	 * @return
 	 */
-	public ArrayList<DataFile> getDataFiles() {
-		return dataFiles;
+	public List<DataFile> getDataFiles() {
+		return Collections.unmodifiableList(dataFiles);
 	}
 }

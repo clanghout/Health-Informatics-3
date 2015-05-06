@@ -1,11 +1,6 @@
 <?xml version="1.0"?>
 <document name="user_save.xml">
-	<file name="ADMIRE.txt">
-		<header>[\s\S]+(?=\[)</header>
-		<type>userinput</type>
-		<path>input</path>
-	</file>
-	<file name="statsensor.txt">
+	<file name="ADMIRE 2.txt">
 		<header>[\s\S]+(?=\[)</header>
 		<type>statsensor</type>
 		<path>input</path>

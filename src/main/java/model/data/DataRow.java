@@ -32,7 +32,9 @@ public class DataRow {
 	 */
 	public DataRow(DataColumn[] columnArray, DataValue[] valueArray) throws ColumnValueMismatchException, ColumnValueTypeMismatchException {
 		if (columnArray.length != valueArray.length) {
-			ColumnValueMismatchException e = new ColumnValueMismatchException("Number of columns is not equal t the number of values");
+			ColumnValueMismatchException e = new ColumnValueMismatchException(
+					"Number of columns is not equal to the number of values"
+			);
 			log.throwing(this.getClass().getSimpleName(), "constructor", e);
 			throw e;
 		}
