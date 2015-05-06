@@ -1,0 +1,69 @@
+.label {
+	-fx-font-size: 12px;
+	-fx-font-weight: bold;
+}
+
+.button {
+	-fx-font-family: "Arial Narrow";
+	-fx-font-weight: bold;
+}
+
+.main-box {
+	-fx-pref-height: 480px;
+	-fx-pref-width: 640px;
+}
+
+.analysis-buttons {
+	-fx-pref-height: 200px;
+	-fx-pref-width: 100px;
+	-fx-spacing: 10px;
+}
+
+.analysis-text {
+	-fx-pref-height: 290px;
+	-fx-pref-width: 500px;
+}
+
+.name-field {
+	-fx-pref-width: 447px;
+	-fx-pref-height: 25px;
+}
+
+.import-button {
+	-fx-pref-height: 25px;
+	-fx-pref-width: 150px;
+}
+
+.model-list {
+	-fx-pref-width: 115px;
+	-fx-pref-height: 270px;
+}
+
+.data-container {
+	-fx-orientation: vertical;
+	-fx-pref-height: 234px;
+	-fx-pref-width: 479px;
+}
+
+.table-container {
+	-fx-pref-height: 100px;
+	-fx-pref-width: 160px;
+	-fx-min-height: 0;
+	-fx-min-width: 0;
+}
+
+.data-table {
+	-fx-pref-height: 132px;
+	-fx-pref-width: 485px;
+}
+
+.data-table TableColumn {
+	-fx-pref-width: 75px;
+}
+
+.data-fields-container {
+	-fx-min-width: 0;
+	-fx-min-height: 0;
+	-fx-pref-height: 100px;
+	-fx-pref-width: 160px;
+}
