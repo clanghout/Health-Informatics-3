@@ -33,17 +33,6 @@ public class XmlReader {
 	private Document document;
 	private NodeList filesList;
 	private ArrayList<DataFile> dataFiles;
-	/**
-	 * Creates a new XMLreader.
-	 * @throws IOException 
-	 * @throws SAXException 
-	 * @throws ParserConfigurationException 
-	 * @param stream The stream that will be read.
-	 */
-	public XmlReader(InputStream stream)
-			throws ParserConfigurationException, SAXException, IOException {
-		read(stream);
-	}
 
 	/**
 	 * Creates a new XMLreader.
@@ -70,7 +59,7 @@ public class XmlReader {
 	public Document read(File file)
 			throws ParserConfigurationException, SAXException, IOException {
 		FileInputStream stream = new FileInputStream(file);
-		return read(stream);
+		return read(stream, file.getParent());
 	}
 	
 	/**
@@ -82,7 +71,7 @@ public class XmlReader {
 	 * @throws IOException 
 	 * @throws SAXException 
 	 */
-	public Document read(InputStream stream)
+	public Document read(InputStream stream, String parentDir)
 			throws ParserConfigurationException, SAXException, IOException {
 		
 		dataFiles = new ArrayList<DataFile>();
@@ -96,7 +85,7 @@ public class XmlReader {
 		
 		for (int i = 0; i < filesList.getLength(); i++) {
 			Element elem = getFileElement(i);
-			dataFiles.add(createDataFile(elem));
+			dataFiles.add(createDataFile(elem, parentDir));
 		}
 		
 		return document;
@@ -106,13 +95,13 @@ public class XmlReader {
 	 * Creates a DataFile from a file Element.
 	 * @return a new DataFile
 	 */
-	public DataFile createDataFile(Element elem) {
+	public DataFile createDataFile(Element elem, String parentDir) {
 		String fileName	= elem.getAttribute(NAME_ATTRIBUTE);
 		String type		= elem.getElementsByTagName(TYPE_TAG).item(0).getTextContent();
 		String path		= elem.getElementsByTagName(PATH_TAG).item(0).getTextContent();
 		String header	= elem.getElementsByTagName(HEADER_TAG).item(0).getTextContent();
 		
-		return new DataFile(path + File.separator + fileName, type, header);
+		return new DataFile(parentDir + File.separator + path + File.separator + fileName, type, header);
 	}
 	
 	/**

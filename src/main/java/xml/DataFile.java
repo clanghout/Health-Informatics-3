@@ -1,9 +1,6 @@
 package xml;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -14,21 +11,22 @@ import java.util.regex.Pattern;
  * @author Paul
  *
  */
-public class DataFile extends File {
+public class DataFile {
 
 	private static final long serialVersionUID = 1L;
 
 	private String type;
 	private String headerPattern;
+	private String filename;
 
 	/**
 	 * Creates a new DataFile.
-	 * @param pathname The path to the file.
-	 * @param t The type of the DataFile.
+	 * @param filename The path to the file.
+	 * @param type The type of the DataFile.
 	 * @param headerPattern The RegEx pattern specifying the header of the DataFile.
 	 */
-	public DataFile(String pathname, String type, String headerPattern) {
-		super(pathname);
+	public DataFile(String filename, String type, String headerPattern) {
+		this.filename = filename;
 		this.type = type;
 		this.headerPattern = headerPattern;
 	}
@@ -57,11 +55,11 @@ public class DataFile extends File {
 
 	/**
 	 * Filters out the header of the file using regEx.
-	 * @return
+	 * @return A stream containing the contents of the file excluding the header
 	 * @throws FileNotFoundException
 	 */
 	public InputStream filterHeader() throws FileNotFoundException {
-		InputStream stream = getClass().getResourceAsStream(this.getPath());
+		InputStream stream = new FileInputStream(filename);
 		Scanner scanner = new Scanner(stream, "UTF-8");
 		scanner.useDelimiter("\\A");
 		String convertedStream = scanner.hasNext() ? scanner.next() : "";
@@ -74,7 +72,15 @@ public class DataFile extends File {
 		InputStream newStream = new ByteArrayInputStream(convertedStream.getBytes(StandardCharsets.UTF_8));
 		return newStream;
 	}
-	
+
+	public File getFile() throws FileNotFoundException{
+		return new File(filename);
+	}
+
+	public String getFilename() {
+		return filename;
+	}
+
 	/**
 	 * Returns a string representation of the datafile.
 	 * @return The string representing the file.
