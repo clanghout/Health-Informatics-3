@@ -1,22 +1,22 @@
 package model.data;
 
 
-import model.data.data.value.StringValue;
+import model.data.value.StringValue;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by jens on 4/30/15.
  */
 public class DataModelTest {
 	private ArrayList<DataRow> rows;
-	private HashMap<String, DataColumn> columnsMap;
 	private DataColumn[] columns;
 	private DataModel dataModel;
 
@@ -24,16 +24,11 @@ public class DataModelTest {
 	@Before
 	public void setUp() throws Exception {
 		rows = new ArrayList<DataRow>();
-		columnsMap = new HashMap<String, DataColumn>();
 		columns = new DataColumn[] {
 				new DataColumn("column1", StringValue.class),
 				new DataColumn("column2", StringValue.class),
 				new DataColumn("column3", StringValue.class)
 		};
-
-		columnsMap.put("column1", columns[0]);
-		columnsMap.put("column2", columns[1]);
-		columnsMap.put("column3", columns[2]);
 
 		DataValue[] valuesRow1 = {
 				new StringValue("value1"),
@@ -56,7 +51,7 @@ public class DataModelTest {
 		rows.add(new DataRow(columns, valuesRow2));
 		rows.add(new DataRow(columns, valuesRow3));
 
-		dataModel = new DataModel(rows, columnsMap);
+		dataModel = new DataModel(rows, Arrays.asList(columns));
 	}
 
 	@Test
@@ -79,6 +74,9 @@ public class DataModelTest {
 
 	@Test
 	public void testGetColumns() throws Exception {
-		assertEquals(dataModel.getColumns(), columnsMap);
+		Map<String, DataColumn> actual = dataModel.getColumns();
+		for (DataColumn c : columns) {
+			assertEquals(actual.get(c.getName()), c);
+		}
 	}
 }

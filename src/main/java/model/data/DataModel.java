@@ -1,9 +1,6 @@
 package model.data;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * class that represents the data that should be analyzed
@@ -16,8 +13,8 @@ public class DataModel {
 	 * create a new empty DataModel
 	 */
 	public DataModel() {
-		rows = new ArrayList<DataRow>();
-		columns = new HashMap<String, DataColumn>();
+		rows = new ArrayList<>();
+		columns = new HashMap<>();
 	}
 
 	/**
@@ -25,9 +22,12 @@ public class DataModel {
 	 * @param rows rows of the dataModel
 	 * @param columns columns of the dataModel
 	 */
-	public DataModel(ArrayList<DataRow> rows, Map<String, DataColumn> columns) {
-		this.rows = rows;
-		this.columns = columns;
+	public DataModel(List<DataRow> rows, List<DataColumn> columns) {
+		this();
+		this.rows = new ArrayList<>(rows);
+		for (DataColumn c : columns) {
+			this.columns.put(c.getName(), c);
+		}
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class DataModel {
 	/**
 	 * get the columns of the dataModel
 	 *
-	 * @return a HashMap that contains all the columns
+	 * @return a Map that contains all the columns
 	 */
 	public Map<String, DataColumn> getColumns() {
 		return columns;
