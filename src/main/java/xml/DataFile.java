@@ -62,7 +62,7 @@ public class DataFile extends File {
 	 */
 	public InputStream filterHeader() throws FileNotFoundException {
 		InputStream stream = getClass().getResourceAsStream(this.getPath());
-		Scanner scanner = new Scanner(stream);
+		Scanner scanner = new Scanner(stream, "UTF_8");
 		scanner.useDelimiter("\\A");
 		String convertedStream = scanner.hasNext() ? scanner.next() : "";
 		scanner.close();
