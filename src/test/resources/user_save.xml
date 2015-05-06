@@ -3,11 +3,11 @@
 	<file name="ADMIRE.txt">
 		<header>[\s\S]+(?=\[)</header>
 		<type>userinput</type>
-		<path>/input</path>
+		<path>input</path>
 	</file>
 	<file name="statsensor.txt">
 		<header>[\s\S]+(?=\[)</header>
 		<type>statsensor</type>
-		<path>/input</path>
+		<path>input</path>
 	</file>
 </document>

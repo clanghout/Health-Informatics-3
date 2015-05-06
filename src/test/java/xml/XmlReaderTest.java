@@ -1,7 +1,11 @@
 package xml;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,12 +22,14 @@ import static org.junit.Assert.*;
 public class XmlReaderTest {
 
 	private XmlReader reader;
+	private File file;
 
 	@Before
 	public void setUp() {
 		assertNotNull("Test file not found", getClass().getResource("/user_save.xml"));
 		try {
-			reader = new XmlReader(getClass().getResourceAsStream("/user_save.xml")) ;
+			file = new File(getClass().getResource("/user_save.xml").getFile());
+			reader = new XmlReader(file) ;
 		} catch (ParserConfigurationException | SAXException | IOException e) {
 			e.printStackTrace();
 		}
@@ -48,23 +54,33 @@ public class XmlReaderTest {
 		assertEquals("Filename attribute does not match:", "ADMIRE.txt", file1.getAttribute("name"));
 		Element pathnode = (Element) file1.getElementsByTagName("path").item(0);
 		String filepath = pathnode.getTextContent();
-		assertEquals("/input", filepath);
+		assertEquals("input", filepath);
 	}
 
 	@Test
-	public void testReadDataFiles() {
-		ArrayList<DataFile> dataFiles = reader.getDataFiles();
-		assertEquals("/input/ADMIRE.txt", dataFiles.get(0).getPath());
+	public void testReadDataFiles() throws FileNotFoundException {
+		List<DataFile> dataFiles = reader.getDataFiles();
+
+		String parentDir = file.getParent();
+		String relativePath = new File(parentDir).toURI().relativize(
+				dataFiles.get(0).getFile().toURI()
+		).getPath();
+
+		assertEquals("input/ADMIRE.txt", relativePath);
 		assertEquals("userinput", dataFiles.get(0).getType());
 		assertEquals("[\\s\\S]+(?=\\[)", dataFiles.get(0).getHeaderPattern());
-		assertNotNull(getClass().getResourceAsStream(dataFiles.get(0).getPath()));
+		assertNotNull(getClass().getResourceAsStream("/" + relativePath));
 	}
 
 	@Test
-	public void testCreateDataFile() {
-		DataFile dataFile = reader.createDataFile(reader.getFileElement(0));
-		assertEquals("/input/ADMIRE.txt", dataFile.getPath());
-		assertEquals("[/input/ADMIRE.txt, type=userinput, header=[\\s\\S]+(?=\\[)]", dataFile.toString());
+	public void testCreateDataFile() throws Exception {
+		String parentDir = file.getParent();
+		DataFile dataFile = reader.createDataFile(
+				reader.getFileElement(0),
+				parentDir
+		);
+		String relativePath = new File(parentDir).toURI().relativize(dataFile.getFile().toURI()).getPath();
+		assertEquals("input/ADMIRE.txt", relativePath);
 	}
 
 	@Test
