@@ -16,10 +16,10 @@
 							<children>
 								<TableView styleClass="data-table" fx:id="datatable">
 								 <columns>
-									<TableColumn text="Column X" />
-									<TableColumn text="Column X" />
-									<TableColumn text="Column X" />
-									<TableColumn text="Column X" />
+									<TableColumn styleClass="table-column" text="Column X" />
+									<TableColumn styleClass="table-column" text="Column X" />
+									<TableColumn styleClass="table-column" text="Column X" />
+									<TableColumn styleClass="table-column" text="Column X" />
 								 </columns>
 								</TableView>
 							</children>
