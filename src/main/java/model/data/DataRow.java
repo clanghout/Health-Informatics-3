@@ -1,10 +1,9 @@
 package model.data;
 
-import exceptions.*;
+import exceptions.ColumnValueMismatchException;
+import exceptions.ColumnValueTypeMismatchException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -33,7 +32,9 @@ public class DataRow {
 	 */
 	public DataRow(DataColumn[] columnArray, DataValue[] valueArray) throws ColumnValueMismatchException, ColumnValueTypeMismatchException {
 		if (columnArray.length != valueArray.length) {
-			ColumnValueMismatchException e = new ColumnValueMismatchException("Number of columns is not equal t the number of values");
+			ColumnValueMismatchException e = new ColumnValueMismatchException(
+					"Number of columns is not equal to the number of values"
+			);
 			log.throwing(this.getClass().getSimpleName(), "constructor", e);
 			throw e;
 		}
@@ -73,13 +74,5 @@ public class DataRow {
 		return values.get(column);
 	}
 
-//	public ArrayList<String> getRowValues() {
-//		Iterator<Map.Entry<String, DataValue>> iterator = values.entrySet().iterator();
-//		ArrayList<String> res = new ArrayList<String>();
-//		while(iterator.hasNext()){
-//			res.add(iterator.next().getValue().toString());
-//		}
-//		return res;
-//	}
 
 }
