@@ -2,6 +2,8 @@ package model.data;
 
 import java.util.*;
 
+import static java.util.Collections.unmodifiableList;
+
 /**
  * class that represents the data that should be analyzed
  */
@@ -45,8 +47,8 @@ public class DataModel {
 	 *
 	 * @return an iterator over the rows
 	 */
-	public Iterator<DataRow> getRows() {
-		return rows.iterator();
+	public List<DataRow> getRows() {
+		return unmodifiableList(rows);
 	}
 
 	/**
