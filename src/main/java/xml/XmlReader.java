@@ -1,5 +1,13 @@
 package xml;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -7,15 +15,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 /**
  * Class for reading an xml file that was saved by the user.
@@ -97,9 +96,9 @@ public class XmlReader {
 	 */
 	public DataFile createDataFile(Element elem, String parentDir) {
 		String fileName	= elem.getAttribute(NAME_ATTRIBUTE);
-		String type		= elem.getElementsByTagName(TYPE_TAG).item(0).getTextContent();
-		String path		= elem.getElementsByTagName(PATH_TAG).item(0).getTextContent();
-		String header	= elem.getElementsByTagName(HEADER_TAG).item(0).getTextContent();
+		String type	    = elem.getElementsByTagName(TYPE_TAG).item(0).getTextContent();
+		String path	    = elem.getElementsByTagName(PATH_TAG).item(0).getTextContent();
+		String header   = elem.getElementsByTagName(HEADER_TAG).item(0).getTextContent();
 		
 		return new DataFile(parentDir + File.separator + path + File.separator + fileName, type, header);
 	}
