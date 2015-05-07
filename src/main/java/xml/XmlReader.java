@@ -95,9 +95,9 @@ public class XmlReader {
 	 * @return a new DataFile
 	 */
 	public DataFile createDataFile(Element elem, String parentDir) {
-		String fileName	= elem.getAttribute(NAME_ATTRIBUTE);
-		String type	    = elem.getElementsByTagName(TYPE_TAG).item(0).getTextContent();
-		String path	    = elem.getElementsByTagName(PATH_TAG).item(0).getTextContent();
+		String fileName = elem.getAttribute(NAME_ATTRIBUTE);
+		String type     = elem.getElementsByTagName(TYPE_TAG).item(0).getTextContent();
+		String path     = elem.getElementsByTagName(PATH_TAG).item(0).getTextContent();
 		String header   = elem.getElementsByTagName(HEADER_TAG).item(0).getTextContent();
 		
 		return new DataFile(parentDir + File.separator + path + File.separator + fileName, type, header);
