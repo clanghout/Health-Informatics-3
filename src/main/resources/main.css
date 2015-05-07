@@ -24,7 +24,7 @@
 	-fx-pref-width: 500px;
 }
 
-.name-field {
+.file-name-field {
 	-fx-pref-width: 447px;
 	-fx-pref-height: 25px;
 }
@@ -54,11 +54,11 @@
 
 .data-table {
 	-fx-pref-height: 132px;
-	-fx-pref-width: 485px;
+	-fx-pref-width: 480px;
 }
 
-.data-table TableColumn {
-	-fx-pref-width: 75px;
+.data-table .table-column {
+	-fx-pref-width: 120px;
 }
 
 .data-fields-container {
