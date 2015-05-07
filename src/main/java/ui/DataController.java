@@ -74,7 +74,7 @@ public class DataController {
 
 	@FXML
 	protected void handleSaveButtonAction(ActionEvent event) {
-		if(out != null) {
+		if (out != null) {
 			FileChooser fileChooser = new FileChooser();
 
 			fileChooser.setTitle("Select location to save output");
@@ -84,8 +84,7 @@ public class DataController {
 			fileChooser.getExtensionFilters().add(
 					new FileChooser.ExtensionFilter("TXT", "*.txt")
 			);
-
-			File temp = fileChooser.showOpenDialog(root.getScene().getWindow());
+			File temp = fileChooser.showSaveDialog(root.getScene().getWindow());
 			DataModelWriter dmw = new DataModelWriter(out, temp);
 			dmw.setDelimiter("\t");
 			dmw.write();
