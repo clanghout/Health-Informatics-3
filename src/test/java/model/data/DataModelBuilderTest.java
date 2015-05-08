@@ -72,11 +72,11 @@ public class DataModelBuilderTest {
 	public void testAddRow() throws Exception {
 		DataModelBuilder builder = new DataModelBuilder();
 		builder.addColumn(builder.createColumn("test", StringValue.class));
-		assertFalse(builder.build().getRows().hasNext());
+		assertTrue(builder.build().getRows().isEmpty());
 
 		DataRow row = builder.createRow(new StringValue("v1"));
 		builder.addRow(row);
-		assertEquals(builder.build().getRows().next(),row);
+		assertEquals(builder.build().getRows().get(0),row);
 	}
 
 }
