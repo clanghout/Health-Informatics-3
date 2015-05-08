@@ -85,9 +85,8 @@ public class DataController {
 					new FileChooser.ExtensionFilter("TXT", "*.txt")
 			);
 			File temp = fileChooser.showSaveDialog(root.getScene().getWindow());
-			DataModelWriter dmw = new DataModelWriter(out, temp);
-			dmw.setDelimiter("\t");
-			dmw.write();
+			DataModelWriter dmw = new DataModelWriter();
+			dmw.write(out, temp, "\t");
 		}
 	}
 
