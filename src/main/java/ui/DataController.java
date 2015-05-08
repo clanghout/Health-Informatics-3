@@ -24,16 +24,19 @@ import java.util.logging.Logger;
 
 /**
  * The controller for the Data tab
- *
+ * <p>
  * Created by Boudewijn on 6-5-2015.
  */
 public class DataController {
-	@FXML private TextField fileNameField;
-	@FXML private Parent root;
+	@FXML
+	private TextField fileNameField;
+	@FXML
+	private Parent root;
 
 	private Logger logger = Logger.getLogger("DataController");
 
 	private File file;
+	private DataModel out;
 
 	@FXML
 	protected void handleImportButtonAction(ActionEvent event) {
@@ -62,12 +65,28 @@ public class DataController {
 			Constraint constraint = new EqualityCheck(
 					input.getColumns().get("time"), new StringValue("0803")
 			);
-
 			DataAnalysis analysis = new ConstraintAnalysis(constraint);
-			DataModel out = analysis.analyse(input);
-			DataModelWriter.write(out, "out/dingen.txt", "\t");
+			out = analysis.analyse(input);
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "Error reading XML file", e);
+		}
+	}
+
+	@FXML
+	protected void handleSaveButtonAction(ActionEvent event) {
+		if (out != null) {
+			FileChooser fileChooser = new FileChooser();
+
+			fileChooser.setTitle("Select location to save output");
+			fileChooser.setInitialDirectory(
+					new File(System.getProperty("user.home"))
+			);
+			fileChooser.getExtensionFilters().add(
+					new FileChooser.ExtensionFilter("TXT", "*.txt")
+			);
+			File temp = fileChooser.showSaveDialog(root.getScene().getWindow());
+			DataModelWriter dmw = new DataModelWriter();
+			dmw.write(out, temp, "\t");
 		}
 	}
 

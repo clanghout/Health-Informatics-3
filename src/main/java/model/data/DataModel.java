@@ -41,12 +41,12 @@ public class DataModel {
 	}
 
 	/**
-	 * return an iterator of the rows
+	 * return an unmodifiable list containing the rows
 	 *
-	 * @return an iterator over the rows
+	 * @return an unmodifiable list over the rows
 	 */
-	public Iterator<DataRow> getRows() {
-		return rows.iterator();
+	public List<DataRow> getRows() {
+		return Collections.unmodifiableList(rows);
 	}
 
 	/**
