@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2015.5.5)  8 MAY 2015 16:38
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2015.5.5)  8 MAY 2015 21:09
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -275,18 +275,18 @@ Package: apacite 2013/07/21 v6.03 APA citation
 ) (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
 \c@maskedRefs=\count92
 (/usr/local/texlive/2014/texmf-dist/tex/latex/apacite/english.apc
 File: english.apc 2013/07/21 v6.03 apacite language file
@@ -294,11 +294,11 @@ LaTeX Info: Redefining \BPBI on input line 129.
 LaTeX Info: Redefining \BHBI on input line 130.
 )
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 45.
+(Font)              <12> on input line 39.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 45.
+(Font)              <8> on input line 39.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 45.
+(Font)              <6> on input line 39.
  [1
 
 {/usr/local/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (./main
@@ -312,23 +312,23 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 \openout3 = `main.toc'.
 
 
-[2]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 75.
+[2] [3]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 70.
  (/usr/local/texlive/2014/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 75.
- [3] [4]
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 70.
+ [4]
 [5] (./main.bbl) [6] (./main.aux) ) 
 Here is how much of TeX's memory you used:
- 1409 strings out of 493117
- 16632 string characters out of 6135434
+ 1417 strings out of 493117
+ 16720 string characters out of 6135434
  84692 words of memory out of 5000000
- 4898 multiletter control sequences out of 15000+600000
+ 4906 multiletter control sequences out of 15000+600000
  8241 words of font info for 29 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 25i,4n,23p,663b,248s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 25i,4n,23p,887b,248s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2014/texmf-dist/fonts/ty
 pe1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2014/texmf-dist/fonts/typ
 e1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type
@@ -338,7 +338,7 @@ blic/amsfonts/cm/cmr17.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/publ
 ic/amsfonts/cm/cmr8.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/
 amsfonts/cm/cmsy10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/a
 msfonts/cm/cmti10.pfb>
-Output written on main.pdf (6 pages, 121880 bytes).
+Output written on main.pdf (6 pages, 125037 bytes).
 PDF statistics:
  55 PDF objects out of 1000 (max. 8388607)
  38 compressed objects within 1 object stream

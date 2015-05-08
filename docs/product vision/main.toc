@@ -3,12 +3,15 @@
 \contentsline {subsection}{\numberline {1.1}ADMIRE}{3}
 \contentsline {subsection}{\numberline {1.2}persona}{3}
 \contentsline {subsection}{\numberline {1.3}customer}{3}
-\contentsline {section}{\numberline {2}Customer Needs}{3}
+\contentsline {section}{\numberline {2}Customer Needs}{4}
 \contentsline {subsection}{\numberline {2.1}Additional Needs}{4}
 \contentsline {section}{\numberline {3}Crucial Attributes}{4}
 \contentsline {subsection}{\numberline {3.1}Analysis Language}{4}
-\contentsline {subsection}{\numberline {3.2}Visualisations and Exporting}{4}
+\contentsline {subsection}{\numberline {3.2}Visualisations and Exporting}{5}
 \contentsline {subsection}{\numberline {3.3}Overview}{5}
 \contentsline {section}{\numberline {4}Unique Selling Points}{5}
+\contentsline {subsection}{\numberline {4.1}SPSS}{5}
+\contentsline {subsection}{\numberline {4.2}Improvements}{5}
+\contentsline {subsection}{\numberline {4.3}Rivalry}{6}
 \contentsline {section}{\numberline {5}Time-frame}{6}
 \contentsline {section}{References}{6}

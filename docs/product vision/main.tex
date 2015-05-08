@@ -1,9 +1,3 @@
-%Search studies about similar data-combination projects, to show the added value and benefits for both patients and researchers.  Do not only search for possible tools that can be used.
-%Search  studies of patients? preferences concerning "web help" systems to explain some possible data accuracy problems etc.
-%?	All chapters in your papers will be evaluated on the use of references.
-%?	Provide a scientific basis (i.e. references) for statements about users, user preferences, user needs, etc., or indicate clearly that your statement is just an assumption.
-%?	Your reference list should consist of at least 8-10 references.
-%?	In your reference list, do not just include product information (especially if the information consists of no more than a link to a product website).
 \documentclass[a4paper]{article}
 
 \usepackage[english]{babel}
@@ -46,6 +40,7 @@
 
 \section*{Abstract}
 %beschrijf document en inhoud
+We propose a new software for analysis of data about renal transplantation patients. At the moment there is a team of researchers who are in need of a software to easily analyse patients' data, especially data relating their measuring, the feedback from a system, their input into a system and their contact data with the hospital. These analysis are important because it reflects the efficiency, usability and legitimacy of the current system, which is being developed and researched by the team of researchers. We try to build this software correctly by focussing on usability and efficiency, so the analysis can be done more easily than by using a different, larger analysis tool on the market. These analysis tools are not preferred because they're very extensive, mainly including a lot of functions not applicable to the research making the tool redundant and unwieldy. 
 
 \newpage
 
@@ -58,16 +53,16 @@ The target customer of our software is a group of skilled researching analysts o
 
 \subsection{ADMIRE}
 %explain admire project
-ADMIRE stands for "Assessment of a Disease management system with Medical devices In REnal disease". ADMIRE aims to create an environment for renal transplant patients to monitor the health of their new organ and keep track of their health values on a website. From this website patients will also receive feedback regarding their values which might suggest visiting a hospital or remeasuring values. \cite{Admire}
-
+ADMIRE stands for "Assessment of a Disease management system with Medical devices In REnal disease". ADMIRE aims to create an environment for renal transplant patients to monitor the health of their new organ and keep track of their health values on a website. From this website patients will also receive feedback regarding their values which might suggest visiting a hospital or remeasuring values \cite{Admire}. The ADMIRE project is incredibly important because it is very relevant at the moment. As mankind grows more intelligent, the need for valuable information increases. As concluded in a bachelor thesis of a student of the university of Twente, there is a great demand for web help systems \cite{twente} like mijnnierinzicht.nl, which is the product of the ADMIRE project.
 \subsection{persona}
 %persona of wenxin wang
 Person: Wenxin Wang \\
-Miss Wang is a trained analyst, has high qualifications \cite{persona}, and is capable of working with moderately complex computer systems. Miss Wang likes software to be easy to use and wants results to be clearly visualized, though she is able to work with software which might be a bit more complex and thus a little less easy to use. Miss Wang wants minimal repetition of actions so that she does not have to do any work which might as well have been automated.
+Miss Wang is a trained analyst, has high qualifications \cite{persona}, and is capable of working with moderately complex computer systems. Miss Wang likes software to be easy to use and wants results to be clearly visualized, though she is able to work with software which might be a bit more complex and thus a little less easy to use. Miss Wang wants minimal repetition of actions so that she does not have to do any work which might as well have been automated. \\
+This persona is an assumption about the capabilities of Miss Wang, based on previous meetings.
 
 \subsection{customer}
 %more extensive description of user, amount of users, amount of patients, position(countries) of these users
-Our software will be used by a handful of people. All users are trained analysts who are capable of using a moderately complicated system. If our product will be used by the customer, they will use it to analyze all the patients involved in the Admire project. Users will be international, but all english speaking. Patients will most likely only be Dutch. The size of this group will probably be limited within the hundreds of people. Our product is not going to be sold, but offered to our target customer. We merely hope, in all modesty, that our project will be the best among others and thus will be used by our target customer in their research. 
+Our software will be used by a handful of people. All users are trained analysts who are capable of using a moderately complicated system. If our product will be used by the customer, they will use it to analyze all the patients involved in the Admire project. Users will be international, but all english speaking. Patients will most likely only be Dutch \cite{admire2}. The size of this group will probably be limited within the hundreds of people. Our product is not going to be sold, but offered to our target customer. We merely hope, in all modesty, that our project will be the best among others and thus will be used by our target customer in their research. 
 
 \section{Customer Needs}
 The product will address the need of the analysts to generate usable values such as means and averages from abstract data and create visualizations of this generated data. The customer needs to be able to 
@@ -83,25 +78,27 @@ This list is based on knowledge received from discussions with our customers.
 \subsection{Additional Needs}
 In the end, we want our software to be the best option for the analysts. Otherwise, the software might not be used. To achieve this goal, we have to try to satisfy additional needs of the customer which are not crucial but make the software more attractive and easy to use. There are a couple of factors which determine software usability. These factors include (but are not limited to) understandability, learnability, operability and attractiveness \cite{komiyama}. To improve on these factors, we will try to 
 \begin{itemize}
-\item keep the graphical user interface simple (understandability) 
+\item keep the graphical user interface simple (understandability, operability) 
 \item make the analysis language small but effective (learnability)
 \item create a nice-looking graphical user interface (attractiveness) 
 \end{itemize}
 
+%crucial attributes
 \section{Crucial Attributes}
+%intro
 To satisfy the user's needs, it is crucial that the software will be able to recognize and process data of which the structure varies. It is also necessary that the software will offer a scripting language which enables the user to create their analysis which then can be used on the loaded data. The data resulted by this analysis must be visualized in various sorts of plots and  schemes, the results must also be able to be exported. 
 
 \subsection{Analysis Language}
-A language will be created called SUGAR \cite{sugar}. This language will provide the possibility to manipulate the data into the form the analyst desires. This language is specified in the Language specification for SUGAR document. The use of the language will is that the analyst wants to make great manipulations with only a couple of commands. This requires very powerful functions and thus the language will be designed and created to be very powerful and concise, making it easy to learn and effective to use.
+A language will be created called SUGAR \cite{sugar}. This language will provide the possibility to manipulate the data into the form the analyst desires. This language is specified in the Language specification for SUGAR document. The use of the language will is that the analyst wants to make great manipulations with only a couple of commands. This requires very powerful functions and thus the language will be designed and created to be very powerful and concise, making it easy to learn and effective to use. Also, to improve learnability, a manual will be provided for this language.
 
 \subsection{Visualisations and Exporting}
 The user will be able to see visualizations of their analysis which must be clear and meaningful. After the loading of data, creation of analysis, execution of analysis and visualization of the analysis results, the software must also be able to export the analysis results into a file so it can be used in additional analysis software. 
 
 \subsection{Overview}
-The following attributes are crucial.
+The following list is an overview of the previously named attributes.
 \begin{itemize}
-\item Input module accepting specified data sources
-\item Simplistic analysis language
+\item Input module accepting various data sources
+\item Simplistic, powerful analysis language
 \item Clear documentation of the language
 \item Visualize the analyzed data
 \item Export module with possibility to specify output syntax
@@ -109,6 +106,7 @@ The following attributes are crucial.
 
 \section{Unique Selling Points}
 To know what makes our software unique, it is necessary to know which alternatives are on the market. When searching for data analysis tools, the names SPSS, SAS, R and Excel are the most prominent. The tool proving to be most relevant seems to be SPSS due to frequency of appearance. After an extensive search for a general definition of SPSS, the following description was found: 
+\subsection{SPSS}
 \begin{quotation}
 "SPSS is a Windows based program that can be used to perform data entry and analysis
 and to create tables and graphs. SPSS has scores of statistical and mathematical functions,
@@ -116,14 +114,15 @@ scores statistical procedures, and a very flexible data handling capability. Som
 functionalities of SPSS are: Descriptive Statistics, Reliability tests, Correlation, T-tests,
 Regression and curve estimation." \cite{SPSS}
 \end{quotation}
-\par 
-This description immediately shows some points on which we can improve with our software. For example; SPSS is windows based. Our software is written in Java and thus it can be used on any operating system. Another point of improvement is the list of functionalities that are given. Our target customer doesn't need these functionalities, so it would make the software needlessly complicated.
 \par
-So the key to what makes our software unique is that it is personalized and therefor extremely usable. It is specifically created for analysts to process the data from renal monitoring devices, hospital records and the renal monitoring website. The provided language for creating analysis can be kept concise and simple because the purpose is so specific, the graphical user interface can be kept clean because it desires not too many extended features, which any other data analysis tool already has. 
-\par 
-The company itself does not yet have software that compares with our software, but there are other groups working on the same assignment. This means we will have to outshine them in some way. Since the other groups have received the exact same assignment and the same description for the software's exact functionality requirements, we will need to create a software of high quality and usability to 'win'. We plan to do this by creating an easy and effective GUI and implementing as much automation in routine actions as possible. This will be achieved by using User Centered Design principles \cite{Nielsen}.
-%search literature on "web help" systems like mijnnierinzicht.nl
-%search relatable projects combining multiple data sources (to analyze users)
+This description immediately shows some points on which we can improve with our software. For example; SPSS is windows based. Our software is written in Java and thus it can be used on any operating system. Another point of improvement is the list of functionalities that are given. Our target customer doesn't need these functionalities, so it would make the software needlessly complicated.
+
+\subsection{Improvements}
+So the key to what makes our software unique is that it is personalized and therefor extremely usable. It is specifically created for analysts to process the data from renal monitoring devices, hospital records and the renal monitoring website. The provided language for creating analysis can be kept concise and simple because the purpose is so specific, the graphical user interface can be kept clean because it desires not too many extended features, which any other data analysis tool already has.
+
+\subsection{Rivalry}
+The researchers do not yet have software that compares with our software, but there are other groups working on the same assignment. This means we will have to outshine them in some way. Since the other groups have received the exact same assignment and the same description for the software's exact functionality requirements, we will need to create a software of high quality and usability to 'win'. We plan to do this by creating an easy and effective GUI and implementing as much automation in routine actions as possible. This will be achieved by using User Centered Design principles \cite{Nielsen}.
+
 \section{Time-frame}
 There's a time-frame of 10 weeks for the entire project. We aim to finish the product around week 9 with some time to debug in that week because in week 9 there is a deadline which requires us to have a final version of our code. We also aim to have a working version continuously throughout the process of development. There is no budget, the team works free of charge and even pays tuition to be able to do this project.
 

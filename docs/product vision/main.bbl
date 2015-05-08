@@ -28,6 +28,67 @@ Abdelkareem, K\BPBI H.%
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
+Busscher%
+, Homan%
+\BCBL {}\ \BBA {} van~der Maas%
+}{%
+Busscher%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2012}}%
+}]{%
+twente}
+\APACinsertmetastar {%
+twente}%
+\begin{APACrefauthors}%
+Busscher, S.%
+, Homan, A.%
+\BCBL {}\ \BBA {} van~der Maas, M.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYear{2012}.
+\unskip\
+\newblock
+\APACrefbtitle {Onderzoek naar het opzetten van een webbased shared care
+  systeem voor testiskanker} {Onderzoek naar het opzetten van een webbased
+  shared care systeem voor testiskanker}\ \APACtypeAddressSchool {\BUMTh}{}{}.
+\unskip\
+\newblock
+\APACaddressSchool {}{University of Twente}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Gosschalk%
+, van Groos%
+, Langerak%
+, Langhout%
+\BCBL {}\ \BBA {} van Wijk%
+}{%
+Gosschalk%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2015}}%
+}]{%
+sugar}
+\APACinsertmetastar {%
+sugar}%
+\begin{APACrefauthors}%
+Gosschalk, L.%
+, van Groos, B.%
+, Langerak, J.%
+, Langhout, C.%
+\BCBL {}\ \BBA {} van Wijk, P.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2015}{}{}.
+\newblock
+\APACrefbtitle {Language Specification for SUGAR.} {Language specification for
+  sugar.}
+\newblock
+\APACrefnote{https://github.com/clanghout/Health-Informatics-3/blob/master/docs/language/language-spec.pdf}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
 Komiyama%
 }{%
 Komiyama%
@@ -74,37 +135,6 @@ Nielsen, J.%
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
-van Groos%
-, Langhout%
-, Langerak%
-, van Wijk%
-\BCBL {}\ \BBA {} Gosschalk%
-}{%
-van Groos%
-\ \protect \BOthers {.}}{%
-{\protect \APACyear {2015}}%
-}]{%
-sugar}
-\APACinsertmetastar {%
-sugar}%
-\begin{APACrefauthors}%
-van Groos, B.%
-, Langhout, C.%
-, Langerak, J.%
-, van Wijk, P.%
-\BCBL {}\ \BBA {} Gosschalk, L.%
-\end{APACrefauthors}%
-\unskip\
-\newblock
-\APACrefYearMonthDay{2015}{}{}.
-\newblock
-\APACrefbtitle {Language Specification for SUGAR.} {Language specification for
-  sugar.}
-\newblock
-\APACrefnote{https://github.com/clanghout/Health-Informatics-3/blob/master/docs/language/language-spec.pdf}
-\PrintBackRefs{\CurrentBib}
-
-\bibitem [\protect \citeauthoryear {%
 Wang%
 }{%
 Wang%
@@ -124,6 +154,37 @@ Wang, W.%
 \APACrefbtitle {Wenxin Wang.} {Wenxin wang.}
 \newblock
 \APACrefnote{http://mmi.tudelft.nl/?q=node/7622}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Wang%
+\ \protect \BOthers {.}}{%
+Wang%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2012}}%
+}]{%
+admire2}
+\APACinsertmetastar {%
+admire2}%
+\begin{APACrefauthors}%
+Wang, W.%
+, Brinkman, W\BHBI P.%
+, Rövekamp, T\BPBI J.%
+, van~der Boog, P.%
+, Alpay, L.%
+\BCBL {}\ \BBA {} Neerincx, M\BPBI A.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2012}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Designing and Evaluating a Self-Management Support
+  System for Renal Transplant Patients: the First Step} {Designing and
+  evaluating a self-management support system for renal transplant patients:
+  the first step}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{European Conference on Cognitive
+  Ergonomics}{}{}{D15--D19}.
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
