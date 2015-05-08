@@ -1,6 +1,5 @@
 %Search studies about similar data-combination projects, to show the added value and benefits for both patients and researchers.  Do not only search for possible tools that can be used.
 %Search  studies of patients? preferences concerning "web help" systems to explain some possible data accuracy problems etc.
-%?	Don? t forget that your paper will also get a grade for the literature review part!
 %?	All chapters in your papers will be evaluated on the use of references.
 %?	Provide a scientific basis (i.e. references) for statements about users, user preferences, user needs, etc., or indicate clearly that your statement is just an assumption.
 %?	Your reference list should consist of at least 8-10 references.
@@ -67,7 +66,7 @@ Wenxin is a trained analyst, has high qualifications \cite{persona}, and is capa
 %more extensive description of user, amount of users, amount of patients, position(countries) of these users
 Our software will be used by a handful of people. All users are trained analysts who are capable of using a moderately complicated system. If our product will be used by the customer, they will use it to analyze all the patients involved in the Admire project. Users will be international, but all english speaking. Patients will most likely only be Dutch. The size of this group will probably be limited within the hundreds of people. Our product is not going to be sold, but offered to our target customer. We merely hope, in all modesty, that our project will be the best among others and thus will be used by our target customer in their research. 
 
-\section{Customer's Needs}
+\section{Customer Needs}
 The product will address the need of the analysts to generate usable values such as means and averages from abstract data and create visualizations of this generated data. The customer needs to be able to 
 \begin{itemize}
 \item load data from different sorts of sources consisting of varying structures 
@@ -78,8 +77,20 @@ The product will address the need of the analysts to generate usable values such
 \end{itemize}
 This list is based on knowledge received from discussions with our customers. 
 
+\subsection{Additional Needs}
+In the end, we want our software to be the best option for the analysts. Otherwise, the software might not be used. To achieve this goal, we have to try to satisfy additional needs of the customer which are not crucial but make the software more attractive and easy to use. There are a couple of factors which determine software usability. These factors include (but are not limited to) understandability, learnability, operability and attractiveness \cite{komiyama}. While designing the SUGAR language (explained in section 4) and the graphical user interface, we will keep these factors in mind to achieve maximum usability.
+
 \section{Crucial Attributes}
-To satisfy the user's needs, it is crucial that the software will be able to recognize and process data of which the structure varies. It is also necessary that the software will offer a scripting language which enables the user to create their analysis which then can be used on the loaded data. This language should be easy to learn. Thus it has to be documented properly. The user will be able to see visualizations of their analysis which must be clear and meaningful. After the loading of data, creation of analysis, execution of analysis and visualization of the analysis results, the software must also be able to export the analysis results into a file so it can be used in additional analysis software. The following attributes are crucial.
+To satisfy the user's needs, it is crucial that the software will be able to recognize and process data of which the structure varies. It is also necessary that the software will offer a scripting language which enables the user to create their analysis which then can be used on the loaded data. 
+
+\subsection{Analysis Language}
+A language will be created called SUGAR \cite{sugar}. This language will 
+
+\subsection{Visualisations and Exporting}
+The user will be able to see visualizations of their analysis which must be clear and meaningful. After the loading of data, creation of analysis, execution of analysis and visualization of the analysis results, the software must also be able to export the analysis results into a file so it can be used in additional analysis software. 
+
+\subsection{Overview}
+The following attributes are crucial.
 \begin{itemize}
 \item Input module accepting specified data sources
 \item Simplistic analysis language

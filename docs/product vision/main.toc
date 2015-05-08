@@ -5,7 +5,11 @@
 \contentsline {subsection}{\numberline {2.2}persona}{3}
 \contentsline {subsection}{\numberline {2.3}customer}{3}
 \contentsline {section}{\numberline {3}Customer's Needs}{3}
+\contentsline {subsection}{\numberline {3.1}Additional Needs}{4}
 \contentsline {section}{\numberline {4}Crucial Attributes}{4}
-\contentsline {section}{\numberline {5}Unique Selling Points}{4}
+\contentsline {subsection}{\numberline {4.1}Analysis Language}{4}
+\contentsline {subsection}{\numberline {4.2}Visualisations and Exporting}{4}
+\contentsline {subsection}{\numberline {4.3}Overview}{4}
+\contentsline {section}{\numberline {5}Unique Selling Points}{5}
 \contentsline {section}{\numberline {6}Time-frame}{5}
-\contentsline {section}{References}{5}
+\contentsline {section}{References}{6}

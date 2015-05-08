@@ -28,6 +28,30 @@ Abdelkareem, K\BPBI H.%
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
+Komiyama%
+}{%
+Komiyama%
+}{%
+{\protect \APACyear {2008}}%
+}]{%
+komiyama}
+\APACinsertmetastar {%
+komiyama}%
+\begin{APACrefauthors}%
+Komiyama, T.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2008}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Usability Evaluation Based on International Standards
+  for Software Quality Evaluation} {Usability evaluation based on international
+  standards for software quality evaluation}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{NEC Technical Journal Vol.3 No.2}{}{}{29--30}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
 Nielsen%
 }{%
 Nielsen%
@@ -47,6 +71,59 @@ Nielsen, J.%
 \APACrefbtitle {Usability Engineering} {Usability engineering}.
 \newblock
 \APACaddressPublisher{Boston}{Academic Press}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+van Groos%
+, Langhout%
+, Langerak%
+, van Wijk%
+\BCBL {}\ \BBA {} Gosschalk%
+}{%
+van Groos%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2015}}%
+}]{%
+sugar}
+\APACinsertmetastar {%
+sugar}%
+\begin{APACrefauthors}%
+van Groos, B.%
+, Langhout, C.%
+, Langerak, J.%
+, van Wijk, P.%
+\BCBL {}\ \BBA {} Gosschalk, L.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2015}{}{}.
+\newblock
+\APACrefbtitle {Language Specification for SUGAR.} {Language specification for
+  sugar.}
+\newblock
+\APACrefnote{https://github.com/clanghout/Health-Informatics-3/blob/master/docs/language/language-spec.pdf}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Wang%
+}{%
+Wang%
+}{%
+{\protect \APACyear {2015}}%
+}]{%
+persona}
+\APACinsertmetastar {%
+persona}%
+\begin{APACrefauthors}%
+Wang, W.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2015}{}{}.
+\newblock
+\APACrefbtitle {Wenxin Wang.} {Wenxin wang.}
+\newblock
+\APACrefnote{http://mmi.tudelft.nl/?q=node/7622}
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
@@ -76,21 +153,6 @@ Wang, W.%
   self-management support system}.{\BBCQ}
 \newblock
 \APACjournalVolNumPages{European Conference on Cognitive Ergonomics}{}{}{}.
-\PrintBackRefs{\CurrentBib}
-
-\bibitem [\protect \citeauthoryear {%
-\APACcitebtitle {Wenxin Wang}}{%
-\APACcitebtitle {Wenxin Wang}}{%
-{\protect \APACyear {2015}}%
-}]{%
-persona}
-\APACinsertmetastar {%
-persona}%
-\APACrefbtitle {Wenxin Wang.} {Wenxin wang.}
-\newblock
-\APACrefYearMonthDay{2015}{}{}.
-\newblock
-\APACrefnote{http://mmi.tudelft.nl/?q=node/7622}
 \PrintBackRefs{\CurrentBib}
 
 \end{thebibliography}
