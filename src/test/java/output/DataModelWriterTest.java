@@ -74,8 +74,8 @@ public class DataModelWriterTest {
 		when(dataModel.getRows()).thenReturn(unmodifiableList(rows));
 		when(dataModel.getColumns()).thenReturn(columnsMap);
 
-		DataModelWriter writer = new DataModelWriter(dataModel, testFile);
-		writer.write();
+		DataModelWriter writer = new DataModelWriter();
+		writer.write(dataModel, testFile, ",");
 		BufferedReader reader = new BufferedReader(new FileReader(testFile));
 		String firstLine = reader.readLine();
 		assertEquals(firstLine, "value1,value3,value2");
@@ -107,14 +107,12 @@ public class DataModelWriterTest {
 		when(dataModel.getRows()).thenReturn(unmodifiableList(rows));
 		when(dataModel.getColumns()).thenReturn(columnsMap);
 
-		DataModelWriter writer = new DataModelWriter(dataModel, testFile);
-		writer.setDelimiter("\t");
-		writer.write();
+		DataModelWriter writer = new DataModelWriter();
+		writer.write(dataModel, testFile, "\t");
 		BufferedReader reader = new BufferedReader(new FileReader(testFile));
 		String firstLine = reader.readLine();
 		assertEquals(firstLine, "value1\tvalue3\tvalue2");
-		writer.setDelimiter(" ");
-		writer.write();
+		writer.write(dataModel, testFile, " ");
 		reader = new BufferedReader(new FileReader(testFile));
 		firstLine = reader.readLine();
 		assertEquals(firstLine, "value1 value3 value2");
@@ -122,7 +120,7 @@ public class DataModelWriterTest {
 
 	@Test
 	public void testAddQuotes() throws Exception {
-		DataModelWriter writer = new DataModelWriter(dataModel, testFile);
+		DataModelWriter writer = new DataModelWriter();
 		String test = writer.addQuotes(new StringValue("test"));
 		assertEquals(test, "\"test\"");
 	}

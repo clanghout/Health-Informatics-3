@@ -19,10 +19,7 @@ import java.util.logging.Logger;
  * Write output after analysis is done.
  */
 public class DataModelWriter {
-	private File file;
-	private DataModel dataModel;
 	private String delimiter = ",";
-	private List<DataColumn> columns;
 	private Logger logger = Logger.getLogger("DataModelWriter");
 
 	// Options for user
@@ -30,40 +27,16 @@ public class DataModelWriter {
 
 	/**
 	 * Constructor for DataModelWriter.
-	 *
-	 * @param dataModelInput the output dataModel
-	 * @param fileInput      the name of the output file
 	 */
-	public DataModelWriter(DataModel dataModelInput, File fileInput) {
-		this.file = fileInput;
-		this.dataModel = dataModelInput;
-		this.columns = new ArrayList<>();
-
-		Map<String, DataColumn> columnsData = dataModel.getColumns();
-		for (Object o : columnsData.entrySet()) {
-			Map.Entry pair = (Map.Entry) o;
-			DataColumn column = (DataColumn) pair.getValue();
-			columns.add(column);
-		}
-	}
-
-	/**
-	 * Set the delimiter for the output.
-	 * Default value is ", "
-	 *
-	 * @param delimiter the delimiter to be used.
-	 */
-	public void setDelimiter(String delimiter) {
-		this.delimiter = delimiter;
-	}
+	public DataModelWriter() {}
 
 	/**
 	 * Creates a PrintWriter that prints the datamodel to a file.
 	 */
-	public void write() {
-		List<DataRow> rows = dataModel.getRows();
-		try (PrintWriter writer = new PrintWriter(this.file, "UTF-8")) {
-
+	public void write(DataModel dataModelInput, File fileInput, String delimiter) {
+		List<DataColumn> columns = readColumns(dataModelInput);
+		List<DataRow> rows = dataModelInput.getRows();
+		try (PrintWriter writer = new PrintWriter(fileInput, "UTF-8")) {
 			for (DataRow row : rows) {
 				if (columns.size() > 0) {
 					writer.print(row.getValue(columns.get(0)).toString());
@@ -85,6 +58,17 @@ public class DataModelWriter {
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public ArrayList<DataColumn> readColumns(DataModel in) {
+		ArrayList<DataColumn> res = new ArrayList<>();
+		Map<String, DataColumn> columnsData = in.getColumns();
+		for (Object o : columnsData.entrySet()) {
+			Map.Entry pair = (Map.Entry) o;
+			DataColumn column = (DataColumn) pair.getValue();
+			res.add(column);
+		}
+		return res;
 	}
 
 	public String addQuotes(DataValue value) {
