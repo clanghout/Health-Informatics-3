@@ -1,7 +1,11 @@
 \select@language {english}
-\contentsline {section}{\numberline {1}Target Customer}{2}
-\contentsline {section}{\numberline {2}Customer's Needs}{2}
-\contentsline {section}{\numberline {3}Crucial Attributes}{2}
-\contentsline {section}{\numberline {4}Unique Selling Points}{3}
-\contentsline {section}{\numberline {5}Time-frame}{3}
-\contentsline {section}{References}{4}
+\contentsline {section}{\numberline {1}Abstract}{2}
+\contentsline {section}{\numberline {2}Target Customer}{3}
+\contentsline {subsection}{\numberline {2.1}ADMIRE}{3}
+\contentsline {subsection}{\numberline {2.2}persona}{3}
+\contentsline {subsection}{\numberline {2.3}customer}{3}
+\contentsline {section}{\numberline {3}Customer's Needs}{3}
+\contentsline {section}{\numberline {4}Crucial Attributes}{4}
+\contentsline {section}{\numberline {5}Unique Selling Points}{4}
+\contentsline {section}{\numberline {6}Time-frame}{5}
+\contentsline {section}{References}{5}

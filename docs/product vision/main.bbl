@@ -1,0 +1,96 @@
+\begin{thebibliography}{}
+
+\bibitem [\protect \citeauthoryear {%
+Abdelkareem%
+\ \BBA {} AL-Mekhlafy%
+}{%
+Abdelkareem%
+\ \BBA {} AL-Mekhlafy%
+}{%
+{\protect \APACyear {2014}}%
+}]{%
+SPSS}
+\APACinsertmetastar {%
+SPSS}%
+\begin{APACrefauthors}%
+Abdelkareem, K\BPBI H.%
+\BCBT {}\ \BBA {} AL-Mekhlafy, N.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2014}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Roof lateral displace- ment for gravity load designed rc
+  frames subjected to earthquakes} {Roof lateral displace- ment for gravity
+  load designed rc frames subjected to earthquakes}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Journal of Engineering Sciences}{}{}{654--654}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Nielsen%
+}{%
+Nielsen%
+}{%
+{\protect \APACyear {1993}}%
+}]{%
+Nielsen}
+\APACinsertmetastar {%
+Nielsen}%
+\begin{APACrefauthors}%
+Nielsen, J.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYear{1993}.
+\newblock
+\APACrefbtitle {Usability Engineering} {Usability engineering}.
+\newblock
+\APACaddressPublisher{Boston}{Academic Press}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Wang%
+\ \protect \BOthers {.}}{%
+Wang%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2013}}%
+}]{%
+Admire}
+\APACinsertmetastar {%
+Admire}%
+\begin{APACrefauthors}%
+Wang, W.%
+, Brinkman, W\BHBI P.%
+, Rövekamp, T\BPBI J.%
+, van~der Boog, P.%
+, Alpay, L.%
+\BCBL {}\ \BBA {} Neerincx, M\BPBI A.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2013}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Feedback to Renal Transplant Patients in a
+  Self-management Support System} {Feedback to renal transplant patients in a
+  self-management support system}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{European Conference on Cognitive Ergonomics}{}{}{}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+\APACcitebtitle {Wenxin Wang}}{%
+\APACcitebtitle {Wenxin Wang}}{%
+{\protect \APACyear {2015}}%
+}]{%
+persona}
+\APACinsertmetastar {%
+persona}%
+\APACrefbtitle {Wenxin Wang.} {Wenxin wang.}
+\newblock
+\APACrefYearMonthDay{2015}{}{}.
+\newblock
+\APACrefnote{http://mmi.tudelft.nl/?q=node/7622}
+\PrintBackRefs{\CurrentBib}
+
+\end{thebibliography}
