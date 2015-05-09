@@ -4,9 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import model.data.DataModel;
 import model.data.process.analysis.ConstraintAnalysis;
 import model.data.process.analysis.DataAnalysis;
@@ -24,7 +22,7 @@ import java.util.logging.Logger;
 
 /**
  * The controller for the Data tab
- * <p>
+ * <p />
  * Created by Boudewijn on 6-5-2015.
  */
 public class DataController {

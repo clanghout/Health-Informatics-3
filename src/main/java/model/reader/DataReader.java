@@ -32,7 +32,7 @@ public class DataReader {
 	}
 
 	/**
-	 * Read the data from the specifed file
+	 * Read the data from the specifed file.
 	 * @param file The file you want to read the data from
 	 * @return A DataModel containing the data from the specified file
 	 * @throws IOException If anything goes wrong reading the file
@@ -43,7 +43,7 @@ public class DataReader {
 	}
 
 	/**
-	 * Read the data from the specified stream
+	 * Read the data from the specified stream.
 	 * @param stream The stream you want to read the data from
 	 * @return A DataModel containing the data from the specified stream
 	 * @throws IOException If anything goes wrong reading the stream
@@ -65,8 +65,9 @@ public class DataReader {
 	}
 
 	private void skipToContent(BufferedReader reader) throws IOException {
-		String line;
-		while (!(line = reader.readLine()).contains("[")) {}
+		while (!reader.readLine().contains("[")) {
+			// Intentionally left empty
+		}
 	}
 
 	private DataModel readRows(BufferedReader reader, DataModelBuilder builder) throws IOException {
