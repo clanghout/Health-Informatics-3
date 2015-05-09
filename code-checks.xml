@@ -39,22 +39,19 @@
     <!-- See http://checkstyle.sf.net/config_whitespace.html -->
     <module name="FileTabCharacter"/>
 
-    <!-- Miscellaneous other checks.                   -->
-    <!-- See http://checkstyle.sf.net/config_misc.html -->
-    <module name="RegexpSingleline">
-        <property name="format" value="\s+$"/>
-        <property name="minimum" value="0"/>
-        <property name="maximum" value="0"/>
-        <property name="message" value="Line has trailing spaces."/>
-    </module>
-
     <module name="TreeWalker">
-
+        <property name="tabWidth" value="4" />
         <!-- Checks for Javadoc comments.                     -->
         <!-- See http://checkstyle.sf.net/config_javadoc.html -->
-        <module name="JavadocMethod"/>
+        <module name="JavadocMethod">
+            <property name="scope" value="public" />
+            <property name="excludeScope" value="protected" />
+        </module>
         <module name="JavadocType"/>
-        <module name="JavadocVariable"/>
+        <module name="JavadocVariable">
+            <property name="scope" value="public" />
+            <property name="excludeScope" value="protected" />
+        </module>
         <module name="JavadocStyle"/>
 
 
@@ -128,7 +125,6 @@
         <!-- Checks for blocks. You know, those {}'s         -->
         <!-- See http://checkstyle.sf.net/config_blocks.html -->
         <module name="AvoidNestedBlocks"/>
-        <module name="EmptyBlock"/>
         <module name="LeftCurly"/>
         <module name="NeedBraces"/>
         <module name="RightCurly"/>
@@ -139,7 +135,6 @@
         <module name="EmptyStatement"/>
         <module name="EqualsHashCode"/>
         <module name="IllegalInstantiation"/>
-        <module name="InnerAssignment"/>
         <module name="MagicNumber"/>
         <module name="MissingSwitchDefault"/>
         <module name="SimplifyBooleanExpression"/>
