@@ -6,7 +6,9 @@ import javafx.application.Application;
  * Class that is started when the user starts up the program.
  */
 public final class Launcher {
-	
+
+	private Launcher() { }
+
 	/** 
 	 * The main program.
 	 */

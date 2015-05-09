@@ -1,14 +1,14 @@
 package model.data;
 
 /**
- * Class that specified what the data in a column is
+ * Class that specified what the data in a column is.
  */
 public class DataColumn {
 	private String name;
 	private Class<? extends DataValue> type;
 
 	/**
-	 * Create a column
+	 * Create a column.
 	 * @param name name of the column
 	 * @param type type of the column
 	 */
@@ -18,7 +18,7 @@ public class DataColumn {
 	}
 
 	/**
-	 * get the name of the column
+	 * Get the name of the column.
 	 * @return the name of the column
 	 */
 	public String getName() {
@@ -26,7 +26,7 @@ public class DataColumn {
 	}
 
 	/**
-	 * get the type of the column
+	 * Get the type of the column.
 	 * @return the type of the column
 	 */
 	public Class<? extends DataValue> getType() {

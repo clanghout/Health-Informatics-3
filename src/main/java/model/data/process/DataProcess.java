@@ -29,7 +29,7 @@ public abstract class DataProcess {
 	}
 
 	/**
-	 * Subclasses should override this to implement the data process
+	 * Subclasses should override this to implement the data process.
 	 *
 	 * @return The output of the data process
 	 */

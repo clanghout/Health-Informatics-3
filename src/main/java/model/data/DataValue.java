@@ -1,9 +1,8 @@
 package model.data;
 
-import java.util.HashMap;
 
 /**
- * Abstract class DataValue describing the DataValue objects
+ * Abstract class DataValue describing the DataValue objects.
  */
 public abstract class DataValue {
 
