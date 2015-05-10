@@ -1,13 +1,12 @@
 package ui;
 
 import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 /**
  * Creates and shows the graphical user interface.
@@ -21,7 +20,7 @@ public class MainUI extends Application {
 	 */
 	@FXML private Text buttonTest;
 	
-	public MainUI(){}
+	public MainUI() { }
 	
 	/**
 	 * Creates and shows the GUI by using the fxml file.

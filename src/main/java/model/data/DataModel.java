@@ -3,14 +3,14 @@ package model.data;
 import java.util.*;
 
 /**
- * class that represents the data that should be analyzed
+ * Class that represents the data that should be analysed.
  */
 public class DataModel {
 	private ArrayList<DataRow> rows;
 	private Map<String, DataColumn> columns;
 
 	/**
-	 * create a new empty DataModel
+	 * Create a new empty DataModel.
 	 */
 	public DataModel() {
 		rows = new ArrayList<>();
@@ -18,7 +18,7 @@ public class DataModel {
 	}
 
 	/**
-	 * create a new DataModel
+	 * Create a new DataModel.
 	 * @param rows rows of the dataModel
 	 * @param columns columns of the dataModel
 	 */
@@ -31,7 +31,7 @@ public class DataModel {
 	}
 
 	/**
-	 * Get a specific row
+	 * Get a specific row.
 	 *
 	 * @param i index of the row
 	 * @return index of the requested row
@@ -41,16 +41,16 @@ public class DataModel {
 	}
 
 	/**
-	 * return an unmodifiable list containing the rows
+	 * Return an unmodifiable list containing the rows.
 	 *
-	 * @return an unmodifiable list over the rows
+	 * @return An unmodifiable list over the rows
 	 */
 	public List<DataRow> getRows() {
 		return Collections.unmodifiableList(rows);
 	}
 
 	/**
-	 * Returns the amounts of rows
+	 * Returns the amounts of rows.
 	 * @return The amount of rows
 	 */
 	public int getRowCount() {
@@ -58,9 +58,9 @@ public class DataModel {
 	}
 
 	/**
-	 * get the columns of the dataModel
+	 * Get the columns of the dataModel.
 	 *
-	 * @return a Map that contains all the columns
+	 * @return A Map that contains all the columns, the key is the column name.
 	 */
 	public Map<String, DataColumn> getColumns() {
 		return columns;
