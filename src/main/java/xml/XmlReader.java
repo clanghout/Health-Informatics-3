@@ -34,7 +34,7 @@ public class XmlReader {
 	private ArrayList<DataFile> dataFiles;
 
 	/**
-	 * Creates a new XMLreader.
+	 * Creates a new XmlReader.
 	 * @throws ParserConfigurationException
 	 * @throws SAXException
 	 * @throws IOException
@@ -99,8 +99,12 @@ public class XmlReader {
 		String type     = elem.getElementsByTagName(TYPE_TAG).item(0).getTextContent();
 		String path     = elem.getElementsByTagName(PATH_TAG).item(0).getTextContent();
 		String header   = elem.getElementsByTagName(HEADER_TAG).item(0).getTextContent();
-		
-		return new DataFile(parentDir + File.separator + path + File.separator + fileName, type, header);
+
+		String filename = parentDir + File.separator + path + File.separator + fileName;
+		return new DataFile(
+				filename,
+				type,
+				header);
 	}
 	
 	/**
@@ -124,7 +128,7 @@ public class XmlReader {
 	/**
 	 * Returns an List of all the datafiles
 	 * that were read from the xml file.
-	 * @return
+	 * @return An unmodifiable list of the data files
 	 */
 	public List<DataFile> getDataFiles() {
 		return Collections.unmodifiableList(dataFiles);

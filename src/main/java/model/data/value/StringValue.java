@@ -3,7 +3,7 @@ package model.data.value;
 import model.data.DataValue;
 
 /**
- * Data Class containing a value with type String
+ * Data Class containing a value with type String.
  */
 public class StringValue extends DataValue {
 	private String value;

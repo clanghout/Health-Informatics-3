@@ -28,7 +28,7 @@ public class DataModelWriter {
 	/**
 	 * Constructor for DataModelWriter.
 	 */
-	public DataModelWriter() {}
+	public DataModelWriter() { }
 
 	/**
 	 * Creates a PrintWriter that prints the datamodel to a file.
