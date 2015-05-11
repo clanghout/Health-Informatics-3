@@ -3,10 +3,11 @@ package model.data;
 
 /**
  * Abstract class DataValue describing the DataValue objects.
+ * @param <Type> return type of getValue()
  */
-public abstract class DataValue {
+public abstract class DataValue<Type> {
 
-	public abstract String getValue();
+	public abstract Type getValue();
 	public abstract String toString();
 
 	@Override
