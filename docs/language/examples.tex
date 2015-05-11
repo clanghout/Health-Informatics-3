@@ -1,0 +1,40 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage[colorinlistoftodos]{todonotes}
+\title{Language Specification for SUGAR}
+
+\author{Health Informatics 3}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+
+\section{Examples}
+$
+def timeCheck : Constraint = "time" = 08:30 AND "date" < 2015-01-17$ \\\\
+$
+from(statSensor)|constraint(timeCheck)|is(timeAndData)
+$ \\\\
+$
+def measurementInput(measurement, input) : Connection = FIRST input WHERE input.time > measurement.time AND input.date > measurement.date ORDER input.date, input.time DESC
+$ \\\\
+$
+connection(measurementInput, statSensor, website)
+$ \\\\
+$
+def measurement(measurement) : Coding = IF measurement NAME M
+$ \\\\
+$
+def input(input, measurement) : Coding = IF input WHERE measurement < 5 min BEFORE NAME MI
+$ \\\\
+$
+coding(input, website, statSensor)
+$
+\end{document}

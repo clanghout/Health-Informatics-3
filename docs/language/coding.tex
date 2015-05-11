@@ -1,8 +1,10 @@
-def Event: code
-If condition
-Then before/after condition
+Codings are quite complicated. We want to cover all possible combinations of events. Let's say something like this:
+$
+def\ input(input, measurement) : Coding = IF\ input\ WHERE\ measurement.time < (input.time - 5 min)\ AND\ measurement.date = input.date\ STORE\ "MI", input.time, input.date
+$ \\\\
+$
+coding(input, website, statSensor)|append(coded)
+$ \\\\
+To code the taking of a measurement and immediately entering it in the website.
 
-
-set eventName, table
-
-constraint filter
+So you specify IF there is a certain row, for which there is another row or multiple other rows and then you output a code and certain other values. There should be a way to connect rows and the code back together afterwards. 
