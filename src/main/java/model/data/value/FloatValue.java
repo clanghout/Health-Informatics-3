@@ -6,7 +6,7 @@ import model.data.DataValue;
  * Data Class containing a value with type Float.
  */
 public class FloatValue extends DataValue<Float> {
-	private Float value;
+	private float value;
 
 	public FloatValue(float value) {
 		this.value = value;
@@ -28,11 +28,11 @@ public class FloatValue extends DataValue<Float> {
 			return false;
 		}
 		FloatValue other = (FloatValue) obj;
-		return other.value.equals(value);
+		return other.value == this.value;
 	}
 
 	@Override
 	public int hashCode() {
-		return value.hashCode();
+		return Float.floatToIntBits(value);
 	}
 }

@@ -2,13 +2,11 @@ package model.data.value;
 
 import model.data.DataValue;
 
-import java.util.Objects;
-
 /**
  * Data Class containing a value with type Int.
  */
 public class IntValue extends DataValue<Integer> {
-	private Integer value;
+	private int value;
 
 	public IntValue(Integer value) {
 		this.value = value;
@@ -30,11 +28,11 @@ public class IntValue extends DataValue<Integer> {
 			return false;
 		}
 		IntValue other = (IntValue) obj;
-		return Objects.equals(other.value, this.value);
+		return other.value == this.value;
 	}
 
 	@Override
 	public int hashCode() {
-		return value.hashCode();
+		return value;
 	}
 }
