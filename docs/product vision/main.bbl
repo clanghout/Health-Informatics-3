@@ -1,0 +1,219 @@
+\begin{thebibliography}{}
+
+\bibitem [\protect \citeauthoryear {%
+Abdelkareem%
+\ \BBA {} AL-Mekhlafy%
+}{%
+Abdelkareem%
+\ \BBA {} AL-Mekhlafy%
+}{%
+{\protect \APACyear {2014}}%
+}]{%
+SPSS}
+\APACinsertmetastar {%
+SPSS}%
+\begin{APACrefauthors}%
+Abdelkareem, K\BPBI H.%
+\BCBT {}\ \BBA {} AL-Mekhlafy, N.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2014}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Roof lateral displace- ment for gravity load designed rc
+  frames subjected to earthquakes} {Roof lateral displace- ment for gravity
+  load designed rc frames subjected to earthquakes}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Journal of Engineering Sciences}{}{}{654--654}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Busscher%
+, Homan%
+\BCBL {}\ \BBA {} van~der Maas%
+}{%
+Busscher%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2012}}%
+}]{%
+twente}
+\APACinsertmetastar {%
+twente}%
+\begin{APACrefauthors}%
+Busscher, S.%
+, Homan, A.%
+\BCBL {}\ \BBA {} van~der Maas, M.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYear{2012}.
+\unskip\
+\newblock
+\APACrefbtitle {Onderzoek naar het opzetten van een webbased shared care
+  systeem voor testiskanker} {Onderzoek naar het opzetten van een webbased
+  shared care systeem voor testiskanker}\ \APACtypeAddressSchool {\BUMTh}{}{}.
+\unskip\
+\newblock
+\APACaddressSchool {}{University of Twente}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Gosschalk%
+, van Groos%
+, Langerak%
+, Langhout%
+\BCBL {}\ \BBA {} van Wijk%
+}{%
+Gosschalk%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2015}}%
+}]{%
+sugar}
+\APACinsertmetastar {%
+sugar}%
+\begin{APACrefauthors}%
+Gosschalk, L.%
+, van Groos, B.%
+, Langerak, J.%
+, Langhout, C.%
+\BCBL {}\ \BBA {} van Wijk, P.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2015}{}{}.
+\newblock
+\APACrefbtitle {Language Specification for SUGAR.} {Language specification for
+  sugar.}
+\newblock
+\APACrefnote{https://github.com/clanghout/Health-Informatics-3/blob/master/docs/language/language-spec.pdf}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Komiyama%
+}{%
+Komiyama%
+}{%
+{\protect \APACyear {2008}}%
+}]{%
+komiyama}
+\APACinsertmetastar {%
+komiyama}%
+\begin{APACrefauthors}%
+Komiyama, T.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2008}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Usability Evaluation Based on International Standards
+  for Software Quality Evaluation} {Usability evaluation based on international
+  standards for software quality evaluation}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{NEC Technical Journal Vol.3 No.2}{}{}{29--30}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Nielsen%
+}{%
+Nielsen%
+}{%
+{\protect \APACyear {1993}}%
+}]{%
+Nielsen}
+\APACinsertmetastar {%
+Nielsen}%
+\begin{APACrefauthors}%
+Nielsen, J.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYear{1993}.
+\newblock
+\APACrefbtitle {Usability Engineering} {Usability engineering}.
+\newblock
+\APACaddressPublisher{Boston}{Academic Press}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Wang%
+}{%
+Wang%
+}{%
+{\protect \APACyear {2015}}%
+}]{%
+persona}
+\APACinsertmetastar {%
+persona}%
+\begin{APACrefauthors}%
+Wang, W.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2015}{}{}.
+\newblock
+\APACrefbtitle {Wenxin Wang.} {Wenxin wang.}
+\newblock
+\APACrefnote{http://mmi.tudelft.nl/?q=node/7622}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Wang%
+\ \protect \BOthers {.}}{%
+Wang%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2012}}%
+}]{%
+admire2}
+\APACinsertmetastar {%
+admire2}%
+\begin{APACrefauthors}%
+Wang, W.%
+, Brinkman, W\BHBI P.%
+, Rövekamp, T\BPBI J.%
+, van~der Boog, P.%
+, Alpay, L.%
+\BCBL {}\ \BBA {} Neerincx, M\BPBI A.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2012}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Designing and Evaluating a Self-Management Support
+  System for Renal Transplant Patients: the First Step} {Designing and
+  evaluating a self-management support system for renal transplant patients:
+  the first step}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{European Conference on Cognitive
+  Ergonomics}{}{}{D15--D19}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Wang%
+\ \protect \BOthers {.}}{%
+Wang%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2013}}%
+}]{%
+Admire}
+\APACinsertmetastar {%
+Admire}%
+\begin{APACrefauthors}%
+Wang, W.%
+, Brinkman, W\BHBI P.%
+, Rövekamp, T\BPBI J.%
+, van~der Boog, P.%
+, Alpay, L.%
+\BCBL {}\ \BBA {} Neerincx, M\BPBI A.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2013}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Feedback to Renal Transplant Patients in a
+  Self-management Support System} {Feedback to renal transplant patients in a
+  self-management support system}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{European Conference on Cognitive Ergonomics}{}{}{}.
+\PrintBackRefs{\CurrentBib}
+
+\end{thebibliography}

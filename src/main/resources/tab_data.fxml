@@ -26,7 +26,13 @@
 					layoutX="476.0"
 					layoutY="60.0"
 					onAction="#handleAnalyseButtonAction"
-					text="Analyse" />
+					text="Analyze" />
+				<Button
+						styleClass="save-button"
+						layoutX="476.0"
+						layoutY="93.0"
+						onAction="#handleSaveButtonAction"
+						text="Save" />
 			</children>
 		</AnchorPane>
 	</content>
