@@ -20,3 +20,9 @@ hs_err_pid*
 .project
 .settings/
 out/
+
+#latex docs that are not needed
+*.aux
+*.log
+*.synctex.gz
+*.toc
