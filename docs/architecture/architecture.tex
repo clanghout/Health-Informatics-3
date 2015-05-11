@@ -44,24 +44,27 @@
 \section{Software architecture views}
 \subsection{Subsystem decomposition}
 
-\begin{figure}[h]
-	\centering
-   	\includegraphics[scale=0.6]{images/modules.jpg}
-    \caption{Modules of the system}
-    \label{fig:modules}
-\end{figure}
+% \begin{figure}[h]
+% 	\centering
+%    	\includegraphics[scale=0.6]{images/modules.jpg}
+%     \caption{Modules of the system}
+%     \label{fig:modules}
+% \end{figure}
 The input module should be able to read the data. With that data a dataModel can be constructed. \\
 The Analysis Specification module processes the script that defines how the data should be analyzed. The user provides this script. This module translate the script in operations that can be performed by the Analysis Module.\\
 The Analysis Module perform the analyses over the dataModel. The output of this module is the result of the analysis, this is a dataModel.\\
 The Visualization module creates a certain visual representation of a dataModel. For example it can create a box-plot of the creatine levels.
 
-
 \section{Software architecture}
 
-\subsection{Programming languages and programs}
+\subsection{Programming languages and auxiliary programs}
+The software will mainly be written in Java since this was obligatory in
+the project. For the graphical user interface we make use of the JavaFX
+framework and is written using fxml. We use Eclipse and IntelliJ IDEA as IDE to
+write the Java code with. For continuous integration and version control we use
+Git and Github. 
 
-\subsection{Used librarians}
-
+\subsection{Used libraries}
 
 \section{Design goals}
 
@@ -77,9 +80,17 @@ The Visualization module creates a certain visual representation of a dataModel.
 
 \subsection{Securability}
 
+\section{Static Analysis}
 
-\section{Code quality}
-
+\subsection{Code quality}
+In the project we strive to have good code readability and the code must be easy
+to understand. This is also an important part of the static analysis. For
+continuous integration we handle the pull based system on Github. For each new
+feature that will be implemented the author of that feature must create a new
+branch and do all his work in that branch. The master branch must always consist
+of a working version of the software. If someone wants to commit he has to
+make a pull request. His code will then be reviewed by at least 2
+teammembers before it is merged with the working version in the master branch.
 
 \section{Functional Tests}
 
