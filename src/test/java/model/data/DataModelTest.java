@@ -5,10 +5,7 @@ import model.data.value.StringValue;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -65,10 +62,12 @@ public class DataModelTest {
 
 	@Test
 	public void testGetRows() throws Exception {
-		Iterator<DataRow> iteratorRowsModel = dataModel.getRows();
-		Iterator<DataRow> iteratorRows = rows.iterator();
-		while(iteratorRows.hasNext() || iteratorRowsModel.hasNext()) {
-			assertEquals(iteratorRows.next(), iteratorRowsModel.next());
+		List<DataRow> rowsModel = dataModel.getRows();
+		assertEquals(rowsModel.size(),rows.size());
+		for (int i = 0; i < rowsModel.size(); i++) {
+			DataRow rowModel = rowsModel.get(i);
+			DataRow row = rows.get(i);
+			assertEquals(rowModel,row);
 		}
 	}
 

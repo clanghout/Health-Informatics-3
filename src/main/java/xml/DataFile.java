@@ -8,8 +8,8 @@ import java.util.regex.Pattern;
 
 /**
  * Class for a datafile.
- * @author Paul
  *
+ * @author Paul
  */
 public class DataFile {
 
@@ -19,8 +19,9 @@ public class DataFile {
 
 	/**
 	 * Creates a new DataFile.
-	 * @param filename The path to the file.
-	 * @param type The type of the DataFile.
+	 *
+	 * @param filename      The path to the file.
+	 * @param type          The type of the DataFile.
 	 * @param headerPattern The RegEx pattern specifying the header of the DataFile.
 	 */
 	public DataFile(String filename, String type, String headerPattern) {
@@ -31,6 +32,7 @@ public class DataFile {
 
 	/**
 	 * Returns the type of the DataFile.
+	 *
 	 * @return The type
 	 */
 	public String getType() {
@@ -53,6 +55,7 @@ public class DataFile {
 
 	/**
 	 * Filters out the header of the file using regEx.
+	 *
 	 * @return A stream containing the contents of the file excluding the header
 	 * @throws FileNotFoundException
 	 */
@@ -62,16 +65,18 @@ public class DataFile {
 		scanner.useDelimiter("\\A");
 		String convertedStream = scanner.hasNext() ? scanner.next() : "";
 		scanner.close();
-		
+
 		Pattern pattern = Pattern.compile(headerPattern);
 		Matcher matcher = pattern.matcher(convertedStream);
 		convertedStream = matcher.replaceAll("");
 
-		InputStream newStream = new ByteArrayInputStream(convertedStream.getBytes(StandardCharsets.UTF_8));
+		InputStream newStream = new ByteArrayInputStream(
+				convertedStream.getBytes(StandardCharsets.UTF_8)
+		);
 		return newStream;
 	}
 
-	public File getFile() throws FileNotFoundException{
+	public File getFile() throws FileNotFoundException {
 		return new File(filename);
 	}
 
@@ -81,6 +86,7 @@ public class DataFile {
 
 	/**
 	 * Returns a string representation of the datafile.
+	 *
 	 * @return The string representing the file.
 	 */
 	@Override
