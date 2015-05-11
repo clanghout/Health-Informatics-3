@@ -33,7 +33,7 @@ public class DataRow {
 	 * what the columns expects
 	 */
 	public DataRow(DataColumn[] columnArray, DataValue[] valueArray) throws
-			ColumnValueMismatchException, ColumnValueTypeMismatchException {
+			RuntimeException {
 		if (columnArray.length != valueArray.length) {
 			throwValueMismatchException();
 		}
