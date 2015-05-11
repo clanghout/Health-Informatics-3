@@ -3,7 +3,7 @@ package model.data.value;
 /**
  * Data Class containing a value with type Float.
  */
-public class FloatValue extends DataValue<Float> {
+public final class FloatValue extends NumberValue<Float> {
 	private float value;
 
 	public FloatValue(float value) {
@@ -27,6 +27,15 @@ public class FloatValue extends DataValue<Float> {
 		}
 		FloatValue other = (FloatValue) obj;
 		return other.value == this.value;
+	}
+
+	@Override
+	public int compareTo(NumberValue other) {
+		if (!(other instanceof FloatValue)) {
+			throw new IllegalArgumentException("FloatValue cannot compare to non floats");
+		}
+		FloatValue o = (FloatValue) other;
+		return Float.compare(value, o.value);
 	}
 
 	@Override
