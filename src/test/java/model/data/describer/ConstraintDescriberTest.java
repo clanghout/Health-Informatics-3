@@ -8,6 +8,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
 /**
+ * A class containing the test cases for the ConstraintDescriber.
  * Created by Boudewijn on 11-5-2015.
  */
 public class ConstraintDescriberTest {
