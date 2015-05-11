@@ -33,5 +33,12 @@ public class StringValueTest {
 		DataValue other = new StringValue("oidsa");
 		assertTrue(value.equals(same));
 		assertFalse(value.equals(other));
+		assertFalse(value.equals(new IntValue(12)));
+	}
+
+	@Test
+	public void testHashcode() throws Exception {
+		DataValue value = new StringValue("testen");
+		assertEquals(-877169477, value.hashCode());
 	}
 }
