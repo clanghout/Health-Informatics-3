@@ -2,14 +2,14 @@ package model.data.process.analysis.constraints;
 
 import model.data.DataRow;
 import model.data.describer.DataDescriber;
-import model.data.value.DataValue;
+import model.data.value.NumberValue;
 
 /**
  * The check if a value is lesser than or equal to another.
  * Created by Boudewijn on 11-5-2015.
  * @param <T> The type of the values being compared.
  */
-public final class LesserEqualsCheck<T extends DataValue & Comparable<DataValue>>
+public final class LesserEqualsCheck<T extends NumberValue>
 		extends CompareCheck<T> {
 
 	public LesserEqualsCheck(DataDescriber<T> leftSide, DataDescriber<T> rightSide) {
