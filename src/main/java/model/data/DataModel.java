@@ -6,7 +6,7 @@ import java.util.*;
  * Class that represents the data that should be analysed.
  */
 public class DataModel {
-	private ArrayList<DataRow> rows;
+	private List<DataRow> rows;
 	private Map<String, DataColumn> columns;
 
 	/**
