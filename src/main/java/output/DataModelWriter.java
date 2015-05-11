@@ -13,6 +13,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -56,11 +57,11 @@ public class DataModelWriter {
 			}
 			logger.info("data written");
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "Error writing file", e);
 		}
 	}
 
-	public ArrayList<DataColumn> readColumns(DataModel in) {
+	public List<DataColumn> readColumns(DataModel in) {
 		ArrayList<DataColumn> res = new ArrayList<>();
 		Map<String, DataColumn> columnsData = in.getColumns();
 		for (Object o : columnsData.entrySet()) {

@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals;
  * Created by jens on 4/30/15.
  */
 public class DataModelTest {
-	private ArrayList<DataRow> rows;
+	private List<DataRow> rows;
 	private DataColumn[] columns;
 	private DataModel dataModel;
 
