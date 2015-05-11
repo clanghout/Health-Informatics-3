@@ -3,7 +3,9 @@ package model.data;
 import exceptions.ColumnValueMismatchException;
 import exceptions.ColumnValueTypeMismatchException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -14,6 +16,9 @@ public class DataRow {
 	private Logger log = Logger.getLogger("DataRow");
 
 	private Map<String, DataValue> values = new HashMap<String, DataValue>();
+
+	private List<DataRow> causedBy = new ArrayList<>();
+	private List<DataRow> resultsIn = new ArrayList<>();
 
 	/**
 	 * Create an empty row.
@@ -92,6 +97,38 @@ public class DataRow {
 	}
 	public DataValue getValue(String column) {
 		return values.get(column);
+	}
+
+	/**
+	 * Get all the rows that are influenced by this row,
+	 * @return A list of rows that are influenced by this row.
+	 */
+	public List<DataRow> getResultsIn() {
+		return resultsIn;
+	}
+
+	/**
+	 * Add a row that is influeced by this row.
+	 * @param resultIn the row that is influenced by this row.
+	 */
+	public void addCauses(DataRow resultIn) {
+		resultsIn.add(resultIn);
+	}
+
+	/**
+	 * Get all the rows that influence this row.
+	 * @return A list of all the rows that influence this row.
+	 */
+	public List<DataRow> getCausedBy() {
+		return causedBy;
+	}
+
+	/**
+	 * Add a row that influences this row
+	 * @param origin a row that influences this row.
+	 */
+	public void setCausedBy(DataRow origin) {
+		causedBy.add(origin);
 	}
 
 
