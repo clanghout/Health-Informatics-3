@@ -38,7 +38,9 @@ public class StringValueTest {
 
 	@Test
 	public void testHashcode() throws Exception {
-		DataValue value = new StringValue("testen");
-		assertEquals(-877169477, value.hashCode());
+		String val = "testen";
+		DataValue value = new StringValue(val);
+		DataValue samevalue = new StringValue(val);
+		assertEquals(samevalue.hashCode(), value.hashCode());
 	}
 }
