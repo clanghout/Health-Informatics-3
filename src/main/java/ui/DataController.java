@@ -6,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import model.data.DataModel;
+import model.data.describer.ConstantDescriber;
+import model.data.describer.RowValueDescriber;
 import model.data.process.analysis.ConstraintAnalysis;
 import model.data.process.analysis.DataAnalysis;
 import model.data.process.analysis.constraints.Constraint;
@@ -60,8 +62,9 @@ public class DataController {
 			DataReader dataReader = new DataReader();
 			DataModel input = dataReader.readData(dataFile.filterHeader());
 
-			Constraint constraint = new EqualityCheck(
-					input.getColumns().get("time"), new StringValue("0803")
+			Constraint constraint = new EqualityCheck<>(
+					new RowValueDescriber<>(input.getColumns().get("time")),
+					new ConstantDescriber<>(new StringValue("0803"))
 			);
 			DataAnalysis analysis = new ConstraintAnalysis(constraint);
 			out = analysis.analyse(input);

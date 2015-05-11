@@ -1,11 +1,13 @@
 \documentclass[a4paper]{article}
 
 \usepackage[english]{babel}
+\usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage[colorinlistoftodos]{todonotes}
+\usepackage{lmodern}
 \title{Language Specification for SUGAR}
 
 \author{Health Informatics 3}
@@ -44,7 +46,7 @@ Macros will be useful to describe variables and other things. This will simplify
 
 Let's begin with another example: \\
 
-$def idCheck : Constraint = "id" = 1 AND ("level" > 5) OR NOT(true) AND ("level" > "value");$
+$def\ idCheck(measurement) : Constraint = measurement.id = 1\ AND\ (measurement.level > 5)\ OR\ NOT(true)\ AND\ (measurement.level > measurement.value);$
 
 Let's say all macros start with def. This will simplify all our lives.
 
@@ -59,30 +61,28 @@ Constraints can be somewhat complicated and rightfully so, therefore the declara
 
 In the previous example we saw a constraint, let's take a closer look.
 
-In the $"id" = 1$ we declare that the column "id" should be 1, simple enough. 
+In the $measurement.id = 1$ we declare that for the given table the column id should be 1, simple enough. 
 
-In the $"level" > 5$ we declare that level thould be larger than 5. 
+In the $measurement.level > 5$ we declare that level should be larger than 5. 
 
-Furthermore we have $"column" < 3"$, whith that we declare that column should be smaller than 3.
+With $table.column <= 2$ and $table.column >= 2$ we declare that the table's column should be less/larger or equal to 2.
 
-With $"column" <= 2$ and $"column" >= 2$ we declare that the column should be less/larger or equal to 2.
-
-Next we have the AND, OR and NOT statement. With AND we declare that both constrains should hold. For example when we have $"id" > 2 AND "id" < 4$, than the $id$ should be larger than 2 en less than 4.
-With OR we declare that one or more constrains should hold. So when we have $"name" = "Matthijs" OR "name" = "Bob"$, than name must be "Matthijs" or the name must be "Bob".
+Next we have the AND, OR and NOT statement. With AND we declare that both constrains should hold. For example when we have $table.id > 2\ AND\ table.id < 4$, than the $id$ should be larger than 2 and less than 4.
+With OR we declare that one or more constrains should hold. So when we have $table.name = "Matthijs"\ OR\ table.name = "Bob"$, than name must be "Matthijs" or the name must be "Bob".
 
 \section{Computation}
 \input{computation}
 \subsection{Functions}
-
+\input{functions}
 
 \section{Chunking}
-
+\input{chunking}
 \section{Connections}
-
+\input{connections}
 \section{Coding}
-
+\input{coding}
 \section{Comparison}
-
+\input{comparison}
 \section{Conversion}
-
+\input{conversion}
 \end{document}
