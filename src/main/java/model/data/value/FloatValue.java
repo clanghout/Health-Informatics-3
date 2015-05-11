@@ -1,7 +1,5 @@
 package model.data.value;
 
-import model.data.DataValue;
-
 /**
  * Data Class containing a value with type Float.
  */

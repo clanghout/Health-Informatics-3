@@ -1,5 +1,7 @@
 package model.data;
 
+import model.data.value.DataValue;
+
 /**
  * Class that specified what the data in a column is.
  */
