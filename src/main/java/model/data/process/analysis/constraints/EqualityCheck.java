@@ -8,12 +8,13 @@ import model.data.DataValue;
  * A check for equality.
  * Created by Boudewijn on 5-5-2015.
  */
-public class EqualityCheck extends Constraint {
+public class EqualityCheck extends BinaryCheck {
 
 	private final DataColumn column;
 	private final DataValue value;
 
 	public EqualityCheck(DataColumn column, DataValue value) {
+		super(column, value);
 		this.column = column;
 		this.value = value;
 	}
