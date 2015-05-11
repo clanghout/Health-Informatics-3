@@ -12,11 +12,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import static java.util.Collections.fill;
 import static java.util.Collections.unmodifiableList;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -28,7 +26,7 @@ import static org.mockito.Mockito.when;
 public class DataModelWriterTest {
 	private DataModel dataModel;
 	private File testFile;
-	private ArrayList<DataRow> rows;
+	private List<DataRow> rows;
 	private DataColumn[] columns;
 
 	@Before

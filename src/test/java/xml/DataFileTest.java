@@ -3,7 +3,6 @@ package xml;
 import static org.junit.Assert.*;
 
 import java.io.*;
-import java.net.URLClassLoader;
 
 import org.junit.Test;
 
