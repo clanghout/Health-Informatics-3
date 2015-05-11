@@ -3,31 +3,31 @@ package model.data.value;
 import model.data.DataValue;
 
 /**
- * Data Class containing a value with type String.
+ * Data Class containing a value with type Float.
  */
-public class StringValue extends DataValue<String> {
-	private String value;
+public class FloatValue extends DataValue<Float> {
+	private Float value;
 
-	public StringValue(String value) {
+	public FloatValue(float value) {
 		this.value = value;
 	}
 
 	@Override
-	public String getValue() {
+	public Float getValue() {
 		return value;
 	}
 
 	@Override
 	public String toString() {
-		return value;
+		return String.valueOf(value);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof StringValue)) {
+		if (!(obj instanceof FloatValue)) {
 			return false;
 		}
-		StringValue other = (StringValue) obj;
+		FloatValue other = (FloatValue) obj;
 		return other.value.equals(value);
 	}
 
