@@ -49,7 +49,7 @@ public class DataReader {
 	 * @throws IOException If anything goes wrong reading the stream
 	 */
 	public DataModel readData(InputStream stream) throws IOException {
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"))) {
 			skipToContent(reader);
 
 			DataModelBuilder builder = new DataModelBuilder();
