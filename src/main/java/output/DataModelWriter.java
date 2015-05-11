@@ -20,7 +20,6 @@ import java.util.logging.Logger;
  * Write output after analysis is done.
  */
 public class DataModelWriter {
-	private String delimiter = ",";
 	private Logger logger = Logger.getLogger("DataModelWriter");
 
 	// Options for user
