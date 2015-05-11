@@ -38,7 +38,9 @@ public class FloatValueTest {
 
 	@Test
 	public void testHashCode() throws Exception {
-		DataValue value = new FloatValue(24897f);
-		assertEquals(1187152384,value.hashCode());
+		Float val = 2335f;
+		DataValue value = new FloatValue(val);
+		DataValue samevalue = new FloatValue(val);
+		assertEquals(samevalue.hashCode(),value.hashCode());
 	}
 }
