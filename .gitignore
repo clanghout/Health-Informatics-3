@@ -26,3 +26,5 @@ out/
 *.log
 *.synctex.gz
 *.toc
+*.bbl
+*.blg
