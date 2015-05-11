@@ -31,7 +31,7 @@ public class XmlReader {
 	
 	private Document document;
 	private NodeList filesList;
-	private ArrayList<DataFile> dataFiles;
+	private List<DataFile> dataFiles;
 
 	/**
 	 * Creates a new XmlReader.
@@ -121,8 +121,7 @@ public class XmlReader {
 	 * @return The Element
 	 */
 	public Element getFileElement(int i) {
-		Element elem = (Element) filesList.item(i);
-		return elem;
+		return (Element) filesList.item(i);
 	}
 	
 	/**

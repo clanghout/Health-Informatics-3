@@ -2,13 +2,14 @@ package model.data;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Builder used to build a DataModel.
  */
 public class DataModelBuilder {
-	private ArrayList<DataRow> rows;
-	private ArrayList<DataColumn> columns;
+	private List<DataRow> rows;
+	private List<DataColumn> columns;
 
 	/**
 	 * Create a new builder.
