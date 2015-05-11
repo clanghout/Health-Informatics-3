@@ -57,7 +57,7 @@ public class XmlReader {
 	 */
 	public Document read(File file)
 			throws ParserConfigurationException, SAXException, IOException {
-		try (FileInputStream stream = new FileInputStream(file)){
+		try (FileInputStream stream = new FileInputStream(file)) {
 			return read(stream, file.getParent());
 		}
 	}
