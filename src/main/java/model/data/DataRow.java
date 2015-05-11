@@ -30,10 +30,9 @@ public class DataRow {
 	 * @throws ColumnValueMismatchException    thrown when the number of columns is not equal to
 	 * the number of values
 	 * @throws ColumnValueTypeMismatchException thrown when the value has a different type from
-	 * what the columns expects
+	 * what the columns expects2
 	 */
-	public DataRow(DataColumn[] columnArray, DataValue[] valueArray) throws
-			RuntimeException {
+	public DataRow(DataColumn[] columnArray, DataValue[] valueArray) {
 		if (columnArray.length != valueArray.length) {
 			throwValueMismatchException();
 		}
