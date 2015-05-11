@@ -31,7 +31,7 @@ public class XmlReader {
 	
 	private Document document;
 	private NodeList filesList;
-	private ArrayList<DataFile> dataFiles;
+	private List<DataFile> dataFiles;
 
 	/**
 	 * Creates a new XmlReader.
@@ -57,8 +57,9 @@ public class XmlReader {
 	 */
 	public Document read(File file)
 			throws ParserConfigurationException, SAXException, IOException {
-		FileInputStream stream = new FileInputStream(file);
-		return read(stream, file.getParent());
+		try (FileInputStream stream = new FileInputStream(file)){
+			return read(stream, file.getParent());
+		}
 	}
 	
 	/**
@@ -121,8 +122,7 @@ public class XmlReader {
 	 * @return The Element
 	 */
 	public Element getFileElement(int i) {
-		Element elem = (Element) filesList.item(i);
-		return elem;
+		return (Element) filesList.item(i);
 	}
 	
 	/**
