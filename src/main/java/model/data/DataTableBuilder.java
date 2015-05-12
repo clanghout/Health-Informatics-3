@@ -53,7 +53,7 @@ public class DataTableBuilder {
 	}
 
 	/**
-	 * Construct a DataColumn. This is not added to the model
+	 * Construct a DataColumn. This is not added to the table
 	 *
 	 * @param name name of the column
 	 * @param type type of the column
@@ -64,7 +64,7 @@ public class DataTableBuilder {
 	}
 
 	/**
-	 * Construct a DataRow. This is not added to the model
+	 * Construct a DataRow. This is not added to the table
 	 *
 	 * @param values array of new values
 	 * @return the new constructed DataRow

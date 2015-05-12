@@ -34,9 +34,9 @@ public class DataProcessTest {
 
 	@Test
 	public void testSetInput() throws Exception {
-		DataTable model = new DataTable();
+		DataTable table = new DataTable();
 
-		process.setInput(model);
-		assertEquals(model, process.getInput());
+		process.setInput(table);
+		assertEquals(table, process.getInput());
 	}
 }
