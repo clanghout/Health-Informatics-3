@@ -1,0 +1,85 @@
+Board ID: T11024007997W	Meter ID: 149033312038
+Software Version:  1.1
+Patient Records Read Back From Meter
+Date:  29-9-2013  Time:  11:20
+
+[
+Crea,  179,umol/L,00,130218,0802
+Crea,  140,umol/L,00,130103,0921
+Crea,  118,umol/L,00,121220,0800
+Crea,  123,umol/L,00,121211,0755
+Crea,  154,umol/L,00,121127,1009
+Crea,  175,umol/L,00,121114,0804
+Crea,  277,umol/L,00,121105,0814
+Crea,  195,umol/L,00,121101,0812
+Crea,  287,umol/L,00,121026,0943
+Crea,  253,umol/L,00,121025,0931
+Crea,  242,umol/L,00,121024,0916
+Crea,  212,umol/L,00,121023,0901
+Crea,  119,umol/L,00,121016,0659
+Crea,  131,umol/L,00,121002,0713
+Crea,  131,umol/L,00,120930,0910
+Crea,  124,umol/L,00,120926,0649
+Crea,  191,umol/L,00,120818,0905
+Crea,  116,umol/L,00,120812,0908
+Crea,  163,umol/L,00,120703,0653
+Crea,  205,umol/L,00,120702,0634
+Crea,  171,umol/L,00,120622,0656
+Crea,  171,umol/L,00,120622,0649
+Crea,  154,umol/L,00,120621,0655
+Crea,  118,umol/L,00,120620,0702
+Crea,  140,umol/L,00,120619,0645
+Crea,  154,umol/L,00,120618,0653
+Crea,  144,umol/L,00,120616,0819
+Crea,  135,umol/L,00,120615,0642
+Crea,  117,umol/L,00,120614,0655
+Crea,  129,umol/L,00,120613,0655
+Crea,  164,umol/L,00,120612,0642
+Crea,  155,umol/L,00,120611,0700
+Crea,  126,umol/L,00,120610,0828
+Crea,  160,umol/L,00,120609,0729
+Crea,  166,umol/L,00,120607,0652
+Crea,  115,umol/L,00,120606,0648
+Crea,  136,umol/L,00,120605,0658
+Crea,  180,umol/L,00,120604,0656
+Crea,  174,umol/L,00,120603,0919
+Crea,  110,umol/L,00,120602,0925
+Crea,   93,umol/L,00,120602,0923
+Crea,  176,umol/L,00,120601,0721
+Crea,  179,umol/L,00,120531,0655
+Crea,  171,umol/L,00,120530,0658
+Crea,  179,umol/L,00,120529,0655
+Crea,  192,umol/L,00,120528,0835
+Crea,  158,umol/L,00,120528,0833
+Crea,  232,umol/L,00,120528,0832
+Crea,  217,umol/L,00,120527,0846
+Crea,  208,umol/L,00,120526,0855
+Crea,  211,umol/L,00,120525,0702
+Crea,  193,umol/L,00,120524,0717
+Crea,  210,umol/L,00,120523,0703
+Crea,  131,umol/L,00,120522,0803
+Crea,  183,umol/L,00,120521,0630
+Crea,  174,umol/L,00,120518,0701
+Crea,  254,umol/L,00,120518,0658
+Crea,  191,umol/L,00,120517,0951
+Crea,  187,umol/L,00,120516,0640
+Crea,  176,umol/L,00,120514,0635
+Crea,  135,umol/L,00,120513,0846
+Crea,  181,umol/L,00,120512,0755
+Crea,  175,umol/L,00,120511,0747
+Crea,  160,umol/L,00,120508,0720
+Crea,  208,umol/L,00,120501,0828
+Crea,  190,umol/L,00,120427,0823
+Crea,  251,umol/L,00,120427,0821
+Crea,  174,umol/L,00,120426,0705
+Crea,  172,umol/L,00,120425,0814
+Crea,  170,umol/L,00,120424,0819
+Crea,  171,umol/L,00,120423,0902
+Crea,  171,umol/L,00,120421,0929
+Crea,  228,umol/L,00,120420,0854
+Crea,  170,umol/L,00,120417,0936
+Crea,  164,umol/L,00,120414,1121
+Crea,  753,umol/L,00,120403,1244
+Crea,  232,umol/L,00,120403,1241
+1D
+]

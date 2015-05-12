@@ -1,0 +1,34 @@
+Board ID: T11024008286W	Meter ID: 149033012038
+Software Version:  1.1
+Patient Records Read Back From Meter
+Date:  29-9-2013  Time:  11:30
+
+[
+Crea,   94,umol/L,00,120821,0706
+Crea,  103,umol/L,00,120820,0737
+Crea,  104,umol/L,00,120819,0707
+Crea,   99,umol/L,00,120818,0718
+Crea,  126,umol/L,00,120818,0717
+Crea,  119,umol/L,00,120817,0758
+Crea,  142,umol/L,00,120817,0756
+Crea,  153,umol/L,00,120816,1647
+Crea,  104,umol/L,00,120816,0732
+Crea,   80,umol/L,00,120816,0731
+Crea,  108,umol/L,00,120815,0655
+Crea,   93,umol/L,00,120814,0636
+Crea,  120,umol/L,00,120814,0633
+Crea,  127,umol/L,00,120813,0701
+Crea,  133,umol/L,00,120813,0657
+Crea,  103,umol/L,00,120812,1713
+Crea,   99,umol/L,00,120812,0706
+Crea,  115,umol/L,00,120812,0705
+Crea,  118,umol/L,00,120811,0649
+Crea,  133,umol/L,00,120811,0647
+Crea,  122,umol/L,00,120810,0710
+Crea,  101,umol/L,00,120810,0706
+Crea,   89,umol/L,00,120809,0630
+Crea,   90,umol/L,00,120808,0629
+Crea,   96,umol/L,00,100630,2038
+Crea,  211,umol/L,00,100630,2030
+29
+]
