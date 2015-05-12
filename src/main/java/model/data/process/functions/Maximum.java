@@ -9,7 +9,7 @@ import model.data.value.FloatValue;
 import model.data.value.IntValue;
 
 /**
- * A class for finding the row with the minimum value for the specified column in a model
+ * A class for finding the row with the maximum value for the specified column in a model
  * @author Louis Gosschalk 
  * @date 11-05-2015
  */
@@ -29,7 +29,7 @@ public class Maximum {
 	/**
 	 * @param model datamodel containing the input
 	 * @param columnName string specifying the 
-	 * @return List of DataRow; because duplicate minimums are possible.
+	 * @return List of DataRow; because duplicate maximums are possible.
 	 */
 	public List<DataRow> maximumCheck() {
 		if(model.getRowCount() != 0)
@@ -45,9 +45,9 @@ public class Maximum {
 		 * Check type of specified column
 		 */
 		if(model.getColumns().get(name).getType().equals(FloatValue.class))
-			 compare();
+			 floatCompare();
 		else if(model.getColumns().get(name).getType().equals(IntValue.class))
-			 compare();
+			 intCompare();
 		else rowlist.clear();
 		
 		return rowlist;
@@ -56,11 +56,31 @@ public class Maximum {
 	 * Get values and cast to Float, determine maximum values
 	 * @return List of datarows which contain the maximum values of the column
 	 */
-	public List<DataRow> compare() {
+	public List<DataRow> floatCompare() {
 		for(int i = 0; i<model.getRowCount(); i++){
 			float currentVal = (float) row.getValue(name).getValue();
 			DataRow compare = model.getRow(i);
 			float compareVal = (float) compare.getValue(name).getValue();
+			if(currentVal < compareVal){
+				row = compare;
+				rowlist.clear();
+				rowlist.add(compare);
+			}
+			else if(currentVal == compareVal){
+				rowlist.add(compare);
+			}
+		}
+		return rowlist;
+	}
+	/**
+	 * Get values and cast to int, determine maximum values
+	 * @return List of datarows which contain the maximum values of the column
+	 */
+	public List<DataRow> intCompare() {
+		for(int i = 0; i<model.getRowCount(); i++){
+			int currentVal = (int) row.getValue(name).getValue();
+			DataRow compare = model.getRow(i);
+			int compareVal = (int) compare.getValue(name).getValue();
 			if(currentVal < compareVal){
 				row = compare;
 				rowlist.clear();
