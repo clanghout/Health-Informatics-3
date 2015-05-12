@@ -46,4 +46,27 @@ public class DataConnection {
 	public Set<DataRow> getResultsIn() {
 		return resultsIn;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof DataConnection)) {
+			return false;
+		}
+		DataConnection other = (DataConnection) obj;
+		return (this.causedBy.equals(other.causedBy) && this.resultsIn.equals(other.causedBy));
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 0;
+		for (DataRow row : causedBy) {
+			hash += row.hashCode() % Integer.MAX_VALUE;
+		}
+
+		for (DataRow row : resultsIn) {
+			hash += row.hashCode() % Integer.MAX_VALUE;
+		}
+
+		return hash;
+	}
 }
