@@ -35,11 +35,14 @@
 
 \section{Introduction}
 \subsection{Design goals}
- 	\begin{itemize}
+\begin{itemize}
     \item Modularity:
-    The program can be split into a number of modules. These modules should be implemented independently of the other modules. Interaction between modules is only possible by making use of defined interfaces.
-    \item Continues Integration: There should be always a working product. Each sprint should add one or more feathers. 
-		\end{itemize}
+    The program can be split into a number of modules. These modules should be
+    implemented independently of the other modules. Interaction between modules
+    is only possible by making use of defined interfaces.
+    \item Continuous Integration: There should be always a working product. Each
+    sprint should add one or more feathers.
+\end{itemize}
 
 \section{Software architecture views}
 \subsection{Subsystem decomposition}
@@ -50,10 +53,15 @@
 %     \caption{Modules of the system}
 %     \label{fig:modules}
 % \end{figure}
-The input module should be able to read the data. With that data a dataModel can be constructed. \\
-The Analysis Specification module processes the script that defines how the data should be analyzed. The user provides this script. This module translate the script in operations that can be performed by the Analysis Module.\\
-The Analysis Module perform the analyses over the dataModel. The output of this module is the result of the analysis, this is a dataModel.\\
-The Visualization module creates a certain visual representation of a dataModel. For example it can create a box-plot of the creatine levels.
+The input module should be able to read the data. With that data a dataModel
+can be constructed. \\
+The Analysis Specification module processes the script that defines how the
+data should be analyzed. The user provides this script. This module translate
+the script in operations that can be performed by the Analysis Module.\\
+The Analysis Module perform the analyses over the dataModel. The output of this
+module is the result of the analysis, this is a dataModel.\\
+The Visualization module creates a certain visual representation of a
+dataModel. For example it can create a box-plot of the creatine levels.
 
 \section{Software architecture}
 
@@ -65,6 +73,11 @@ write the Java code with. For continuous integration and version control we use
 Git and Github. 
 
 \subsection{Used libraries}
+% JavaFX
+% javax.xml
+% org.w3c.dom
+% Mockito
+% apache poi for excell files
 
 \section{Design goals}
 
@@ -90,20 +103,37 @@ feature that will be implemented the author of that feature must create a new
 branch and do all his work in that branch. The master branch must always consist
 of a working version of the software. If someone wants to commit he has to
 make a pull request. His code will then be reviewed by at least 2
-teammembers before it is merged with the working version in the master branch.
+teammembers and eventually fixed before it can be merged with the working
+version in the master branch.
+
+\subsection{Checkstyle}
+To improve code quality we have code conventions the writer should follow before
+his code is accepted. This is done by the Checkstyle plugin in the IDE that makes
+sure these conventions are followed.
 
 \section{Functional Tests}
 
+
 \subsection{Unit testing}
+To make sure that all the code works as it should the author must always write
+unit tests for the code he has written. We make use of the JUnit framework to
+write the tests. To verify behaviour of methods we use the Mockito framework to
+stub certain object needed by the method.
 
 \subsection{Integration testing}
-
+The software consists of an amount of modules. We must test that the modules
+work together correctly.
 
 \section{Non-functional Tests}
 
 \subsection{Functionality}
 
 \subsection{Usability}
+We must also test if the software is user-friendly. Even though the users of the
+product are already familiar with analysis software, our application should be
+easy to learn. It is essential that the user understands the usage of the
+scripting language in our application before he/she is able to use it for
+analysis. %interaction design
 
 \subsection{Reliability}
 
