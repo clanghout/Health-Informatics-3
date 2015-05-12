@@ -1,10 +1,12 @@
 package model.data;
 
-import exceptions.*;
+import exceptions.ColumnValueMismatchException;
+import exceptions.ColumnValueTypeMismatchException;
+import model.data.value.DataValue;
 import model.data.value.StringValue;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by jens on 4/29/15.

@@ -3,7 +3,7 @@ package output;
 import model.data.DataColumn;
 import model.data.DataModel;
 import model.data.DataRow;
-import model.data.DataValue;
+import model.data.value.DataValue;
 import model.data.value.StringValue;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static java.util.Collections.unmodifiableList;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

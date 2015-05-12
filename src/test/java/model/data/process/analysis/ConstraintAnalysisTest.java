@@ -4,6 +4,8 @@ import model.data.DataColumn;
 import model.data.DataModel;
 import model.data.DataModelBuilder;
 import model.data.DataRow;
+import model.data.describer.ConstantDescriber;
+import model.data.describer.RowValueDescriber;
 import model.data.process.analysis.constraints.Constraint;
 import model.data.process.analysis.constraints.EqualityCheck;
 import model.data.value.StringValue;
@@ -12,6 +14,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 /**
+ * The test cases the The ConstraintsAnalysis
  * Created by Boudewijn on 5-5-2015.
  */
 public class ConstraintAnalysisTest {
@@ -30,7 +33,10 @@ public class ConstraintAnalysisTest {
 
 		DataModel input = builder.build();
 
-		Constraint pieCheck = new EqualityCheck(column, new StringValue("Pie"));
+		Constraint pieCheck = new EqualityCheck<>(
+				new RowValueDescriber<>(column),
+				new ConstantDescriber<>(new StringValue("Pie"))
+		);
 
 		ConstraintAnalysis analysis = new ConstraintAnalysis(pieCheck);
 		DataModel output = analysis.analyse(input);
