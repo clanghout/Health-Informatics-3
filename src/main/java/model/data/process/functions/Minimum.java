@@ -45,23 +45,43 @@ public class Minimum {
 		 * Check type of specified column
 		 */
 		if(model.getColumns().get(name).getType().equals(FloatValue.class))
-			 compare();
+			 floatCompare();
 		else if(model.getColumns().get(name).getType().equals(IntValue.class))
-			 compare();
+			 intCompare();
 		else rowlist.clear();
 		
 		return rowlist;
 	}
 	/**
 	 * Get values and cast to Float, determine minimum values
-	 * @return
+	 * @return List of datarows which contain the minimum values of the column
 	 */
-	public List<DataRow> compare() {
+	public List<DataRow> floatCompare() {
 		for(int i = 0; i<model.getRowCount(); i++){
 			float currentVal = (float) row.getValue(name).getValue();
 			DataRow compare = model.getRow(i);
 			float compareVal = (float) compare.getValue(name).getValue();
-			if(currentVal < compareVal){
+			if(currentVal > compareVal){
+				row = compare;
+				rowlist.clear();
+				rowlist.add(compare);
+			}
+			else if(currentVal == compareVal){
+				rowlist.add(compare);
+			}
+		}
+		return rowlist;
+	}
+	/**
+	 * Get values and cast to int, determine minimum values
+	 * @return List of datarows which contain the minimum values of the column
+	 */
+	public List<DataRow> intCompare() {
+		for(int i = 0; i<model.getRowCount(); i++){
+			int currentVal = (int) row.getValue(name).getValue();
+			DataRow compare = model.getRow(i);
+			int compareVal = (int) compare.getValue(name).getValue();
+			if(currentVal > compareVal){
 				row = compare;
 				rowlist.clear();
 				rowlist.add(compare);

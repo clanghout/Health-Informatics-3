@@ -54,14 +54,14 @@ public class Maximum {
 	}
 	/**
 	 * Get values and cast to Float, determine maximum values
-	 * @return
+	 * @return List of datarows which contain the maximum values of the column
 	 */
 	public List<DataRow> compare() {
 		for(int i = 0; i<model.getRowCount(); i++){
 			float currentVal = (float) row.getValue(name).getValue();
 			DataRow compare = model.getRow(i);
 			float compareVal = (float) compare.getValue(name).getValue();
-			if(currentVal > compareVal){
+			if(currentVal < compareVal){
 				row = compare;
 				rowlist.clear();
 				rowlist.add(compare);
