@@ -6,6 +6,8 @@ import model.data.value.DataValue;
 
 import java.util.*;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Class that represents a row of data.
@@ -110,15 +112,10 @@ public class DataRow {
 	 * @return A Set of all the connections that influence this row.
 	 */
 	public Set<DataConnection> getCausedBy() {
-		Set<DataConnection> result = new HashSet<>();
-		Iterator<DataConnection> iterator = connections.iterator();
-		while (iterator.hasNext()) {
-			DataConnection connection = iterator.next();
-			if (connection.getResultsIn().contains(this)) {
-				result.add(connection);
-			}
-		}
-		return result;
+		return connections.stream()
+				.filter(c ->
+				        c.getResultsIn().contains(this))
+				.collect(Collectors.toSet());
 	}
 
 	/**
@@ -126,15 +123,10 @@ public class DataRow {
 	 * @return A set of connections that are influenced by this row.
 	 */
 	public Set<DataConnection> getResultsIn() {
-		Set<DataConnection> result = new HashSet<>();
-		Iterator<DataConnection> iterator = connections.iterator();
-		while (iterator.hasNext()) {
-			DataConnection connection = iterator.next();
-			if (connection.getCausedBy().contains(this)) {
-				result.add(connection);
-			}
-		}
-		return result;
+		return connections.stream()
+				.filter(c ->
+				        c.getCausedBy().contains(this))
+				.collect(Collectors.toSet());
 	}
 
 
