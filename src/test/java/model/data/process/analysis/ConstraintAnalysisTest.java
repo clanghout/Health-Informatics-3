@@ -1,8 +1,8 @@
 package model.data.process.analysis;
 
 import model.data.DataColumn;
-import model.data.DataModel;
-import model.data.DataModelBuilder;
+import model.data.DataTable;
+import model.data.DataTableBuilder;
 import model.data.DataRow;
 import model.data.describer.ConstantDescriber;
 import model.data.describer.RowValueDescriber;
@@ -21,7 +21,7 @@ public class ConstraintAnalysisTest {
 
 	@Test
 	public void testAnalyse() throws Exception {
-		DataModelBuilder builder = new DataModelBuilder();
+		DataTableBuilder builder = new DataTableBuilder();
 
 		DataColumn column = builder.createColumn("test", StringValue.class);
 		builder.addColumn(column);
@@ -31,7 +31,7 @@ public class ConstraintAnalysisTest {
 		builder.addRow(builder.createRow(new StringValue("is")));
 		builder.addRow(builder.createRow(new StringValue("nice")));
 
-		DataModel input = builder.build();
+		DataTable input = builder.build();
 
 		Constraint pieCheck = new EqualityCheck<>(
 				new RowValueDescriber<>(column),
@@ -39,7 +39,7 @@ public class ConstraintAnalysisTest {
 		);
 
 		ConstraintAnalysis analysis = new ConstraintAnalysis(pieCheck);
-		DataModel output = analysis.analyse(input);
+		DataTable output = analysis.analyse(input);
 
 		assertEquals(1, output.getRowCount());
 		assertEquals(pieRow, output.getRow(0));
