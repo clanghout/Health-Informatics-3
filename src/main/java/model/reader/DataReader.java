@@ -55,9 +55,9 @@ public class DataReader {
 			DataTableBuilder builder = new DataTableBuilder();
 			addColumns(builder);
 
-			DataTable model = readRows(reader, builder);
+			DataTable table = readRows(reader, builder);
 
-			return model;
+			return table;
 		} catch (IOException e) {
 			log.throwing(this.getClass().getSimpleName(), "readData", e);
 			throw e;
