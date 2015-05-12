@@ -6,7 +6,12 @@ import model.data.value.DataValue;
 import model.data.value.StringValue;
 import org.junit.Test;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by jens on 4/29/15.
@@ -99,6 +104,51 @@ public class DataRowTest {
 
 		assertEquals(row.getValue(column), null);
 
+	}
+
+	@Test
+	public void testGetCausedBy() throws Exception {
+		DataRow resultsIn = new DataRow();
+		DataRow cause = new DataRow();
+		DataConnection connection = new DataConnection();
+		connection.addCausedBy(cause);
+		connection.addResultsIn(resultsIn);
+
+		Set<DataConnection> result = new HashSet<>();
+		result.add(connection);
+
+		assertEquals(resultsIn.getCausedBy(), result);
+		assertTrue(cause.getCausedBy().isEmpty());
+	}
+
+	@Test
+	public void testGetResultsIn() throws Exception {
+		DataRow resultsIn = new DataRow();
+		DataRow cause = new DataRow();
+		DataConnection connection = new DataConnection();
+		connection.addResultsIn(resultsIn);
+		connection.addCausedBy(cause);
+
+		Set<DataConnection> result = new HashSet<>();
+		result.add(connection);
+
+		assertEquals(cause.getResultsIn(), result);
+		assertTrue(resultsIn.getResultsIn().isEmpty());
+	}
+
+	@Test
+	public void testAddConnection() throws Exception {
+		DataRow row = new DataRow();
+
+		assertTrue(row.getCausedBy().isEmpty());
+		assertTrue(row.getResultsIn().isEmpty());
+
+		DataConnection connection = new DataConnection();
+		connection.addResultsIn(row);
+		connection.addCausedBy(row);
+
+		assertTrue(row.getResultsIn().contains(connection));
+		assertTrue(row.getCausedBy().contains(connection));
 	}
 
 }

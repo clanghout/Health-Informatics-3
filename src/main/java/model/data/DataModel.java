@@ -1,69 +1,88 @@
 package model.data;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 /**
- * Class that represents the data that should be analysed.
+ * A container for the various data tables.
+ * Created by Boudewijn on 12-5-2015.
  */
-public class DataModel {
-	private List<DataRow> rows;
-	private Map<String, DataColumn> columns;
+public class DataModel implements Iterable<DataTable> {
+
+	private List<DataTable> dataTables = new ArrayList<>();
 
 	/**
-	 * Create a new empty DataModel.
+	 * Construct a new empty DataModel.
 	 */
-	public DataModel() {
-		rows = new ArrayList<>();
-		columns = new HashMap<>();
+	public DataModel() { }
+
+	/**
+	 * Construct a new DataModel containing the given tables.
+	 * @param tables The tables you want to add to this data model.
+	 */
+	public DataModel(Collection<DataTable> tables) {
+		dataTables.addAll(tables);
 	}
 
 	/**
-	 * Create a new DataModel.
-	 * @param rows rows of the dataModel
-	 * @param columns columns of the dataModel
+	 * Get the iterator for this DataModel.
+	 * @return An iterator over this DataModel.
 	 */
-	public DataModel(List<DataRow> rows, List<DataColumn> columns) {
-		this();
-		this.rows = new ArrayList<>(rows);
-		for (DataColumn c : columns) {
-			this.columns.put(c.getName(), c);
-		}
+	public Iterator<DataTable> iterator() {
+		return dataTables.iterator();
 	}
 
 	/**
-	 * Get a specific row.
-	 *
-	 * @param i index of the row
-	 * @return index of the requested row
+	 * Add the given table to this DataModel.
+	 * @param table The table you want to add
 	 */
-	public DataRow getRow(int i) {
-		return rows.get(i);
+	public void add(DataTable table) {
+		dataTables.add(table);
 	}
 
 	/**
-	 * Return an unmodifiable list containing the rows.
-	 *
-	 * @return An unmodifiable list over the rows
+	 * Add the given tables to this DataModel.
+	 * @param tables The tables you want to add
 	 */
-	public List<DataRow> getRows() {
-		return Collections.unmodifiableList(rows);
+	public void addAll(Collection<DataTable> tables) {
+		dataTables.addAll(tables);
 	}
 
 	/**
-	 * Returns the amounts of rows.
-	 * @return The amount of rows
+	 * Returns the size of this DataModel.
+	 * @return The number of tables in this DataModel.
 	 */
-	public int getRowCount() {
-		return rows.size();
+	public int size() {
+		return dataTables.size();
 	}
 
 	/**
-	 * Get the columns of the dataModel.
-	 *
-	 * @return A Map that contains all the columns, the key is the column name.
+	 * Check to see if this DataModel contains a table.
+	 * @param table The table you want to check the containiness of.
+	 * @return True if the DataModel contains the table, false if not.
 	 */
-	public Map<String, DataColumn> getColumns() {
-		return columns;
+	public boolean contains(DataTable table) {
+		return dataTables.contains(table);
 	}
 
+	/**
+	 * Get the index of the given table in the DataModel.
+	 * @param table The table you want to get the index of.
+	 * @return The index or -1 if the table isn't contained in this DataModel.
+	 */
+	public int indexOf(DataTable table) {
+		return dataTables.indexOf(table);
+	}
+
+	/**
+	 * Get the DataTable at the given index.
+	 * @param index The index of the DataTable you want to get.
+	 * @throws IndexOutOfBoundsException If the given index is out of bounds.
+	 * @return The DataTable at the given index.
+	 */
+	public DataTable get(int index) {
+		return dataTables.get(index);
+	}
 }
