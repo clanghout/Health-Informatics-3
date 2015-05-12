@@ -1,6 +1,6 @@
 package model.data.process;
 
-import model.data.DataModel;
+import model.data.DataTable;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,7 +23,7 @@ public class DataProcessTest {
 
 	@Test
 	public void testProcess() throws Exception {
-		DataModel output = new DataModel();
+		DataTable output = new DataTable();
 
 		when(process.doProcess()).thenReturn(output);
 
@@ -34,9 +34,9 @@ public class DataProcessTest {
 
 	@Test
 	public void testSetInput() throws Exception {
-		DataModel model = new DataModel();
+		DataTable table = new DataTable();
 
-		process.setInput(model);
-		assertEquals(model, process.getInput());
+		process.setInput(table);
+		assertEquals(table, process.getInput());
 	}
 }

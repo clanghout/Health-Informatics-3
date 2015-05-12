@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
-import model.data.DataModel;
+import model.data.DataTable;
 import model.data.describer.ConstantDescriber;
 import model.data.describer.RowValueDescriber;
 import model.data.process.analysis.ConstraintAnalysis;
@@ -14,11 +14,12 @@ import model.data.process.analysis.constraints.Constraint;
 import model.data.process.analysis.constraints.EqualityCheck;
 import model.data.value.StringValue;
 import model.reader.DataReader;
-import output.DataModelWriter;
+import output.DataTableWriter;
 import xml.DataFile;
 import xml.XmlReader;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,7 +37,7 @@ public class DataController {
 	private Logger logger = Logger.getLogger("DataController");
 
 	private File file;
-	private DataModel out;
+	private DataTable out;
 
 	@FXML
 	protected void handleImportButtonAction(ActionEvent event) {
@@ -51,7 +52,11 @@ public class DataController {
 		);
 
 		file = fileChooser.showOpenDialog(root.getScene().getWindow());
-		fileNameField.setText(file.getAbsolutePath());
+		if (file == null) {
+			// TODO: Handle no file selected with message.
+		} else {
+			fileNameField.setText(file.getAbsolutePath());
+		}
 	}
 
 	@FXML
@@ -60,7 +65,7 @@ public class DataController {
 			XmlReader reader = new XmlReader(file);
 			DataFile dataFile = reader.getDataFiles().get(0);
 			DataReader dataReader = new DataReader();
-			DataModel input = dataReader.readData(dataFile.filterHeader());
+			DataTable input = dataReader.readData(dataFile.filterHeader());
 
 			Constraint constraint = new EqualityCheck<>(
 					new RowValueDescriber<>(input.getColumns().get("time")),
@@ -86,8 +91,14 @@ public class DataController {
 					new FileChooser.ExtensionFilter("TXT", "*.txt")
 			);
 			File temp = fileChooser.showSaveDialog(root.getScene().getWindow());
-			DataModelWriter dmw = new DataModelWriter();
-			dmw.write(out, temp, "\t");
+
+			DataTableWriter dmw = new DataTableWriter();
+			try {
+				dmw.write(out, temp, "\t");
+			} catch (IOException e) {
+				logger.log(Level.SEVERE, "Error saving", e);
+				// TODO: Show the error to the user.
+			}
 		}
 	}
 

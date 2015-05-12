@@ -2,6 +2,8 @@ package model.data;
 
 import model.data.value.DataValue;
 
+import java.util.List;
+
 /**
  * Class that specified what the data in a column is.
  */
