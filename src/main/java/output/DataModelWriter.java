@@ -3,7 +3,7 @@ package output;
 import model.data.DataColumn;
 import model.data.DataModel;
 import model.data.DataRow;
-import model.data.DataValue;
+import model.data.value.DataValue;
 import model.data.value.StringValue;
 
 import java.io.File;

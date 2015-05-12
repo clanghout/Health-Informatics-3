@@ -1,7 +1,7 @@
 package model.data.process.analysis.constraints;
 
-import model.data.DataValue;
 import model.data.describer.DataDescriber;
+import model.data.value.DataValue;
 
 /**
  * The superclass for binary checks.
