@@ -16,10 +16,10 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by jens on 4/30/15.
  */
-public class DataModelTest {
+public class DataTableTest {
 	private List<DataRow> rows;
 	private DataColumn[] columns;
-	private DataModel dataModel;
+	private DataTable dataTable;
 
 
 	@Before
@@ -52,21 +52,21 @@ public class DataModelTest {
 		rows.add(new DataRow(columns, valuesRow2));
 		rows.add(new DataRow(columns, valuesRow3));
 
-		dataModel = new DataModel(rows, Arrays.asList(columns));
+		dataTable = new DataTable(rows, Arrays.asList(columns));
 	}
 
 	@Test
 	public void testGetRow() throws Exception {
-		assertEquals(dataModel.getRow(1), rows.get(1));
+		assertEquals(dataTable.getRow(1), rows.get(1));
 	}
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testGetNotExistingRow() throws Exception {
-		dataModel.getRow(45);
+		dataTable.getRow(45);
 	}
 
 	@Test
 	public void testGetRows() throws Exception {
-		List<DataRow> rowsModel = dataModel.getRows();
+		List<DataRow> rowsModel = dataTable.getRows();
 		assertEquals(rowsModel.size(),rows.size());
 		for (int i = 0; i < rowsModel.size(); i++) {
 			DataRow rowModel = rowsModel.get(i);
@@ -77,7 +77,7 @@ public class DataModelTest {
 
 	@Test
 	public void testGetColumns() throws Exception {
-		Map<String, DataColumn> actual = dataModel.getColumns();
+		Map<String, DataColumn> actual = dataTable.getColumns();
 		for (DataColumn c : columns) {
 			assertEquals(actual.get(c.getName()), c);
 		}

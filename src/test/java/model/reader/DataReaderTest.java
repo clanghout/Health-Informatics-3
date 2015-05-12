@@ -1,14 +1,10 @@
 package model.reader;
 
-import junit.framework.TestCase;
-import model.data.DataModel;
-import model.data.DataRow;
+import model.data.DataTable;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.*;
@@ -35,7 +31,7 @@ public class DataReaderTest {
 
 
 		DataReader reader = new DataReader();
-		DataModel model = reader.readData(stream);
+		DataTable model = reader.readData(stream);
 
 		assertEquals(5, model.getRowCount());
 	}

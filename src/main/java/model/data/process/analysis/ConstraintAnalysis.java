@@ -1,6 +1,6 @@
 package model.data.process.analysis;
 
-import model.data.DataModel;
+import model.data.DataTable;
 import model.data.DataRow;
 import model.data.process.analysis.constraints.Constraint;
 
@@ -25,7 +25,7 @@ public class ConstraintAnalysis extends DataAnalysis {
 	}
 
 	@Override
-	public DataModel analyse(DataModel input) {
+	public DataTable analyse(DataTable input) {
 		List<DataRow> out = new ArrayList<>();
 		List<DataRow> rows = input.getRows();
 		for (DataRow row: rows) {
@@ -33,6 +33,6 @@ public class ConstraintAnalysis extends DataAnalysis {
 				out.add(row);
 			}
 		}
-		return new DataModel(out, new ArrayList<>(input.getColumns().values()));
+		return new DataTable(out, new ArrayList<>(input.getColumns().values()));
 	}
 }
