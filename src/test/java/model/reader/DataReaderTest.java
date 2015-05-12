@@ -31,8 +31,8 @@ public class DataReaderTest {
 
 
 		DataReader reader = new DataReader();
-		DataTable model = reader.readData(stream);
+		DataTable table = reader.readData(stream);
 
-		assertEquals(5, model.getRowCount());
+		assertEquals(5, table.getRowCount());
 	}
 }
