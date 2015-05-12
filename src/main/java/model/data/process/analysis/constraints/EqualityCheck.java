@@ -1,25 +1,32 @@
 package model.data.process.analysis.constraints;
 
-import model.data.DataColumn;
 import model.data.DataRow;
-import model.data.DataValue;
+import model.data.describer.DataDescriber;
+import model.data.value.DataValue;
 
 /**
  * A check for equality.
  * Created by Boudewijn on 5-5-2015.
+ * @param <T> The type of the values we're checking.
  */
-public class EqualityCheck extends Constraint {
+public class EqualityCheck<T extends DataValue> extends BinaryCheck<T> {
 
-	private final DataColumn column;
-	private final DataValue value;
-
-	public EqualityCheck(DataColumn column, DataValue value) {
-		this.column = column;
-		this.value = value;
+	/**
+	 * Construct a new EqualityCheck.
+	 * @param leftSide The left side operand of the equality check
+	 * @param rightSide The right side operand of the equality check
+	 */
+	public EqualityCheck(DataDescriber<T> leftSide, DataDescriber<T> rightSide) {
+		super(leftSide, rightSide);
 	}
 
+	/**
+	 * Perform the EqualityCheck.
+	 * @param row The row the check should be performed on.
+	 * @return True if the values are equal, false if not
+	 */
 	@Override
 	public boolean check(DataRow row) {
-		return row.getValue(column).equals(value);
+		return getLeftSide().resolve(row).equals(getRightSide().resolve(row));
 	}
 }

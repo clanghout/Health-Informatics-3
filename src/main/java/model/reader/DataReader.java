@@ -3,7 +3,7 @@ package model.reader;
 import model.data.DataModel;
 import model.data.DataModelBuilder;
 import model.data.DataRow;
-import model.data.DataValue;
+import model.data.value.DataValue;
 import model.data.value.StringValue;
 
 import java.io.*;

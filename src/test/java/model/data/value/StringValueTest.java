@@ -1,6 +1,5 @@
 package model.data.value;
 
-import model.data.DataValue;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -33,5 +32,14 @@ public class StringValueTest {
 		DataValue other = new StringValue("oidsa");
 		assertTrue(value.equals(same));
 		assertFalse(value.equals(other));
+		assertFalse(value.equals(new IntValue(12)));
+	}
+
+	@Test
+	public void testHashcode() throws Exception {
+		String val = "testen";
+		DataValue value = new StringValue(val);
+		DataValue samevalue = new StringValue(val);
+		assertEquals(samevalue.hashCode(), value.hashCode());
 	}
 }
