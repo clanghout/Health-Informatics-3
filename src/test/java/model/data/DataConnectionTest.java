@@ -62,4 +62,101 @@ public class DataConnectionTest {
 		connection.addResultsIn(row);
 		assertEquals(connection.getResultsIn(), result);
 	}
+
+	@Test
+	public void testEqualsEmpty() throws Exception {
+		DataConnection connection1 = new DataConnection();
+		DataConnection connection2 = new DataConnection();
+
+		assertTrue(connection1.equals(connection2));
+	}
+
+	@Test
+	public void testEqualsTrue() throws Exception {
+		DataConnection connection1 = new DataConnection();
+		DataConnection connection2 = new DataConnection();
+		DataRow row1 = new DataRow();
+		DataRow row2 = new DataRow();
+		DataRow row3 = new DataRow();
+		DataRow row4 = new DataRow();
+
+		connection1.addCausedBy(row1);
+		connection1.addCausedBy(row2);
+		connection1.addResultsIn(row3);
+		connection1.addResultsIn(row4);
+
+		connection2.addCausedBy(row1);
+		connection2.addCausedBy(row2);
+		connection2.addResultsIn(row3);
+		connection2.addResultsIn(row4);
+
+		assertTrue(connection1.equals(connection2));
+	}
+
+	@Test
+	public void testEqualsResultFalse() throws Exception {
+		DataConnection connection1 = new DataConnection();
+		DataConnection connection2 = new DataConnection();
+		DataRow row1 = new DataRow();
+		DataRow row2 = new DataRow();
+		DataRow row3 = new DataRow();
+		DataRow row4 = new DataRow();
+
+		connection1.addCausedBy(row1);
+		connection1.addCausedBy(row2);
+		connection1.addResultsIn(row4);
+
+		connection2.addCausedBy(row1);
+		connection2.addCausedBy(row2);
+		connection2.addResultsIn(row3);
+		connection2.addResultsIn(row4);
+
+		assertFalse(connection1.equals(connection2));
+	}
+
+	@Test
+	public void testEqualsTCausedByFalse() throws Exception {
+		DataConnection connection1 = new DataConnection();
+		DataConnection connection2 = new DataConnection();
+		DataRow row1 = new DataRow();
+		DataRow row2 = new DataRow();
+		DataRow row3 = new DataRow();
+		DataRow row4 = new DataRow();
+
+		connection1.addCausedBy(row1);
+		connection1.addCausedBy(row2);
+		connection1.addResultsIn(row3);
+		connection1.addResultsIn(row4);
+
+		connection2.addCausedBy(row2);
+		connection2.addResultsIn(row3);
+		connection2.addResultsIn(row4);
+
+		assertFalse(connection1.equals(connection2));
+	}
+
+	@Test
+	public void testHashCode() throws Exception {
+		DataConnection connection1 = new DataConnection();
+		DataConnection connection2 = new DataConnection();
+		DataRow row1 = new DataRow();
+		DataRow row2 = new DataRow();
+		DataRow row3 = new DataRow();
+		DataRow row4 = new DataRow();
+
+		connection1.addCausedBy(row1);
+		connection1.addCausedBy(row2);
+		connection1.addResultsIn(row3);
+		connection1.addResultsIn(row4);
+
+		connection2.addCausedBy(row1);
+		connection2.addResultsIn(row3);
+
+		assertNotEquals(connection1.hashCode(), connection2.hashCode(), 0.1);
+
+		connection2.addCausedBy(row2);
+		connection2.addResultsIn(row4);
+
+		assertEquals(connection1.hashCode(), connection2.hashCode(), 0.1);
+	}
 }
