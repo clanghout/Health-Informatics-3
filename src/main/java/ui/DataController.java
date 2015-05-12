@@ -19,6 +19,7 @@ import xml.DataFile;
 import xml.XmlReader;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,7 +52,11 @@ public class DataController {
 		);
 
 		file = fileChooser.showOpenDialog(root.getScene().getWindow());
-		fileNameField.setText(file.getAbsolutePath());
+		if (file == null) {
+			// TODO: Handle no file selected with message.
+		} else {
+			fileNameField.setText(file.getAbsolutePath());
+		}
 	}
 
 	@FXML
@@ -86,8 +91,13 @@ public class DataController {
 					new FileChooser.ExtensionFilter("TXT", "*.txt")
 			);
 			File temp = fileChooser.showSaveDialog(root.getScene().getWindow());
+
 			DataTableWriter dmw = new DataTableWriter();
-			dmw.write(out, temp, "\t");
+			try {
+				dmw.write(out, temp, "\t");
+			} catch (IOException e) {
+
+			}
 		}
 	}
 
