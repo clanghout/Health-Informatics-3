@@ -1,7 +1,7 @@
 package output;
 
 import model.data.DataColumn;
-import model.data.DataModel;
+import model.data.DataTable;
 import model.data.DataRow;
 import model.data.value.DataValue;
 import model.data.value.StringValue;
@@ -19,23 +19,23 @@ import java.util.logging.Logger;
 /**
  * Write output after analysis is done.
  */
-public class DataModelWriter {
-	private Logger logger = Logger.getLogger("DataModelWriter");
+public class DataTableWriter {
+	private Logger logger = Logger.getLogger("DataTableWriter");
 
 	// Options for user
 	private boolean quotationmarks;
 
 	/**
-	 * Constructor for DataModelWriter.
+	 * Constructor for DataTableWriter.
 	 */
-	public DataModelWriter() { }
+	public DataTableWriter() { }
 
 	/**
-	 * Creates a PrintWriter that prints the datamodel to a file.
+	 * Creates a PrintWriter that prints the DataTable to a file.
 	 */
-	public void write(DataModel dataModelInput, File fileInput, String delimiter) {
-		List<DataColumn> columns = readColumns(dataModelInput);
-		List<DataRow> rows = dataModelInput.getRows();
+	public void write(DataTable dataTableInput, File fileInput, String delimiter) {
+		List<DataColumn> columns = readColumns(dataTableInput);
+		List<DataRow> rows = dataTableInput.getRows();
 		try (PrintWriter writer = new PrintWriter(fileInput, "UTF-8")) {
 			for (DataRow row : rows) {
 				if (columns.size() > 0) {
@@ -60,7 +60,7 @@ public class DataModelWriter {
 		}
 	}
 
-	public List<DataColumn> readColumns(DataModel in) {
+	public List<DataColumn> readColumns(DataTable in) {
 		ArrayList<DataColumn> res = new ArrayList<>();
 		Map<String, DataColumn> columnsData = in.getColumns();
 		for (Object o : columnsData.entrySet()) {
