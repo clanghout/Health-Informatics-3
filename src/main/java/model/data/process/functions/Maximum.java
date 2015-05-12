@@ -1,38 +1,76 @@
 package model.data.process.functions;
 
+import java.util.ArrayList;
 import model.data.DataModel;
 import model.data.DataRow;
-import model.data.DataValue;
 
 /**
- * A class for finding the row with the maximum value for the specified column in a model
+ * A class for finding the row with the minimum value for the specified column in a model
  * @author Louis Gosschalk 
  * @date 11-05-2015
  */
 public class Maximum {
-	public DataRow MaximumCheck(DataModel model, String columnName) {
+	
+	private DataModel model;
+	private String name;
+	private ArrayList<DataRow> rowlist;
+	private DataRow row;
+	
+	public Maximum(DataModel model, String columnName) {
+		this.model = model;
+		this.name = columnName;
+		this.rowlist = null;
+		this.row = null;
+	}
+	/**
+	 * @param model datamodel containing the input
+	 * @param columnName string specifying the 
+	 * @return ArrayList of DataRow; because duplicate minimums are possible.
+	 */
+	public ArrayList<DataRow> MaximumCheck() {
 		//return new DataRow();
-		DataRow row = null;
+//		ArrayList<DataRow> rowlist = null;
+//		DataRow row = null;
 		if(model.getRowCount() != 0)
 			row = model.getRow(0);
 		else
-			return row; //throw exception "empty datamodel"
+			return rowlist; 
+			/**
+			 * return null or throw exception if input is null?
+			 */
 		
 		//current row is the only row
 		if(model.getRowCount() == 1) {
-			return row;
+			rowlist.add(row);
+			return rowlist;
 		}
-		//loop through datamodel rows, begin at index 1 because index 0 is the comparison
+		//loop through datamodel rows, begin at 1 because 0 is the comparison
 		for(int i=1; i< model.getRowCount(); i++){
-			DataValue current = row.getValue(columnName);
-			//getvalue int van current
-			//int currentInt = current.getValue();
-			DataValue compare = model.getRow(i).getValue(columnName);
-			//getvalue int van compare
-			//int compareInt = compare.getValue();
-			//if(currentInt < compareInt)
-				//row = compare;
+			/**
+			 * check if specified column is int or float, else throw exception
+			 */ 
+			String klasse = CheckClass(row.getValue(name).getValue());
+			Compare(i);
+			else if(klass == float) FloatCompare(i)
+			
+//			if(row.getValue(name).getValue().getClass().isInstance(int.class))
 		}
-		return row;
+		return rowlist;
+	}
+	public ArrayList<DataRow> Compare(int i) {
+		int currentInt = (int) row.getValue(name).getValue();
+		DataRow compare = model.getRow(i);
+		int compareInt = (int) compare.getValue(name).getValue();
+		if(currentInt > compareInt){
+			row = compare;
+			rowlist.clear();
+			rowlist.add(compare);
+			return rowlist;
+		}
+		else if(currentInt == compareInt){
+			rowlist.add(compare);
+			return rowlist;
+		}
+		return rowlist;
 	}
 }
