@@ -97,6 +97,7 @@ public class DataController {
 				dmw.write(out, temp, "\t");
 			} catch (IOException e) {
 				logger.log(Level.SEVERE, "Error saving", e);
+				// TODO: Show the error to the user.
 			}
 		}
 	}
