@@ -1,6 +1,5 @@
 package model.data.value;
 
-import model.data.DataValue;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

@@ -1,37 +1,41 @@
 package model.data;
 
 
+import exceptions.ColumnValueMismatchException;
+import exceptions.ColumnValueTypeMismatchException;
+import model.data.value.DataValue;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
 
 /**
- * Builder used to build a DataModel.
+ * Builder used to build a DataTable.
  */
-public class DataModelBuilder {
+public class DataTableBuilder {
 	private List<DataRow> rows;
 	private List<DataColumn> columns;
 
 	/**
 	 * Create a new builder.
 	 */
-	public DataModelBuilder() {
+	public DataTableBuilder() {
 		 rows =  new ArrayList<DataRow>();
 		 columns = new ArrayList<DataColumn>();
 	}
 
 	/**
-	 * Return the dataModel build by the builder.
+	 * Return the DataTable build by the builder.
 	 *
-	 * @return The DataModel that is build by the builder
+	 * @return The DataTable that is build by the builder
 	 */
-	public DataModel build() {
-		return new DataModel(rows, columns);
+	public DataTable build() {
+		return new DataTable(rows, columns);
 	}
 
 	/**
-	 * Add a column to the DataModel.
+	 * Add a column to the DataTable.
 	 *
 	 * @param column The new column
 	 */
@@ -40,7 +44,7 @@ public class DataModelBuilder {
 	}
 
 	/**
-	 * Add a row to the DataModel.
+	 * Add a row to the DataTable.
 	 *
 	 * @param row the new row
 	 */
@@ -49,7 +53,7 @@ public class DataModelBuilder {
 	}
 
 	/**
-	 * Construct a DataColumn. This is not added to the model
+	 * Construct a DataColumn. This is not added to the table
 	 *
 	 * @param name name of the column
 	 * @param type type of the column
@@ -60,7 +64,7 @@ public class DataModelBuilder {
 	}
 
 	/**
-	 * Construct a DataRow. This is not added to the model
+	 * Construct a DataRow. This is not added to the table
 	 *
 	 * @param values array of new values
 	 * @return the new constructed DataRow

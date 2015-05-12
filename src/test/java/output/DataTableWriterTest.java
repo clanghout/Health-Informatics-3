@@ -1,9 +1,9 @@
 package output;
 
 import model.data.DataColumn;
-import model.data.DataModel;
+import model.data.DataTable;
 import model.data.DataRow;
-import model.data.DataValue;
+import model.data.value.DataValue;
 import model.data.value.StringValue;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,22 +16,22 @@ import java.util.HashMap;
 import java.util.List;
 
 import static java.util.Collections.unmodifiableList;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
  * Created by Chris on 6-5-2015.
  */
-public class DataModelWriterTest {
-	private DataModel dataModel;
+public class DataTableWriterTest {
+	private DataTable dataTable;
 	private File testFile;
 	private List<DataRow> rows;
 	private DataColumn[] columns;
 
 	@Before
 	public void setUp() throws Exception {
-		dataModel = mock(DataModel.class);
+		dataTable = mock(DataTable.class);
 		testFile = new File("testFile.txt");
 	}
 
@@ -69,11 +69,11 @@ public class DataModelWriterTest {
 		for (DataColumn c : this.columns) {
 			columnsMap.put(c.getName(), c);
 		}
-		when(dataModel.getRows()).thenReturn(unmodifiableList(rows));
-		when(dataModel.getColumns()).thenReturn(columnsMap);
+		when(dataTable.getRows()).thenReturn(unmodifiableList(rows));
+		when(dataTable.getColumns()).thenReturn(columnsMap);
 
-		DataModelWriter writer = new DataModelWriter();
-		writer.write(dataModel, testFile, ",");
+		DataTableWriter writer = new DataTableWriter();
+		writer.write(dataTable, testFile, ",");
 		BufferedReader reader = new BufferedReader(new FileReader(testFile));
 		String firstLine = reader.readLine();
 		assertEquals(firstLine, "value1,value3,value2");
@@ -102,15 +102,15 @@ public class DataModelWriterTest {
 		for (DataColumn c : this.columns) {
 			columnsMap.put(c.getName(), c);
 		}
-		when(dataModel.getRows()).thenReturn(unmodifiableList(rows));
-		when(dataModel.getColumns()).thenReturn(columnsMap);
+		when(dataTable.getRows()).thenReturn(unmodifiableList(rows));
+		when(dataTable.getColumns()).thenReturn(columnsMap);
 
-		DataModelWriter writer = new DataModelWriter();
-		writer.write(dataModel, testFile, "\t");
+		DataTableWriter writer = new DataTableWriter();
+		writer.write(dataTable, testFile, "\t");
 		BufferedReader reader = new BufferedReader(new FileReader(testFile));
 		String firstLine = reader.readLine();
 		assertEquals(firstLine, "value1\tvalue3\tvalue2");
-		writer.write(dataModel, testFile, " ");
+		writer.write(dataTable, testFile, " ");
 		reader = new BufferedReader(new FileReader(testFile));
 		firstLine = reader.readLine();
 		assertEquals(firstLine, "value1 value3 value2");
@@ -118,7 +118,7 @@ public class DataModelWriterTest {
 
 	@Test
 	public void testAddQuotes() throws Exception {
-		DataModelWriter writer = new DataModelWriter();
+		DataTableWriter writer = new DataTableWriter();
 		String test = writer.addQuotes(new StringValue("test"));
 		assertEquals(test, "\"test\"");
 	}

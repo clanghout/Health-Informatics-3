@@ -5,14 +5,16 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
-import model.data.DataModel;
+import model.data.DataTable;
+import model.data.describer.ConstantDescriber;
+import model.data.describer.RowValueDescriber;
 import model.data.process.analysis.ConstraintAnalysis;
 import model.data.process.analysis.DataAnalysis;
 import model.data.process.analysis.constraints.Constraint;
 import model.data.process.analysis.constraints.EqualityCheck;
 import model.data.value.StringValue;
 import model.reader.DataReader;
-import output.DataModelWriter;
+import output.DataTableWriter;
 import xml.DataFile;
 import xml.XmlReader;
 
@@ -34,7 +36,7 @@ public class DataController {
 	private Logger logger = Logger.getLogger("DataController");
 
 	private File file;
-	private DataModel out;
+	private DataTable out;
 
 	@FXML
 	protected void handleImportButtonAction(ActionEvent event) {
@@ -58,10 +60,11 @@ public class DataController {
 			XmlReader reader = new XmlReader(file);
 			DataFile dataFile = reader.getDataFiles().get(0);
 			DataReader dataReader = new DataReader();
-			DataModel input = dataReader.readData(dataFile.filterHeader());
+			DataTable input = dataReader.readData(dataFile.filterHeader());
 
-			Constraint constraint = new EqualityCheck(
-					input.getColumns().get("time"), new StringValue("0803")
+			Constraint constraint = new EqualityCheck<>(
+					new RowValueDescriber<>(input.getColumns().get("time")),
+					new ConstantDescriber<>(new StringValue("0803"))
 			);
 			DataAnalysis analysis = new ConstraintAnalysis(constraint);
 			out = analysis.analyse(input);
@@ -83,7 +86,7 @@ public class DataController {
 					new FileChooser.ExtensionFilter("TXT", "*.txt")
 			);
 			File temp = fileChooser.showSaveDialog(root.getScene().getWindow());
-			DataModelWriter dmw = new DataModelWriter();
+			DataTableWriter dmw = new DataTableWriter();
 			dmw.write(out, temp, "\t");
 		}
 	}
