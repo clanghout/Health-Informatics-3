@@ -1,11 +1,15 @@
 package model.data;
 
 
+import model.data.value.DataValue;
 import model.data.value.StringValue;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 

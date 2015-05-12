@@ -1,7 +1,7 @@
 package model.data.describer;
 
 import model.data.DataRow;
-import model.data.DataValue;
+import model.data.value.DataValue;
 
 /**
  * A class the describe a value.
