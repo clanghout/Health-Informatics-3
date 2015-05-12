@@ -93,11 +93,7 @@ public class DataController {
 			File temp = fileChooser.showSaveDialog(root.getScene().getWindow());
 
 			DataTableWriter dmw = new DataTableWriter();
-			try {
-				dmw.write(out, temp, "\t");
-			} catch (IOException e) {
-
-			}
+			dmw.write(out, temp, "\t");
 		}
 	}
 
