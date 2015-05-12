@@ -6,10 +6,7 @@ import model.data.DataRow;
 import model.data.value.DataValue;
 import model.data.value.StringValue;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Write output after analysis is done.
+ * Writes a DataTable to a file.
  */
 public class DataTableWriter {
 	private Logger logger = Logger.getLogger("DataTableWriter");
@@ -28,15 +25,20 @@ public class DataTableWriter {
 	/**
 	 * Constructor for DataTableWriter.
 	 */
-	public DataTableWriter() { }
+	public DataTableWriter() {
+	}
 
 	/**
 	 * Creates a PrintWriter that prints the DataTable to a file.
+	 *
+	 * @param dataTable The table you want to output.
+	 * @param file The file you want to write to.
+	 * @param delimiter The delimiter you want to use between fields.
 	 */
-	public void write(DataTable dataTableInput, File fileInput, String delimiter) {
-		List<DataColumn> columns = readColumns(dataTableInput);
-		List<DataRow> rows = dataTableInput.getRows();
-		try (PrintWriter writer = new PrintWriter(fileInput, "UTF-8")) {
+	public void write(DataTable dataTable, File file, String delimiter) throws IOException {
+		List<DataColumn> columns = readColumns(dataTable);
+		List<DataRow> rows = dataTable.getRows();
+		try (PrintWriter writer = new PrintWriter(file, "UTF-8")) {
 			for (DataRow row : rows) {
 				if (columns.size() > 0) {
 					writer.print(row.getValue(columns.get(0)).toString());
@@ -57,6 +59,7 @@ public class DataTableWriter {
 			logger.info("data written");
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {
 			logger.log(Level.SEVERE, "Error writing file", e);
+			throw e;
 		}
 	}
 
