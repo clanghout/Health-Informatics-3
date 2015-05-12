@@ -7,7 +7,6 @@ import model.data.value.DataValue;
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Class that represents a row of data.
@@ -100,7 +99,7 @@ public class DataRow {
 	}
 
 	/**
-	 * Add a connection to this row,
+	 * Add a connection to this row.
 	 * @param connection a connection that this row is involved in.
 	 */
 	public void addConnection(DataConnection connection) {
@@ -119,7 +118,7 @@ public class DataRow {
 	}
 
 	/**
-	 * Get all the connections that are influenced by this row,
+	 * Get all the connections that are influenced by this row.
 	 * @return A set of connections that are influenced by this row.
 	 */
 	public Set<DataConnection> getResultsIn() {
