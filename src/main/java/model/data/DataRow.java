@@ -4,10 +4,7 @@ import exceptions.ColumnValueMismatchException;
 import exceptions.ColumnValueTypeMismatchException;
 import model.data.value.DataValue;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -16,10 +13,10 @@ import java.util.logging.Logger;
 public class DataRow {
 	private Logger log = Logger.getLogger("DataRow");
 
-	private Map<String, DataValue> values = new HashMap<String, DataValue>();
+	private Map<String, DataValue> values = new HashMap<>();
 
-	private List<DataRow> causedBy = new ArrayList<>();
-	private List<DataRow> resultsIn = new ArrayList<>();
+	private Set<DataConnection> connections = new HashSet<>();
+
 
 	/**
 	 * Create an empty row.
@@ -101,36 +98,46 @@ public class DataRow {
 	}
 
 	/**
-	 * Get all the rows that are influenced by this row,
-	 * @return A list of rows that are influenced by this row.
+	 * Add a connection to this row,
+	 * @param connection a connection that this row is involved in.
 	 */
-	public List<DataRow> getResultsIn() {
-		return resultsIn;
+	public void addConnection(DataConnection connection) {
+		connections.add(connection);
 	}
 
 	/**
-	 * Add a row that is influeced by this row.
-	 * @param resultIn the row that is influenced by this row.
+	 * Get all the connections that influence this row.
+	 * @return A Set of all the connections that influence this row.
 	 */
-	public void addCauses(DataRow resultIn) {
-		resultsIn.add(resultIn);
+	public Set<DataConnection> getCausedBy() {
+		Set<DataConnection> result = new HashSet<>();
+		Iterator<DataConnection> iterator = connections.iterator();
+		while (iterator.hasNext()) {
+			DataConnection connection = iterator.next();
+			if (connection.getResultsIn().contains(this)) {
+				result.add(connection);
+			}
+		}
+		return result;
 	}
 
 	/**
-	 * Get all the rows that influence this row.
-	 * @return A list of all the rows that influence this row.
+	 * Get all the connections that are influenced by this row,
+	 * @return A set of connections that are influenced by this row.
 	 */
-	public List<DataRow> getCausedBy() {
-		return causedBy;
+	public Set<DataConnection> getResultsIn() {
+		Set<DataConnection> result = new HashSet<>();
+		Iterator<DataConnection> iterator = connections.iterator();
+		while (iterator.hasNext()) {
+			DataConnection connection = iterator.next();
+			if (connection.getCausedBy().contains(this)) {
+				result.add(connection);
+			}
+		}
+		return result;
 	}
 
-	/**
-	 * Add a row that influences this row
-	 * @param origin a row that influences this row.
-	 */
-	public void setCausedBy(DataRow origin) {
-		causedBy.add(origin);
-	}
+
 
 
 }
