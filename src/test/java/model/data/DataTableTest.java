@@ -66,10 +66,10 @@ public class DataTableTest {
 
 	@Test
 	public void testGetRows() throws Exception {
-		List<DataRow> rowsModel = dataTable.getRows();
-		assertEquals(rowsModel.size(),rows.size());
-		for (int i = 0; i < rowsModel.size(); i++) {
-			DataRow rowModel = rowsModel.get(i);
+		List<DataRow> rowsTable = dataTable.getRows();
+		assertEquals(rowsTable.size(),rows.size());
+		for (int i = 0; i < rowsTable.size(); i++) {
+			DataRow rowModel = rowsTable.get(i);
 			DataRow row = rows.get(i);
 			assertEquals(rowModel,row);
 		}

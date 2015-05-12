@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class RowValueDescriberTest {
 
-	private DataTable model;
+	private DataTable table;
 
 	private DataColumn stringColumn;
 	private DataColumn intColumn;
@@ -33,12 +33,12 @@ public class RowValueDescriberTest {
 
 		builder.addRow(builder.createRow(new StringValue("Hello"), new IntValue(5)));
 
-		model = builder.build();
+		table = builder.build();
 	}
 
 	@Test
 	public void testResolve() throws Exception {
 		RowValueDescriber<StringValue> describer = new RowValueDescriber<>(stringColumn);
-		assertEquals(new StringValue("Hello"), describer.resolve(model.getRow(0)));
+		assertEquals(new StringValue("Hello"), describer.resolve(table.getRow(0)));
 	}
 }

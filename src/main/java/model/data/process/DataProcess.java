@@ -20,12 +20,12 @@ public abstract class DataProcess {
 	 * @return The data table resulting from running this process.
 	 */
 	public final DataTable process() {
-		DataTable model = doProcess();
-		if (model == null) {
+		DataTable table = doProcess();
+		if (table == null) {
 			throw new NullPointerException("A process should always result in an output");
 		}
-		output = model;
-		return model;
+		output = table;
+		return table;
 	}
 
 	/**
