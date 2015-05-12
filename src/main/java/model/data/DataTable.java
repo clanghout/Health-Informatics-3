@@ -5,24 +5,24 @@ import java.util.*;
 /**
  * Class that represents the data that should be analysed.
  */
-public class DataModel {
+public class DataTable {
 	private List<DataRow> rows;
 	private Map<String, DataColumn> columns;
 
 	/**
-	 * Create a new empty DataModel.
+	 * Create a new empty DataTable.
 	 */
-	public DataModel() {
+	public DataTable() {
 		rows = new ArrayList<>();
 		columns = new HashMap<>();
 	}
 
 	/**
-	 * Create a new DataModel.
-	 * @param rows rows of the dataModel
-	 * @param columns columns of the dataModel
+	 * Create a new DataTable.
+	 * @param rows rows of the DataTable
+	 * @param columns columns of the DataTable
 	 */
-	public DataModel(List<DataRow> rows, List<DataColumn> columns) {
+	public DataTable(List<DataRow> rows, List<DataColumn> columns) {
 		this();
 		this.rows = new ArrayList<>(rows);
 		for (DataColumn c : columns) {
@@ -58,7 +58,7 @@ public class DataModel {
 	}
 
 	/**
-	 * Get the columns of the dataModel.
+	 * Get the columns of the DataTable.
 	 *
 	 * @return A Map that contains all the columns, the key is the column name.
 	 */

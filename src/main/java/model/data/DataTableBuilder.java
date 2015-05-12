@@ -11,31 +11,31 @@ import java.util.List;
 
 
 /**
- * Builder used to build a DataModel.
+ * Builder used to build a DataTable.
  */
-public class DataModelBuilder {
+public class DataTableBuilder {
 	private List<DataRow> rows;
 	private List<DataColumn> columns;
 
 	/**
 	 * Create a new builder.
 	 */
-	public DataModelBuilder() {
+	public DataTableBuilder() {
 		 rows =  new ArrayList<DataRow>();
 		 columns = new ArrayList<DataColumn>();
 	}
 
 	/**
-	 * Return the dataModel build by the builder.
+	 * Return the DataTable build by the builder.
 	 *
-	 * @return The DataModel that is build by the builder
+	 * @return The DataTable that is build by the builder
 	 */
-	public DataModel build() {
-		return new DataModel(rows, columns);
+	public DataTable build() {
+		return new DataTable(rows, columns);
 	}
 
 	/**
-	 * Add a column to the DataModel.
+	 * Add a column to the DataTable.
 	 *
 	 * @param column The new column
 	 */
@@ -44,7 +44,7 @@ public class DataModelBuilder {
 	}
 
 	/**
-	 * Add a row to the DataModel.
+	 * Add a row to the DataTable.
 	 *
 	 * @param row the new row
 	 */
