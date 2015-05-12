@@ -1,8 +1,8 @@
 package model.data.describer;
 
 import model.data.DataColumn;
-import model.data.DataModel;
-import model.data.DataModelBuilder;
+import model.data.DataTable;
+import model.data.DataTableBuilder;
 import model.data.value.IntValue;
 import model.data.value.StringValue;
 import org.junit.Before;
@@ -16,14 +16,14 @@ import static org.junit.Assert.assertEquals;
  */
 public class RowValueDescriberTest {
 
-	private DataModel model;
+	private DataTable table;
 
 	private DataColumn stringColumn;
 	private DataColumn intColumn;
 
 	@Before
 	public void setUp() throws Exception {
-		DataModelBuilder builder = new DataModelBuilder();
+		DataTableBuilder builder = new DataTableBuilder();
 
 		stringColumn = builder.createColumn("string", StringValue.class);
 		intColumn = builder.createColumn("int", IntValue.class);
@@ -33,12 +33,12 @@ public class RowValueDescriberTest {
 
 		builder.addRow(builder.createRow(new StringValue("Hello"), new IntValue(5)));
 
-		model = builder.build();
+		table = builder.build();
 	}
 
 	@Test
 	public void testResolve() throws Exception {
 		RowValueDescriber<StringValue> describer = new RowValueDescriber<>(stringColumn);
-		assertEquals(new StringValue("Hello"), describer.resolve(model.getRow(0)));
+		assertEquals(new StringValue("Hello"), describer.resolve(table.getRow(0)));
 	}
 }
