@@ -5,9 +5,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by jens on 5/12/15.
- *
  * Class that represents a connection between rows.
+ *
+ * Created by jens on 5/12/15.
  */
 public class DataConnection {
 	private Set<DataRow> causedBy = new HashSet<>();
