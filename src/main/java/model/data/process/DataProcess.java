@@ -17,7 +17,7 @@ public abstract class DataProcess {
 	/**
 	 * Runs this process.
 	 *
-	 * @return The data model resulting from running this process.
+	 * @return The data table resulting from running this process.
 	 */
 	public final DataTable process() {
 		DataTable model = doProcess();
