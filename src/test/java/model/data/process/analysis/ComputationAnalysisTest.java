@@ -1,18 +1,18 @@
 package model.data.process.analysis;
 
 import model.data.DataColumn;
-import model.data.DataModel;
-import model.data.DataModelBuilder;
 import model.data.DataRow;
+import model.data.DataTable;
+import model.data.DataTableBuilder;
 import model.data.describer.ConstantDescriber;
 import model.data.describer.RowValueDescriber;
-import model.data.process.analysis.computations.Addition;
-import model.data.process.analysis.computations.Computation;
+import model.data.process.analysis.operations.computations.Addition;
+import model.data.process.analysis.operations.computations.Computation;
 import model.data.value.IntValue;
 import model.data.value.NumberValue;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Chris on 12-5-2015.
@@ -21,7 +21,7 @@ public class ComputationAnalysisTest {
 
 	@Test
 	public void testAnalyse() throws Exception {
-		DataModelBuilder builder = new DataModelBuilder();
+		DataTableBuilder builder = new DataTableBuilder();
 
 		DataColumn column = builder.createColumn("test", NumberValue.class);
 		builder.addColumn(column);
@@ -31,7 +31,7 @@ public class ComputationAnalysisTest {
 		builder.addRow(builder.createRow(new IntValue(456)));
 		builder.addRow(builder.createRow(new IntValue(247)));
 
-		DataModel input = builder.build();
+		DataTable input = builder.build();
 
 		Computation addCheck = new Addition(
 				new RowValueDescriber<>(column),
@@ -39,8 +39,8 @@ public class ComputationAnalysisTest {
 		);
 
 		ComputationAnalysis analysis = new ComputationAnalysis(addCheck);
-		DataModel output = analysis.analyse(input);
+		DataTable output = analysis.analyse(input);
 
-		assertEquals(124, output.getRow(0).getValue(column).getValue());
+		assertEquals(124, (int) output.getRow(0).getValue(column).getValue());
 	}
 }

@@ -1,8 +1,8 @@
 package model.data.process.analysis;
 
-import model.data.DataModel;
 import model.data.DataRow;
-import model.data.process.analysis.computations.Computation;
+import model.data.DataTable;
+import model.data.process.analysis.operations.computations.Computation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +19,12 @@ public class ComputationAnalysis extends DataAnalysis {
 	}
 
 	@Override
-	public DataModel analyse(DataModel input) {
+	public DataTable analyse(DataTable input) {
 		List<DataRow> out = new ArrayList<>();
 		List<DataRow> rows = input.getRows();
 		for (DataRow row: rows) {
-//          TODO: Doe dingen
+			// TODO: Doe dingen
 		}
-		return new DataModel(out, new ArrayList<>(input.getColumns().values()));
+		return new DataTable(out, new ArrayList<>(input.getColumns().values()));
 	}
 }
