@@ -53,7 +53,7 @@ public class DataConnection {
 			return false;
 		}
 		DataConnection other = (DataConnection) obj;
-		return (this.causedBy.equals(other.causedBy) && this.resultsIn.equals(other.causedBy));
+		return (this.causedBy.equals(other.causedBy) && this.resultsIn.equals(other.resultsIn));
 	}
 
 	@Override
