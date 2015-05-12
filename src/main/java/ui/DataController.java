@@ -96,7 +96,7 @@ public class DataController {
 			try {
 				dmw.write(out, temp, "\t");
 			} catch (IOException e) {
-
+				logger.log(Level.SEVERE, "Error saving", e);
 			}
 		}
 	}
