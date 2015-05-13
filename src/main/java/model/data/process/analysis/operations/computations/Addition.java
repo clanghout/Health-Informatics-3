@@ -7,7 +7,7 @@ import model.data.value.IntValue;
 import model.data.value.NumberValue;
 
 /**
- * Computation wich adds two numbervalues.
+ * Computation which adds two NumberValues.
  */
 public class Addition extends Computation {
 
@@ -15,6 +15,12 @@ public class Addition extends Computation {
 		super(leftSide, rightSide);
 	}
 
+	/**
+	 * Compute left added to right.
+	 *
+	 * @param row The row you want to perform the computation on.
+	 * @return new NumberValue with updated value.
+	 */
 	@Override
 	public NumberValue compute(DataRow row) {
 		NumberValue left = (NumberValue) getLeftSide().resolve(row);
