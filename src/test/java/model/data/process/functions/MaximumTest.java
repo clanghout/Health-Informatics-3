@@ -7,10 +7,14 @@ import java.util.List;
 import model.data.DataColumn;
 import model.data.DataModel;
 import model.data.DataRow;
-import model.data.DataValue;
+import model.data.DataTable;
+import model.data.DataTableBuilder;
+import model.data.describer.RowValueDescriber;
 import model.data.process.functions.Maximum;
+import model.data.value.DataValue;
 import model.data.value.FloatValue;
 import model.data.value.IntValue;
+import model.data.value.NumberValue;
 import model.data.value.StringValue;
 
 import org.junit.Before;
@@ -20,15 +24,17 @@ import static org.junit.Assert.*;
 
 /**
  * @author Louis Gosschalk
- * @before inspired from DataModelTest @author Jens
  * 12-05-2015
  * Test for maximum
  */
 public class MaximumTest {
 	
-	private List<DataRow> rows;
-	private DataColumn[] columns;
-	private DataModel dataModel;
+	private DataTable table;
+	private DataColumn stringColumn;
+	private DataColumn intColumn;
+	private DataColumn intsColumn;
+	private DataColumn floatColumn;
+	private DataColumn floatsColumn;
 	
 	/**
 	 * simulate datamodel with single maximum for each column type
@@ -36,78 +42,59 @@ public class MaximumTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		rows = new ArrayList<DataRow>();
-		columns = new DataColumn[] {
-				new DataColumn("stringcol", StringValue.class),
-				new DataColumn("floatcol", FloatValue.class),
-				new DataColumn("floatscol", FloatValue.class),
-				new DataColumn("intcol", IntValue.class),
-				new DataColumn("intscol", IntValue.class)
-		};
+		DataTableBuilder builder = new DataTableBuilder();
 
-		DataValue[] valuesRow1 = {
-				new StringValue("This"),
-				new FloatValue(6.8f),
-				new FloatValue(6.9f),
-				new IntValue(5),
-				new IntValue(5)
-		};
+		stringColumn = builder.createColumn("string", StringValue.class);
+		intColumn = builder.createColumn("int", IntValue.class);
+		intsColumn = builder.createColumn("ints", IntValue.class);
+		floatColumn = builder.createColumn("float", FloatValue.class);
+		floatsColumn = builder.createColumn("floats", FloatValue.class);
 
-		DataValue[] valuesRow2 = {
-				new StringValue("Is"),
-				new FloatValue(6.9f),
-				new FloatValue(6.6f),
-				new IntValue(9),
-				new IntValue(4)
-		};
-
-		DataValue[] valuesRow3 = {
-				new StringValue("Sparta"),
-				new FloatValue(6.6f),
-				new FloatValue(6.9f),
-				new IntValue(4),
-				new IntValue(5)
-		};
-		rows.add(new DataRow(columns, valuesRow1));
-		rows.add(new DataRow(columns, valuesRow2));
-		rows.add(new DataRow(columns, valuesRow3));
-
-		dataModel = new DataModel(rows, Arrays.asList(columns));
+		builder.addColumn(stringColumn);
+		builder.addColumn(intColumn);
+		builder.addColumn(intsColumn);
+		builder.addColumn(floatColumn);
+		builder.addColumn(floatsColumn);
+		
+		builder.addRow(builder.createRow(new StringValue("What"), new IntValue(9), new IntValue(12), new FloatValue(6.9f), new FloatValue(8.8f)));
+		builder.addRow(builder.createRow(new StringValue("Can"), new IntValue(5), new IntValue(10), new FloatValue(6.5f), new FloatValue(6.9f)));
+		builder.addRow(builder.createRow(new StringValue("You"), new IntValue(3), new IntValue(3), new FloatValue(5.9f), new FloatValue(8.8f)));
+		builder.addRow(builder.createRow(new StringValue("Do"), new IntValue(10), new IntValue(12), new FloatValue(6.2f), new FloatValue(5.3f)));
+		
+		table = builder.build();
 	}
 	/**
 	 * column of strings should return empty list of maximums
-	 * @throws Exception
+	 * @throws Exception possibly
 	 */
 	@Test
 	public void testStringMaximum() throws Exception {
-		List<DataRow> maximum = new Maximum(dataModel,"stringcol").maximumCheck();
+		List<DataRow> maximum = new Maximum(table, new RowValueDescriber<>(stringColumn)).calculate();
 		List<DataRow> compare = new ArrayList<DataRow>();
 		assertEquals(compare, maximum);
 	}
 	@Test
 	public void testFloatMaximum() throws Exception {
-		List<DataRow> maximum = new Maximum(dataModel,"floatcol").maximumCheck();
-		FloatValue f = new FloatValue(6.9f);
-		assertEquals(f, maximum.get(0).getValue("floatcol"));
+		List<DataRow> max = new Maximum(table, new RowValueDescriber<>(floatColumn)).calculate();
+		assertEquals(new FloatValue(6.9f), max.get(0).getValue(floatColumn));
 	}
 	@Test
 	public void testIntMaximum() throws Exception {
-		List<DataRow> maximum = new Maximum(dataModel,"intcol").maximumCheck();
-		IntValue i = new IntValue(9);
-		assertEquals(i, maximum.get(0).getValue("intcol"));
+		List<DataRow> max = new Maximum(table, new RowValueDescriber<>(intColumn)).calculate();
+		assertEquals(new IntValue(10), max.get(0).getValue(intColumn));
 	}
 	@Test
 	public void testFloatMultipleMaximum() throws Exception {
-		List<DataRow> maximum = new Maximum(dataModel,"floatscol").maximumCheck();
-		FloatValue f = new FloatValue(6.9f);
-		assertEquals(f, maximum.get(0).getValue("floatscol"));
-		assertEquals(f, maximum.get(1).getValue("floatscol"));
+		List<DataRow> max = new Maximum(table, new RowValueDescriber<>(floatsColumn)).calculate();
+		FloatValue f = new FloatValue(8.8f);
+		assertEquals(f, max.get(0).getValue(floatsColumn));
+		assertEquals(f, max.get(1).getValue(floatsColumn));
 	}
 	@Test
 	public void testIntMultipleMaximum() throws Exception {
-		List<DataRow> maximum = new Maximum(dataModel,"intscol").maximumCheck();
-		IntValue i = new IntValue(5);
-		assertEquals(i, maximum.get(0).getValue("intscol"));
-		assertEquals(i, maximum.get(1).getValue("intscol"));
+		List<DataRow> max = new Maximum(table, new RowValueDescriber<>(intsColumn)).calculate();
+		IntValue f = new IntValue(12);
+		assertEquals(f, max.get(0).getValue(intsColumn));
+		assertEquals(f, max.get(1).getValue(intsColumn));
 	}
 }
