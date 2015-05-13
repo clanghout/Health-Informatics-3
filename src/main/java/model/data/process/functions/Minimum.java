@@ -26,42 +26,6 @@ public class Minimum extends Function{
 		this.argument = argument;
 		this.row = model.getRow(0);
 		this.rowlist = new ArrayList<DataRow>();
-	}
-	
-	public List<DataRow> floatCompare() {
-		for(int i = 0; i<model.getRowCount(); i++){
-			float currentVal = (float) argument.resolve(row).getValue();
-			DataRow compare = model.getRow(i);
-			float compareVal = (float) argument.resolve(compare).getValue();
-			if(currentVal > compareVal){
-				row = compare;
-				rowlist.clear();
-				rowlist.add(compare);
-			}
-			else if(currentVal == compareVal)
-				rowlist.add(compare);
-		}
-		return rowlist;
-	}
-	
-	/**
-	 * Get values and cast to int, determine minimum values
-	 * @return List of datarows which contain the minimum values of the column
-	 */
-	public List<DataRow> intCompare() {
-		for(int i = 0; i<model.getRowCount(); i++){
-			int currentVal = (int) argument.resolve(row).getValue();
-			DataRow compare = model.getRow(i);
-			int compareVal = (int) argument.resolve(compare).getValue();
-			if(currentVal > compareVal){
-				row = compare;
-				rowlist.clear();
-				rowlist.add(compare);
-			}
-			else if(currentVal == compareVal){
-				rowlist.add(compare);
-			}
-		}
-		return rowlist;
+		minimum = true;
 	}
 }

@@ -21,12 +21,16 @@ public abstract class Function {
 	private DataDescriber<NumberValue> argument;
 	private List<DataRow> rowlist;
 	private DataRow row;
-	
+	protected boolean minimum;
+	protected boolean maximum;
+
 	public Function(DataTable model, DataDescriber<NumberValue> argument) {
 		this.model = model;
 		this.argument = argument;
 		this.rowlist = new ArrayList<DataRow>();
 		this.row = null;
+		this.minimum = false;
+		this.maximum = false;
 	}
 	
 	public List<DataRow> calculate() {
@@ -59,8 +63,39 @@ public abstract class Function {
 			return rowlist;
 		}
 	}
-	
-	protected abstract List<DataRow> floatCompare();
-	
-	protected abstract List<DataRow> intCompare();
+
+	public List<DataRow> floatCompare(){
+		for(int i = 0; i<model.getRowCount(); i++){
+			float currentVal = (float) argument.resolve(row).getValue();
+			DataRow compare = model.getRow(i);
+			float compareVal = (float) argument.resolve(compare).getValue();
+			// if there's a new minimum or there's a new maximum
+			if((currentVal > compareVal && minimum) || (currentVal < compareVal && maximum)){
+				row = compare;
+				rowlist.clear();
+				rowlist.add(compare);
+			}
+			// if there's a duplicate minimum/maximum
+			else if(currentVal == compareVal)
+				rowlist.add(compare);
+		}
+		return rowlist;
+	}
+	public List<DataRow> intCompare(){
+		for(int i = 0; i<model.getRowCount(); i++){
+			int currentVal = (int) argument.resolve(row).getValue();
+			DataRow compare = model.getRow(i);
+			int compareVal = (int) argument.resolve(compare).getValue();
+			// if there's a new minimum or there's a new maximum
+			if((currentVal > compareVal && minimum) || (currentVal < compareVal && maximum)){
+				row = compare;
+				rowlist.clear();
+				rowlist.add(compare);
+			}
+			// if there's a duplicate minimum/maximum
+			else if(currentVal == compareVal)
+				rowlist.add(compare);
+		}
+		return rowlist;
+	}
 }
