@@ -51,47 +51,32 @@ public class RowFunction extends Function{
 			return rowlist;
 		}
 			if(argument.resolve(row).getClass().equals(FloatValue.class)){
-			return floatCompare();
+			return compare();
 		}
 		else if(argument.resolve(row).getClass().equals(IntValue.class)) {
-			return intCompare();
+			return compare();
 		}
 		else {
 			rowlist.clear();
 			return rowlist;
 		}
 	}
-	public List<DataRow> floatCompare() {
+	
+    public List<DataRow> compare() {
 		for(int i = 0; i<table.getRowCount(); i++){
-			float currentVal = (float) argument.resolve(row).getValue();
-			DataRow compare = table.getRow(i);
-			float compareVal = (float) argument.resolve(compare).getValue();
-			// if there's a new minimum or there's a new maximum
-			if((currentVal > compareVal && minimum) || (currentVal < compareVal && maximum)){
-				row = compare;
-				rowlist.clear();
-				rowlist.add(compare);
-			}
-			// if there's a duplicate minimum/maximum
-			else if(currentVal == compareVal)
-				rowlist.add(compare);
-		}
-		return rowlist;
-	}
-	public List<DataRow> intCompare() {
-		for(int i = 0; i<table.getRowCount(); i++){
-			int currentVal = (int) argument.resolve(row).getValue();
-			DataRow compare = table.getRow(i);
-			int compareVal = (int) argument.resolve(compare).getValue();
-			// new minimum or new maximum
-			if((currentVal > compareVal && minimum) || (currentVal < compareVal && maximum)){
-				row = compare;
-				rowlist.clear();
-				rowlist.add(compare);
-			}
-			// duplicate minimum/maximum
-			else if(currentVal == compareVal)
-				rowlist.add(compare);
+			Comparable currentVal = (Comparable) argument.resolve(row).getValue();
+		    DataRow compare = table.getRow(i);
+		    Comparable compareVal = (Comparable) argument.resolve(compare).getValue();
+		    // if there's a new minimum or there's a new maximum
+		    int comparison = currentVal.compareTo(compareVal);
+		    if((comparison > 0 && minimum) || (comparison < 0 && maximum)){
+		        row = compare;
+		        rowlist.clear();
+		        rowlist.add(compare);
+		    }
+		    // if there's a duplicate minimum/maximum
+		    else if(comparison == 0)
+		        rowlist.add(compare);
 		}
 		return rowlist;
 	}
