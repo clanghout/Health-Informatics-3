@@ -16,3 +16,10 @@ Each file element contains the property elements of the file. These properties a
 - the path to the file relative to the main program
 
 Because of the simited datafile examples (statsensor only) we have we only specify the type of the datafile. To make the xml more generic we can cconsider putting the delimiter in the xml file. 
+
+
+
+<<<<<<<<<UPDATE>>>>>>>>>>
+The datafile is a generic abstract class and has as it's children each type of datafile. A datafile type must always return an InputStream of the columns of data that it can read as rows with the method getDataStream(). This method must filter out all redundant data in the file such as headers and footers.
+Each line of the inputstream contains a row in the table it has read from the file.
+The other data of the file can be fetched with methods that can be specified in the subclasses.

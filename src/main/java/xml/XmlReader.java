@@ -5,9 +5,12 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import xml.filetype.DataFile;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -102,10 +105,8 @@ public class XmlReader {
 		String header   = elem.getElementsByTagName(HEADER_TAG).item(0).getTextContent();
 
 		String filename = parentDir + File.separator + path + File.separator + fileName;
-		return new DataFile(
-				filename,
-				type,
-				header);
+		DataFile theDataFile = DataFile.createDataFile(filename, type);
+		return theDataFile;
 	}
 	
 	/**

@@ -17,6 +17,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import xml.filetype.DataFile;
 import static org.junit.Assert.*;
 
 public class XmlReaderTest {

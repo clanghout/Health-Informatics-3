@@ -6,6 +6,8 @@ import java.io.*;
 
 import org.junit.Test;
 
+import xml.filetype.DataFile;
+
 public class DataFileTest {
 
 	@Test
