@@ -32,7 +32,10 @@ public abstract class Function {
 		this.minimum = false;
 		this.maximum = false;
 	}
-	
+	/**
+	 * This function does calculations which output dataRows. All calculations involve either floats or ints.
+	 * @return List<DataRow>
+	 */
 	public List<DataRow> calculateRows() {
 		if(model.getRowCount() == 0)
 			return rowlist; 
@@ -42,11 +45,6 @@ public abstract class Function {
 			return rowlist;
 		}
 		row = model.getRow(0);
-		/**
-		 * Check type of specified column
-		 * if it's a string column, getting its class throws an exception
-		 * for some reason...
-		 */
 		try {
 			argument.resolve(row).getClass();
 		} catch (Exception e) {
@@ -63,7 +61,10 @@ public abstract class Function {
 			return rowlist;
 		}
 	}
-
+	/**
+	 * This function compares floats to determine minimum/maximum values
+	 * @return List<DataRow>
+	 */
 	public List<DataRow> floatCompare(){
 		for(int i = 0; i<model.getRowCount(); i++){
 			float currentVal = (float) argument.resolve(row).getValue();
@@ -81,6 +82,10 @@ public abstract class Function {
 		}
 		return rowlist;
 	}
+	/**
+	 * This function compares floats to determine minimum/maximum values
+	 * @return List<DataRow>
+	 */
 	public List<DataRow> intCompare(){
 		for(int i = 0; i<model.getRowCount(); i++){
 			int currentVal = (int) argument.resolve(row).getValue();
