@@ -1,0 +1,3 @@
+Deze folder bevat de data die niet op de git mag, deze file zorgt ervoor dat
+git iets te pushen heeft, dus dat ik de folder (zonder de data) op git kan
+zetten.
