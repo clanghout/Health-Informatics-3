@@ -33,7 +33,7 @@ public abstract class Function {
 		this.maximum = false;
 	}
 	
-	public List<DataRow> calculate() {
+	public List<DataRow> calculateRows() {
 		if(model.getRowCount() == 0)
 			return rowlist; 
 

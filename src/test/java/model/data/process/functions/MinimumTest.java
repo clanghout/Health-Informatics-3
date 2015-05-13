@@ -69,30 +69,30 @@ public class MinimumTest {
 	 */
 	@Test
 	public void testStringMinimum() throws Exception {
-		List<DataRow> Minimum = new Minimum(table, new RowValueDescriber<>(stringColumn)).calculate();
+		List<DataRow> Minimum = new Minimum(table, new RowValueDescriber<>(stringColumn)).calculateRows();
 		List<DataRow> compare = new ArrayList<DataRow>();
 		assertEquals(compare, Minimum);
 	}
 	@Test
 	public void testFloatMinimum() throws Exception {
-		List<DataRow> min = new Minimum(table, new RowValueDescriber<>(floatColumn)).calculate();
+		List<DataRow> min = new Minimum(table, new RowValueDescriber<>(floatColumn)).calculateRows();
 		assertEquals(new FloatValue(5.9f), min.get(0).getValue(floatColumn));
 	}
 	@Test
 	public void testIntMinimum() throws Exception {
-		List<DataRow> min = new Minimum(table, new RowValueDescriber<>(intColumn)).calculate();
+		List<DataRow> min = new Minimum(table, new RowValueDescriber<>(intColumn)).calculateRows();
 		assertEquals(new IntValue(3), min.get(0).getValue(intColumn));
 	}
 	@Test
 	public void testFloatMultipleMinimum() throws Exception {
-		List<DataRow> min = new Minimum(table, new RowValueDescriber<>(floatsColumn)).calculate();
+		List<DataRow> min = new Minimum(table, new RowValueDescriber<>(floatsColumn)).calculateRows();
 		FloatValue f = new FloatValue(5.3f);
 		assertEquals(f, min.get(0).getValue(floatsColumn));
 		assertEquals(f, min.get(1).getValue(floatsColumn));
 	}
 	@Test
 	public void testIntMultipleMinimum() throws Exception {
-		List<DataRow> min = new Minimum(table, new RowValueDescriber<>(intsColumn)).calculate();
+		List<DataRow> min = new Minimum(table, new RowValueDescriber<>(intsColumn)).calculateRows();
 		IntValue f = new IntValue(3);
 		assertEquals(f, min.get(0).getValue(intsColumn));
 		assertEquals(f, min.get(1).getValue(intsColumn));

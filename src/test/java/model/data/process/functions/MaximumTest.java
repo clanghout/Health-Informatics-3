@@ -69,30 +69,30 @@ public class MaximumTest {
 	 */
 	@Test
 	public void testStringMaximum() throws Exception {
-		List<DataRow> maximum = new Maximum(table, new RowValueDescriber<>(stringColumn)).calculate();
+		List<DataRow> maximum = new Maximum(table, new RowValueDescriber<>(stringColumn)).calculateRows();
 		List<DataRow> compare = new ArrayList<DataRow>();
 		assertEquals(compare, maximum);
 	}
 	@Test
 	public void testFloatMaximum() throws Exception {
-		List<DataRow> max = new Maximum(table, new RowValueDescriber<>(floatColumn)).calculate();
+		List<DataRow> max = new Maximum(table, new RowValueDescriber<>(floatColumn)).calculateRows();
 		assertEquals(new FloatValue(6.9f), max.get(0).getValue(floatColumn));
 	}
 	@Test
 	public void testIntMaximum() throws Exception {
-		List<DataRow> max = new Maximum(table, new RowValueDescriber<>(intColumn)).calculate();
+		List<DataRow> max = new Maximum(table, new RowValueDescriber<>(intColumn)).calculateRows();
 		assertEquals(new IntValue(10), max.get(0).getValue(intColumn));
 	}
 	@Test
 	public void testFloatMultipleMaximum() throws Exception {
-		List<DataRow> max = new Maximum(table, new RowValueDescriber<>(floatsColumn)).calculate();
+		List<DataRow> max = new Maximum(table, new RowValueDescriber<>(floatsColumn)).calculateRows();
 		FloatValue f = new FloatValue(8.8f);
 		assertEquals(f, max.get(0).getValue(floatsColumn));
 		assertEquals(f, max.get(1).getValue(floatsColumn));
 	}
 	@Test
 	public void testIntMultipleMaximum() throws Exception {
-		List<DataRow> max = new Maximum(table, new RowValueDescriber<>(intsColumn)).calculate();
+		List<DataRow> max = new Maximum(table, new RowValueDescriber<>(intsColumn)).calculateRows();
 		IntValue f = new IntValue(12);
 		assertEquals(f, max.get(0).getValue(intsColumn));
 		assertEquals(f, max.get(1).getValue(intsColumn));
