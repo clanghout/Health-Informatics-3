@@ -29,3 +29,7 @@ out/
 *.bbl
 *.blg
 *.dvi
+
+#super secret data
+super-secret-Data/*
+!super-secret-Data/temp.txt
