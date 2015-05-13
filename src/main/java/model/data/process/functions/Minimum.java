@@ -9,7 +9,7 @@ import model.data.value.NumberValue;
  * @author Louis Gosschalk 
  * @date 11-05-2015
  */
-public class Minimum extends Function{
+public class Minimum extends RowFunction {
 	
 	public Minimum(DataTable model, DataDescriber<NumberValue> argument) {
 		super(model, argument);

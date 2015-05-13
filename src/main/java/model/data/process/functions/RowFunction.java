@@ -11,46 +11,46 @@ import model.data.value.IntValue;
 import model.data.value.NumberValue;
 
 /**
- * A class for finding the row with the minimum or maximum value for the specified column in a model
- * @author Louis Gosschalk 
- * @date 11-05-2015
+ * This class will provide a framework for functions resulting multiple rows of data
+ * @author louisgosschalk
+ *13-05-2015
  */
-public abstract class Function {
-	
-	private DataTable model;
+public class RowFunction extends Function{
+	protected boolean minimum;
+	protected boolean maximum;
+	private DataTable table;
 	private DataDescriber<NumberValue> argument;
 	private List<DataRow> rowlist;
 	private DataRow row;
-	protected boolean minimum;
-	protected boolean maximum;
-
-	public Function(DataTable model, DataDescriber<NumberValue> argument) {
-		this.model = model;
+	
+	public RowFunction(DataTable model, DataDescriber<NumberValue> argument) {
+		super(model, argument);
+		this.table = model;
 		this.argument = argument;
-		this.rowlist = new ArrayList<DataRow>();
-		this.row = null;
 		this.minimum = false;
 		this.maximum = false;
+		this.rowlist = new ArrayList<DataRow>();
+		this.row = null;
 	}
 	/**
-	 * This function does calculations which output dataRows. All calculations involve either floats or ints.
-	 * @return List<DataRow>
+	 * this function checks restrictions for the calculation and calls its execution
+	 * @return List<DataRow> the rows containing the minimum
 	 */
-	public List<DataRow> calculateRows() {
-		if(model.getRowCount() == 0)
+	public List<DataRow> calculate() {
+		if(table.getRowCount() == 0)
 			return rowlist; 
-
-		if(model.getRowCount() == 1) {
-			rowlist.add(model.getRow(0));
+			
+		if(table.getRowCount() == 1) {
+			rowlist.add(table.getRow(0));
 			return rowlist;
 		}
-		row = model.getRow(0);
+		row = table.getRow(0);
 		try {
 			argument.resolve(row).getClass();
 		} catch (Exception e) {
 			return rowlist;
 		}
-		if(argument.resolve(row).getClass() == (FloatValue.class)){
+			if(argument.resolve(row).getClass().equals(FloatValue.class)){
 			return floatCompare();
 		}
 		else if(argument.resolve(row).getClass().equals(IntValue.class)) {
@@ -61,14 +61,10 @@ public abstract class Function {
 			return rowlist;
 		}
 	}
-	/**
-	 * This function compares floats to determine minimum/maximum values
-	 * @return List<DataRow>
-	 */
-	public List<DataRow> floatCompare(){
-		for(int i = 0; i<model.getRowCount(); i++){
+	public List<DataRow> floatCompare() {
+		for(int i = 0; i<table.getRowCount(); i++){
 			float currentVal = (float) argument.resolve(row).getValue();
-			DataRow compare = model.getRow(i);
+			DataRow compare = table.getRow(i);
 			float compareVal = (float) argument.resolve(compare).getValue();
 			// if there's a new minimum or there's a new maximum
 			if((currentVal > compareVal && minimum) || (currentVal < compareVal && maximum)){
@@ -82,22 +78,18 @@ public abstract class Function {
 		}
 		return rowlist;
 	}
-	/**
-	 * This function compares floats to determine minimum/maximum values
-	 * @return List<DataRow>
-	 */
-	public List<DataRow> intCompare(){
-		for(int i = 0; i<model.getRowCount(); i++){
+	public List<DataRow> intCompare() {
+		for(int i = 0; i<table.getRowCount(); i++){
 			int currentVal = (int) argument.resolve(row).getValue();
-			DataRow compare = model.getRow(i);
+			DataRow compare = table.getRow(i);
 			int compareVal = (int) argument.resolve(compare).getValue();
-			// if there's a new minimum or there's a new maximum
+			// new minimum or new maximum
 			if((currentVal > compareVal && minimum) || (currentVal < compareVal && maximum)){
 				row = compare;
 				rowlist.clear();
 				rowlist.add(compare);
 			}
-			// if there's a duplicate minimum/maximum
+			// duplicate minimum/maximum
 			else if(currentVal == compareVal)
 				rowlist.add(compare);
 		}
