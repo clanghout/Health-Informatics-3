@@ -34,15 +34,12 @@ public class Maximum extends Function{
 			DataRow compare = model.getRow(i);
 			float compareVal = (float) argument.resolve(compare).getValue();
 			if(currentVal < compareVal){
-				System.out.println("new maximum");
 				row = compare;
 				rowlist.clear();
 				rowlist.add(compare);
 			}
-			else if(currentVal == compareVal){
-				System.out.println("new double maximum");
+			else if(currentVal == compareVal)
 				rowlist.add(compare);
-			}
 		}
 		return rowlist;
 	}

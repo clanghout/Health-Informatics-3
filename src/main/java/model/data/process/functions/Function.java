@@ -49,11 +49,9 @@ public abstract class Function {
 			return rowlist;
 		}
 		if(argument.resolve(row).getClass() == (FloatValue.class)){
-			System.out.println("intcompare executing");
 			return floatCompare();
 		}
 		else if(argument.resolve(row).getClass().equals(IntValue.class)) {
-			System.out.println("intcompare executing");
 			return intCompare();
 		}
 		else {
