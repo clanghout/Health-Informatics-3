@@ -1,8 +1,8 @@
 package model.data.process.analysis.constraints;
 
 import model.data.DataRow;
-import model.data.DataValue;
 import model.data.describer.DataDescriber;
+import model.data.value.DataValue;
 
 /**
  * A check for equality.

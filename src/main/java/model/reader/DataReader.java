@@ -1,9 +1,9 @@
 package model.reader;
 
-import model.data.DataModel;
-import model.data.DataModelBuilder;
+import model.data.DataTable;
+import model.data.DataTableBuilder;
 import model.data.DataRow;
-import model.data.DataValue;
+import model.data.value.DataValue;
 import model.data.value.StringValue;
 
 import java.io.*;
@@ -23,10 +23,10 @@ public class DataReader {
 	/**
 	 * Read the data from the file with the specified filename.
 	 * @param filename The filename of the file you want to read the data from
-	 * @return A DataModel containing the data from the specified file
+	 * @return A DataTable containing the data from the specified file
 	 * @throws IOException If anything goes wrong reading the file
 	 */
-	public DataModel readData(String filename) throws IOException {
+	public DataTable readData(String filename) throws IOException {
 		File file = new File(filename);
 		return readData(file);
 	}
@@ -34,10 +34,10 @@ public class DataReader {
 	/**
 	 * Read the data from the specifed file.
 	 * @param file The file you want to read the data from
-	 * @return A DataModel containing the data from the specified file
+	 * @return A DataTable containing the data from the specified file
 	 * @throws IOException If anything goes wrong reading the file
 	 */
-	public DataModel readData(File file) throws IOException {
+	public DataTable readData(File file) throws IOException {
 		BufferedInputStream stream = new BufferedInputStream(new FileInputStream(file));
 		return readData(stream);
 	}
@@ -45,19 +45,19 @@ public class DataReader {
 	/**
 	 * Read the data from the specified stream.
 	 * @param stream The stream you want to read the data from
-	 * @return A DataModel containing the data from the specified stream
+	 * @return A DataTable containing the data from the specified stream
 	 * @throws IOException If anything goes wrong reading the stream
 	 */
-	public DataModel readData(InputStream stream) throws IOException {
+	public DataTable readData(InputStream stream) throws IOException {
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"))) {
 			skipToContent(reader);
 
-			DataModelBuilder builder = new DataModelBuilder();
+			DataTableBuilder builder = new DataTableBuilder();
 			addColumns(builder);
 
-			DataModel model = readRows(reader, builder);
+			DataTable table = readRows(reader, builder);
 
-			return model;
+			return table;
 		} catch (IOException e) {
 			log.throwing(this.getClass().getSimpleName(), "readData", e);
 			throw e;
@@ -70,7 +70,7 @@ public class DataReader {
 		}
 	}
 
-	private DataModel readRows(BufferedReader reader, DataModelBuilder builder) throws IOException {
+	private DataTable readRows(BufferedReader reader, DataTableBuilder builder) throws IOException {
 		String line;
 		while (!(line = reader.readLine()).contains("]")) {
 			String[] sections = line.split(",");
@@ -83,7 +83,7 @@ public class DataReader {
 		return builder.build();
 	}
 
-	private void addColumns(DataModelBuilder builder) {
+	private void addColumns(DataTableBuilder builder) {
 		builder.addColumn(builder.createColumn("quantity", StringValue.class));
 		builder.addColumn(builder.createColumn("measurement", StringValue.class));
 		builder.addColumn(builder.createColumn("unit", StringValue.class));
