@@ -3,84 +3,59 @@ package model.data.process.functions;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.data.DataModel;
 import model.data.DataRow;
-import model.data.value.FloatValue;
-import model.data.value.IntValue;
+import model.data.DataTable;
+import model.data.describer.DataDescriber;
+import model.data.value.NumberValue;
 
 /**
  * A class for finding the row with the minimum value for the specified column in a model
  * @author Louis Gosschalk 
  * @date 11-05-2015
  */
-public class Minimum {
+public class Minimum extends Function{
 	
-	private DataModel model;
-	private String name;
-	private List<DataRow> rowlist;
+	private DataTable model;
+	private DataDescriber<NumberValue> argument;
+	private ArrayList<DataRow> rowlist;
 	private DataRow row;
 	
-	public Minimum(DataModel model, String columnName) {
+	public Minimum(DataTable model, DataDescriber<NumberValue> argument) {
+		super(model, argument);
 		this.model = model;
-		this.name = columnName;
-		this.rowlist = new ArrayList<>();
-		this.row = null;
+		this.argument = argument;
+		this.row = model.getRow(0);
+		this.rowlist = new ArrayList<DataRow>();
 	}
-	/**
-	 * @param model datamodel containing the input
-	 * @param columnName string specifying the 
-	 * @return List of DataRow; because duplicate minimums are possible.
-	 */
-	public List<DataRow> minimumCheck() {
-		if(model.getRowCount() != 0)
-			row = model.getRow(0);
-		else
-			return rowlist; 
-
-		if(model.getRowCount() == 1) {
-			rowlist.add(row);
-			return rowlist;
-		}
-		/**
-		 * Check type of specified column
-		 */
-		if(model.getColumns().get(name).getType().equals(FloatValue.class))
-			 floatCompare();
-		else if(model.getColumns().get(name).getType().equals(IntValue.class))
-			 intCompare();
-		else rowlist.clear();
-		
-		return rowlist;
-	}
-	/**
-	 * Get values and cast to Float, determine minimum values
-	 * @return List of datarows which contain the minimum values of the column
-	 */
+	
 	public List<DataRow> floatCompare() {
 		for(int i = 0; i<model.getRowCount(); i++){
-			float currentVal = (float) row.getValue(name).getValue();
+			float currentVal = (float) argument.resolve(row).getValue();
 			DataRow compare = model.getRow(i);
-			float compareVal = (float) compare.getValue(name).getValue();
+			float compareVal = (float) argument.resolve(compare).getValue();
 			if(currentVal > compareVal){
+				System.out.println("new minimum");
 				row = compare;
 				rowlist.clear();
 				rowlist.add(compare);
 			}
 			else if(currentVal == compareVal){
+				System.out.println("new double minimum");
 				rowlist.add(compare);
 			}
 		}
 		return rowlist;
 	}
+	
 	/**
 	 * Get values and cast to int, determine minimum values
 	 * @return List of datarows which contain the minimum values of the column
 	 */
 	public List<DataRow> intCompare() {
 		for(int i = 0; i<model.getRowCount(); i++){
-			int currentVal = (int) row.getValue(name).getValue();
+			int currentVal = (int) argument.resolve(row).getValue();
 			DataRow compare = model.getRow(i);
-			int compareVal = (int) compare.getValue(name).getValue();
+			int compareVal = (int) argument.resolve(compare).getValue();
 			if(currentVal > compareVal){
 				row = compare;
 				rowlist.clear();
