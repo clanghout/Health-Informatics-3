@@ -26,9 +26,9 @@ public class XlsxFileTest {
 		try {
 			InputStream stream = xlsxFile.getDataStream();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-			assertEquals("foo\tbar", reader.readLine());
-			assertEquals("row2\tbar\tbar\tbat", reader.readLine());
-			assertEquals("row3\tbar\tbar\tbats", reader.readLine());
+			assertEquals("foo\tbar\t", reader.readLine());
+			assertEquals("row2\tbar\tbar\tbat\t", reader.readLine());
+			assertEquals("row3\tbar\tbar\tbats\t", reader.readLine());
 			assertNull(reader.readLine());
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -20,7 +20,7 @@ public class PlainTextFile extends DataFile {
 	
 	@Override
 	public InputStream getDataStream() throws FileNotFoundException {
-		InputStream stream = new FileInputStream(path);
+		InputStream stream = new FileInputStream(getFile());
 		Scanner scanner = new Scanner(stream, "UTF-8");
 		scanner.useDelimiter("\\A");
 		String convertedStream = "";
