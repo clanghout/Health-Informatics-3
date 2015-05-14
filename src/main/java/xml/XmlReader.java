@@ -26,33 +26,58 @@ import java.util.List;
  */
 public class XmlReader {
 
-	private static final String FILE_TAG        = "file";
-	private static final String TYPE_TAG        = "type";
-	private static final String PATH_TAG        = "path";
-	private static final String NAME_ATTRIBUTE  = "name";
-	private static final String DATA_TAG        = "data";
-	private static final String START_TAG       = "start";
-	private static final String END_TAG         = "end";
-	
-	
-	
+	/**
+	 * The name of the filetag in the xml file.
+	 */
+	private static final String FILE_TAG = "file";
+
+	/**
+	 * The name of the typetag in the xml file.
+	 */
+	private static final String TYPE_TAG = "type";
+
+	/**
+	 * The name of the pathtag in the xml file.
+	 */
+	private static final String PATH_TAG = "path";
+
+	/**
+	 * The name of the filename attribute in the xml file.
+	 */
+	private static final String NAME_ATTRIBUTE = "name";
+
+	/**
+	 * The name of the datatag in the xml file.
+	 */
+	private static final String DATA_TAG = "data";
+
+	/**
+	 * The name of the starttag in the xml file.
+	 */
+	private static final String START_TAG = "start";
+
+	/**
+	 * The name of the endtag in the xml file.
+	 */
+	private static final String END_TAG = "end";
+
+
+
 	private Document document;
 	private NodeList filesList;
 	private List<DataFile> dataFiles;
 
 	/**
 	 * Creates a new XmlReader.
-	 * @param file The file that will be read.
 	 */
-	public XmlReader() {}
-	
+	public XmlReader() { }
+
 	/**
-	 * Reads the xml file and returns a Document that can be used 
+	 * Reads the xml file and returns a Document that can be used.
 	 * to extract data from the xml file.
-	 * 
 	 * @param file The xml file
 	 * @return The read document
-	 * @throws ParserConfigurationException 
+	 * @throws ParserConfigurationException When 
 	 * @throws IOException 
 	 * @throws SAXException 
 	 */
@@ -104,9 +129,9 @@ public class XmlReader {
 		
 		String completePath;
 		Element pathElement = (Element) elem.getElementsByTagName(PATH_TAG).item(0);
-		if(pathElement != null) {
-			String path     = elem.getElementsByTagName(PATH_TAG).item(0).getTextContent();
-			completePath = parentDir + File.separator + path + File.separator + fileName;
+		if (pathElement != null) {
+			String path  = elem.getElementsByTagName(PATH_TAG).item(0).getTextContent();
+			completePath = parentDir + File.separator + path + File.separator + fileName;			
 		}
 		else {
 			completePath = fileName;
@@ -115,16 +140,16 @@ public class XmlReader {
 		DataFile theDataFile = DataFile.createDataFile(completePath, type);
 
 		Element data = (Element) elem.getElementsByTagName(DATA_TAG).item(0);
-		if(data != null) {
+		if (data != null) {
 		
 			Element startElement = (Element) data.getElementsByTagName(START_TAG).item(0);
 			Element endElement   = (Element) data.getElementsByTagName(END_TAG).item(0);
 			
-			if(startElement != null) {
+			if (startElement != null) {
 				int start = Integer.parseInt(startElement.getTextContent());			
 				theDataFile.setStartLine(start);
 			}
-			if(endElement != null) {
+			if (endElement != null) {
 				int end = Integer.parseInt(endElement.getTextContent());
 				theDataFile.setEndLine(end);
 			}

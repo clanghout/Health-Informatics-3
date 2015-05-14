@@ -36,13 +36,15 @@ public abstract class DataFile {
 		return path;
 	}
 	
-	public static DataFile createDataFile(String path, String type) throws DataFileNotRecognizedException {
+	public static DataFile createDataFile(String path, String type) 
+			throws DataFileNotRecognizedException {
 		switch(type) {
 			case "plaintext": return new PlainTextFile(path);
 			case "xls": return new XlsFile(path);
 			case "xlsx": return new XlsxFile(path);
-		} 
-		throw new DataFileNotRecognizedException("Type " + type + " is not recognized");		
+			default: throw new DataFileNotRecognizedException("Type " + type 
+					+ " is not recognized");
+		} 	
 	}
 	
 	public void setStartLine(int startLine) {
