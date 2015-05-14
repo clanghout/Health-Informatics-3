@@ -11,11 +11,13 @@ import exceptions.DataFileNotRecognizedException;
 public abstract class DataFile {
 
 	protected String path;
-	protected int beginLine;
+	protected int startLine;
 	protected int endLine;
 	
 	public DataFile(String path) {
 		this.path = path;
+		this.startLine = 1;
+		this.endLine = Integer.MAX_VALUE;
 	}
 
 	/**
@@ -43,12 +45,12 @@ public abstract class DataFile {
 		throw new DataFileNotRecognizedException("Type " + type + " is not recognized");		
 	}
 	
-	public void setBeginLine(int beginLine) {
-		this.beginLine = beginLine;
+	public void setStartLine(int startLine) {
+		this.startLine = startLine;
 	}
 	
-	public int getBeginLine() {
-		return beginLine;
+	public int getStartLine() {
+		return startLine;
 	}
 	
 	public void setEndLine(int endLine) {

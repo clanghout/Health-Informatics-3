@@ -26,10 +26,15 @@ import java.util.List;
  */
 public class XmlReader {
 
-	private static final String FILE_TAG		= "file";
-	private static final String TYPE_TAG		= "type";
-	private static final String PATH_TAG		= "path";
-	private static final String NAME_ATTRIBUTE	= "name";
+	private static final String FILE_TAG        = "file";
+	private static final String TYPE_TAG        = "type";
+	private static final String PATH_TAG        = "path";
+	private static final String NAME_ATTRIBUTE  = "name";
+	private static final String DATA_TAG        = "data";
+	private static final String START_TAG       = "start";
+	private static final String END_TAG         = "end";
+	
+	
 	
 	private Document document;
 	private NodeList filesList;
@@ -94,11 +99,13 @@ public class XmlReader {
 	 * @param parentDir The parent of the file
 	 */
 	public DataFile createDataFile(Element elem, String parentDir) {
-		String fileName = elem.getAttribute(NAME_ATTRIBUTE);
-		String type     = elem.getElementsByTagName(TYPE_TAG).item(0).getTextContent();
-		
+		String fileName  = elem.getAttribute(NAME_ATTRIBUTE);
+		String type      = elem.getElementsByTagName(TYPE_TAG).item(0).getTextContent();
+		Element data = (Element) elem.getElementsByTagName(DATA_TAG).item(0);
+		int start = Integer.parseInt(data.getElementsByTagName(START_TAG).item(0).getTextContent());
+		int end   = Integer.parseInt(data.getElementsByTagName(END_TAG).item(0).getTextContent());
 		String completePath;
-		if(elem.getElementsByTagName(PATH_TAG).item(0) != null){			
+		if(elem.getElementsByTagName(PATH_TAG).item(0) != null) {
 			String path     = elem.getElementsByTagName(PATH_TAG).item(0).getTextContent();
 			completePath = parentDir + File.separator + path + File.separator + fileName;
 		}
@@ -106,6 +113,8 @@ public class XmlReader {
 			completePath = fileName;
 		}
 		DataFile theDataFile = DataFile.createDataFile(completePath, type);
+		theDataFile.setStartLine(start);
+		theDataFile.setEndLine(end);
 		return theDataFile;
 	}
 	

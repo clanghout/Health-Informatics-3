@@ -6,8 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Class to specify a .txt file.
@@ -15,8 +13,6 @@ import java.util.regex.Pattern;
  *
  */
 public class PlainTextFile extends DataFile {
-
-	private String headerPattern;
 	
 	public PlainTextFile(String path) {
 		super(path);
@@ -27,16 +23,30 @@ public class PlainTextFile extends DataFile {
 		InputStream stream = new FileInputStream(path);
 		Scanner scanner = new Scanner(stream, "UTF-8");
 		scanner.useDelimiter("\\A");
-		String convertedStream = scanner.hasNext() ? scanner.next() : "";
+		String convertedStream = "";
+		int i = 1;
+
+		//Skip to beginline
+		while(i != startLine && scanner.hasNextLine()) {
+			System.out.println(i + "   " + scanner.nextLine());
+			i++;
+		}
+		
+		while(i <= endLine && scanner.hasNextLine()) {
+			String read = scanner.nextLine();
+			System.out.println("read: " + i + "   " + read);
+			convertedStream += read + "\n";
+			i++;
+		}
+		
+		System.out.println();
+		System.out.println("FILTERED : \n" + convertedStream);
 		scanner.close();
-
-		Pattern pattern = Pattern.compile(headerPattern);
-		Matcher matcher = pattern.matcher(convertedStream);
-		convertedStream = matcher.replaceAll("");
-
+		
 		InputStream newStream = new ByteArrayInputStream(
 				convertedStream.getBytes(StandardCharsets.UTF_8)
 		);
+		
 		return newStream;
 	}
 
