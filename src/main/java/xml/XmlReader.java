@@ -27,7 +27,6 @@ import java.util.List;
 public class XmlReader {
 
 	private static final String FILE_TAG		= "file";
-	private static final String HEADER_TAG		= "header";
 	private static final String TYPE_TAG		= "type";
 	private static final String PATH_TAG		= "path";
 	private static final String NAME_ATTRIBUTE	= "name";
@@ -38,15 +37,9 @@ public class XmlReader {
 
 	/**
 	 * Creates a new XmlReader.
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
 	 * @param file The file that will be read.
 	 */
-	public XmlReader(File file)
-			throws ParserConfigurationException, SAXException, IOException {
-		read(file);
-	}
+	public XmlReader() {}
 	
 	/**
 	 * Reads the xml file and returns a Document that can be used 
@@ -83,7 +76,7 @@ public class XmlReader {
 		DocumentBuilder builder = dbf.newDocumentBuilder();
 		document = builder.parse(stream);
 		document.normalize();
-		Element root = document.getDocumentElement();
+		Element root = (Element) document.getDocumentElement();
 		filesList = root.getElementsByTagName(FILE_TAG);
 		
 		for (int i = 0; i < filesList.getLength(); i++) {
@@ -97,15 +90,22 @@ public class XmlReader {
 	/**
 	 * Creates a DataFile from a file Element.
 	 * @return a new DataFile
+	 * @param elem The file element read from the xml file
+	 * @param parentDir The parent of the file
 	 */
 	public DataFile createDataFile(Element elem, String parentDir) {
 		String fileName = elem.getAttribute(NAME_ATTRIBUTE);
 		String type     = elem.getElementsByTagName(TYPE_TAG).item(0).getTextContent();
-		String path     = elem.getElementsByTagName(PATH_TAG).item(0).getTextContent();
-		String header   = elem.getElementsByTagName(HEADER_TAG).item(0).getTextContent();
-
-		String filename = parentDir + File.separator + path + File.separator + fileName;
-		DataFile theDataFile = DataFile.createDataFile(filename, type);
+		
+		String completePath;
+		if(elem.getElementsByTagName(PATH_TAG).item(0) != null){			
+			String path     = elem.getElementsByTagName(PATH_TAG).item(0).getTextContent();
+			completePath = parentDir + File.separator + path + File.separator + fileName;
+		}
+		else {
+			completePath = fileName;
+		}
+		DataFile theDataFile = DataFile.createDataFile(completePath, type);
 		return theDataFile;
 	}
 	

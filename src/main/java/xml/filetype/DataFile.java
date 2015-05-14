@@ -11,18 +11,13 @@ import exceptions.DataFileNotRecognizedException;
 public abstract class DataFile {
 
 	protected String path;
+	protected int beginLine;
+	protected int endLine;
 	
 	public DataFile(String path) {
 		this.path = path;
 	}
-	
-	/**
-	 * Returns the type of the DataFile.
-	 *
-	 * @return The type
-	 */
-	public abstract String getType();
-	
+
 	/**
 	 * Returns the rows of the DataFile only. All redundant data is filtered out.
 	 *
@@ -41,12 +36,29 @@ public abstract class DataFile {
 	
 	public static DataFile createDataFile(String path, String type) throws DataFileNotRecognizedException {
 		switch(type) {
-			case "statsensor": return new StatsensorFile(path);
-			case "admireinput": return new XlsFile(path);
+			case "plaintext": return new PlainTextFile(path);
+			case "xls": return new XlsFile(path);
+			case "xlsx": return new XlsxFile(path);
 		} 
 		throw new DataFileNotRecognizedException("Type " + type + " is not recognized");		
 	}
 	
+	public void setBeginLine(int beginLine) {
+		this.beginLine = beginLine;
+	}
+	
+	public int getBeginLine() {
+		return beginLine;
+	}
+	
+	public void setEndLine(int endLine) {
+		this.endLine = endLine;
+	}
+	
+	public int getEndLine() {
+		return endLine;
+	}
+
 	/**
 	 * Returns a string representation of the datafile.
 	 *

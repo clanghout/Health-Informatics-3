@@ -14,11 +14,11 @@ import java.util.regex.Pattern;
  * @author Paul
  *
  */
-public class StatsensorFile extends DataFile {
+public class PlainTextFile extends DataFile {
 
 	private String headerPattern;
 	
-	public StatsensorFile(String path) {
+	public PlainTextFile(String path) {
 		super(path);
 	}
 	
@@ -38,12 +38,6 @@ public class StatsensorFile extends DataFile {
 				convertedStream.getBytes(StandardCharsets.UTF_8)
 		);
 		return newStream;
-	}
-
-	@Override
-	public String getType() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
