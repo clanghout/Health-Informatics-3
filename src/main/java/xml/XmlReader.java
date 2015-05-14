@@ -101,20 +101,34 @@ public class XmlReader {
 	public DataFile createDataFile(Element elem, String parentDir) {
 		String fileName  = elem.getAttribute(NAME_ATTRIBUTE);
 		String type      = elem.getElementsByTagName(TYPE_TAG).item(0).getTextContent();
-		Element data = (Element) elem.getElementsByTagName(DATA_TAG).item(0);
-		int start = Integer.parseInt(data.getElementsByTagName(START_TAG).item(0).getTextContent());
-		int end   = Integer.parseInt(data.getElementsByTagName(END_TAG).item(0).getTextContent());
+		
 		String completePath;
-		if(elem.getElementsByTagName(PATH_TAG).item(0) != null) {
+		Element pathElement = (Element) elem.getElementsByTagName(PATH_TAG).item(0);
+		if(pathElement != null) {
 			String path     = elem.getElementsByTagName(PATH_TAG).item(0).getTextContent();
 			completePath = parentDir + File.separator + path + File.separator + fileName;
 		}
 		else {
 			completePath = fileName;
 		}
+		
 		DataFile theDataFile = DataFile.createDataFile(completePath, type);
-		theDataFile.setStartLine(start);
-		theDataFile.setEndLine(end);
+
+		Element data = (Element) elem.getElementsByTagName(DATA_TAG).item(0);
+		if(data != null) {
+		
+			Element startElement = (Element) data.getElementsByTagName(START_TAG).item(0);
+			Element endElement   = (Element) data.getElementsByTagName(END_TAG).item(0);
+			
+			if(startElement != null) {
+				int start = Integer.parseInt(startElement.getTextContent());			
+				theDataFile.setStartLine(start);
+			}
+			if(endElement != null) {
+				int end = Integer.parseInt(endElement.getTextContent());
+				theDataFile.setEndLine(end);
+			}
+		}
 		return theDataFile;
 	}
 	

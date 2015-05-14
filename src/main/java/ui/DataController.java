@@ -15,7 +15,7 @@ import model.data.process.analysis.constraints.EqualityCheck;
 import model.data.value.StringValue;
 import model.reader.DataReader;
 import output.DataTableWriter;
-import xml.DataFile;
+import xml.filetype.DataFile;
 import xml.XmlReader;
 
 import java.io.File;
@@ -62,10 +62,11 @@ public class DataController {
 	@FXML
 	protected void handleAnalyseButtonAction(ActionEvent event) {
 		try {
-			XmlReader reader = new XmlReader(file);
+			XmlReader reader = new XmlReader();
+			reader.read(file);
 			DataFile dataFile = reader.getDataFiles().get(0);
 			DataReader dataReader = new DataReader();
-			DataTable input = dataReader.readData(dataFile.filterHeader());
+			DataTable input = dataReader.readData(dataFile.getDataStream());
 
 			Constraint constraint = new EqualityCheck<>(
 					new RowValueDescriber<>(input.getColumns().get("time")),

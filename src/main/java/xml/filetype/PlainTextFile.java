@@ -28,19 +28,15 @@ public class PlainTextFile extends DataFile {
 
 		//Skip to beginline
 		while(i != startLine && scanner.hasNextLine()) {
-			System.out.println(i + "   " + scanner.nextLine());
+			scanner.nextLine();
 			i++;
 		}
 		
 		while(i <= endLine && scanner.hasNextLine()) {
-			String read = scanner.nextLine();
-			System.out.println("read: " + i + "   " + read);
-			convertedStream += read + "\n";
+			convertedStream += scanner.nextLine() + "\n";
 			i++;
 		}
 		
-		System.out.println();
-		System.out.println("FILTERED : \n" + convertedStream);
 		scanner.close();
 		
 		InputStream newStream = new ByteArrayInputStream(
