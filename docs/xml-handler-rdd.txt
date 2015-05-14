@@ -2,24 +2,55 @@ The user story was: As a user I want to specify an xml file to describe the data
 
 1) first the user must be able to choose the xml file. This will be done using the graphical user interface. The user selects an xml file (by using a filechooser) from his drive which contains the description of the datafile and where the datafile can be found.
 
-2) Next the header (description of datafile and header of the columns) from the selected datafile must be filtered so that the data can be loaded into the datamodel. The header will be filtered using a RegEx which is specified in the xml file.
+2) Next the header (description of datafile and header of the columns) from the selected datafile must be filtered so that the data can be loaded into the datamodel. Plain text files such as the statsensor file may contain a header which must not me included in the data. Therefore, a range of lines that contain the data can be specified in the xml file.
 
 3) The data will be read from the datafiles using the xml.
 
 The goal of the xml feature is that the end user can save and load settings on how the files he specifies will be imported into the datamodel. The xml file can be chosen by using an "open" button in the GUI's menu. This xml file will then be parsed to determine the type and location of the datafiles. 
 
-The following structure will be used for the xml file:
-The root node will be a document element with the attribute the name of the xml file. The children of the root node will be file elements which represent the files that the user selected for analysis. The attribute for the file element will be the name of the file.
-Each file element contains the property elements of the file. These properties are:
-- the type of file it represents
-- the regex pattern that will be used to filter out the header of the datafile
-- the path to the file relative to the main program
 
-Because of the simited datafile examples (statsensor only) we have we only specify the type of the datafile. To make the xml more generic we can cconsider putting the delimiter in the xml file. 
-
-
-
-<<<<<<<<<UPDATE>>>>>>>>>>
 The datafile is a generic abstract class and has as it's children each type of datafile. A datafile type must always return an InputStream of the columns of data that it can read as rows with the method getDataStream(). This method must filter out all redundant data in the file such as headers and footers.
 Each line of the inputstream contains a row in the table it has read from the file.
 The other data of the file can be fetched with methods that can be specified in the subclasses.
+
+For now the program can only handle the following types of datafiles:
+- plaintext
+- xls
+- xlsx
+
+Also a tab character "\t" is used as the delimiter of the xls and xlsx files when producing the inputstream.
+
+The xml file will handle a new structure:
+<?xml version="1.0"?>
+<input>
+  <file name="">
+	<data>
+	  <start><start>
+	  <end><end>
+	</data>
+	<path></path>
+	<type><type>
+  </file>
+</input>
+
+
+A <file> defines the properties of the file. The name attribute of the <file> is the name of the file including the file extension. The <data> defines at which line of the file the program should start reading data and where to end. If this is not defined then all the lines of the file will be read. The <path> defines the path/to/the/file relative to the program if the file is not inside the folder of the program.
+
+
+Example of an xml file: 
+
+<?xml version="1.0"?>
+<input>
+  <file name="ADMIRE.txt">
+	<data>
+	  <start>6<start>
+	  <end>35<end>
+	</data>
+	<path>input/data</path>
+	<type>plaintext<type>
+  </file>
+  <file name="Appointments.xls">
+	<path>input/data</path>
+	<type>xls<type>
+  </file>
+</input>
