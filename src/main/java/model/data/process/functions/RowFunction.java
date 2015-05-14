@@ -36,21 +36,20 @@ public class RowFunction extends Function{
 	 * this function checks restrictions for the calculation and calls its execution
 	 * @return List<DataRow> the rows containing the minimum
 	 */
-	public List<DataRow> calculate() {
+	public List<DataRow> calculate() throws Exception {
 		if(table.getRowCount() == 0)
 			return rowlist; 
 			
-		if(table.getRowCount() == 1) {
-			rowlist.add(table.getRow(0));
-			return rowlist;
-		}
 		row = table.getRow(0);
+		rowlist.add(row);
+		
 		try {
 			argument.resolve(row).getClass();
 		} catch (Exception e) {
-			return rowlist;
+			throw e;
 		}
-			if(argument.resolve(row).getClass().equals(FloatValue.class)){
+		
+		if(argument.resolve(row).getClass().equals(FloatValue.class)) {
 			return compare();
 		}
 		else if(argument.resolve(row).getClass().equals(IntValue.class)) {
@@ -63,7 +62,7 @@ public class RowFunction extends Function{
 	}
 	
     public List<DataRow> compare() {
-		for(int i = 0; i<table.getRowCount(); i++){
+		for(int i = 1; i<table.getRowCount(); i++){
 			Comparable currentVal = (Comparable) argument.resolve(row).getValue();
 		    DataRow compare = table.getRow(i);
 		    Comparable compareVal = (Comparable) argument.resolve(compare).getValue();
