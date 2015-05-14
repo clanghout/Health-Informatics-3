@@ -3,6 +3,7 @@ package model.data.process.functions;
 import java.util.ArrayList;
 import java.util.List;
 
+import exceptions.FunctionInputMismatchException;
 import model.data.DataRow;
 import model.data.DataTable;
 import model.data.describer.DataDescriber;
@@ -46,7 +47,7 @@ public class RowFunction extends Function{
 		try {
 			argument.resolve(row).getClass();
 		} catch (Exception e) {
-			throw e;
+			throw new FunctionInputMismatchException("Input is not int or float");
 		}
 		
 		if(argument.resolve(row).getClass().equals(FloatValue.class)) {
@@ -55,10 +56,8 @@ public class RowFunction extends Function{
 		else if(argument.resolve(row).getClass().equals(IntValue.class)) {
 			return compare();
 		}
-		else {
-			rowlist.clear();
-			return rowlist;
-		}
+		else 
+			throw new FunctionInputMismatchException("Input is not int or float");
 	}
 	
     public List<DataRow> compare() {

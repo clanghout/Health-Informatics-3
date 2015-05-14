@@ -20,6 +20,7 @@ import model.data.value.StringValue;
 import org.junit.Before;
 import org.junit.Test;
 
+import exceptions.FunctionInputMismatchException;
 import static org.junit.Assert.*;
 
 /**
@@ -67,7 +68,7 @@ public class MinimumTest {
 	 * column of strings should return empty list of Minimums
 	 * @throws Exception possibly
 	 */
-	@Test(expected=ClassCastException.class)
+	@Test(expected=FunctionInputMismatchException.class)
 	public void TestStringMinimum() throws Exception {
 		List<DataRow> minimum = new Minimum(table, new RowValueDescriber<>(stringColumn)).calculate();
 	}
