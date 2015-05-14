@@ -67,11 +67,9 @@ public class MaximumTest {
 	 * column of strings should return empty list of maximums
 	 * @throws Exception possibly
 	 */
-	@Test
-	public void testStringMaximum() throws Exception {
+	@Test(expected=ClassCastException.class)
+	public void TestStringMaximum() throws Exception {
 		List<DataRow> maximum = new Maximum(table, new RowValueDescriber<>(stringColumn)).calculate();
-		List<DataRow> compare = new ArrayList<DataRow>();
-		assertEquals(compare, maximum);
 	}
 	@Test
 	public void testFloatMaximum() throws Exception {

@@ -67,11 +67,9 @@ public class MinimumTest {
 	 * column of strings should return empty list of Minimums
 	 * @throws Exception possibly
 	 */
-	@Test
-	public void testStringMinimum() throws Exception {
-		List<DataRow> Minimum = new Minimum(table, new RowValueDescriber<>(stringColumn)).calculate();
-		List<DataRow> compare = new ArrayList<DataRow>();
-		assertEquals(compare, Minimum);
+	@Test(expected=ClassCastException.class)
+	public void TestStringMinimum() throws Exception {
+		List<DataRow> minimum = new Minimum(table, new RowValueDescriber<>(stringColumn)).calculate();
 	}
 	@Test
 	public void testFloatMinimum() throws Exception {
