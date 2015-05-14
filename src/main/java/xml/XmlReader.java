@@ -77,9 +77,9 @@ public class XmlReader {
 	 * to extract data from the xml file.
 	 * @param file The xml file
 	 * @return The read document
-	 * @throws ParserConfigurationException When 
-	 * @throws IOException 
-	 * @throws SAXException 
+	 * @throws ParserConfigurationException Thrown by the DocumentBuilder
+	 * @throws IOException If an IO error occurs
+	 * @throws SAXException Thrown by the SAX parser if the document can not be parsed
 	 */
 	public Document read(File file)
 			throws ParserConfigurationException, SAXException, IOException {
@@ -93,9 +93,9 @@ public class XmlReader {
 	 * to extract data from the xml file.
 	 * @param stream The InputStream
 	 * @return The read document
-	 * @throws ParserConfigurationException 
-	 * @throws IOException 
-	 * @throws SAXException 
+	 * @throws ParserConfigurationException Thrown by the DocumentBuilder
+	 * @throws IOException If an IO error occurs
+	 * @throws SAXException Thrown by the SAX parser if the document can not be parsed
 	 */
 	public Document read(InputStream stream, String parentDir)
 			throws ParserConfigurationException, SAXException, IOException {

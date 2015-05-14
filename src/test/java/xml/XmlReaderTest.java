@@ -17,6 +17,11 @@ import org.xml.sax.SAXException;
 import xml.filetype.DataFile;
 import static org.junit.Assert.*;
 
+/**
+ * Junit test for the XmlReader class.
+ * @author Paul
+ *
+ */
 public class XmlReaderTest {
 
 	private XmlReader reader;
@@ -49,8 +54,9 @@ public class XmlReaderTest {
 		}
 	}
 	
-	@Test(expected=NullPointerException.class)
-	public void testReadXMLNullDocument() throws ParserConfigurationException, SAXException, IOException {
+	@Test(expected = NullPointerException.class)
+	public void testReadXMLNullDocument() throws ParserConfigurationException, 
+												SAXException, IOException {
 		Document list = reader.getDocument();
 		list.getElementsByTagName("file");
 	}
@@ -62,7 +68,8 @@ public class XmlReaderTest {
 			root = reader.read(file).getDocumentElement();
 			NodeList files = root.getElementsByTagName("file");
 			Element file1 = (Element) files.item(1);
-			assertEquals("Filename attribute does not match:", "ADMIRE.txt", file1.getAttribute("name"));
+			assertEquals("Filename attribute does not match:", "ADMIRE.txt", 
+					file1.getAttribute("name"));
 			Element pathnode = (Element) file1.getElementsByTagName("path").item(0);
 			String filepath = pathnode.getTextContent();
 			assertEquals("input", filepath);
@@ -107,7 +114,8 @@ public class XmlReaderTest {
 				reader.getFileElement(1),
 				parentDir
 		);
-		String relativePath = new File(parentDir).toURI().relativize(dataFile.getFile().toURI()).getPath();
+		String relativePath = new File(parentDir).toURI().relativize(
+				dataFile.getFile().toURI()).getPath();
 		assertEquals("input/ADMIRE.txt", relativePath);
 	}
 }

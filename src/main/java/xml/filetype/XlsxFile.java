@@ -13,7 +13,12 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class XlsxFile extends DataFile{
+/**
+ * Class to represent a Microsoft excel (xlsx) ooxml file.
+ * @author Paul
+ *
+ */
+public class XlsxFile extends DataFile {
 
 	public XlsxFile(String path) {
 		super(path);

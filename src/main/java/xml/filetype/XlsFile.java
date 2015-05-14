@@ -13,6 +13,11 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
+/**
+ * Class to represent a Microsoft Excel (xls) file.
+ * @author Paul
+ *
+ */
 public class XlsFile extends DataFile {
 
 	public XlsFile(String path) {
@@ -28,11 +33,11 @@ public class XlsFile extends DataFile {
 			HSSFSheet sheet = workbook.getSheetAt(0);
 			Iterator<Row> rowIterator = sheet.iterator();
 			String res = "";
-			while(rowIterator.hasNext()) {
+			while (rowIterator.hasNext()) {
 				Row row = rowIterator.next();
 				Iterator<Cell> cellIterator = row.iterator();
 				
-				while(cellIterator.hasNext()) {
+				while (cellIterator.hasNext()) {
 					Cell cell = cellIterator.next();
                     res += cell.getStringCellValue() + "\t";
 				}

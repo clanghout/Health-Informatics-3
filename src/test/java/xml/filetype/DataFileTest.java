@@ -7,9 +7,12 @@ import java.io.*;
 import org.junit.Test;
 
 import exceptions.DataFileNotRecognizedException;
-import xml.filetype.DataFile;
-import xml.filetype.PlainTextFile;
 
+/**
+ * JUnit test for the DataFile class.
+ * @author Paul
+ *
+ */
 public class DataFileTest {
 
 	@Test
@@ -39,13 +42,13 @@ public class DataFileTest {
 	}
 	
 	@Test
-	public void testCreateXlsFile(){
+	public void testCreateXlsFile() {
 		DataFile df = DataFile.createDataFile("/input/xlsfile.xls", "xls");
 		assertTrue(df instanceof XlsFile);
 	}
 
 	@Test
-	public void testCreateXlsxFile(){
+	public void testCreateXlsxFile() {
 		DataFile df = DataFile.createDataFile("/input/xlsxfile.xlsx", "xlsx");
 		assertTrue(df instanceof XlsxFile);
 	}

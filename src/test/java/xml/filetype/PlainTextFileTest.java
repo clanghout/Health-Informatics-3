@@ -10,6 +10,11 @@ import java.io.InputStreamReader;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * JUnit test for the PlainTextFile class.
+ * @author Paul
+ *
+ */
 public class PlainTextFileTest {
 
 	PlainTextFile textFile;

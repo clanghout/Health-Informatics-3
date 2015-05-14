@@ -27,12 +27,12 @@ public class PlainTextFile extends DataFile {
 		int i = 1;
 
 		//Skip to beginline
-		while (i != startLine && scanner.hasNextLine()) {
+		while (i != getStartLine() && scanner.hasNextLine()) {
 			scanner.nextLine();
 			i++;
 		}
 		
-		while (i <= endLine && scanner.hasNextLine()) {
+		while (i <= getEndLine() && scanner.hasNextLine()) {
 			convertedStream += scanner.nextLine() + "\n";
 			i++;
 		}
