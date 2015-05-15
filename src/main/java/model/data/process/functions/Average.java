@@ -38,7 +38,6 @@ public class Average extends ValueFunction {
 		}
 		
 		if(argument.resolve(row).getClass().equals(FloatValue.class) || argument.resolve(row).getClass().equals(IntValue.class)) {
-			System.out.println("calculating average");
 			return avrg();
 		}
 		else 
@@ -53,19 +52,9 @@ public class Average extends ValueFunction {
 				value = (float) argument.resolve(row).getValue();
 			else
 				value = (float) 1.0 * (int) argument.resolve(row).getValue();
-			
-//			Comparable current = (Comparable) value.getValue();
-			
-			System.out.println("adding "+ value +" and " + total);
 			total += value;
-//			total += current;
-			
-			System.out.println("new total " + total);
 		}
-		System.out.println("total after forloop "+total);
-		System.out.println("dividing by "+ table.getRowCount());
 		total = total/table.getRowCount();
-		System.out.println("calculating result "+total);
 		DataValue result = new FloatValue(total);
 		return result;
 	}
