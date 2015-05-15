@@ -31,6 +31,7 @@ public class MinimumTest {
 	private DataColumn intsColumn;
 	private DataColumn floatColumn;
 	private DataColumn floatsColumn;
+	private DataColumn floatersColumn;
 	
 	/**
 	 * simulate datamodel with single Minimum for each column type
@@ -45,17 +46,19 @@ public class MinimumTest {
 		intsColumn = builder.createColumn("ints", IntValue.class);
 		floatColumn = builder.createColumn("float", FloatValue.class);
 		floatsColumn = builder.createColumn("floats", FloatValue.class);
+		floatersColumn = builder.createColumn("floaters", FloatValue.class);
 
 		builder.addColumn(stringColumn);
 		builder.addColumn(intColumn);
 		builder.addColumn(intsColumn);
 		builder.addColumn(floatColumn);
 		builder.addColumn(floatsColumn);
+		builder.addColumn(floatersColumn);
 		
-		builder.addRow(builder.createRow(new StringValue("What"), new IntValue(9), new IntValue(3), new FloatValue(6.9f), new FloatValue(8.8f)));
-		builder.addRow(builder.createRow(new StringValue("Can"), new IntValue(5), new IntValue(10), new FloatValue(6.5f), new FloatValue(5.3f)));
-		builder.addRow(builder.createRow(new StringValue("You"), new IntValue(3), new IntValue(3), new FloatValue(5.9f), new FloatValue(8.8f)));
-		builder.addRow(builder.createRow(new StringValue("Do"), new IntValue(10), new IntValue(12), new FloatValue(6.2f), new FloatValue(5.3f)));
+		builder.addRow(builder.createRow(new StringValue("What"), new IntValue(9), new IntValue(3), new FloatValue(6.9f), new FloatValue(8.8f), new FloatValue(6.6f)));
+		builder.addRow(builder.createRow(new StringValue("Can"), new IntValue(5), new IntValue(10), new FloatValue(6.5f), new FloatValue(5.3f), new FloatValue(6.6f)));
+		builder.addRow(builder.createRow(new StringValue("You"), new IntValue(3), new IntValue(3), new FloatValue(5.9f), new FloatValue(8.8f), new FloatValue(6.8f)));
+		builder.addRow(builder.createRow(new StringValue("Do"), new IntValue(10), new IntValue(12), new FloatValue(6.2f), new FloatValue(5.3f), new FloatValue(6.6f)));
 		
 		table = builder.build();
 	}
@@ -83,6 +86,14 @@ public class MinimumTest {
 		FloatValue f = new FloatValue(5.3f);
 		assertEquals(f, min.get(0).getValue(floatsColumn));
 		assertEquals(f, min.get(1).getValue(floatsColumn));
+	}
+	@Test
+	public void testFloatTripleMinimum() throws Exception {
+		List<DataRow> max = new Minimum(table, new RowValueDescriber<>(floatersColumn)).calculate();
+		FloatValue f = new FloatValue(6.6f);
+		assertEquals(f, max.get(0).getValue(floatersColumn));
+		assertEquals(f, max.get(1).getValue(floatersColumn));
+		assertEquals(f, max.get(2).getValue(floatersColumn));
 	}
 	@Test
 	public void testIntMultipleMinimum() throws Exception {
