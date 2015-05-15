@@ -41,7 +41,7 @@ This document describes the design of the architecture and it is continuously up
 The program can be split into a number of modules. These modules should be implemented independently of the other modules. Interaction between modules is only possible by making use of defined interfaces.
 
 \subsection{Continuous Integration}
-There should be always a working product. Each sprint should add one or more feathers.
+There should be always a working product. Each sprint should add one or more features.
 
 \subsection{Understandability}
 We must also make the software user-friendly. Even though the users of the
@@ -52,7 +52,7 @@ analysis.
 
 \subsection{Code quality}
 In the project we strive to have good code readability and the code must be easy to understand. This is also an important part of the static analysis. We handle the pull based system on Github. For each new feature that will be implemented the author of that feature must create a new branch and do all his work in that branch so that the master branch always consists of a working version of the software. If someone wants to commit he has to make a pull request first. His code will then be reviewed by at least 2 teammembers and eventually fixed before it can be merged with the working version in the master branch.\\
-To improve code quality we have code conventions the writer should follow before
+To improve code quality we have code conventions which the writer should follow before
 his code is accepted. This is done by the Checkstyle plugin in the IDE that makes
 sure these conventions are followed.
 
@@ -108,7 +108,7 @@ We also use the JavaFX Scene Builder as a tool to design parts of the GUI becaus
 
 \section{Testing}
 \subsection{Unit testing}
-To make sure that all the code works as it should the author must always write
+To make sure that all the code works as it should, the author must always write
 unit tests for the code he has written. We make use of the JUnit framework to
 write the tests. To verify behaviour of methods we use the Mockito framework to
 stub certain object needed by the method.
