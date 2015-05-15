@@ -1,9 +1,0 @@
-Board ID: T11024007997w Meter ID: 149033312038
-Software Version: 1.1
-Patient Records Read Back From Meter
-Date: 29-9-2013 Time: 11:20
-
-[
-Crea,	179,umol/L,00,130218,0802
-Crea,	179,umol/L,00,130218,0803
-]
