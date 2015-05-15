@@ -46,10 +46,7 @@ public abstract class RowFunction extends Function{
 			throw new FunctionInputMismatchException("Input is not int or float");
 		}
 		
-		if(argument.resolve(row).getClass().equals(FloatValue.class)) {
-			return compare();
-		}
-		else if(argument.resolve(row).getClass().equals(IntValue.class)) {
+		if(argument.resolve(row).getClass().equals(FloatValue.class) || argument.resolve(row).getClass().equals(IntValue.class)) {
 			return compare();
 		}
 		else 
