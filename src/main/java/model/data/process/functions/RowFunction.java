@@ -16,9 +16,7 @@ import model.data.value.NumberValue;
  * @author louisgosschalk
  *13-05-2015
  */
-public class RowFunction extends Function{
-	protected boolean minimum;
-	protected boolean maximum;
+public abstract class RowFunction extends Function{
 	private DataTable table;
 	private DataDescriber<NumberValue> argument;
 	private List<DataRow> rowlist;
@@ -28,8 +26,6 @@ public class RowFunction extends Function{
 		super(model, argument);
 		this.table = model;
 		this.argument = argument;
-		this.minimum = false;
-		this.maximum = false;
 		this.rowlist = new ArrayList<DataRow>();
 		this.row = null;
 	}
@@ -67,7 +63,7 @@ public class RowFunction extends Function{
 		    Comparable compareVal = (Comparable) argument.resolve(compare).getValue();
 		    // if there's a new minimum or there's a new maximum
 		    int comparison = currentVal.compareTo(compareVal);
-		    if((comparison > 0 && minimum) || (comparison < 0 && maximum)){
+		    if(check(comparison)){
 		        row = compare;
 		        rowlist.clear();
 		        rowlist.add(compare);
@@ -78,4 +74,5 @@ public class RowFunction extends Function{
 		}
 		return rowlist;
 	}
+    public abstract Boolean check(int comparison);
 }

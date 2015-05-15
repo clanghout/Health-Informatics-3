@@ -13,7 +13,12 @@ public class Maximum extends RowFunction {
 	
 	public Maximum(DataTable table, DataDescriber<NumberValue> argument) {
 		super(table,argument);
-		maximum = true;
+	}
+
+	public Boolean check(int comparison) {
+		if(comparison < 0)
+			return true;
+		return false;
 	}
 
 }

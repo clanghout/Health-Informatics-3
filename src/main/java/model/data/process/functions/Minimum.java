@@ -13,6 +13,11 @@ public class Minimum extends RowFunction {
 	
 	public Minimum(DataTable model, DataDescriber<NumberValue> argument) {
 		super(model, argument);
-		minimum = true;
+	}
+
+	public Boolean check(int comparison) {
+		if(comparison > 0)
+			return true;
+		return false;
 	}
 }
