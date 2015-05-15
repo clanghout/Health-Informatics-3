@@ -1,20 +1,15 @@
 package model.data.process.functions;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import model.data.DataColumn;
-import model.data.DataModel;
 import model.data.DataRow;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.describer.RowValueDescriber;
 import model.data.process.functions.Maximum;
-import model.data.value.DataValue;
 import model.data.value.FloatValue;
 import model.data.value.IntValue;
-import model.data.value.NumberValue;
 import model.data.value.StringValue;
 
 import org.junit.Before;
@@ -65,8 +60,8 @@ public class MaximumTest {
 		table = builder.build();
 	}
 	/**
-	 * column of strings should return empty list of maximums
-	 * @throws Exception possibly
+	 * column of strings should throw exception
+	 * @throws Exception
 	 */
 	@Test(expected=FunctionInputMismatchException.class)
 	public void TestStringMaximum() throws Exception {
