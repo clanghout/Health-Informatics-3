@@ -136,25 +136,30 @@ public class XmlReader {
 		else {
 			completePath = fileName;
 		}
-		
 		DataFile theDataFile = DataFile.createDataFile(completePath, type);
 
 		Element data = (Element) elem.getElementsByTagName(DATA_TAG).item(0);
-		if (data != null) {
-		
-			Element startElement = (Element) data.getElementsByTagName(START_TAG).item(0);
-			Element endElement   = (Element) data.getElementsByTagName(END_TAG).item(0);
-			
+		return setStartEndLine(data, theDataFile);
+	}
+	
+	/**
+	 * Decorates the constructed DataFile with the start and end line.
+	 * @param dataElement The data element of the file read from xml
+	 * @param dataFile The constructed DataFile
+	 * @return the decorated DataFile
+	 */
+	private DataFile setStartEndLine(Element dataElement, DataFile dataFile) {
+		if (dataElement != null) {
+			Element startElement = (Element) dataElement.getElementsByTagName(START_TAG).item(0);
 			if (startElement != null) {
-				int start = Integer.parseInt(startElement.getTextContent());			
-				theDataFile.setStartLine(start);
+				dataFile.setStartLine(Integer.parseInt(startElement.getTextContent()));
 			}
+			Element endElement = (Element) dataElement.getElementsByTagName(END_TAG).item(0);
 			if (endElement != null) {
-				int end = Integer.parseInt(endElement.getTextContent());
-				theDataFile.setEndLine(end);
+				dataFile.setEndLine(Integer.parseInt(endElement.getTextContent()));
 			}
 		}
-		return theDataFile;
+		return dataFile;
 	}
 	
 	/**
