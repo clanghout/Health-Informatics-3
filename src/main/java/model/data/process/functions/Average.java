@@ -11,7 +11,6 @@ public class Average extends ValueFunction {
 	
 	private DataTable table;
 	private DataDescriber<NumberValue> argument;
-	private DataRow row;
 	
 	public Average(DataTable model, DataDescriber<NumberValue> argument) {
 		super(model, argument);
