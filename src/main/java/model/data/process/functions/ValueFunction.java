@@ -30,6 +30,10 @@ public abstract class ValueFunction extends Function {
 	 */
 	public abstract DataValue calculate();
 	
+	/**
+	 * initialize class checks if specified column is eligible
+	 * @return DataValue because it calls calculate
+	 */
 	public DataValue initialize() {
 		if(table.getRowCount() == 0)
 			throw new FunctionInputMismatchException("Calculation of nothing does not exist"); 
