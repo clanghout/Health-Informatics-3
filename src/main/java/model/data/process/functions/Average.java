@@ -1,8 +1,5 @@
 package model.data.process.functions;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import exceptions.FunctionInputMismatchException;
 import model.data.DataRow;
 import model.data.DataTable;
@@ -22,7 +19,6 @@ public class Average extends ValueFunction {
 		super(model, argument);
 		this.table = model;
 		this.argument = argument;
-		this.row = null;
 	}
 
 	@Override
