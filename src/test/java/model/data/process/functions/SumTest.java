@@ -1,9 +1,6 @@
 package model.data.process.functions;
 
-import java.util.List;
-
 import model.data.DataColumn;
-import model.data.DataRow;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.describer.RowValueDescriber;
