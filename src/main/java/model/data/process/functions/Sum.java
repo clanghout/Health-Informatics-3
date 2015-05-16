@@ -26,6 +26,7 @@ public class Sum extends ValueFunction {
 
 	@Override
 	public DataValue calculate() {
+		initialize();
 		float total = 0f;
 		float value = 0f;
 		for(int i = 0; i<table.getRowCount(); i++) {

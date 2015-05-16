@@ -21,16 +21,10 @@ public class Average extends ValueFunction {
 
 	@Override
 	public DataValue calculate() {
-		float total = 0f;
+		initialize();
 		float value = 0f;
-		for(int i = 0; i<table.getRowCount(); i++) {
-			row = table.getRow(i);
-			if(argument.resolve(row).getClass().equals(FloatValue.class))
-				value = (float) argument.resolve(row).getValue();
-			else
-				value = (float) 1.0 * (int) argument.resolve(row).getValue();
-			total += value;
-		}
+		DataValue sum = new Sum(table, argument).calculate();
+		float total = (float) sum.getValue();
 		total = total/table.getRowCount();
 		DataValue result = new FloatValue(total);
 		return result;
