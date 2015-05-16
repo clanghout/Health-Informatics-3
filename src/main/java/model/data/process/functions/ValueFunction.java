@@ -15,7 +15,7 @@ import model.data.value.NumberValue;
  *13-05-2015
  */
 public abstract class ValueFunction extends Function {
-	protected DataRow row;
+	private DataRow row;
 	private DataTable table;
 	private DataDescriber<NumberValue> argument;
 	
@@ -34,7 +34,7 @@ public abstract class ValueFunction extends Function {
 	 * initialize class checks if specified column is eligible
 	 * @return DataValue because it calls calculate
 	 */
-	public DataValue initialize() {
+	public void initialize() {
 		if(table.getRowCount() == 0)
 			throw new FunctionInputMismatchException("Calculation of nothing does not exist"); 
 		
@@ -46,7 +46,7 @@ public abstract class ValueFunction extends Function {
 		}
 		
 		if(argument.resolve(row).getClass().equals(FloatValue.class) || argument.resolve(row).getClass().equals(IntValue.class)) {
-			return calculate();
+			return;
 		}
 		else 
 			throw new FunctionInputMismatchException("Specified column is neither float nor int");
