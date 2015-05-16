@@ -25,7 +25,7 @@ public class Sum extends ValueFunction {
 	}
 
 	@Override
-	public DataValue calculate() {
+	public FloatValue calculate() {
 		initialize();
 		float total = 0f;
 		float value = 0f;
@@ -37,7 +37,7 @@ public class Sum extends ValueFunction {
 				value = (float) 1.0 * (int) argument.resolve(row).getValue();
 			total += value;
 		}
-		DataValue result = new FloatValue(total);
+		FloatValue result = new FloatValue(total);
 		return result;
 	}
 }

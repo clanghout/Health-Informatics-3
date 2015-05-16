@@ -22,7 +22,7 @@ public class Average extends ValueFunction {
 	public DataValue calculate() {
 		initialize();
 		float value = 0f;
-		DataValue sum = new Sum(table, argument).calculate();
+		FloatValue sum = new Sum(table, argument).calculate();
 		float total = (float) sum.getValue();
 		total = total/table.getRowCount();
 		DataValue result = new FloatValue(total);
