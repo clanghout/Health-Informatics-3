@@ -5,6 +5,7 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{listings}
+\usepackage{apacite}
 \usepackage[colorinlistoftodos]{todonotes}
 \title{Product Planning}
 
@@ -27,6 +28,7 @@
 	4285034}
 \affil[5]{lgosschalk \\
 	4214528}
+\affil[ ]{Health Informatics Group C}
 
 
 \date{\today}
@@ -40,16 +42,17 @@
 \tableofcontents
 \newpage
 
-\section{Introduction}
-This document discusses the product planning. In the first section it describes the requirements according to the MoSCoW method. Section \ref{subsec:User-stories} contains the user stories for some of the requirements. Furthermore this document contains the planning for the product. In section \ref{subsec: roadmap} there is a high-level overview of the roadmap and section \ref{subsec: release-plan} gives a detailed planning for each week. Section \ref{sec: Definition-of-Done} explains what the definition of done is for a backlog item, for a sprint and for a release. 
+\input{introduction}
 \section{Product}
-This section describes the requirements of the product. It also contains a high-level roadmap.
 \input{MoSCoW/moscow}
 \input{roadmap}
 \section{Product backlog}
 \input{user-stories}
 \input{release-plan}
 \input{definition-of-done}
+
+\bibliography{ref}
+\bibliographystyle{apacite}
 
 
 
