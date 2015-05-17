@@ -2,7 +2,7 @@ The user story was: As a user I want to specify an xml file to describe the data
 
 1) first the user must be able to choose the xml file. This will be done using the graphical user interface. The user selects an xml file (by using a filechooser) from his drive which contains the description of the datafile and where the datafile can be found.
 
-2) Next the header (description of datafile and header of the columns) from the selected datafile must be filtered so that the data can be loaded into the datamodel. Plain text files such as the statsensor file may contain a header which must not me included in the data. Therefore, a range of lines that contain the data can be specified in the xml file.
+2) Next the header (description of datafile and header of the columns) from the selected datafile must be filtered so that the data can be loaded into the datamodel. Plain text files such as the statsensor file may contain a header which must not be included in the data. Therefore, a range of lines that contain the data can be specified in the xml file.
 
 3) The data will be read from the datafiles using the xml.
 
