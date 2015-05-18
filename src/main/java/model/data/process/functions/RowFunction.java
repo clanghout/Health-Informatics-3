@@ -7,6 +7,7 @@ import exceptions.FunctionInputMismatchException;
 import model.data.DataRow;
 import model.data.DataTable;
 import model.data.describer.DataDescriber;
+import model.data.value.DataValue;
 import model.data.value.FloatValue;
 import model.data.value.IntValue;
 import model.data.value.NumberValue;
@@ -45,8 +46,8 @@ public abstract class RowFunction extends Function{
 		} catch (Exception e) {
 			throw new FunctionInputMismatchException("Input is not int or float");
 		}
-		
-		if(argument.resolve(row).getClass().equals(FloatValue.class) || argument.resolve(row).getClass().equals(IntValue.class)) {
+		Class<? extends DataValue> klasse = argument.resolve(row).getClass();
+		if(klasse.equals(FloatValue.class) || klasse.equals(IntValue.class)) {
 			return compare();
 		}
 		else 
