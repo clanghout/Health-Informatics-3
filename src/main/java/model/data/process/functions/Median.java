@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import model.data.DataRow;
 import model.data.DataTable;
 import model.data.describer.DataDescriber;
 import model.data.value.FloatValue;
@@ -19,7 +18,6 @@ public class Median extends Function {
 	
 	private DataTable table;
 	private DataDescriber<NumberValue> argument;
-	private DataRow row;
 	
 	public Median(DataTable model, DataDescriber<NumberValue> argument) {
 		super(model, argument);
@@ -55,7 +53,6 @@ public class Median extends Function {
 	public List<Float> createList() {
 		List<Float> list = new ArrayList<Float>();
 		for (int i = 0; i < table.getRowCount(); i++) {
-			row = table.getRow(i);
 			list.add(intOrFloat(argument, table.getRow(i)));
 		}
 		Collections.sort(list);
