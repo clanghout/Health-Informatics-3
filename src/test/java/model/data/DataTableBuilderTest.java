@@ -19,7 +19,7 @@ public class DataTableBuilderTest {
 
 	@Test
 	public void testCreateColumn() throws Exception {
-		DataTableBuilder builder = new DataTableBuilder();
+		DataTableBuilder builder = new DataTableBuilder("test");
 		DataColumn column = builder.createColumn("test", StringValue.class);
 		assertEquals(column.getName(), "test");
 		assertEquals(column.getType(), StringValue.class);
@@ -27,7 +27,7 @@ public class DataTableBuilderTest {
 
 	@Test
 	public void testCreateRow() throws Exception {
-		DataTableBuilder builder = new DataTableBuilder();
+		DataTableBuilder builder = new DataTableBuilder("test");
 		DataColumn column = builder.createColumn("test", StringValue.class);
 		builder.addColumn(column);
 		DataRow row = builder.createRow(new StringValue("v1"));
@@ -36,13 +36,13 @@ public class DataTableBuilderTest {
 
 	@Test
 	public void testCreateEmptyRow() throws Exception {
-		DataTableBuilder builder = new DataTableBuilder();
+		DataTableBuilder builder = new DataTableBuilder("test");
 		builder.createRow();
 	}
 
 	@Test(expected = ColumnValueMismatchException.class)
 	public void testCreateRowToFewValues() throws Exception {
-		DataTableBuilder builder = new DataTableBuilder();
+		DataTableBuilder builder = new DataTableBuilder("test");
 		builder.addColumn(builder.createColumn("test", StringValue.class));
 		builder.addColumn(builder.createColumn("test2", StringValue.class));
 		builder.createRow(new StringValue("v1"));
@@ -50,7 +50,7 @@ public class DataTableBuilderTest {
 
 	@Test(expected = ColumnValueMismatchException.class)
 	public void testCreateRowToFewColumns() throws Exception {
-		DataTableBuilder builder = new DataTableBuilder();
+		DataTableBuilder builder = new DataTableBuilder("test");
 		builder.createRow(new StringValue("v1"));
 	}
 
@@ -61,7 +61,7 @@ public class DataTableBuilderTest {
 
 	@Test
 	public void testAddColumn() throws Exception {
-		DataTableBuilder builder = new DataTableBuilder();
+		DataTableBuilder builder = new DataTableBuilder("test");
 		assertEquals(builder.build().getColumns().size(), 0, 0.1);
 		DataColumn column = builder.createColumn("test", StringValue.class);
 		builder.addColumn(column);
@@ -70,7 +70,7 @@ public class DataTableBuilderTest {
 
 	@Test
 	public void testAddRow() throws Exception {
-		DataTableBuilder builder = new DataTableBuilder();
+		DataTableBuilder builder = new DataTableBuilder("test");
 		builder.addColumn(builder.createColumn("test", StringValue.class));
 		assertTrue(builder.build().getRows().isEmpty());
 

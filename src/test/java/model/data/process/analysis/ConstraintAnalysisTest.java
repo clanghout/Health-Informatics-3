@@ -21,7 +21,7 @@ public class ConstraintAnalysisTest {
 
 	@Test
 	public void testAnalyse() throws Exception {
-		DataTableBuilder builder = new DataTableBuilder();
+		DataTableBuilder builder = new DataTableBuilder("test");
 
 		DataColumn column = builder.createColumn("test", StringValue.class);
 		builder.addColumn(column);

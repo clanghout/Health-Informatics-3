@@ -19,6 +19,7 @@ import java.util.stream.Stream;
 public class DataReader {
 
 	private Logger log = Logger.getLogger("DataReader");
+	private String name;
 
 	/**
 	 * Read the data from the file with the specified filename.
@@ -28,6 +29,7 @@ public class DataReader {
 	 */
 	public DataTable readData(String filename) throws IOException {
 		File file = new File(filename);
+		name = filename;
 		return readData(file);
 	}
 
@@ -52,7 +54,7 @@ public class DataReader {
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"))) {
 			skipToContent(reader);
 
-			DataTableBuilder builder = new DataTableBuilder();
+			DataTableBuilder builder = new DataTableBuilder(name);
 			addColumns(builder);
 
 			DataTable table = readRows(reader, builder);

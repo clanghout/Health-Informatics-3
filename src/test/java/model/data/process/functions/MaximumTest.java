@@ -39,7 +39,7 @@ public class MaximumTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		DataTableBuilder builder = new DataTableBuilder();
+		DataTableBuilder builder = new DataTableBuilder("test");
 
 		stringColumn = builder.createColumn("string", StringValue.class);
 		intColumn = builder.createColumn("int", IntValue.class);

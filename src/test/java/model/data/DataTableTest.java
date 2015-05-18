@@ -52,7 +52,7 @@ public class DataTableTest {
 		rows.add(new DataRow(columns, valuesRow2));
 		rows.add(new DataRow(columns, valuesRow3));
 
-		dataTable = new DataTable(rows, Arrays.asList(columns));
+		dataTable = new DataTable(rows, Arrays.asList(columns), "test");
 	}
 
 	@Test
