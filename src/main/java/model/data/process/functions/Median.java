@@ -56,11 +56,7 @@ public class Median extends Function {
 		List<Float> list = new ArrayList<Float>();
 		for (int i = 0; i < table.getRowCount(); i++) {
 			row = table.getRow(i);
-			if (argument.resolve(row).getClass().equals(FloatValue.class)) {
-				list.add((Float) argument.resolve(row).getValue());
-			} else {
-				list.add((float) 1.0 * (int) argument.resolve(row).getValue());
-			}
+			list.add(intOrFloat(argument, table.getRow(i)));
 		}
 		Collections.sort(list);
 		return list;

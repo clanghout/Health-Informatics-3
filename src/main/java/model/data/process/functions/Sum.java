@@ -15,7 +15,6 @@ public class Sum extends Function {
 	
 	private DataTable table;
 	private DataDescriber<NumberValue> argument;
-	private DataRow row;
 	
 	public Sum(DataTable model, DataDescriber<NumberValue> argument) {
 		super(model, argument);
@@ -32,12 +31,7 @@ public class Sum extends Function {
 		float total = 0f;
 		float value = 0f;
 		for (int i = 0; i < table.getRowCount(); i++) {
-			row = table.getRow(i);
-			if (argument.resolve(row).getClass().equals(FloatValue.class)) {
-				value = (float) argument.resolve(row).getValue();
-			} else { 
-				value = (float) 1.0 * (int) argument.resolve(row).getValue();
-			}
+			value = intOrFloat(argument, table.getRow(i));
 			total += value;
 		}
 		FloatValue result = new FloatValue(total);

@@ -46,20 +46,12 @@ public abstract class Minmax extends Function {
       DataRow first = table.getRow(0);
       Class<? extends DataValue> second = argument.resolve(first).getClass();
       //This is necessary because we're not sure it's either an int or float
-      if (second.equals(FloatValue.class)) {
-        current = (float) argument.resolve(first).getValue();
-      } else {
-        current = (float) ((int) argument.resolve(first).getValue());
-      }
+      current = intOrFloat(argument, table.getRow(0));
       
       for (int i = 1; i < table.getRowCount(); i++) {
         float compare = 0.0f;
         //This is necessary because we're not sure it's either an int or float
-        if (second.equals(FloatValue.class)) {
-          compare = (Float) argument.resolve(table.getRow(i)).getValue();
-        } else {
-          compare = (float) ((int) argument.resolve(table.getRow(i)).getValue());
-        }
+        compare = intOrFloat(argument, table.getRow(i));
         float comparison = current - compare;
         
         if (check(comparison)) {
