@@ -27,9 +27,10 @@ public class DataFileTest {
 		InputStream st;
 		try {
 			st = df.getDataStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(st));
-		assertEquals("Crea,	179,umol/L,00,130218,0802", reader.readLine());
-		assertEquals("Crea,	179,umol/L,00,130218,0803", reader.readLine());
+			BufferedReader reader = new BufferedReader(new InputStreamReader(st));
+			assertEquals("Crea,	179,umol/L,00,130218,0802", reader.readLine());
+			assertEquals("Crea,	179,umol/L,00,130218,0803", reader.readLine());
+			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

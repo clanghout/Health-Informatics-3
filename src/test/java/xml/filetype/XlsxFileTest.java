@@ -34,6 +34,7 @@ public class XlsxFileTest {
 			assertEquals("row2\tbar\tbar\tbat\t", reader.readLine());
 			assertEquals("row3\tbar\tbar\tbats\t", reader.readLine());
 			assertNull(reader.readLine());
+			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

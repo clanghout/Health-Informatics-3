@@ -35,7 +35,7 @@ public class PlainTextFileTest {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 			assertEquals("foo", reader.readLine());
 			assertEquals("bar", reader.readLine());
-			
+			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
