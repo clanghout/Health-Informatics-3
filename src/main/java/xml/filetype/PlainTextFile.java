@@ -23,7 +23,7 @@ public class PlainTextFile extends DataFile {
 		InputStream stream = new FileInputStream(getFile());
 		Scanner scanner = new Scanner(stream, "UTF-8");
 		scanner.useDelimiter("\\A");
-		String convertedStream = "";
+		StringBuilder builder = new StringBuilder();
 		int i = 1;
 
 		//Skip to beginline
@@ -33,14 +33,15 @@ public class PlainTextFile extends DataFile {
 		}
 		
 		while (i <= getEndLine() && scanner.hasNextLine()) {
-			convertedStream += scanner.nextLine() + "\n";
+			
+			builder.append(scanner.nextLine() + "\n");
 			i++;
 		}
 		
 		scanner.close();
 		
 		InputStream newStream = new ByteArrayInputStream(
-				convertedStream.getBytes(StandardCharsets.UTF_8)
+				builder.toString().getBytes(StandardCharsets.UTF_8)
 		);
 		
 		return newStream;
