@@ -1,13 +1,13 @@
 package model.data.process.analysis;
 
 import model.data.DataColumn;
-import model.data.DataRow;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
+import model.data.DataRow;
 import model.data.describer.ConstantDescriber;
 import model.data.describer.RowValueDescriber;
-import model.data.process.analysis.operations.constraints.Constraint;
-import model.data.process.analysis.operations.constraints.EqualityCheck;
+import model.data.process.analysis.constraints.Constraint;
+import model.data.process.analysis.constraints.EqualityCheck;
 import model.data.value.StringValue;
 import org.junit.Test;
 
