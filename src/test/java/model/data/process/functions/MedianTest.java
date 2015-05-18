@@ -108,8 +108,8 @@ public class MedianTest {
 	}
 	@Test
 	public void testFloatMedian2() throws Exception {
-		DataValue med = new Median(table, new RowValueDescriber<>(floatersColumn)).calculate();
-		FloatValue f = new FloatValue(6.6f);
+		DataValue med = new Median(table, new RowValueDescriber<>(floatsColumn)).calculate();
+		FloatValue f = new FloatValue(7.8500004f);
 		assertEquals(f, med);
 	}
 	@Test
@@ -120,30 +120,8 @@ public class MedianTest {
 	}
 	@Test
 	public void testMedianTriplet() throws Exception {
-		DataTableBuilder builder = new DataTableBuilder();
-
-		stringColumn = builder.createColumn("string", StringValue.class);
-		intColumn = builder.createColumn("int", IntValue.class);
-		intsColumn = builder.createColumn("ints", IntValue.class);
-		floatColumn = builder.createColumn("float", FloatValue.class);
-		floatsColumn = builder.createColumn("floats", FloatValue.class);
-		floatersColumn = builder.createColumn("floaters", FloatValue.class);
-
-		builder.addColumn(stringColumn);
-		builder.addColumn(intColumn);
-		builder.addColumn(intsColumn);
-		builder.addColumn(floatColumn);
-		builder.addColumn(floatsColumn);
-		builder.addColumn(floatersColumn);
-		
-		builder.addRow(builder.createRow(new StringValue("One"), new IntValue(9), new IntValue(12), new FloatValue(6.9f), new FloatValue(8.8f), new FloatValue(6.6f)));
-		builder.addRow(builder.createRow(new StringValue("Two"), new IntValue(5), new IntValue(10), new FloatValue(6.5f), new FloatValue(6.9f), new FloatValue(6.6f)));
-		builder.addRow(builder.createRow(new StringValue("Three"), new IntValue(3), new IntValue(3), new FloatValue(5.9f), new FloatValue(8.8f), new FloatValue(6.4f)));
-		
-		table = builder.build();
-		
-		DataValue med = new Median(table, new RowValueDescriber<>(floatColumn)).calculate();
-		FloatValue f = new FloatValue(6.5f);
+		DataValue med = new Median(table, new RowValueDescriber<>(floatersColumn)).calculate();
+		FloatValue f = new FloatValue(6.6f);
 		assertEquals(f, med);
 	}
 }
