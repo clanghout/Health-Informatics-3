@@ -29,9 +29,9 @@ public abstract class DataFile {
 	 * Returns the rows of the DataFile only. All redundant data is filtered out.
 	 *
 	 * @return A stream containing the data contents of the file
-	 * @throws FileNotFoundException When the file is not found
+	 * @throws IOException When the file is not found or if the file is corrupt
 	 */
-	public abstract InputStream getDataStream() throws FileNotFoundException;
+	public abstract InputStream getDataStream() throws IOException;
 	
 	/**
 	 * Gets a new File object directing to the dataFile on the system.
@@ -69,7 +69,8 @@ public abstract class DataFile {
 	}
 	
 	/**
-	 * Returns the startline.
+	 * Returns the line at which the datafile will begin reading i.e. the 
+	 * first line of actual data in the datafile.
 	 * @return The startLine
 	 */
 	public int getStartLine() {
@@ -77,7 +78,8 @@ public abstract class DataFile {
 	}
 
 	/**
-	 * Sets the startline.
+	 * Sets the line at which the datafile will begin reading i.e. the
+	 * first line of actual data in the datafile.
 	 * @param startLine the startLine to set
 	 */
 	public void setStartLine(int startLine) {
@@ -85,7 +87,8 @@ public abstract class DataFile {
 	}
 
 	/**
-	 * Returns the endline.
+	 * Returns the line at which the datafile will stop reading i.e. the last
+	 * line of actual data in the datafile.
 	 * @return the endLine
 	 */
 	public int getEndLine() {
@@ -93,7 +96,8 @@ public abstract class DataFile {
 	}
 
 	/**
-	 * Sets the endline.
+	 * Sets the line at which the datafile will stop reading i.e. the last
+	 * line of actual data in the datafile.
 	 * @param endLine the endLine to set
 	 */
 	public void setEndLine(int endLine) {

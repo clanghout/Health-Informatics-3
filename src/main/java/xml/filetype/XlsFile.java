@@ -1,10 +1,11 @@
 package xml.filetype;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -17,12 +18,14 @@ import org.apache.poi.ss.usermodel.Row;
  */
 public class XlsFile extends ExcelFile {
 
+	private Logger logger = Logger.getLogger("XlsFile");
+	
 	public XlsFile(String path) {
 		super(path);
 	}
 
 	@Override
-	public InputStream getDataStream() throws FileNotFoundException {
+	public InputStream getDataStream() throws IOException {
 		
 		FileInputStream file = new FileInputStream(getFile());
 		try {
@@ -32,8 +35,8 @@ public class XlsFile extends ExcelFile {
 			return createStream(rowIterator);
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "Error reading xls file", e);
+			throw e;
 		}
-		return null;
 	}
 }

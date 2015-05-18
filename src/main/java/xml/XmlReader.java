@@ -73,7 +73,7 @@ public class XmlReader {
 	public XmlReader() { }
 
 	/**
-	 * Reads the xml file and returns a Document that can be used.
+	 * Reads the xml file and returns a Document that can be used
 	 * to extract data from the xml file.
 	 * @param file The xml file
 	 * @return The read document
