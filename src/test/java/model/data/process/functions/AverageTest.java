@@ -50,10 +50,33 @@ public class AverageTest {
 		builder.addColumn(floatColumn);
 		builder.addColumn(floatsColumn);
 		
-		builder.addRow(builder.createRow(new StringValue("What"), new IntValue(9), new IntValue(12), new FloatValue(6.9f), new FloatValue(8.8f)));
-		builder.addRow(builder.createRow(new StringValue("Can"), new IntValue(5), new IntValue(10), new FloatValue(6.5f), new FloatValue(6.9f)));
-		builder.addRow(builder.createRow(new StringValue("You"), new IntValue(3), new IntValue(3), new FloatValue(5.9f), new FloatValue(8.8f)));
-		builder.addRow(builder.createRow(new StringValue("Do"), new IntValue(10), new IntValue(12), new FloatValue(6.2f), new FloatValue(5.3f)));
+		StringValue string = new StringValue("What");
+    IntValue int1 = new IntValue(9);
+    IntValue int2 = new IntValue(12);
+    FloatValue float1 = new FloatValue(6.9f);
+    FloatValue float2 = new FloatValue(8.8f);
+    builder.addRow(builder.createRow(string, int1, int2, float1, float2));
+    
+    string = new StringValue("Can");
+    int1 = new IntValue(5);
+    int2 = new IntValue(10);
+    float1 = new FloatValue(6.5f);
+    float2 = new FloatValue(6.9f);
+    builder.addRow(builder.createRow(string, int1, int2, float1, float2));
+    
+    string = new StringValue("You");
+    int1 = new IntValue(3);
+    int2 = new IntValue(3);
+    float1 = new FloatValue(5.9f);
+    float2 = new FloatValue(8.8f);
+    builder.addRow(builder.createRow(string, int1, int2, float1, float2));
+    
+    string = new StringValue("Do");
+    int1 = new IntValue(10);
+    int2 = new IntValue(12);
+    float1 = new FloatValue(6.2f);
+    float2 = new FloatValue(5.3f);
+    builder.addRow(builder.createRow(string, int1, int2, float1, float2));
 		
 		table = builder.build();
 	}
