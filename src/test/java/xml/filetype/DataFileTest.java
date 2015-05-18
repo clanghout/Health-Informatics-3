@@ -16,7 +16,7 @@ import exceptions.DataFileNotRecognizedException;
 public class DataFileTest {
 
 	@Test
-	public void testCreateDataFile() {
+	public void testCreateDataFile() throws IOException {
 		String file = getClass().getResource("/input/statsensor.txt").getFile();
 
 		DataFile df = DataFile.createDataFile(file, "plaintext");
@@ -25,16 +25,11 @@ public class DataFileTest {
 		df.setStartLine(7);
 		df.setEndLine(8);
 		InputStream st;
-		try {
-			st = df.getDataStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(st));
-			assertEquals("Crea,	179,umol/L,00,130218,0802", reader.readLine());
-			assertEquals("Crea,	179,umol/L,00,130218,0803", reader.readLine());
-			reader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		st = df.getDataStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(st));
+		assertEquals("Crea,	179,umol/L,00,130218,0802", reader.readLine());
+		assertEquals("Crea,	179,umol/L,00,130218,0803", reader.readLine());
+		reader.close();
 	}
 	
 	@Test(expected = DataFileNotRecognizedException.class)

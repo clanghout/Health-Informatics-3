@@ -26,17 +26,13 @@ public class XlsFileTest {
 	}
 	
 	@Test
-	public void testDataStream() {
-		try {
-			InputStream stream = xlsFile.getDataStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-			assertEquals("foo\tbar\t", reader.readLine());
-			assertEquals("row2\tbar\tbar\tbat\t", reader.readLine());
-			assertEquals("row3\tbar\tbar\tbats\t", reader.readLine());
-			assertNull(reader.readLine());
-			reader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void testDataStream() throws IOException {
+		InputStream stream = xlsFile.getDataStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		assertEquals("foo\tbar\t", reader.readLine());
+		assertEquals("row2\tbar\tbar\tbat\t", reader.readLine());
+		assertEquals("row3\tbar\tbar\tbats\t", reader.readLine());
+		assertNull(reader.readLine());
+		reader.close();
 	}
 }

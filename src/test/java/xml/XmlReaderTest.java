@@ -35,23 +35,15 @@ public class XmlReaderTest {
 	}
 
 	@Test
-	public void testReadStreamedXMLversion() {
-		try {
-			assertEquals("1.0", reader.read(file).getXmlVersion());
-		} catch (ParserConfigurationException | SAXException | IOException e) {
-			e.printStackTrace();
-		}
+	public void testReadStreamedXMLversion() throws ParserConfigurationException, SAXException, IOException {
+		assertEquals("1.0", reader.read(file).getXmlVersion());
 	}
 
 	@Test
-	public void testReadStreamedXMLamountOfFiles() {
+	public void testReadStreamedXMLamountOfFiles() throws ParserConfigurationException, SAXException, IOException {
 		NodeList list;
-		try {
-			list = reader.read(file).getElementsByTagName("file");
-			assertEquals(3, list.getLength());
-		} catch (ParserConfigurationException | SAXException | IOException e) {
-			e.printStackTrace();
-		}
+		list = reader.read(file).getElementsByTagName("file");
+		assertEquals(3, list.getLength());
 	}
 	
 	@Test(expected = NullPointerException.class)
@@ -62,48 +54,35 @@ public class XmlReaderTest {
 	}
 
 	@Test
-	public void testReadXMLpath() {
+	public void testReadXMLpath() throws ParserConfigurationException, SAXException, IOException {
 		Element root;
-		try {
-			root = reader.read(file).getDocumentElement();
-			NodeList files = root.getElementsByTagName("file");
-			Element file1 = (Element) files.item(1);
-			assertEquals("Filename attribute does not match:", "ADMIRE.txt", 
-					file1.getAttribute("name"));
-			Element pathnode = (Element) file1.getElementsByTagName("path").item(0);
-			String filepath = pathnode.getTextContent();
-			assertEquals("input", filepath);
-		} catch (ParserConfigurationException | SAXException | IOException e) {
-			e.printStackTrace();
-		}
+		root = reader.read(file).getDocumentElement();
+		NodeList files = root.getElementsByTagName("file");
+		Element file1 = (Element) files.item(1);
+		assertEquals("Filename attribute does not match:", "ADMIRE.txt", 
+				file1.getAttribute("name"));
+		Element pathnode = (Element) file1.getElementsByTagName("path").item(0);
+		String filepath = pathnode.getTextContent();
+		assertEquals("input", filepath);
 	}
 	
 	@Test(expected = NullPointerException.class)
-	public void testReadEmptyXMLpath() {
+	public void testReadEmptyXMLpath() throws ParserConfigurationException, SAXException, IOException {
 		Element root;
-		try {
-			root = reader.read(file).getDocumentElement();
-			NodeList files = root.getElementsByTagName("file");
-			Element file1 = (Element) files.item(0);
-			file1.getElementsByTagName("path").item(0).getTextContent();
-		} catch (ParserConfigurationException | SAXException | IOException e) {
-			e.printStackTrace();
-		}
+		root = reader.read(file).getDocumentElement();
+		NodeList files = root.getElementsByTagName("file");
+		Element file1 = (Element) files.item(0);
+		file1.getElementsByTagName("path").item(0).getTextContent();
 	}
 
 	@Test
-	public void testReadDataFiles() {
-		try {
-			reader.read(file);
-			List<DataFile> dataFiles = reader.getDataFiles();
-			String path = dataFiles.get(0).getPath();
+	public void testReadDataFiles() throws ParserConfigurationException, SAXException, IOException {
+		reader.read(file);
+		List<DataFile> dataFiles = reader.getDataFiles();
+		String path = dataFiles.get(0).getPath();
 
-			assertEquals("ADMIRE2.txt", path);
-			assertNotNull(getClass().getResourceAsStream("/" + path));
-
-		} catch (ParserConfigurationException | SAXException | IOException e) {
-			e.printStackTrace();
-		}
+		assertEquals("ADMIRE2.txt", path);
+		assertNotNull(getClass().getResourceAsStream("/" + path));
 	}
 
 	@Test

@@ -26,83 +26,63 @@ public class PlainTextFileTest {
 	}
 	
 	@Test
-	public void testDataStreamLines() {
+	public void testDataStreamLines() throws IOException {
 		
 		textFile.setStartLine(4);
 		textFile.setEndLine(5);
-		try {
-			InputStream stream = textFile.getDataStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-			assertEquals("foo", reader.readLine());
-			assertEquals("bar", reader.readLine());
-			reader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		InputStream stream = textFile.getDataStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		assertEquals("foo", reader.readLine());
+		assertEquals("bar", reader.readLine());
+		reader.close();
 	}
 	
 	@Test
-	public void testDataStreamInvertedStartEnd() {
+	public void testDataStreamInvertedStartEnd() throws IOException {
 		textFile.setStartLine(6);
 		textFile.setEndLine(3);
-		try {
-			InputStream stream = textFile.getDataStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-			assertTrue(reader.readLine() == null);
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}		
+		InputStream stream = textFile.getDataStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		assertTrue(reader.readLine() == null);
+		reader.close();
 	}
 
 	@Test
-	public void testInvalidLineNumber() {
+	public void testInvalidLineNumber() throws IOException {
 		textFile.setStartLine(0);
 		textFile.setEndLine(100);
-		try {
-			InputStream stream = textFile.getDataStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-			assertTrue(reader.readLine() == null);
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}			
+		InputStream stream = textFile.getDataStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		assertTrue(reader.readLine() == null);
+		reader.close();
 	}
 	
 	@Test
-	public void testNullEndLine() {
+	public void testNullEndLine() throws IOException {
 		textFile.setStartLine(6);
-		try {
-			InputStream stream = textFile.getDataStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-			assertEquals("line 6",  reader.readLine());
-			assertEquals("",  reader.readLine());
-			assertEquals("footer",  reader.readLine());
-			assertNull(reader.readLine());
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}	
+		InputStream stream = textFile.getDataStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		assertEquals("line 6",  reader.readLine());
+		assertEquals("",  reader.readLine());
+		assertEquals("footer",  reader.readLine());
+		assertNull(reader.readLine());
+		reader.close();
 	}
 
 	@Test
-	public void testNoDataRange() {
-		try {
-			InputStream stream = textFile.getDataStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-			
-			assertEquals("This is plain text line one",  reader.readLine());
-			assertEquals("",  reader.readLine());
-			assertEquals("line 3",  reader.readLine());
-			assertEquals("foo",  reader.readLine());
-			assertEquals("bar",  reader.readLine());
-			assertEquals("line 6",  reader.readLine());
-			assertEquals("",  reader.readLine());
-			assertEquals("footer",  reader.readLine());
-			assertNull(reader.readLine());
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}	
+	public void testNoDataRange() throws IOException {
+		InputStream stream = textFile.getDataStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		
+		assertEquals("This is plain text line one",  reader.readLine());
+		assertEquals("",  reader.readLine());
+		assertEquals("line 3",  reader.readLine());
+		assertEquals("foo",  reader.readLine());
+		assertEquals("bar",  reader.readLine());
+		assertEquals("line 6",  reader.readLine());
+		assertEquals("",  reader.readLine());
+		assertEquals("footer",  reader.readLine());
+		assertNull(reader.readLine());
+		reader.close();
 	}
 }
