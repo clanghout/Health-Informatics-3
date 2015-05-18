@@ -20,9 +20,9 @@ import exceptions.FunctionInputMismatchException;
 import static org.junit.Assert.*;
 
 /**
+ * Test for maximum.
  * @author Louis Gosschalk
  * 12-05-2015
- * Test for maximum
  */
 public class MaximumTest {
 	
@@ -35,7 +35,7 @@ public class MaximumTest {
 	private DataColumn floatersColumn;
 	
 	/**
-	 * simulate datamodel with single maximum for each column type
+	 * simulate datamodel with single maximum for each column type.
 	 * @throws Exception
 	 */
 	@Before
@@ -91,7 +91,7 @@ public class MaximumTest {
 		table = builder.build();
 	}
 	/**
-	 * column of strings should throw exception
+	 * column of strings should throw exception.
 	 * @throws Exception
 	 */
 	@Test(expected=FunctionInputMismatchException.class)

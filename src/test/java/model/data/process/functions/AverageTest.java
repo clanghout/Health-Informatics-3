@@ -17,9 +17,9 @@ import exceptions.FunctionInputMismatchException;
 import static org.junit.Assert.*;
 
 /**
+ * Test for average.
  * @author Louis Gosschalk
  * 12-05-2015
- * Test for average
  */
 public class AverageTest {
 	
@@ -31,7 +31,7 @@ public class AverageTest {
 	private DataColumn floatsColumn;
 	
 	/**
-	 * simulate datamodel with single average for each column type
+	 * simulate datamodel with single average for each column type.
 	 * @throws Exception
 	 */
 	@Before
@@ -81,7 +81,7 @@ public class AverageTest {
 		table = builder.build();
 	}
 	/**
-	 * column of strings should throw exception
+	 * column of strings should throw exception.
 	 * @throws Exception
 	 */
 	@Test(expected=FunctionInputMismatchException.class)

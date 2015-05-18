@@ -5,9 +5,9 @@ import model.data.describer.DataDescriber;
 import model.data.value.NumberValue;
 
 /**
- * A class for finding the row with the minimum value for the specified column in a model
+ * A class for finding the row with the minimum value for the specified column in a model.
  * @author Louis Gosschalk 
- * @date 11-05-2015
+ * 11-05-2015
  */
 public class Minimum extends RowFunction {
 	
@@ -16,10 +16,10 @@ public class Minimum extends RowFunction {
 	}
 	
 	/**
-	 * Sets the function to determine the minimum in a comparison
+	 * Sets the function to determine the minimum in a comparison.
 	 */
 	public Boolean check(int comparison) {
-		if(comparison > 0) {
+		if (comparison > 0) {
 			return true;
 		}
 		return false;

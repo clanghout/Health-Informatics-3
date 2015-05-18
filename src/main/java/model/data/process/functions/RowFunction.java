@@ -13,11 +13,11 @@ import model.data.value.IntValue;
 import model.data.value.NumberValue;
 
 /**
- * This class will provide a framework for functions resulting multiple rows of data
+ * This class will provide a framework for functions resulting multiple rows of data.
  * @author louisgosschalk
  *13-05-2015
  */
-public abstract class RowFunction extends Function{
+public abstract class RowFunction extends Function {
 	private DataTable table;
 	private DataDescriber<NumberValue> argument;
 	private List<DataRow> rowlist;
@@ -31,11 +31,11 @@ public abstract class RowFunction extends Function{
 		this.row = null;
 	}
 	/**
-	 * This function checks restrictions for determining minimum & maximum
+	 * This function checks restrictions for determining minimum & maximum.
 	 * @return List<DataRow> the rows containing the minimum
 	 */
 	public List<DataRow> calculate() throws Exception {
-		if(table.getRowCount() == 0) {
+		if (table.getRowCount() == 0) {
 			return rowlist; 
 		}
 			
@@ -48,7 +48,7 @@ public abstract class RowFunction extends Function{
 			throw new FunctionInputMismatchException("Input is not int or float");
 		}
 		Class<? extends DataValue> type = argument.resolve(row).getClass();
-		if(type.equals(FloatValue.class) || type.equals(IntValue.class)) {
+		if (type.equals(FloatValue.class) || type.equals(IntValue.class)) {
 			return compare();
 		} else {
 			throw new FunctionInputMismatchException("Input is not int or float");
@@ -56,17 +56,17 @@ public abstract class RowFunction extends Function{
 	}
 	
 	/**
-	 * This function calculates minimum or maximum through a generic arithmetic calculation
+	 * This function calculates minimum or maximum through a generic arithmetic calculation.
 	 * @return List<DataRow> a list of DataRows
 	 */
     public List<DataRow> compare() {
-		for(int i = 1; i<table.getRowCount(); i++){
+		for (int i = 1; i < table.getRowCount(); i++) {
 			Comparable currentVal = (Comparable) argument.resolve(row).getValue();
 		    DataRow compare = table.getRow(i);
 		    Comparable compareVal = (Comparable) argument.resolve(compare).getValue();
 		    // if there's a new minimum or there's a new maximum
 		    int comparison = currentVal.compareTo(compareVal);
-		    if(check(comparison)){
+		    if (check(comparison)) {
 		        row = compare;
 		        rowlist.clear();
 		        rowlist.add(compare);

@@ -7,7 +7,7 @@ import model.data.value.FloatValue;
 import model.data.value.NumberValue;
 
 /**
- * Function for finding the average in a specified column
+ * Function for finding the average in a specified column.
  * @author louisgosschalk
  *13-05-2015
  */
@@ -17,7 +17,7 @@ public class Average extends ValueFunction {
 	private DataDescriber<NumberValue> argument;
 	
 	/**
-	 * Construct a new average
+	 * Construct a new average.
 	 * @param model - table of data
 	 * @param argument - specified column
 	 */
@@ -28,7 +28,7 @@ public class Average extends ValueFunction {
 	}
 	
 	/**
-	 * Calculate the average
+	 * Calculate the average.
 	 */
 	@Override
 	public DataValue calculate() {
@@ -36,7 +36,7 @@ public class Average extends ValueFunction {
 		float value = 0f;
 		FloatValue sum = new Sum(table, argument).calculate();
 		float total = (float) sum.getValue();
-		total = total/table.getRowCount();
+		total = total / table.getRowCount();
 		DataValue result = new FloatValue(total);
 		return result;
 	}

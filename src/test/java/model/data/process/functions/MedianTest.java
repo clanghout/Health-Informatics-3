@@ -18,7 +18,7 @@ import exceptions.FunctionInputMismatchException;
 import static org.junit.Assert.*;
 
 /**
- * Test for Median
+ * Test for Median.
  * @author Louis Gosschalk
  * 16-05-2015
  */
@@ -33,7 +33,7 @@ public class MedianTest {
 	private DataColumn floatersColumn;
 	
 	/**
-	 * simulate datamodel with single Median for each column type
+	 * simulate datamodel with single Median for each column type.
 	 * @throws Exception
 	 */
 	@Before
@@ -89,7 +89,7 @@ public class MedianTest {
 		table = builder.build();
 	}
 	/**
-	 * column of strings should throw exception
+	 * column of strings should throw exception.
 	 * @throws Exception
 	 */
 	@Test(expected=FunctionInputMismatchException.class)

@@ -20,9 +20,9 @@ import exceptions.FunctionInputMismatchException;
 import static org.junit.Assert.*;
 
 /**
+ * Test for Minimum.
  * @author Louis Gosschalk
  * 12-05-2015
- * Test for Minimum
  */
 public class MinimumTest {
 	
@@ -88,15 +88,10 @@ public class MinimumTest {
     float3 = new FloatValue(6.6f);
     builder.addRow(builder.createRow(string, int1, int2, float1, float2, float3));
 		
-//		builder.addRow(builder.createRow(new StringValue("What"), new IntValue(9), new IntValue(3), new FloatValue(6.9f), new FloatValue(8.8f), new FloatValue(6.6f)));
-//		builder.addRow(builder.createRow(new StringValue("Can"), new IntValue(5), new IntValue(10), new FloatValue(6.5f), new FloatValue(5.3f), new FloatValue(6.6f)));
-//		builder.addRow(builder.createRow(new StringValue("You"), new IntValue(3), new IntValue(3), new FloatValue(5.9f), new FloatValue(8.8f), new FloatValue(6.8f)));
-//		builder.addRow(builder.createRow(new StringValue("Do"), new IntValue(10), new IntValue(12), new FloatValue(6.2f), new FloatValue(5.3f), new FloatValue(6.6f)));
-		
 		table = builder.build();
 	}
 	/**
-	 * column of strings should throw exception
+	 * column of strings should throw exception.
 	 * @throws Exception
 	 */
 	@Test(expected=FunctionInputMismatchException.class)
