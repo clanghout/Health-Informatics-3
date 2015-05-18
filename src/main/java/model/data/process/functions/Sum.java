@@ -24,12 +24,15 @@ public class Sum extends ValueFunction {
 		this.argument = argument;
 	}
 
+	/**
+	 * This function calculates the sum of a column
+	 */
 	@Override
 	public FloatValue calculate() {
 		initialize();
 		float total = 0f;
 		float value = 0f;
-		for(int i = 0; i<table.getRowCount(); i++) {
+		for(int i = 0; i < table.getRowCount(); i++) {
 			row = table.getRow(i);
 			if(argument.resolve(row).getClass().equals(FloatValue.class))
 				value = (float) argument.resolve(row).getValue();

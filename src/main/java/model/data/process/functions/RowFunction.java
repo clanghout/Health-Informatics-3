@@ -31,7 +31,7 @@ public abstract class RowFunction extends Function{
 		this.row = null;
 	}
 	/**
-	 * this function checks restrictions for the calculation and calls its execution
+	 * This function checks restrictions for determining minimum & maximum
 	 * @return List<DataRow> the rows containing the minimum
 	 */
 	public List<DataRow> calculate() throws Exception {
@@ -46,14 +46,18 @@ public abstract class RowFunction extends Function{
 		} catch (Exception e) {
 			throw new FunctionInputMismatchException("Input is not int or float");
 		}
-		Class<? extends DataValue> klasse = argument.resolve(row).getClass();
-		if(klasse.equals(FloatValue.class) || klasse.equals(IntValue.class)) {
+		Class<? extends DataValue> type = argument.resolve(row).getClass();
+		if(type.equals(FloatValue.class) || type.equals(IntValue.class)) {
 			return compare();
-		}
-		else 
+		} else {
 			throw new FunctionInputMismatchException("Input is not int or float");
+		}
 	}
 	
+	/**
+	 * This function calculates minimum or maximum through a generic arithmetic calculation
+	 * @return List<DataRow> a list of DataRows
+	 */
     public List<DataRow> compare() {
 		for(int i = 1; i<table.getRowCount(); i++){
 			Comparable currentVal = (Comparable) argument.resolve(row).getValue();
@@ -65,10 +69,10 @@ public abstract class RowFunction extends Function{
 		        row = compare;
 		        rowlist.clear();
 		        rowlist.add(compare);
-		    }
 		    // if there's a duplicate minimum/maximum
-		    else if(comparison == 0)
+		    } else if (comparison == 0) {
 		        rowlist.add(compare);
+		    }
 		}
 		return rowlist;
 	}

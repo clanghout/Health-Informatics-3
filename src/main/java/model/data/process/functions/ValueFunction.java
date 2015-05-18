@@ -44,12 +44,12 @@ public abstract class ValueFunction extends Function {
 		} catch (Exception e) {
 			throw new FunctionInputMismatchException("Cannot resolve class of column");
 		}
-		
-		if(argument.resolve(row).getClass().equals(FloatValue.class) || argument.resolve(row).getClass().equals(IntValue.class)) {
+		Class<? extends DataValue> type = argument.resolve(row).getClass();
+		if(type.equals(FloatValue.class) || type.equals(IntValue.class)) {
 			return;
-		}
-		else 
+		} else {
 			throw new FunctionInputMismatchException("Specified column is neither float nor int");
+		}
 	}
 	
 }

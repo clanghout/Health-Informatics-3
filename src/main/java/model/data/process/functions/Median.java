@@ -2,6 +2,7 @@ package model.data.process.functions;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import model.data.DataRow;
 import model.data.DataTable;
@@ -20,12 +21,34 @@ public class Median extends ValueFunction {
 		this.table = model;
 		this.argument = argument;
 	}
-
+	
+	/**
+	 * This function calculates the median
+	 */
 	@Override
 	public FloatValue calculate() {
 		initialize();
-		ArrayList<Float> list = new ArrayList<Float>();
-		//rows ordenen klein naar groot
+		List<Float> list = createList();
+		//Amount of rows is even -> add two middle rows and divide by 2
+		if((table.getRowCount() & 1) == 0) {
+			int middle = table.getRowCount()/2;
+			int middle2 = middle;
+			float median = list.get(middle-1);
+			float median2 = list.get(middle2);
+			median = (median2+median)/2;
+			return new FloatValue(median);
+		//Amount of rows is odd -> median is middle row
+		} else { 
+			int middle = (int) Math.ceil(table.getRowCount()/2.0);
+			return new FloatValue(list.get(middle-1));
+		}
+	}
+	/**
+	 * This function takes all values from the specified column and puts it in an ascending list
+	 * @return List<Float> ascending list of floats 
+	 */
+	public List<Float> createList(){
+		List<Float> list = new ArrayList<Float>();
 		for(int i=0; i<table.getRowCount(); i++){
 			row = table.getRow(i);
 			if(argument.resolve(row).getClass().equals(FloatValue.class))
@@ -34,18 +57,6 @@ public class Median extends ValueFunction {
 				list.add((float) 1.0 * (int) argument.resolve(row).getValue());
 		}
 		Collections.sort(list);
-		//aantal rows = even -> middelste 2 /2 = median
-		if((table.getRowCount() & 1) == 0) {//even
-			int middle = table.getRowCount()/2;
-			int middle2 = middle;
-			float median = list.get(middle-1);
-			float median2 = list.get(middle2);
-			median = (median2+median)/2;
-			return new FloatValue(median);
-		//aantal rows = oneven -> middelste row = median
-		} else { //odd
-			int middle = (int) Math.ceil(table.getRowCount()/2.0);
-			return new FloatValue(list.get(middle-1));
-		}
+		return list;
 	}
 }
