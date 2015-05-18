@@ -21,10 +21,10 @@ public class ComputationAnalysis extends DataAnalysis {
 	@Override
 	public DataTable analyse(DataTable input) {
 		List<DataRow> out = new ArrayList<>();
-//		List<DataRow> rows = input.getRows();
-//		for (DataRow row: rows) {
-//			 TODO: Doe dingen
-//		}
+		List<DataRow> rows = input.getRows();
+		for (DataRow row: rows) {
+			// TODO: Doe dingen
+		}
 		return new DataTable(out, new ArrayList<>(input.getColumns().values()));
 	}
 }

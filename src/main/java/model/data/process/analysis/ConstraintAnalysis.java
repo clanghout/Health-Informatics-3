@@ -1,7 +1,7 @@
 package model.data.process.analysis;
 
-import model.data.DataTable;
 import model.data.DataRow;
+import model.data.DataTable;
 import model.data.process.analysis.operations.constraints.Constraint;
 
 import java.util.ArrayList;

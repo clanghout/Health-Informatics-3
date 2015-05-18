@@ -1,6 +1,5 @@
 package model.data.process.analysis.operations.computations;
 
-
 import model.data.describer.ConstantDescriber;
 import model.data.value.FloatValue;
 import model.data.value.IntValue;

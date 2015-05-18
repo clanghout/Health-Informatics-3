@@ -26,7 +26,6 @@ public class Division extends Computation {
 	public NumberValue compute(DataRow row) {
 		NumberValue left = (NumberValue) getLeftSide().resolve(row);
 		NumberValue right = (NumberValue) getRightSide().resolve(row);
-
 		if (left instanceof IntValue && right instanceof IntValue) {
 			int rightValue = (int) right.getValue();
 			if (rightValue == 0) {

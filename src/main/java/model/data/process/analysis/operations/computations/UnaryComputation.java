@@ -19,7 +19,6 @@ public abstract class UnaryComputation<T extends NumberValue> extends Operation<
 
 	/**
 	 * Perform the computation.
-	 *
 	 * @param row The row you want to perform the computation on.
 	 * @return The result of the computation.
 	 */
@@ -27,7 +26,6 @@ public abstract class UnaryComputation<T extends NumberValue> extends Operation<
 
 	/**
 	 * Get the DataDescriber for the left side operand.
-	 *
 	 * @return The DataDescriber for the left side operand
 	 */
 	public DataDescriber<T> getLeftSide() {
