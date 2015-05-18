@@ -1,7 +1,6 @@
 package model.data;
 
-import javax.xml.crypto.Data;
-import java.lang.reflect.Array;
+
 import java.util.*;
 
 /**
@@ -24,6 +23,38 @@ public class CombinedDataTable implements Iterable {
 
 	@Override
 	public Iterator<CombinedDataRow> iterator() {
+		if (combined != null) {
+			return combinedIterator();
+		} else {
+			return rowIterator();
+		}
+	}
+
+	private Iterator<CombinedDataRow> rowIterator() {
+		return new Iterator<CombinedDataRow>() {
+			private int index = 0;
+
+			@Override
+			public boolean hasNext() {
+				return index < table.getRowCount();
+			}
+
+			@Override
+			public CombinedDataRow next() {
+				if (hasNext()) {
+					CombinedDataRow result = new CombinedDataRow();
+					result.addDataRow(table.getRow(index), table.getName());
+					index++;
+					return result;
+				} else {
+					throw new NoSuchElementException();
+				}
+			}
+		};
+	}
+
+
+	private Iterator<CombinedDataRow> combinedIterator() {
 		return new Iterator<CombinedDataRow>() {
 			private int index = 0;
 			private Iterator<CombinedDataRow> combinedIterator = combined.iterator();
@@ -37,7 +68,8 @@ public class CombinedDataTable implements Iterable {
 			public CombinedDataRow next() {
 				if (hasNext()) {
 					CombinedDataRow result =
-							new CombinedDataRow(table.getRow(index), combinedIterator.next());
+							combinedIterator.next();
+					result.addDataRow(table.getRow(index), table.getName());
 					if (!combinedIterator.hasNext()) {
 						index++;
 						combinedIterator = combined.iterator();
@@ -50,4 +82,5 @@ public class CombinedDataTable implements Iterable {
 		};
 	}
 }
+
 

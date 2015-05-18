@@ -16,13 +16,15 @@ import java.util.List;
 public class DataTableBuilder {
 	private List<DataRow> rows;
 	private List<DataColumn> columns;
+	private String name;
 
 	/**
 	 * Create a new builder.
 	 */
-	public DataTableBuilder() {
-		 rows =  new ArrayList<DataRow>();
-		 columns = new ArrayList<DataColumn>();
+	public DataTableBuilder(String name) {
+		rows =  new ArrayList<DataRow>();
+		columns = new ArrayList<DataColumn>();
+		this.name = name;
 	}
 
 	/**
@@ -31,7 +33,7 @@ public class DataTableBuilder {
 	 * @return The DataTable that is build by the builder
 	 */
 	public DataTable build() {
-		return new DataTable(rows, columns);
+		return new DataTable(rows, columns, name);
 	}
 
 	/**

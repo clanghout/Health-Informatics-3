@@ -8,6 +8,7 @@ import java.util.*;
 public class DataTable {
 	private List<DataRow> rows;
 	private Map<String, DataColumn> columns;
+	private String name;
 
 	/**
 	 * Create a new empty DataTable.
@@ -22,12 +23,13 @@ public class DataTable {
 	 * @param rows rows of the DataTable
 	 * @param columns columns of the DataTable
 	 */
-	public DataTable(List<DataRow> rows, List<DataColumn> columns) {
+	public DataTable(List<DataRow> rows, List<DataColumn> columns, String name) {
 		this();
 		this.rows = new ArrayList<>(rows);
 		for (DataColumn c : columns) {
 			this.columns.put(c.getName(), c);
 		}
+		this.name = name;
 	}
 
 	/**
@@ -66,4 +68,7 @@ public class DataTable {
 		return columns;
 	}
 
+	public String getName() {
+		return name;
+	}
 }
