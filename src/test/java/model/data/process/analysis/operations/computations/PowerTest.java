@@ -16,25 +16,25 @@ public class PowerTest {
 	@Test
 	public void testPowerIntConstantsZero() throws Exception {
 		Power check = new Power(new ConstantDescriber<>(new IntValue(0)), new ConstantDescriber<>(new IntValue(0)));
-		assertEquals(new IntValue(1),check.compute(null));
+		assertEquals(new IntValue(1), check.compute(null));
 	}
 
 	@Test
 	public void testPowerIntConstants() throws Exception {
 		Power check = new Power(new ConstantDescriber<>(new IntValue(123)), new ConstantDescriber<>(new IntValue(3)));
-		assertEquals(new IntValue(1860867),check.compute(null));
+		assertEquals(new IntValue(1860867), check.compute(null));
 	}
 
 	@Test
 	public void testPowerFloatConstantsZero() throws Exception {
 		Power check = new Power(new ConstantDescriber<>(new FloatValue(0)), new ConstantDescriber<>(new FloatValue(0f)));
-		assertEquals(new FloatValue(1),check.compute(null));
+		assertEquals(new FloatValue(1), check.compute(null));
 	}
 
 	@Test
 	public void testPowerFloatConstants() throws Exception {
 		Power check = new Power(new ConstantDescriber<>(new FloatValue(25f)), new ConstantDescriber<>(new FloatValue(2.5f)));
-		assertEquals(new FloatValue(3125),check.compute(null));
+		assertEquals(new FloatValue(3125), check.compute(null));
 	}
 
 	@Test(expected = UnsupportedOperationException.class)

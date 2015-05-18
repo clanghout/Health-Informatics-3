@@ -7,7 +7,8 @@ import model.data.value.NumberValue;
 
 /**
  * Abstract class describing computations on data.
- * @param <T>  The type of the left and right side DataDescribers
+ *
+ * @param <T> The type of the left and right side DataDescribers
  */
 public abstract class Computation<T extends NumberValue> extends Operation<NumberValue> {
 	private final DataDescriber<T> left;
@@ -20,6 +21,7 @@ public abstract class Computation<T extends NumberValue> extends Operation<Numbe
 
 	/**
 	 * Perform the computation.
+	 *
 	 * @param row The row you want to perform the computation on.
 	 * @return The result of the computation.
 	 */
@@ -27,6 +29,7 @@ public abstract class Computation<T extends NumberValue> extends Operation<Numbe
 
 	/**
 	 * Get the DataDescriber for the left side operand.
+	 *
 	 * @return The DataDescriber for the left side operand
 	 */
 	public DataDescriber<T> getLeftSide() {
@@ -35,6 +38,7 @@ public abstract class Computation<T extends NumberValue> extends Operation<Numbe
 
 	/**
 	 * Get the DataDescriber for the right side operand.
+	 *
 	 * @return The DataDescriber for the right side operand
 	 */
 	public DataDescriber<T> getRightSide() {

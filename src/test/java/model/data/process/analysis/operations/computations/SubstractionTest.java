@@ -16,27 +16,27 @@ public class SubstractionTest {
 	@Test
 	public void testSubstractionIntConstantsZero() throws Exception {
 		Substraction check = new Substraction(new ConstantDescriber<>(new IntValue(0)), new ConstantDescriber<>(new IntValue(0)));
-		assertEquals(new IntValue(0),check.compute(null));
+		assertEquals(new IntValue(0), check.compute(null));
 	}
 
 	@Test
 	public void testSubstractionIntConstants() throws Exception {
 		Substraction check = new Substraction(new ConstantDescriber<>(new IntValue(456)), new ConstantDescriber<>(new IntValue(123)));
-		assertEquals(new IntValue(333),check.compute(null));
+		assertEquals(new IntValue(333), check.compute(null));
 		check = new Substraction(new ConstantDescriber<>(new IntValue(123)), new ConstantDescriber<>(new IntValue(456)));
-		assertEquals(new IntValue(-333),check.compute(null));
+		assertEquals(new IntValue(-333), check.compute(null));
 	}
 
 	@Test
 	public void testSubstractionFloatConstantsZero() throws Exception {
 		Substraction check = new Substraction(new ConstantDescriber<>(new FloatValue(0f)), new ConstantDescriber<>(new FloatValue(0f)));
-		assertEquals(new FloatValue(0f),check.compute(null));
+		assertEquals(new FloatValue(0f), check.compute(null));
 	}
 
 	@Test
 	public void testSubstractionFloatConstants() throws Exception {
 		Substraction check = new Substraction(new ConstantDescriber<>(new FloatValue(1)), new ConstantDescriber<>(new FloatValue(0.125f)));
-		assertEquals(new FloatValue(0.875f),check.compute(null));
+		assertEquals(new FloatValue(0.875f), check.compute(null));
 	}
 
 	@Test(expected = UnsupportedOperationException.class)

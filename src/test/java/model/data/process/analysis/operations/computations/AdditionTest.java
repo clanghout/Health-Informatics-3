@@ -17,27 +17,27 @@ import static org.junit.Assert.assertTrue;
 public class AdditionTest {
 
 	@Test
-	 public void testAdditionIntConstantsZero() throws Exception {
+	public void testAdditionIntConstantsZero() throws Exception {
 		Addition check = new Addition(new ConstantDescriber<>(new IntValue(0)), new ConstantDescriber<>(new IntValue(0)));
-		assertEquals(new IntValue(0),check.compute(null));
+		assertEquals(new IntValue(0), check.compute(null));
 	}
 
 	@Test
 	public void testAdditionIntConstants() throws Exception {
 		Addition check = new Addition(new ConstantDescriber<>(new IntValue(123)), new ConstantDescriber<>(new IntValue(456)));
-		assertEquals(new IntValue(579),check.compute(null));
+		assertEquals(new IntValue(579), check.compute(null));
 	}
 
 	@Test
 	public void testAdditionFloatConstantsZero() throws Exception {
 		Addition check = new Addition(new ConstantDescriber<>(new FloatValue(0f)), new ConstantDescriber<>(new FloatValue(0f)));
-		assertEquals(new FloatValue(0f),check.compute(null));
+		assertEquals(new FloatValue(0f), check.compute(null));
 	}
 
 	@Test
 	public void testAdditionFloatConstants() throws Exception {
 		Addition check = new Addition(new ConstantDescriber<>(new FloatValue(123)), new ConstantDescriber<>(new FloatValue(456.567f)));
-		assertEquals(new FloatValue(579.567f),check.compute(null));
+		assertEquals(new FloatValue(579.567f), check.compute(null));
 	}
 
 	@Test(expected = UnsupportedOperationException.class)

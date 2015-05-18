@@ -17,6 +17,7 @@ public class SquareRoot extends UnaryComputation {
 
 	/**
 	 * Computes the square root of left.
+	 *
 	 * @param row The row you want to perform the computation on.
 	 * @return new FloatValue containing the computed value.
 	 */
