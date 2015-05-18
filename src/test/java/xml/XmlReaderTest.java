@@ -35,12 +35,14 @@ public class XmlReaderTest {
 	}
 
 	@Test
-	public void testReadStreamedXMLversion() throws ParserConfigurationException, SAXException, IOException {
+	public void testReadStreamedXMLversion() throws ParserConfigurationException, 
+												SAXException, IOException {
 		assertEquals("1.0", reader.read(file).getXmlVersion());
 	}
 
 	@Test
-	public void testReadStreamedXMLamountOfFiles() throws ParserConfigurationException, SAXException, IOException {
+	public void testReadStreamedXMLamountOfFiles() throws ParserConfigurationException, 
+													SAXException, IOException {
 		NodeList list;
 		list = reader.read(file).getElementsByTagName("file");
 		assertEquals(3, list.getLength());
@@ -67,7 +69,8 @@ public class XmlReaderTest {
 	}
 	
 	@Test(expected = NullPointerException.class)
-	public void testReadEmptyXMLpath() throws ParserConfigurationException, SAXException, IOException {
+	public void testReadEmptyXMLpath() throws ParserConfigurationException, 
+										SAXException, IOException {
 		Element root;
 		root = reader.read(file).getDocumentElement();
 		NodeList files = root.getElementsByTagName("file");

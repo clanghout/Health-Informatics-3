@@ -17,7 +17,7 @@ import org.junit.Test;
  */
 public class PlainTextFileTest {
 
-	PlainTextFile textFile;
+	private PlainTextFile textFile;
 	
 	@Before
 	public void setUp() {
