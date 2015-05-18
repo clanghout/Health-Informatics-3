@@ -11,7 +11,7 @@ import model.data.value.NumberValue;
  * @author louisgosschalk
  * 16-05-2015
  */
-public class Sum extends ValueFunction {
+public class Sum extends Function {
 	
 	private DataTable table;
 	private DataDescriber<NumberValue> argument;

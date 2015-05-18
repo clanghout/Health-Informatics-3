@@ -9,7 +9,7 @@ import model.data.value.NumberValue;
  * @author Louis Gosschalk 
  * 11-05-2015
  */
-public class Minimum extends RowFunction {
+public class Minimum extends Minmax {
 	
 	public Minimum(DataTable model, DataDescriber<NumberValue> argument) {
 		super(model, argument);
@@ -18,7 +18,7 @@ public class Minimum extends RowFunction {
 	/**
 	 * Sets the function to determine the minimum in a comparison.
 	 */
-	public Boolean check(int comparison) {
+	public Boolean check(float comparison) {
 		if (comparison > 0) {
 			return true;
 		}

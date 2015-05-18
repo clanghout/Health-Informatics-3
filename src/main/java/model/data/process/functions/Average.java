@@ -11,7 +11,7 @@ import model.data.value.NumberValue;
  * @author louisgosschalk
  *13-05-2015
  */
-public class Average extends ValueFunction {
+public class Average extends Function {
 	
 	private DataTable table;
 	private DataDescriber<NumberValue> argument;
@@ -33,7 +33,6 @@ public class Average extends ValueFunction {
 	@Override
 	public DataValue calculate() {
 		initialize();
-		float value = 0f;
 		FloatValue sum = new Sum(table, argument).calculate();
 		float total = (float) sum.getValue();
 		total = total / table.getRowCount();

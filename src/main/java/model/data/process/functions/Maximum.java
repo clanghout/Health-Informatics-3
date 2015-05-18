@@ -9,7 +9,7 @@ import model.data.value.NumberValue;
  * @author Louis Gosschalk 
  * 11-05-2015
  */
-public class Maximum extends RowFunction {
+public class Maximum extends Minmax {
 	
 	public Maximum(DataTable table, DataDescriber<NumberValue> argument) {
 		super(table, argument);
@@ -18,8 +18,8 @@ public class Maximum extends RowFunction {
 	/**
 	 * Sets the function to determine the maximum in a comparison.
 	 */
-	public Boolean check(int comparison) {
-		if (comparison < 0) {
+	public Boolean check(float comparison) {
+		if (comparison < 0.0) {
 			return true;
 		}
 		return false;

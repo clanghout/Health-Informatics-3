@@ -15,7 +15,7 @@ import model.data.value.NumberValue;
  * @author louisgosschalk
  *16-05-2015
  */
-public class Median extends ValueFunction {
+public class Median extends Function {
 	
 	private DataTable table;
 	private DataDescriber<NumberValue> argument;
