@@ -1,13 +1,11 @@
 package model.data.process.functions;
 
-import java.util.List;
-
 import model.data.DataColumn;
-import model.data.DataRow;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.describer.RowValueDescriber;
-import model.data.process.functions.Maximum;
+import model.data.process.functions.Sum;
+import model.data.value.DataValue;
 import model.data.value.FloatValue;
 import model.data.value.IntValue;
 import model.data.value.StringValue;
@@ -20,11 +18,11 @@ import exceptions.FunctionInputMismatchException;
 import static org.junit.Assert.*;
 
 /**
- * Test for maximum.
+ * Test for sum.
  * @author Louis Gosschalk
- * 12-05-2015
+ * 16-05-2015
  */
-public class MaximumTest {
+public class SumTest {
 	
 	private DataTable table;
 	private DataColumn stringColumn;
@@ -35,7 +33,7 @@ public class MaximumTest {
 	private DataColumn floatersColumn;
 	
 	/**
-	 * simulate datamodel with single maximum for each column type.
+	 * simulate datamodel with single sum for each column type.
 	 * @throws Exception
 	 */
 	@Before
@@ -95,39 +93,35 @@ public class MaximumTest {
 	 * @throws Exception
 	 */
 	@Test(expected=FunctionInputMismatchException.class)
-	public void TestStringMaximum() throws Exception {
-		List<DataRow> maximum = new Maximum(table, new RowValueDescriber<>(stringColumn)).calculate();
+	public void TestStringsum() throws Exception {
+		DataValue sum = new Sum(table, new RowValueDescriber<>(stringColumn)).calculate();
 	}
 	@Test
-	public void testFloatMaximum() throws Exception {
-		List<DataRow> max = new Maximum(table, new RowValueDescriber<>(floatColumn)).calculate();
-		assertEquals(new FloatValue(6.9f), max.get(0).getValue(floatColumn));
+	public void testFloatsum() throws Exception {
+		DataValue sm = new Sum(table, new RowValueDescriber<>(floatColumn)).calculate();
+		assertEquals(new FloatValue(25.5f), sm);
 	}
 	@Test
-	public void testIntMaximum() throws Exception {
-		List<DataRow> max = new Maximum(table, new RowValueDescriber<>(intColumn)).calculate();
-		assertEquals(new IntValue(10), max.get(0).getValue(intColumn));
+	public void testIntsum() throws Exception {
+		DataValue sm = new Sum(table, new RowValueDescriber<>(intColumn)).calculate();
+		assertEquals(new FloatValue(27), sm);
 	}
 	@Test
-	public void testFloatMultipleMaximum() throws Exception {
-		List<DataRow> max = new Maximum(table, new RowValueDescriber<>(floatsColumn)).calculate();
-		FloatValue f = new FloatValue(8.8f);
-		assertEquals(f, max.get(0).getValue(floatsColumn));
-		assertEquals(f, max.get(1).getValue(floatsColumn));
+	public void testFloatSum2() throws Exception {
+		DataValue sm = new Sum(table, new RowValueDescriber<>(floatsColumn)).calculate();
+		FloatValue f = new FloatValue(29.8f);
+		assertEquals(f, sm);
 	}
 	@Test
-	public void testFloatTripleMaximum() throws Exception {
-		List<DataRow> max = new Maximum(table, new RowValueDescriber<>(floatersColumn)).calculate();
-		FloatValue f = new FloatValue(6.6f);
-		assertEquals(f, max.get(0).getValue(floatersColumn));
-		assertEquals(f, max.get(1).getValue(floatersColumn));
-		assertEquals(f, max.get(2).getValue(floatersColumn));
+	public void testFloatSum3() throws Exception {
+		DataValue sm = new Sum(table, new RowValueDescriber<>(floatersColumn)).calculate();
+		FloatValue f = new FloatValue(26.2f);
+		assertEquals(f, sm);
 	}
 	@Test
-	public void testIntMultipleMaximum() throws Exception {
-		List<DataRow> max = new Maximum(table, new RowValueDescriber<>(intsColumn)).calculate();
-		IntValue f = new IntValue(12);
-		assertEquals(f, max.get(0).getValue(intsColumn));
-		assertEquals(f, max.get(1).getValue(intsColumn));
+	public void testIntSum2() throws Exception {
+		DataValue sm = new Sum(table, new RowValueDescriber<>(intsColumn)).calculate();
+		FloatValue f = new FloatValue(37.0f);
+		assertEquals(f, sm);
 	}
 }
