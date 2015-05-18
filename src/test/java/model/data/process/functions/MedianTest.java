@@ -18,9 +18,9 @@ import exceptions.FunctionInputMismatchException;
 import static org.junit.Assert.*;
 
 /**
+ * Test for Median
  * @author Louis Gosschalk
  * 16-05-2015
- * Test for Median
  */
 public class MedianTest {
 	
@@ -106,12 +106,6 @@ public class MedianTest {
 		DataValue med = new Median(table, new RowValueDescriber<>(intColumn)).calculate();
 		assertEquals(new FloatValue(7.0f), med);
 	}
-//	@Test
-//	public void testFloatMedian2() throws Exception {
-//		DataValue med = new Median(table, new RowValueDescriber<>(floatsColumn)).calculate();
-//		FloatValue f = new FloatValue(29.8f);
-//		assertEquals(f, med);
-//	}
 	@Test
 	public void testFloatMedian2() throws Exception {
 		DataValue med = new Median(table, new RowValueDescriber<>(floatersColumn)).calculate();
