@@ -26,12 +26,20 @@ public class Division extends Computation {
 	public NumberValue compute(DataRow row) {
 		NumberValue left = (NumberValue) getLeftSide().resolve(row);
 		NumberValue right = (NumberValue) getRightSide().resolve(row);
-		if ((left instanceof IntValue && right instanceof IntValue)
-				|| (left instanceof FloatValue && right instanceof FloatValue)) {
-			if ((float) right.getValue() == 0f) {
+
+		if (left instanceof IntValue && right instanceof IntValue) {
+			int rightValue = (int) right.getValue();
+			if (rightValue == 0) {
 				throw new ArithmeticException("Dividing by zero");
 			}
-			return new FloatValue((float) left.getValue() / (float) right.getValue());
+			return new IntValue((int) left.getValue() / rightValue);
+		}
+		if (left instanceof FloatValue && right instanceof FloatValue) {
+			float rightValue = (float) right.getValue();
+			if (rightValue == 0f) {
+				throw new ArithmeticException("Dividing by zero");
+			}
+			return new FloatValue((float) left.getValue() / rightValue);
 		} else {
 			throw new UnsupportedOperationException("Function for this type is not supported.");
 		}

@@ -23,11 +23,18 @@ public class SquareRoot extends UnaryComputation {
 	@Override
 	public NumberValue compute(DataRow row) {
 		NumberValue left = (NumberValue) getLeftSide().resolve(row);
-		if (left instanceof IntValue || left instanceof FloatValue) {
-			if ((float) left.getValue() < 0f) {
+		if (left instanceof FloatValue) {
+			float leftValue = (float) left.getValue();
+			if (leftValue < 0f) {
 				throw new ArithmeticException("Function not defined for this value.");
 			}
-			return new FloatValue((float) Math.sqrt((float) left.getValue()));
+			return new FloatValue((float) Math.sqrt(leftValue));
+		} else if (left instanceof IntValue) {
+			int leftValue = (int) left.getValue();
+			if (leftValue < 0) {
+				throw new ArithmeticException("Function not defined for this value.");
+			}
+			return new FloatValue((float) Math.sqrt(leftValue));
 		} else {
 			throw new UnsupportedOperationException("Function for this type is not supported.");
 		}
