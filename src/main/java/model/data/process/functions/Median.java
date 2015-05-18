@@ -57,7 +57,7 @@ public class Median extends ValueFunction {
 		for (int i = 0; i < table.getRowCount(); i++) {
 			row = table.getRow(i);
 			if (argument.resolve(row).getClass().equals(FloatValue.class)) {
-				list.add((float) argument.resolve(row).getValue());
+				list.add((Float) argument.resolve(row).getValue());
 			} else {
 				list.add((float) 1.0 * (int) argument.resolve(row).getValue());
 			}
