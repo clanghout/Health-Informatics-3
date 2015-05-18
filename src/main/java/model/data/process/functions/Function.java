@@ -51,4 +51,14 @@ public abstract class Function {
 		}
 	}
 	
+	public float intOrFloat(DataDescriber<NumberValue> arg, DataRow line) {
+	  float result = 0.0f;
+	  if (arg.resolve(line).getClass().equals(FloatValue.class)) {
+      result = (Float) argument.resolve(line).getValue();
+    } else {
+      result = (float) ((int) argument.resolve(line).getValue());
+    }
+	  return result;
+	}
+	
 }
