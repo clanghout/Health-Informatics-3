@@ -34,10 +34,11 @@ public class Sum extends ValueFunction {
 		float value = 0f;
 		for(int i = 0; i < table.getRowCount(); i++) {
 			row = table.getRow(i);
-			if(argument.resolve(row).getClass().equals(FloatValue.class))
+			if(argument.resolve(row).getClass().equals(FloatValue.class)) {
 				value = (float) argument.resolve(row).getValue();
-			else
+			} else { 
 				value = (float) 1.0 * (int) argument.resolve(row).getValue();
+			}
 			total += value;
 		}
 		FloatValue result = new FloatValue(total);

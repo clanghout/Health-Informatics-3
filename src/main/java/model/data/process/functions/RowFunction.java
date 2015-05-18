@@ -35,8 +35,9 @@ public abstract class RowFunction extends Function{
 	 * @return List<DataRow> the rows containing the minimum
 	 */
 	public List<DataRow> calculate() throws Exception {
-		if(table.getRowCount() == 0)
+		if(table.getRowCount() == 0) {
 			return rowlist; 
+		}
 			
 		row = table.getRow(0);
 		rowlist.add(row);

@@ -19,8 +19,9 @@ public class Maximum extends RowFunction {
 	 * Sets the function to determine the maximum in a comparison
 	 */
 	public Boolean check(int comparison) {
-		if(comparison < 0)
+		if(comparison < 0) {
 			return true;
+		}
 		return false;
 	}
 

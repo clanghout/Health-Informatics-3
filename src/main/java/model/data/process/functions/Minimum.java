@@ -19,8 +19,9 @@ public class Minimum extends RowFunction {
 	 * Sets the function to determine the minimum in a comparison
 	 */
 	public Boolean check(int comparison) {
-		if(comparison > 0)
+		if(comparison > 0) {
 			return true;
+		}
 		return false;
 	}
 }

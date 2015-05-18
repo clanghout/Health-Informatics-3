@@ -35,9 +35,9 @@ public abstract class ValueFunction extends Function {
 	 * @return DataValue because it calls calculate
 	 */
 	public void initialize() {
-		if(table.getRowCount() == 0)
+		if(table.getRowCount() == 0) {
 			throw new FunctionInputMismatchException("Calculation of nothing does not exist"); 
-		
+		}
 		row = table.getRow(0);
 		try {
 			argument.resolve(row).getClass();
