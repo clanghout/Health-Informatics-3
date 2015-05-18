@@ -11,10 +11,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
-<<<<<<< HEAD
  * Tests for the addition computation.
-=======
->>>>>>> 263958eea8d2515a9da4b5f63c68da606fcf2405
  * Created by Chris on 12-5-2015.
  */
 public class AdditionTest {

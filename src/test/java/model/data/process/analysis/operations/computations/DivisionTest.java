@@ -8,10 +8,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 /**
-<<<<<<< HEAD
  * Tests for the division computation.
-=======
->>>>>>> 263958eea8d2515a9da4b5f63c68da606fcf2405
  * Created by Chris on 12-5-2015.
  */
 public class DivisionTest {
