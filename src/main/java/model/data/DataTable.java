@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * Class that represents the data that should be analysed.
  */
-public class DataTable implements Table {
+public class DataTable implements Table, Iterable {
 	private List<DataRow> rows;
 	private Map<String, DataColumn> columns;
 	private String name;

@@ -9,6 +9,7 @@ import java.util.List;
 /**
  * This class is able to store multiple rows.
  * This is used for analyses over multiple tables.
+ * So this simulates a join of multiple tables
  *
  * Created by jens on 5/18/15.
  */

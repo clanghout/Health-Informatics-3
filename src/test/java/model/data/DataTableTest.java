@@ -6,12 +6,11 @@ import model.data.value.StringValue;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by jens on 4/30/15.
@@ -81,5 +80,17 @@ public class DataTableTest {
 		for (DataColumn c : columns) {
 			assertEquals(actual.get(c.getName()), c);
 		}
+	}
+
+	@Test
+	public void testIterator() throws Exception {
+		Iterator<DataRow> iterator = dataTable.iterator();
+		assertTrue(iterator.hasNext());
+		assertEquals(iterator.next(), rows.get(0));
+		assertTrue(iterator.hasNext());
+		assertEquals(iterator.next(), rows.get(1));
+		assertTrue(iterator.hasNext());
+		assertEquals(iterator.next(), rows.get(2));
+		assertFalse(iterator.hasNext());
 	}
 }

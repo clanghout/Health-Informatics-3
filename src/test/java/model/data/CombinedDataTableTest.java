@@ -94,9 +94,9 @@
 //		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1));
 //		Iterator<? extends Row> it = comb.iterator();
 //		assertTrue(it.hasNext());
-//	//	assertEquals(it.next().getRow("test2").getValue("column1").toString(), "awfg");
+//		assertEquals(it.next().getRow("test2").getValue("column1").toString(), "awfg");
 //		assertTrue(it.hasNext());
-//	//	assertEquals(it.next().getRow("test2").getValue("column1").toString(), "sfa");
+//		assertEquals(it.next().getRow("test2").getValue("column1").toString(), "sfa");
 //		assertFalse(it.hasNext());
 //	}
 //
