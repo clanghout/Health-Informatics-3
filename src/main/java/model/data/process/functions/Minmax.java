@@ -50,5 +50,5 @@ public abstract class Minmax extends Function {
 		return new FloatValue(current);
 	}
 
-	public abstract Boolean check(float comparison);
+	public abstract boolean check(float comparison);
 }

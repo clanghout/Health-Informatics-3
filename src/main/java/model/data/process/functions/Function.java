@@ -63,7 +63,7 @@ public abstract class Function {
 		if (arg.resolve(line) instanceof FloatValue) {
 			result = (Float) argument.resolve(line).getValue();
 		} else {
-			result = ((int) argument.resolve(line).getValue());
+			result = (float) ((int) argument.resolve(line).getValue());
 		}
 		return result;
 	}
