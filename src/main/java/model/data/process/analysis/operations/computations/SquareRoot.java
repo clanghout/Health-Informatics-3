@@ -13,8 +13,8 @@ import model.data.value.NumberValue;
  */
 public class SquareRoot<T extends NumberValue> extends UnaryComputation<T> {
 
-	public SquareRoot(DataDescriber<T> leftSide) {
-		super(leftSide);
+	public SquareRoot(DataDescriber<T> operand) {
+		super(operand);
 	}
 
 	/**

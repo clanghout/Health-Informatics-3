@@ -25,8 +25,8 @@ public abstract class UnaryComputation<T extends NumberValue> extends Operation<
 	public abstract NumberValue compute(DataRow row);
 
 	/**
-	 * Get the DataDescriber for the left side operand.
-	 * @return The DataDescriber for the left side operand
+	 * Get the DataDescriber for the operand.
+	 * @return The DataDescriber for the operand
 	 */
 	public DataDescriber<T> getOperand() {
 		return operand;
