@@ -2,8 +2,6 @@ package model.data;
 
 import model.data.value.DataValue;
 
-import java.util.List;
-
 /**
  * Class that specified what the data in a column is.
  */
@@ -33,6 +31,10 @@ public class DataColumn {
 
 	public void setTable(DataTable table) {
 		this.table = table;
+	}
+
+	public DataTable getTable() {
+		return table;
 	}
 
 	/**

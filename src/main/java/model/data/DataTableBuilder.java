@@ -1,8 +1,5 @@
 package model.data;
 
-
-import exceptions.ColumnValueMismatchException;
-import exceptions.ColumnValueTypeMismatchException;
 import model.data.value.DataValue;
 
 import java.util.ArrayList;
@@ -40,7 +37,7 @@ public class DataTableBuilder {
 			throw new NameNotSetException("Name must be set");
 		}
 		DataTable result = new DataTable(name, rows, columns);
-		for(DataColumn column : columns) {
+		for (DataColumn column : columns) {
 			column.setTable(result);
 		}
 

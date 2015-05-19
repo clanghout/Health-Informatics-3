@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 /**
  * Class that represents a row of data.
  */
-public class DataRow implements Row{
+public class DataRow implements Row {
 	private Logger log = Logger.getLogger("DataRow");
 
 	private Map<DataColumn, DataValue> values = new HashMap<>();

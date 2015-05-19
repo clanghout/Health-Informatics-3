@@ -3,7 +3,6 @@ package model.data;
 import model.data.value.DataValue;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -22,7 +21,7 @@ public class CombinedDataRow implements Row {
 	}
 
 	/**
-	 * add a row to the combine datarow
+	 * add a row to the combine datarow.
 	 * @param row the row to add
 	 */
 	public void addDataRow(DataRow row) {

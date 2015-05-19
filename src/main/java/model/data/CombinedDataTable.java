@@ -17,7 +17,8 @@ public class CombinedDataTable implements Iterable, Table {
 	public CombinedDataTable(DataTable table, DataTable... tables) {
 		this.table = table;
 		if (tables.length != 0) {
-			combined = new CombinedDataTable(tables[0], Arrays.copyOfRange(tables, 1, tables.length));
+			combined = new CombinedDataTable(tables[0],
+					Arrays.copyOfRange(tables, 1, tables.length));
 		}
 	}
 
