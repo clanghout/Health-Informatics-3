@@ -1,6 +1,5 @@
 package model.data.process.functions;
 
-import exceptions.FunctionInputMismatchException;
 import model.data.DataRow;
 import model.data.DataTable;
 import model.data.describer.DataDescriber;
@@ -8,6 +7,7 @@ import model.data.value.DataValue;
 import model.data.value.FloatValue;
 import model.data.value.IntValue;
 import model.data.value.NumberValue;
+import exceptions.FunctionInputMismatchException;
 
 /**
  * This class will provide a framework for functions resulting single data values.
@@ -36,6 +36,7 @@ public abstract class Function {
    * initialize class checks if specified column is eligible.
    */
   public void initialize() {
+
     if (table.getRowCount() == 0) {
       throw new FunctionInputMismatchException("Calculation of nothing does not exist");
     }
@@ -62,7 +63,7 @@ public abstract class Function {
     if (arg.resolve(line) instanceof FloatValue) {
       result = (Float) argument.resolve(line).getValue();
     } else {
-      result = (float) ((int) argument.resolve(line).getValue());
+      result = ((int) argument.resolve(line).getValue());
     }
     return result;
   }
