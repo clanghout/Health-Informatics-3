@@ -4,23 +4,25 @@ import model.data.DataColumn;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.describer.RowValueDescriber;
-import model.data.process.functions.Minimum;
+import model.data.process.functions.Sum;
 import model.data.value.DataValue;
 import model.data.value.FloatValue;
+import model.data.value.IntValue;
 import model.data.value.StringValue;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import exceptions.FunctionInputMismatchException;
+
 import static org.junit.Assert.*;
 
 /**
- * Test for Minimum.
+ * Test for sum.
  * 
- * @author Louis Gosschalk 12-05-2015
+ * @author Louis Gosschalk 16-05-2015
  */
-public class MinimumTest {
+public class SumTest {
 
 	private DataTable table;
 	private DataColumn stringColumn;
@@ -31,7 +33,7 @@ public class MinimumTest {
 	private DataColumn floatersColumn;
 
 	/**
-	 * simulate datamodel with single Minimum for each column type
+	 * simulate datamodel with single sum for each column type.
 	 * 
 	 * @throws Exception
 	 */
@@ -40,8 +42,8 @@ public class MinimumTest {
 		DataTableBuilder builder = new DataTableBuilder();
 
 		stringColumn = builder.createColumn("string", StringValue.class);
-		intColumn = builder.createColumn("int", FloatValue.class);
-		intsColumn = builder.createColumn("ints", FloatValue.class);
+		intColumn = builder.createColumn("int", IntValue.class);
+		intsColumn = builder.createColumn("ints", IntValue.class);
 		floatColumn = builder.createColumn("float", FloatValue.class);
 		floatsColumn = builder.createColumn("floats", FloatValue.class);
 		floatersColumn = builder.createColumn("floaters", FloatValue.class);
@@ -54,32 +56,32 @@ public class MinimumTest {
 		builder.addColumn(floatersColumn);
 
 		StringValue string = new StringValue("What");
-		FloatValue int1 = new FloatValue(9);
-		FloatValue int2 = new FloatValue(3);
+		IntValue int1 = new IntValue(9);
+		IntValue int2 = new IntValue(12);
 		FloatValue float1 = new FloatValue(6.9f);
 		FloatValue float2 = new FloatValue(8.8f);
 		FloatValue float3 = new FloatValue(6.6f);
 		builder.addRow(builder.createRow(string, int1, int2, float1, float2, float3));
 
 		string = new StringValue("Can");
-		int1 = new FloatValue(5);
-		int2 = new FloatValue(10);
+		int1 = new IntValue(5);
+		int2 = new IntValue(10);
 		float1 = new FloatValue(6.5f);
-		float2 = new FloatValue(5.3f);
+		float2 = new FloatValue(6.9f);
 		float3 = new FloatValue(6.6f);
 		builder.addRow(builder.createRow(string, int1, int2, float1, float2, float3));
 
 		string = new StringValue("You");
-		int1 = new FloatValue(3);
-		int2 = new FloatValue(3);
+		int1 = new IntValue(3);
+		int2 = new IntValue(3);
 		float1 = new FloatValue(5.9f);
 		float2 = new FloatValue(8.8f);
-		float3 = new FloatValue(6.8f);
+		float3 = new FloatValue(6.4f);
 		builder.addRow(builder.createRow(string, int1, int2, float1, float2, float3));
 
 		string = new StringValue("Do");
-		int1 = new FloatValue(10);
-		int2 = new FloatValue(12);
+		int1 = new IntValue(10);
+		int2 = new IntValue(12);
 		float1 = new FloatValue(6.2f);
 		float2 = new FloatValue(5.3f);
 		float3 = new FloatValue(6.6f);
@@ -94,40 +96,40 @@ public class MinimumTest {
 	 * @throws Exception
 	 */
 	@Test(expected = FunctionInputMismatchException.class)
-	public void TestStringMinimum() throws Exception {
-		DataValue minimum = new Minimum(table, new RowValueDescriber<>(stringColumn)).calculate();
+	public void TestStringsum() throws Exception {
+		DataValue sum = new Sum(table, new RowValueDescriber<>(stringColumn)).calculate();
 	}
 
 	@Test
-	public void testFloatMinimum() throws Exception {
-		DataValue min = new Minimum(table, new RowValueDescriber<>(floatColumn)).calculate();
-		assertEquals(new FloatValue(5.9f), min);
+	public void testFloatsum() throws Exception {
+		DataValue sm = new Sum(table, new RowValueDescriber<>(floatColumn)).calculate();
+		assertEquals(new FloatValue(25.5f), sm);
 	}
 
 	@Test
-	public void testIntMinimum() throws Exception {
-		DataValue min = new Minimum(table, new RowValueDescriber<>(intColumn)).calculate();
-		assertEquals(new FloatValue(3.0f), min);
+	public void testIntsum() throws Exception {
+		DataValue sm = new Sum(table, new RowValueDescriber<>(intColumn)).calculate();
+		assertEquals(new FloatValue(27), sm);
 	}
 
 	@Test
-	public void testFloatMultipleMinimum() throws Exception {
-		DataValue min = new Minimum(table, new RowValueDescriber<>(floatsColumn)).calculate();
-		FloatValue f = new FloatValue(5.3f);
-		assertEquals(f, min);
+	public void testFloatSum2() throws Exception {
+		DataValue sm = new Sum(table, new RowValueDescriber<>(floatsColumn)).calculate();
+		FloatValue f = new FloatValue(29.8f);
+		assertEquals(f, sm);
 	}
 
 	@Test
-	public void testFloatTripleMinimum() throws Exception {
-		DataValue max = new Minimum(table, new RowValueDescriber<>(floatersColumn)).calculate();
-		FloatValue f = new FloatValue(6.6f);
-		assertEquals(f, max);
+	public void testFloatSum3() throws Exception {
+		DataValue sm = new Sum(table, new RowValueDescriber<>(floatersColumn)).calculate();
+		FloatValue f = new FloatValue(26.2f);
+		assertEquals(f, sm);
 	}
 
 	@Test
-	public void testIntMultipleMinimum() throws Exception {
-		DataValue min = new Minimum(table, new RowValueDescriber<>(intsColumn)).calculate();
-		FloatValue f = new FloatValue(3.0f);
-		assertEquals(f, min);
+	public void testIntSum2() throws Exception {
+		DataValue sm = new Sum(table, new RowValueDescriber<>(intsColumn)).calculate();
+		FloatValue f = new FloatValue(37.0f);
+		assertEquals(f, sm);
 	}
 }
