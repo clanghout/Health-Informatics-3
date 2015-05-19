@@ -35,7 +35,6 @@ public class Average extends Function {
    */
   @Override
   public DataValue calculate() {
-    initialize();
     FloatValue sum = new Sum(table, argument).calculate();
     float total = (float) sum.getValue();
     total = total / table.getRowCount();

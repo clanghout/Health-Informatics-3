@@ -22,6 +22,7 @@ public abstract class Function {
   public Function(DataTable model, DataDescriber<NumberValue> argument) {
     this.table = model;
     this.argument = argument;
+    initialize();
   }
 
   /**

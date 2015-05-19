@@ -26,7 +26,6 @@ public class Sum extends Function {
    */
   @Override
   public FloatValue calculate() {
-    initialize();
     float total = 0f;
     float value = 0f;
     for (int i = 0; i < table.getRowCount(); i++) {

@@ -27,7 +27,6 @@ public abstract class Minmax extends Function {
    * @return List<DataRow> the rows containing the minimum
    */
   public DataValue calculate() {
-    initialize();
     return compare();
   }
 
