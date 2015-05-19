@@ -6,15 +6,15 @@ import model.data.process.analysis.operations.Operation;
 import model.data.value.NumberValue;
 
 /**
- * Abstract class describing computations on data.
+ * Superclass for computations with only one operand.
  *
- * @param <T> The type of the left and right side DataDescribers
+ * @param <T> The type of the DataDescriber
  */
 public abstract class UnaryComputation<T extends NumberValue> extends Operation<NumberValue> {
 	private final DataDescriber<T> operand;
 
-	public UnaryComputation(DataDescriber<T> leftSide) {
-		operand = leftSide;
+	public UnaryComputation(DataDescriber<T> operand) {
+		this.operand = operand;
 	}
 
 	/**

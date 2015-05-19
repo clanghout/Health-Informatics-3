@@ -8,17 +8,19 @@ import model.data.value.NumberValue;
 
 /**
  * Computation which subtracts two NumberValues.
+ *
+ * @param <T> Type of NumberValue being used by the computation.
  */
-public class Subtraction extends Computation {
+public class Subtraction<T extends NumberValue> extends Computation<T> {
 
-	public Subtraction(DataDescriber leftSide, DataDescriber rightSide) {
+	public Subtraction(DataDescriber<T> leftSide, DataDescriber<T> rightSide) {
 		super(leftSide, rightSide);
 	}
 
 	@Override
 	public NumberValue compute(DataRow row) {
-		NumberValue left = (NumberValue) getLeftSide().resolve(row);
-		NumberValue right = (NumberValue) getRightSide().resolve(row);
+		T left = getLeftSide().resolve(row);
+		T right = getRightSide().resolve(row);
 		if (left instanceof IntValue && right instanceof IntValue) {
 			return new IntValue((int) left.getValue() - (int) right.getValue());
 		} else if (left instanceof FloatValue && right instanceof FloatValue) {

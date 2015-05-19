@@ -6,7 +6,7 @@ import model.data.process.analysis.operations.Operation;
 import model.data.value.NumberValue;
 
 /**
- * Abstract class describing computations on data.
+ * Abstract class describing computations with two operands on data.
  * @param <T> The type of the left and right side DataDescribers
  */
 public abstract class Computation<T extends NumberValue> extends Operation<NumberValue> {

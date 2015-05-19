@@ -8,10 +8,12 @@ import model.data.value.NumberValue;
 
 /**
  * Computation which divides two numberValues.
+ *
+ * @param <T> Type of NumberValue being used by the computation.
  */
-public class Division extends Computation {
+public class Division<T extends NumberValue> extends Computation<T> {
 
-	public Division(DataDescriber leftSide, DataDescriber rightSide) {
+	public Division(DataDescriber<T> leftSide, DataDescriber<T> rightSide) {
 		super(leftSide, rightSide);
 	}
 
@@ -24,8 +26,8 @@ public class Division extends Computation {
 	 */
 	@Override
 	public NumberValue compute(DataRow row) {
-		NumberValue left = (NumberValue) getLeftSide().resolve(row);
-		NumberValue right = (NumberValue) getRightSide().resolve(row);
+		T left = getLeftSide().resolve(row);
+		T right = getRightSide().resolve(row);
 		if (left instanceof IntValue && right instanceof IntValue) {
 			int rightValue = (int) right.getValue();
 			if (rightValue == 0) {

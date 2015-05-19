@@ -8,10 +8,12 @@ import model.data.value.NumberValue;
 
 /**
  * Computation of the power function of two NumberValues.
+ *
+ * @param <T> Type of NumberValue being used by the computation.
  */
-public class Power extends Computation {
+public class Power<T extends NumberValue> extends Computation<T> {
 
-	public Power(DataDescriber leftSide, DataDescriber rightSide) {
+	public Power(DataDescriber<T> leftSide, DataDescriber<T> rightSide) {
 		super(leftSide, rightSide);
 	}
 
@@ -23,8 +25,8 @@ public class Power extends Computation {
 	 */
 	@Override
 	public NumberValue compute(DataRow row) {
-		NumberValue left = (NumberValue) getLeftSide().resolve(row);
-		NumberValue right = (NumberValue) getRightSide().resolve(row);
+		T left = getLeftSide().resolve(row);
+		T right = getRightSide().resolve(row);
 		if (left instanceof FloatValue && right instanceof FloatValue) {
 			return new FloatValue(
 					(float) Math.pow((float) left.getValue(), (float) right.getValue()));

@@ -8,10 +8,12 @@ import model.data.value.NumberValue;
 
 /**
  * Computation which multiplies two NumberValues.
+ *
+ * @param <T> Type of NumberValue being used by the computation.
  */
-public class Multiplication extends Computation {
+public class Multiplication<T extends NumberValue> extends Computation<T> {
 
-	public Multiplication(DataDescriber leftSide, DataDescriber rightSide) {
+	public Multiplication(DataDescriber<T> leftSide, DataDescriber<T> rightSide) {
 		super(leftSide, rightSide);
 	}
 
