@@ -87,7 +87,7 @@ public class MedianTest {
 		float2 = new FloatValue(5.3f);
 		float3 = new FloatValue(6.6f);
 		builder.addRow(builder.createRow(string, int1, int2, float1, float2, float3));
-
+		builder.setName("test");
 		table = builder.build();
 	}
 
