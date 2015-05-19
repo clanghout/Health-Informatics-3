@@ -34,13 +34,16 @@ public abstract class ExcelFile extends DataFile {
 	public InputStream createStream(Iterator<Row> rowIterator) throws FileNotFoundException {
 
 		StringBuilder builder = new StringBuilder();
+		
 		while (rowIterator.hasNext()) {
 			Row row = rowIterator.next();
 			Iterator<Cell> cellIterator = row.iterator();
+			
 			while (cellIterator.hasNext()) {
 				Cell cell = cellIterator.next();
-                builder.append(cell.getStringCellValue() + "\t");
+				builder.append(cell.getStringCellValue() + "\t");
 			}
+			
 			builder.append("\n");
 		}
 		InputStream newStream = new ByteArrayInputStream(

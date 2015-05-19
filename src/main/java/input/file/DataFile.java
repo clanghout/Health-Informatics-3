@@ -10,9 +10,9 @@ import exceptions.DataFileNotRecognizedException;
  */
 public abstract class DataFile {
 
-	protected String path;
-	protected int startLine;
-	protected int endLine;
+	private String path;
+	private int startLine;
+	private int endLine;
 	
 	/**
 	 * Creates a new type of a DataFile. Sets the default range of lines to read
