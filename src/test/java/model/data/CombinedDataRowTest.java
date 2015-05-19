@@ -1,30 +1,62 @@
-//package model.data;
-//
-//import org.junit.Test;
-//
-//import static org.junit.Assert.*;
-//
-///**
-// * Created by jens on 5/18/15.
-// */
-//public class CombinedDataRowTest {
-//
-//	@Test
-//	public void testAddDataRow() throws Exception {
-//		CombinedDataRow combinedDataRow = new CombinedDataRow();
-//		assertNull(combinedDataRow.getRow("test"));
-//		combinedDataRow.addDataRow(new DataRow(), "test");
-//		assertNotNull(combinedDataRow.getRow("test"));
-//	}
-//
-//	@Test
-//	public void testGetRow() throws Exception {
-//		CombinedDataRow combinedDataRow = new CombinedDataRow();
-//		DataRow row1 = new DataRow();
-//		DataRow row2 = new DataRow();
-//		combinedDataRow.addDataRow(row1, "test");
-//		assertEquals(combinedDataRow.getRow("test"), row1);
-//		combinedDataRow.addDataRow(row2, "test2");
-//		assertEquals(combinedDataRow.getRow("test2"), row2);
-//	}
-//}
+package model.data;
+
+import model.data.value.StringValue;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+
+/**
+ * Created by jens on 5/19/15.
+ */
+public class CombinedDataRowTest {
+
+	@Test
+	public void testAddDataRow() throws Exception {
+		CombinedDataRow combRow = new CombinedDataRow();
+		DataColumn column1 = new DataColumn("test1", null, StringValue.class);
+		DataRow dataRow = new DataRow();
+		dataRow.setValue(column1, new StringValue("test"));
+
+		combRow.addDataRow(dataRow);
+		assertEquals(combRow.getValue(column1).toString(), "test");
+	}
+
+	@Test
+	public void testGetValue() throws Exception {
+		CombinedDataRow combRow = new CombinedDataRow();
+		DataColumn column1 = new DataColumn("test1", null, StringValue.class);
+		DataRow dataRow = new DataRow();
+		dataRow.setValue(column1, new StringValue("test"));
+
+		DataColumn column2 = new DataColumn("test1", null, StringValue.class);
+		DataRow dataRow2 = new DataRow();
+		dataRow.setValue(column2, new StringValue("test2"));
+
+		combRow.addDataRow(dataRow);
+		combRow.addDataRow(dataRow2);
+		assertEquals(combRow.getValue(column1).toString(), "test");
+		assertEquals(combRow.getValue(column2).toString(), "test2");
+	}
+
+	@Test
+	public void testSetValue() throws Exception {
+		CombinedDataRow combRow = new CombinedDataRow();
+		DataColumn column1 = new DataColumn("test1", null, StringValue.class);
+		DataRow dataRow = new DataRow();
+		dataRow.setValue(column1, new StringValue("test"));
+
+		DataColumn column2 = new DataColumn("test1", null, StringValue.class);
+		DataRow dataRow2 = new DataRow();
+		dataRow.setValue(column2, new StringValue("test2"));
+
+		combRow.addDataRow(dataRow);
+		combRow.addDataRow(dataRow2);
+		assertEquals(combRow.getValue(column1).toString(), "test");
+		assertEquals(combRow.getValue(column2).toString(), "test2");
+
+		combRow.setValue(column1, new StringValue("test3"));
+		assertEquals(combRow.getValue(column1).toString(), "test3");
+
+	}
+
+}

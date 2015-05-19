@@ -49,12 +49,4 @@ public class CombinedDataRow implements Row {
 		}
 	}
 
-	@Override
-	public void addConnection(DataConnection connection) {
-		for (DataRow row : rows) {
-			if(connection.getCausedBy().contains(row) || connection.getResultsIn().contains(row)) {
-				row.addConnection(connection);
-			}
-		}
-	}
 }
