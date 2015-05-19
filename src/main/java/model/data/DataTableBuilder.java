@@ -85,9 +85,3 @@ public class DataTableBuilder {
 		return new DataRow(columns.toArray(new DataColumn[columns.size()]), values);
 	}
 }
-
-class NameNotSetException extends Exception {
-	public NameNotSetException(String message) {
-		super(message);
-	}
-}

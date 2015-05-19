@@ -3,6 +3,7 @@ package model.reader;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.DataRow;
+import model.data.NameNotSetException;
 import model.data.value.DataValue;
 import model.data.value.StringValue;
 
@@ -27,7 +28,7 @@ public class DataReader {
 	 * @return A DataTable containing the data from the specified file
 	 * @throws IOException If anything goes wrong reading the file
 	 */
-	public DataTable readData(String filename) throws IOException {
+	public DataTable readData(String filename) throws IOException, NameNotSetException {
 		File file = new File(filename);
 		name = filename;
 		return readData(file);
@@ -39,7 +40,7 @@ public class DataReader {
 	 * @return A DataTable containing the data from the specified file
 	 * @throws IOException If anything goes wrong reading the file
 	 */
-	public DataTable readData(File file) throws IOException {
+	public DataTable readData(File file) throws IOException, NameNotSetException {
 		BufferedInputStream stream = new BufferedInputStream(new FileInputStream(file));
 		return readData(stream);
 	}
@@ -50,11 +51,12 @@ public class DataReader {
 	 * @return A DataTable containing the data from the specified stream
 	 * @throws IOException If anything goes wrong reading the stream
 	 */
-	public DataTable readData(InputStream stream) throws IOException {
+	public DataTable readData(InputStream stream) throws IOException, NameNotSetException {
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"))) {
 			skipToContent(reader);
 
-			DataTableBuilder builder = new DataTableBuilder(name);
+			DataTableBuilder builder = new DataTableBuilder();
+			builder.setName("test");
 			addColumns(builder);
 
 			DataTable table = readRows(reader, builder);
@@ -72,7 +74,7 @@ public class DataReader {
 		}
 	}
 
-	private DataTable readRows(BufferedReader reader, DataTableBuilder builder) throws IOException {
+	private DataTable readRows(BufferedReader reader, DataTableBuilder builder) throws IOException, NameNotSetException {
 		String line;
 		while (!(line = reader.readLine()).contains("]")) {
 			String[] sections = line.split(",");

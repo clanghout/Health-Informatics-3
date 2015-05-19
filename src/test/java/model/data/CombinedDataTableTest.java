@@ -48,7 +48,7 @@ public class CombinedDataTableTest {
 		rows.add(new DataRow(columns, valuesRow2));
 		rows.add(new DataRow(columns, valuesRow3));
 
-		dataTables.add("test1", new DataTable(rows, Arrays.asList(columns)));
+		dataTables.add(new DataTable("test1", rows, Arrays.asList(columns)));
 
 
 		rows = new ArrayList<DataRow>();
