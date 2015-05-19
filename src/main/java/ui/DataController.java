@@ -1,5 +1,7 @@
 package ui;
 
+import input.file.DataFile;
+import input.reader.XmlReader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -15,8 +17,6 @@ import model.data.process.analysis.constraints.EqualityCheck;
 import model.data.value.StringValue;
 import model.reader.DataReader;
 import output.DataTableWriter;
-import xml.filetype.DataFile;
-import xml.XmlReader;
 
 import java.io.File;
 import java.io.IOException;

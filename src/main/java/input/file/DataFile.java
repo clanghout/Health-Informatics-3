@@ -1,4 +1,4 @@
-package xml.filetype;
+package input.file;
 
 import java.io.*;
 

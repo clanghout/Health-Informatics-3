@@ -1,6 +1,7 @@
-package xml.filetype;
+package input.file;
 
 import static org.junit.Assert.*;
+import input.file.XlsFile;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,22 +13,22 @@ import org.junit.Test;
 
 /**
  * JUnit test for the XlsFile class.
- * @author pablo
+ * @author Paul
  *
  */
-public class XlsxFileTest {
+public class XlsFileTest {
 
-	XlsxFile xlsxFile;
+	XlsFile xlsFile;
 	
 	@Before
 	public void setUp() {
-		String file = getClass().getResource("/input/xlsxfile.xlsx").getFile();
-		xlsxFile = new XlsxFile(file);
+		String file = getClass().getResource("/input/xlsfile.xls").getFile();
+		xlsFile = new XlsFile(file);
 	}
 	
 	@Test
 	public void testDataStream() throws IOException {
-		InputStream stream = xlsxFile.getDataStream();
+		InputStream stream = xlsFile.getDataStream();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 		assertEquals("foo\tbar\t", reader.readLine());
 		assertEquals("row2\tbar\tbar\tbat\t", reader.readLine());
