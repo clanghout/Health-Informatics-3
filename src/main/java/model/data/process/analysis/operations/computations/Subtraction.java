@@ -7,11 +7,11 @@ import model.data.value.IntValue;
 import model.data.value.NumberValue;
 
 /**
- * Created by Chris on 12-5-2015.
+ * Computation which subtracts two NumberValues.
  */
-public class Substraction extends Computation {
+public class Subtraction extends Computation {
 
-	public Substraction(DataDescriber leftSide, DataDescriber rightSide) {
+	public Subtraction(DataDescriber leftSide, DataDescriber rightSide) {
 		super(leftSide, rightSide);
 	}
 
@@ -21,8 +21,7 @@ public class Substraction extends Computation {
 		NumberValue right = (NumberValue) getRightSide().resolve(row);
 		if (left instanceof IntValue && right instanceof IntValue) {
 			return new IntValue((int) left.getValue() - (int) right.getValue());
-		}
-		if (left instanceof FloatValue && right instanceof FloatValue) {
+		} else if (left instanceof FloatValue && right instanceof FloatValue) {
 			return new FloatValue((float) left.getValue() - (float) right.getValue());
 		} else {
 			throw new UnsupportedOperationException("Function for this type is not supported.");

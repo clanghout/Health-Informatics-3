@@ -6,7 +6,7 @@ import model.data.value.NumberValue;
 
 
 /**
- * Created by Chris on 12-5-2015.
+ * A datadescriber for the output of a computation.
  */
 public final class ComputationDescriber extends DataDescriber {
 	private Computation computation;

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Chris on 12-5-2015.
+ * Implements the analysis for computations.
  */
 public class ComputationAnalysis extends DataAnalysis {
 
@@ -22,9 +22,9 @@ public class ComputationAnalysis extends DataAnalysis {
 	public DataTable analyse(DataTable input) {
 		List<DataRow> out = new ArrayList<>();
 		List<DataRow> rows = input.getRows();
-		for (DataRow row: rows) {
-			// TODO: Doe dingen
-		}
+// TODO: Add code which specifies what analysis should be computed on which data.
+//		for (DataRow row: rows) {
+//		}
 		return new DataTable(out, new ArrayList<>(input.getColumns().values()));
 	}
 }

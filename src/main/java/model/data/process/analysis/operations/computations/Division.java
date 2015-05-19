@@ -32,8 +32,7 @@ public class Division extends Computation {
 				throw new ArithmeticException("Dividing by zero");
 			}
 			return new IntValue((int) left.getValue() / rightValue);
-		}
-		if (left instanceof FloatValue && right instanceof FloatValue) {
+		} else if (left instanceof FloatValue && right instanceof FloatValue) {
 			float rightValue = (float) right.getValue();
 			if (rightValue == 0f) {
 				throw new ArithmeticException("Dividing by zero");

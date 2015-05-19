@@ -11,10 +11,10 @@ import model.data.value.NumberValue;
  * @param <T> The type of the left and right side DataDescribers
  */
 public abstract class UnaryComputation<T extends NumberValue> extends Operation<NumberValue> {
-	private final DataDescriber<T> left;
+	private final DataDescriber<T> operand;
 
 	public UnaryComputation(DataDescriber<T> leftSide) {
-		left = leftSide;
+		operand = leftSide;
 	}
 
 	/**
@@ -28,8 +28,8 @@ public abstract class UnaryComputation<T extends NumberValue> extends Operation<
 	 * Get the DataDescriber for the left side operand.
 	 * @return The DataDescriber for the left side operand
 	 */
-	public DataDescriber<T> getLeftSide() {
-		return left;
+	public DataDescriber<T> getOperand() {
+		return operand;
 	}
 
 	@Override

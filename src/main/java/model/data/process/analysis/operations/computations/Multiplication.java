@@ -27,8 +27,7 @@ public class Multiplication extends Computation {
 		NumberValue right = (NumberValue) getRightSide().resolve(row);
 		if (left instanceof IntValue && right instanceof IntValue) {
 			return new IntValue((int) left.getValue() * (int) right.getValue());
-		}
-		if (left instanceof FloatValue && right instanceof FloatValue) {
+		} else if (left instanceof FloatValue && right instanceof FloatValue) {
 			return new FloatValue((float) left.getValue() * (float) right.getValue());
 		} else {
 			throw new UnsupportedOperationException("Function for this type is not supported.");
