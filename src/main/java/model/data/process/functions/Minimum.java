@@ -11,15 +11,15 @@ import model.data.value.NumberValue;
  */
 public class Minimum extends Minmax {
 
-  public Minimum(DataTable model, DataDescriber<NumberValue> argument) {
-    super(model, argument);
-  }
+	public Minimum(DataTable model, DataDescriber<NumberValue> argument) {
+		super(model, argument);
+	}
 
-  /**
-   * Sets the function to determine the minimum in a comparison.
-   */
-  @Override
-  public Boolean check(float comparison) {
-    return comparison > 0;
-  }
+	/**
+	 * Sets the function to determine the minimum in a comparison.
+	 */
+	@Override
+	public Boolean check(float comparison) {
+		return comparison > 0;
+	}
 }

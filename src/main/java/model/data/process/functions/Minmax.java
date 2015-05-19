@@ -12,43 +12,43 @@ import model.data.value.NumberValue;
  * @author louisgosschalk 13-05-2015
  */
 public abstract class Minmax extends Function {
-  private DataTable table;
-  private DataDescriber<NumberValue> argument;
+	private DataTable table;
+	private DataDescriber<NumberValue> argument;
 
-  public Minmax(DataTable model, DataDescriber<NumberValue> argument) {
-    super(model, argument);
-    this.table = model;
-    this.argument = argument;
-  }
+	public Minmax(DataTable model, DataDescriber<NumberValue> argument) {
+		super(model, argument);
+		this.table = model;
+		this.argument = argument;
+	}
 
-  /**
-   * This function checks restrictions for determining minimum & maximum.
-   * 
-   * @return List<DataRow> the rows containing the minimum
-   */
-  @Override
-  public DataValue calculate() {
-    return compare();
-  }
+	/**
+	 * This function checks restrictions for determining minimum & maximum.
+	 * 
+	 * @return List<DataRow> the rows containing the minimum
+	 */
+	@Override
+	public DataValue calculate() {
+		return compare();
+	}
 
-  /**
-   * This function calculates minimum or maximum through a generic arithmetic calculation.
-   * 
-   * @return List<DataRow> a list of DataRows
-   */
-  public DataValue compare() {
-    float current = 0.0f;
-    current = intOrFloat(argument, table.getRow(0));
-    for (int i = 1; i < table.getRowCount(); i++) {
-      float compare = 0.0f;
-      compare = intOrFloat(argument, table.getRow(i));
-      float comparison = current - compare;
-      if (check(comparison)) {
-        current = compare;
-      }
-    }
-    return new FloatValue(current);
-  }
+	/**
+	 * This function calculates minimum or maximum through a generic arithmetic calculation.
+	 * 
+	 * @return List<DataRow> a list of DataRows
+	 */
+	public DataValue compare() {
+		float current = 0.0f;
+		current = intOrFloat(argument, table.getRow(0));
+		for (int i = 1; i < table.getRowCount(); i++) {
+			float compare = 0.0f;
+			compare = intOrFloat(argument, table.getRow(i));
+			float comparison = current - compare;
+			if (check(comparison)) {
+				current = compare;
+			}
+		}
+		return new FloatValue(current);
+	}
 
-  public abstract Boolean check(float comparison);
+	public abstract Boolean check(float comparison);
 }

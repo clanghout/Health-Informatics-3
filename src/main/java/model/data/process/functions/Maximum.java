@@ -11,16 +11,16 @@ import model.data.value.NumberValue;
  */
 public class Maximum extends Minmax {
 
-  public Maximum(DataTable table, DataDescriber<NumberValue> argument) {
-    super(table, argument);
-  }
+	public Maximum(DataTable table, DataDescriber<NumberValue> argument) {
+		super(table, argument);
+	}
 
-  /**
-   * Sets the function to determine the maximum in a comparison.
-   */
-  @Override
-  public Boolean check(float comparison) {
-    return comparison < 0;
-  }
+	/**
+	 * Sets the function to determine the maximum in a comparison.
+	 */
+	@Override
+	public Boolean check(float comparison) {
+		return comparison < 0;
+	}
 
 }

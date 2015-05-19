@@ -12,26 +12,26 @@ import model.data.value.NumberValue;
  */
 public class Sum extends Function {
 
-  private DataTable table;
-  private DataDescriber<NumberValue> argument;
+	private DataTable table;
+	private DataDescriber<NumberValue> argument;
 
-  public Sum(DataTable model, DataDescriber<NumberValue> argument) {
-    super(model, argument);
-    this.table = model;
-    this.argument = argument;
-  }
+	public Sum(DataTable model, DataDescriber<NumberValue> argument) {
+		super(model, argument);
+		this.table = model;
+		this.argument = argument;
+	}
 
-  /**
-   * This function calculates the sum of a column.
-   */
-  @Override
-  public FloatValue calculate() {
-    float total = 0f;
-    float value = 0f;
-    for (int i = 0; i < table.getRowCount(); i++) {
-      value = intOrFloat(argument, table.getRow(i));
-      total += value;
-    }
-    return new FloatValue(total);
-  }
+	/**
+	 * This function calculates the sum of a column.
+	 */
+	@Override
+	public FloatValue calculate() {
+		float total = 0f;
+		float value = 0f;
+		for (int i = 0; i < table.getRowCount(); i++) {
+			value = intOrFloat(argument, table.getRow(i));
+			total += value;
+		}
+		return new FloatValue(total);
+	}
 }
