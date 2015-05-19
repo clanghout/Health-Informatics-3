@@ -26,9 +26,9 @@ public class DataTableTest {
 	public void setUp() throws Exception {
 		rows = new ArrayList<DataRow>();
 		columns = new DataColumn[] {
-				new DataColumn("column1", StringValue.class),
-				new DataColumn("column2", StringValue.class),
-				new DataColumn("column3", StringValue.class)
+				new DataColumn("column1", null, StringValue.class),
+				new DataColumn("column2", null, StringValue.class),
+				new DataColumn("column3", null, StringValue.class)
 		};
 
 		DataValue[] valuesRow1 = {

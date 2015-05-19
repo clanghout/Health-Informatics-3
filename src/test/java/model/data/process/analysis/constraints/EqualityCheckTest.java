@@ -23,7 +23,7 @@ public class EqualityCheckTest {
 
 	@Before
 	public void setUp() throws Exception {
-		column = new DataColumn("test", StringValue.class);
+		column = new DataColumn("test", null, StringValue.class);
 
 		hankCheck = new EqualityCheck<>(
 				new RowValueDescriber<>(column),

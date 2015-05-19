@@ -1,8 +1,10 @@
 package model.data;
 
+import model.data.value.DataValue;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This class is able to store multiple rows.
@@ -10,29 +12,48 @@ import java.util.Map;
  *
  * Created by jens on 5/18/15.
  */
-public class CombinedDataRow {
-	private Map<String, DataRow> rows;
+public class CombinedDataRow implements Row {
+	private List<DataRow> rows;
 
 	public CombinedDataRow() {
-		this.rows = new HashMap<>();
+		this.rows = new ArrayList<>();
 
 	}
 
 	/**
 	 * add a row to the combine datarow
 	 * @param row the row to add
-	 * @param name the name of the added tow
 	 */
-	public void addDataRow(DataRow row, String name) {
-		rows.put(name, row);
+	public void addDataRow(DataRow row) {
+		rows.add(row);
 	}
 
-	/**
-	 * return the datarow with the name name.
-	 * @param name name of the datarow
-	 * @return the datarow with the name name.
-	 */
-	public DataRow getRow(String name) {
-		return rows.get(name);
+	@Override
+	public DataValue getValue(DataColumn column) {
+		for (DataRow row : rows) {
+			if (row.getValue(column) != null) {
+				return row.getValue(column);
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public void setValue(DataColumn column, DataValue value) {
+		for (DataRow row : rows) {
+			if (row.getValue(column) != null) {
+				row.setValue(column, value);
+				return;
+			}
+		}
+	}
+
+	@Override
+	public void addConnection(DataConnection connection) {
+		for (DataRow row : rows) {
+			if(connection.getCausedBy().contains(row) || connection.getResultsIn().contains(row)) {
+				row.addConnection(connection);
+			}
+		}
 	}
 }

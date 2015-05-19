@@ -12,13 +12,13 @@ public class DataColumnTest {
 
 	@Test
 	 public void testGetName() throws Exception {
-		DataColumn column = new DataColumn("test", StringValue.class);
+		DataColumn column = new DataColumn("test", null, StringValue.class);
 		assertEquals(column.getName(), "test");
 	}
 
 	@Test
 	public void testGetType() throws Exception {
-		DataColumn column = new DataColumn("test", StringValue.class);
+		DataColumn column = new DataColumn("test", null, StringValue.class);
 		assertEquals(column.getType(), StringValue.class);
 	}
 }

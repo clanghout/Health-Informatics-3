@@ -10,7 +10,7 @@ import java.util.*;
  *
  * Created by jens on 5/18/15.
  */
-public class CombinedDataTable implements Iterable {
+public class CombinedDataTable implements Iterable, Table {
 	private DataTable table;
 	private CombinedDataTable combined;
 
@@ -22,42 +22,19 @@ public class CombinedDataTable implements Iterable {
 	}
 
 	@Override
-	public Iterator<CombinedDataRow> iterator() {
+	public Iterator<? extends Row> iterator() {
 		if (combined != null) {
 			return combinedIterator();
 		} else {
-			return rowIterator();
+			return table.iterator();
 		}
-	}
-
-	private Iterator<CombinedDataRow> rowIterator() {
-		return new Iterator<CombinedDataRow>() {
-			private int index = 0;
-
-			@Override
-			public boolean hasNext() {
-				return index < table.getRowCount();
-			}
-
-			@Override
-			public CombinedDataRow next() {
-				if (hasNext()) {
-					CombinedDataRow result = new CombinedDataRow();
-					result.addDataRow(table.getRow(index), table.getName());
-					index++;
-					return result;
-				} else {
-					throw new NoSuchElementException();
-				}
-			}
-		};
 	}
 
 
 	private Iterator<CombinedDataRow> combinedIterator() {
 		return new Iterator<CombinedDataRow>() {
 			private int index = 0;
-			private Iterator<CombinedDataRow> combinedIterator = combined.iterator();
+			private Iterator<? extends Row> combinedIterator = combined.iterator();
 
 			@Override
 			public boolean hasNext() {
@@ -67,9 +44,15 @@ public class CombinedDataTable implements Iterable {
 			@Override
 			public CombinedDataRow next() {
 				if (hasNext()) {
-					CombinedDataRow result =
-							combinedIterator.next();
-					result.addDataRow(table.getRow(index), table.getName());
+					CombinedDataRow result;
+					Row row = combinedIterator.next();
+					if (row instanceof CombinedDataRow) {
+						result = (CombinedDataRow) row;
+					} else {
+						result = new CombinedDataRow();
+						result.addDataRow((DataRow) row);
+					}
+					result.addDataRow(table.getRow(index));
 					if (!combinedIterator.hasNext()) {
 						index++;
 						combinedIterator = combined.iterator();

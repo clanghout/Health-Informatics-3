@@ -10,15 +10,17 @@ import java.util.List;
 public class DataColumn {
 	private String name;
 	private Class<? extends DataValue> type;
+	private DataTable table;
 
 	/**
 	 * Create a column.
 	 * @param name name of the column
 	 * @param type type of the column
 	 */
-	public DataColumn(String name, Class<? extends DataValue> type) {
+	public DataColumn(String name, DataTable table, Class<? extends DataValue> type) {
 		this.name = name;
 		this.type = type;
+		this.table = table;
 	}
 
 	/**
@@ -27,6 +29,10 @@ public class DataColumn {
 	 */
 	public String getName() {
 		return name;
+	}
+
+	public void setTable(DataTable table) {
+		this.table = table;
 	}
 
 	/**

@@ -39,7 +39,12 @@ public class DataTableBuilder {
 		if (name == null) {
 			throw new NameNotSetException("Name must be set");
 		}
-		return new DataTable(name, rows, columns);
+		DataTable result = new DataTable(name, rows, columns);
+		for(DataColumn column : columns) {
+			column.setTable(result);
+		}
+
+		return result;
 	}
 
 	/**
@@ -68,7 +73,7 @@ public class DataTableBuilder {
 	 * @return the constructed DataColumn
 	 */
 	public DataColumn createColumn(String name, Class<? extends DataValue> type) {
-		return new DataColumn(name, type);
+		return new DataColumn(name, null, type);
 	}
 
 	/**

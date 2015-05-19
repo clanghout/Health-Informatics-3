@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * Class that represents the data that should be analysed.
  */
-public class DataTable {
+public class DataTable implements Table {
 	private List<DataRow> rows;
 	private Map<String, DataColumn> columns;
 	private String name;
@@ -70,5 +70,10 @@ public class DataTable {
 
 	public String getName() {
 		return name;
+	}
+
+	@Override
+	public Iterator<DataRow> iterator() {
+		return rows.iterator();
 	}
 }
