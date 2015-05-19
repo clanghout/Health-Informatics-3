@@ -19,9 +19,6 @@ public class Minimum extends Minmax {
 	 * Sets the function to determine the minimum in a comparison.
 	 */
 	public Boolean check(float comparison) {
-		if (comparison > 0) {
-			return true;
-		}
-		return false;
+		return comparison > 0;
 	}
 }

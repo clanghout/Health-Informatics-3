@@ -36,7 +36,6 @@ public class Average extends Function {
 		FloatValue sum = new Sum(table, argument).calculate();
 		float total = (float) sum.getValue();
 		total = total / table.getRowCount();
-		DataValue result = new FloatValue(total);
-		return result;
+		return new FloatValue(total);
 	}
 }

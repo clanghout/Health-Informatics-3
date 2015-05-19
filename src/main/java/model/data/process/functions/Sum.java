@@ -33,7 +33,6 @@ public class Sum extends Function {
 			value = intOrFloat(argument, table.getRow(i));
 			total += value;
 		}
-		FloatValue result = new FloatValue(total);
-		return result;
+		return new FloatValue(total);
 	}
 }

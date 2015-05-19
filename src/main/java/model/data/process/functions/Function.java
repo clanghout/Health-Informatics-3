@@ -38,22 +38,22 @@ public abstract class Function {
 			throw new FunctionInputMismatchException("Calculation of nothing does not exist"); 
 		}
 		row = table.getRow(0);
-		try {
-			argument.resolve(row).getClass();
-		} catch (Exception e) {
-			throw new FunctionInputMismatchException("Cannot resolve class of column");
-		}
-		Class<? extends DataValue> type = argument.resolve(row).getClass();
-		if (type.equals(FloatValue.class) || type.equals(IntValue.class)) {
-			return;
-		} else {
-			throw new FunctionInputMismatchException("Specified column is neither float nor int");
+		DataValue value = argument.resolve(row);
+
+		if (!(value instanceof FloatValue) && !(value instanceof IntValue)) {
+		  throw new FunctionInputMismatchException("Specified column is neither float nor int");
 		}
 	}
 	
+	/**
+	 * This function returns a float value for the specified column if the column contains int or float.
+	 * @param arg the specification of the column
+	 * @param line the specific row of the value
+	 * @return float
+	 */
 	public float intOrFloat(DataDescriber<NumberValue> arg, DataRow line) {
 	  float result = 0.0f;
-	  if (arg.resolve(line).getClass().equals(FloatValue.class)) {
+	  if (arg.resolve(line) instanceof FloatValue) {
       result = (Float) argument.resolve(line).getValue();
     } else {
       result = (float) ((int) argument.resolve(line).getValue());

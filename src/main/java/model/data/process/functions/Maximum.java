@@ -19,10 +19,7 @@ public class Maximum extends Minmax {
 	 * Sets the function to determine the maximum in a comparison.
 	 */
 	public Boolean check(float comparison) {
-		if (comparison < 0.0) {
-			return true;
-		}
-		return false;
+		return comparison < 0;
 	}
 
 }

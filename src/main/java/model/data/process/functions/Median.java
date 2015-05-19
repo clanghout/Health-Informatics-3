@@ -35,9 +35,8 @@ public class Median extends Function {
 		//Amount of rows is even -> add two middle rows and divide by 2
 		if ((table.getRowCount() & 1) == 0) {
 			int middle = table.getRowCount() / 2;
-			int middle2 = middle;
 			float median = list.get(middle - 1);
-			float median2 = list.get(middle2);
+			float median2 = list.get(middle);
 			median = (median2 + median) / 2;
 			return new FloatValue(median);
 		//Amount of rows is odd -> median is middle row
