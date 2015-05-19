@@ -1,4 +1,4 @@
-package model.data.process.analysis.constraints;
+package model.data.process.analysis.operations.constraints;
 
 import model.data.DataColumn;
 import model.data.DataRow;
