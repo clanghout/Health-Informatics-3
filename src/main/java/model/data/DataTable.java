@@ -23,7 +23,7 @@ public class DataTable {
 	 * @param rows rows of the DataTable
 	 * @param columns columns of the DataTable
 	 */
-	public DataTable(List<DataRow> rows, List<DataColumn> columns, String name) {
+	public DataTable( String name, List<DataRow> rows, List<DataColumn> columns) {
 		this();
 		this.rows = new ArrayList<>(rows);
 		for (DataColumn c : columns) {

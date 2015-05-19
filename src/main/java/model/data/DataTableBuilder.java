@@ -21,9 +21,12 @@ public class DataTableBuilder {
 	/**
 	 * Create a new builder.
 	 */
-	public DataTableBuilder(String name) {
+	public DataTableBuilder() {
 		rows =  new ArrayList<DataRow>();
 		columns = new ArrayList<DataColumn>();
+	}
+
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -32,8 +35,11 @@ public class DataTableBuilder {
 	 *
 	 * @return The DataTable that is build by the builder
 	 */
-	public DataTable build() {
-		return new DataTable(rows, columns, name);
+	public DataTable build() throws NameNotSetException {
+		if (name == null) {
+			throw new NameNotSetException("Name must be set");
+		}
+		return new DataTable(name, rows, columns);
 	}
 
 	/**
@@ -77,5 +83,11 @@ public class DataTableBuilder {
 	 */
 	public DataRow createRow(DataValue... values) {
 		return new DataRow(columns.toArray(new DataColumn[columns.size()]), values);
+	}
+}
+
+class NameNotSetException extends Exception {
+	public NameNotSetException(String message) {
+		super(message);
 	}
 }

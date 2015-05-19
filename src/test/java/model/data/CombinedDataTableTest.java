@@ -48,7 +48,7 @@ public class CombinedDataTableTest {
 		rows.add(new DataRow(columns, valuesRow2));
 		rows.add(new DataRow(columns, valuesRow3));
 
-		dataTables.add(new DataTable(rows, Arrays.asList(columns), "test1"));
+		dataTables.add("test1", new DataTable(rows, Arrays.asList(columns)));
 
 
 		rows = new ArrayList<DataRow>();
@@ -71,7 +71,7 @@ public class CombinedDataTableTest {
 		rows.add(new DataRow(columns, valuesRow5));
 
 
-		dataTables.add(new DataTable(rows, Arrays.asList(columns), "test2"));
+		dataTables.add(new DataTable("test2", rows, Arrays.asList(columns)));
 
 		rows = new ArrayList<DataRow>();
 		columns = new DataColumn[]{
@@ -85,7 +85,7 @@ public class CombinedDataTableTest {
 		rows.add(new DataRow(columns, valuesRow6));
 
 
-		dataTables.add(new DataTable(rows, Arrays.asList(columns), "test3"));
+		dataTables.add(new DataTable("test3", rows, Arrays.asList(columns)));
 
 	}
 
@@ -95,6 +95,7 @@ public class CombinedDataTableTest {
 		Iterator<CombinedDataRow> it = comb.iterator();
 		assertTrue(it.hasNext());
 		assertEquals(it.next().getRow("test2").getValue("column1").toString(), "awfg");
+		assertTrue(it.hasNext());
 		assertEquals(it.next().getRow("test2").getValue("column1").toString(), "sfa");
 		assertFalse(it.hasNext());
 	}
@@ -116,12 +117,15 @@ public class CombinedDataTableTest {
 		CombinedDataRow row;
 		row = it.next();
 		assertEquals(row.getRow("test2").getValue("column1").toString(), "awfg");
+		assertTrue(it.hasNext());
 		assertEquals(row.getRow("test1").getValue("column1").toString(), "value1");
 		row = it.next();
 		assertEquals(row.getRow("test1").getValue("column1").toString(), "value1b");
+		assertTrue(it.hasNext());
 		assertEquals(row.getRow("test2").getValue("column1").toString(), "awfg");
 		row = it.next();
 		assertEquals(row.getRow("test2").getValue("column1").toString(), "awfg");
+		assertTrue(it.hasNext());
 		assertEquals(row.getRow("test1").getValue("column1").toString(), "value1c");
 		row = it.next();
 		assertEquals(row.getRow("test1").getValue("column1").toString(), "value1");
