@@ -1,6 +1,7 @@
 package model.data.describer;
 
 import model.data.DataRow;
+import model.data.Row;
 import model.data.process.analysis.operations.computations.Computation;
 import model.data.value.NumberValue;
 
@@ -29,7 +30,7 @@ public final class ComputationDescriber<T extends NumberValue> extends DataDescr
 	 * @return A BoolValue containing the result of the constraint on the row
 	 */
 	@Override
-	public T resolve(DataRow row) {
+	public T resolve(Row row) {
 		return (T) computation.compute(row);
 	}
 }

@@ -1,6 +1,7 @@
 package model.data.describer;
 
 import model.data.DataRow;
+import model.data.Row;
 import model.data.value.DataValue;
 
 /**
@@ -28,7 +29,7 @@ public final class ConstantDescriber<Type extends DataValue> extends DataDescrib
 	 * @return The constant described
 	 */
 	@Override
-	public Type resolve(DataRow row) {
+	public Type resolve(Row row) {
 		return constant;
 	}
 }

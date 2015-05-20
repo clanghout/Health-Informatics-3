@@ -1,7 +1,7 @@
 package model.data.describer;
 
 import model.data.DataColumn;
-import model.data.DataRow;
+import model.data.Row;
 import model.data.value.DataValue;
 
 /**
@@ -31,7 +31,7 @@ public final class RowValueDescriber<Type extends DataValue> extends DataDescrib
 	 * @return The value described
 	 */
 	@Override
-	public Type resolve(DataRow row) {
+	public Type resolve(Row row) {
 		return (Type) row.getValue(column);
 	}
 }
