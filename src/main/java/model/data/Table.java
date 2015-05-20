@@ -8,6 +8,6 @@ import java.util.Iterator;
 public interface Table {
 	Iterator<? extends Row> iterator();
 
-	void flagNotDelete(Row row);
+	boolean flagNotDelete(Row row);
 	void deleteNotFlagged();
 }

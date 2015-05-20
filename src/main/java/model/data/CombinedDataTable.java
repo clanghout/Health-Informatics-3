@@ -32,13 +32,40 @@ public class CombinedDataTable implements Iterable, Table {
 	}
 
 	@Override
-	public void flagNotDelete(Row row) {
+	public boolean flagNotDelete(Row row) {
+		boolean result = true;
+		if(row instanceof CombinedDataRow) {
+			CombinedDataRow combRow = (CombinedDataRow) row;
+			List<DataRow> rows = combRow.getRows();
+			for (DataRow dataRow : rows) {
+				result = result && flagNotDelete(dataRow);
+			}
+		}
+		return result;
 
+	}
+
+	/**
+	 * flag a datarRow for no delete in the correct dataTable of the combined dataTable.
+	 * @param row row that must not be delete
+	 * @return true if there is a table found that had this row.
+	 */
+	public boolean flagNotDelete(DataRow row) {
+		if (table.flagNotDelete(row)) {
+			return true;
+		} else if (combined != null) {
+			return combined.flagNotDelete(row);
+		} else {
+			return false;
+		}
 	}
 
 	@Override
 	public void deleteNotFlagged() {
-
+		table.deleteNotFlagged();
+		if (combined != null) {
+			combined.deleteNotFlagged();
+		}
 	}
 
 

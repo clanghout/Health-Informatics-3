@@ -81,11 +81,12 @@ public class DataTable implements Table, Iterable {
 	}
 
 	@Override
-	public void flagNotDelete(Row row) {
+	public boolean flagNotDelete(Row row) {
 		if (row instanceof DataRow && rows.contains(row)) {
 			flaggedNoDelete.add((DataRow) row);
+			return true;
 		} else {
-			throw new IllegalArgumentException("row is not in the table");
+			return false;
 		}
 
 	}
