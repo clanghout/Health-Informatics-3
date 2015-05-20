@@ -13,20 +13,20 @@ class ProcessInfo {
 	private Identifier<Object> name;
 	private Object[] parameters;
 
-	public ProcessInfo(Identifier<Object> name, Object[] parameters) {
+	ProcessInfo(Identifier<Object> name, Object[] parameters) {
 		this.name = name;
 		this.parameters = parameters;
 	}
 
-	public Object[] getParameters() {
+	Object[] getParameters() {
 		return parameters;
 	}
 
-	public Identifier<Object> getIdentifier() {
+	Identifier<Object> getIdentifier() {
 		return name;
 	}
 
-	public DataProcess resolve() {
+	DataProcess resolve() {
 		if (name.getName().equals("from")) {
 			return new FromProcess((Identifier) parameters[0]);
 		}

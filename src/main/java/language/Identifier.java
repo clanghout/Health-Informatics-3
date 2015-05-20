@@ -26,6 +26,11 @@ public class Identifier<T> {
 		return name;
 	}
 
+	/**
+	 * Check if this identifier is equal to an object.
+	 * @param o The other object to check for equality.
+	 * @return True if the given object is equal to this object.
+	 */
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
@@ -40,6 +45,10 @@ public class Identifier<T> {
 		return name.equals(that.name);
 	}
 
+	/**
+	 * Calculate a hashCode for this Identifier.
+	 * @return The hashCode for this Identifier.
+	 */
 	@Override
 	public int hashCode() {
 		return name.hashCode();
