@@ -21,8 +21,6 @@ import static org.junit.Assert.*;
  */
 public class MedianTest extends FunctionTest {
 
-	private DataTableBuilder builder;
-
 	/**
 	 * column of strings should throw exception.
 	 * 
@@ -68,15 +66,7 @@ public class MedianTest extends FunctionTest {
 
 	@Test
 	public void testMedianOdd() throws Exception {
-		StringValue string = new StringValue("What");
-		IntValue int1 = new IntValue(11);
-		IntValue int2 = new IntValue(53);
-		FloatValue float1 = new FloatValue(9.2f);
-		FloatValue float2 = new FloatValue(4.8f);
-		FloatValue float3 = new FloatValue(7.0f);
-		builder.createRow(string, int1, int2, float1, float2, float3);
-
-		table = builder.build();
+		extendTable();
 
 		DataValue med = new Median(table, new RowValueDescriber<>(floatColumn)).calculate();
 		assertEquals(new FloatValue(6.5f), med);
