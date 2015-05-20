@@ -16,7 +16,7 @@ import java.util.List;
  * Created by Boudewijn on 20-5-2015.
  */
 @SuppressWarnings("ALL")
-public class LanguageParser extends BaseParser<Object> {
+class LanguageParser extends BaseParser<Object> {
 
 
 	Rule Identifier() {
@@ -122,10 +122,12 @@ public class LanguageParser extends BaseParser<Object> {
 	Rule Pipe() {
 		return Sequence(
 				Process(),
-				"|",
-				FirstOf(
-						Pipe(),
-						Process()
+				Optional(
+						"|",
+						FirstOf(
+								Pipe(),
+								Process()
+						)
 				)
 		);
 	}

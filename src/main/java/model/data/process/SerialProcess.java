@@ -25,6 +25,7 @@ public class SerialProcess extends DataProcess {
 	protected Table doProcess() {
 		Table result = getInput();
 		for (DataProcess i : processList) {
+			i.setDataModel(getDataModel());
 			i.setInput(result);
 			result = i.process();
 		}
