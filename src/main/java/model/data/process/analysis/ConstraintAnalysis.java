@@ -29,16 +29,14 @@ public class ConstraintAnalysis extends DataAnalysis {
 
 	@Override
 	public Table analyse(Table input) {
-		List<Row> out = new ArrayList<>();
 		Iterator<? extends Row> rows = input.iterator();
 		while (rows.hasNext()) {
 			Row row = rows.next();
 			if (constraint.check(row)) {
-				out.add(row);
+				input.flagNotDelete(row);
 			}
 		}
-		//TODO some solution for the name
-	return null;
-	//	return new DataTable(input.getName(), out, new ArrayList<>(input.getColumns().values()));
+		input.deleteNotFlagged();
+	return input;
 	}
 }

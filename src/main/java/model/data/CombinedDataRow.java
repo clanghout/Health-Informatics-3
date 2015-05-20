@@ -63,7 +63,6 @@ public class CombinedDataRow implements Row {
 			if (row.hasColumn(column)) {
 				return true;
 			}
-			System.out.println("test");
 		}
 		return false;
 	}

@@ -1,6 +1,12 @@
 package model.data;
 
+import model.data.describer.ConstantDescriber;
+import model.data.describer.RowValueDescriber;
+import model.data.process.analysis.ConstraintAnalysis;
+import model.data.process.analysis.operations.constraints.Constraint;
+import model.data.process.analysis.operations.constraints.EqualityCheck;
 import model.data.value.DataValue;
+import model.data.value.IntValue;
 import model.data.value.StringValue;
 import org.junit.Before;
 import org.junit.Test;
@@ -176,5 +182,54 @@ public class CombinedDataTableTest {
 		assertEquals(dataTables.get(0).getRowCount(), 1);
 		assertEquals(dataTables.get(1).getRowCount(), 1);
 		assertEquals(dataTables.get(2).getRowCount(), 1);
+	}
+
+
+	@Test
+	public void testConstrantOverMultipleRows() throws Exception {
+		DataTableBuilder builder1 = new DataTableBuilder();
+		builder1.setName("table1");
+		DataColumn column1 = builder1.createColumn("column1", IntValue.class);
+		for (int i = 0; i < 5; i++) {
+			builder1.createRow(new IntValue(i));
+		}
+
+		DataTable table1 = builder1.build();
+
+		DataTableBuilder builder2 = new DataTableBuilder();
+		builder2.setName("table1");
+		DataColumn column2 = builder2.createColumn("column2", IntValue.class);
+		for (int i = 0; i < 10; i = i + 2) {
+			builder2.createRow(new IntValue(i));
+		}
+
+		DataTable table2 = builder2.build();
+
+		CombinedDataTable comb = new CombinedDataTable(table1, table2);
+
+		Constraint columnCheck = new EqualityCheck<>(
+				new RowValueDescriber<>(column1),
+				new RowValueDescriber<>(column2)
+		);
+
+		ConstraintAnalysis analysis = new ConstraintAnalysis(columnCheck);
+
+		assertEquals(table1.getRowCount(), 5);
+		assertEquals(table2.getRowCount(), 5);
+		analysis.analyse(comb);
+
+		assertEquals(table1.getRowCount(), 3);
+		assertEquals(table2.getRowCount(), 3);
+
+		table1.getRows();
+
+		assertEquals(table1.getRow(0).getValue(column1).toString(), "4");
+		assertEquals(table1.getRow(1).getValue(column1).toString(), "2");
+		assertEquals(table1.getRow(2).getValue(column1).toString(), "0");
+
+		assertEquals(table2.getRow(0).getValue(column2).toString(), "2");
+		assertEquals(table2.getRow(1).getValue(column2).toString(), "4");
+		assertEquals(table2.getRow(2).getValue(column2).toString(), "0");
+
 	}
 }
