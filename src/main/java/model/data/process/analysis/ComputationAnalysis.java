@@ -25,6 +25,6 @@ public class ComputationAnalysis extends DataAnalysis {
 // TODO: Add code which specifies what analysis should be computed on which data.
 //		for (DataRow row: rows) {
 //		}
-		return new DataTable(out, new ArrayList<>(input.getColumns().values()));
+		return new DataTable(input.getName(), out, new ArrayList<>(input.getColumns().values()));
 	}
 }

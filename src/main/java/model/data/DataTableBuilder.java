@@ -1,8 +1,5 @@
 package model.data;
 
-
-import exceptions.ColumnValueMismatchException;
-import exceptions.ColumnValueTypeMismatchException;
 import model.data.value.DataValue;
 
 import java.util.ArrayList;
@@ -16,13 +13,18 @@ import java.util.List;
 public class DataTableBuilder {
 	private List<DataRow> rows;
 	private List<DataColumn> columns;
+	private String name;
 
 	/**
 	 * Create a new builder.
 	 */
 	public DataTableBuilder() {
-		 rows =  new ArrayList<DataRow>();
-		 columns = new ArrayList<DataColumn>();
+		rows =  new ArrayList<DataRow>();
+		columns = new ArrayList<DataColumn>();
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	/**
@@ -31,7 +33,15 @@ public class DataTableBuilder {
 	 * @return The DataTable that is build by the builder
 	 */
 	public DataTable build() {
-		return new DataTable(rows, columns);
+		if (name == null) {
+			throw new IllegalStateException("Name must be set");
+		}
+		DataTable result = new DataTable(name, rows, columns);
+		for (DataColumn column : columns) {
+			column.setTable(result);
+		}
+
+		return result;
 	}
 
 	/**
@@ -53,18 +63,20 @@ public class DataTableBuilder {
 	}
 
 	/**
-	 * Construct a DataColumn. This is not added to the table
+	 * Construct a DataColumn. And add it to the table
 	 *
 	 * @param name name of the column
 	 * @param type type of the column
 	 * @return the constructed DataColumn
 	 */
 	public DataColumn createColumn(String name, Class<? extends DataValue> type) {
-		return new DataColumn(name, type);
+		DataColumn column = new DataColumn(name, null, type);
+		addColumn(column);
+		return column;
 	}
 
 	/**
-	 * Construct a DataRow. This is not added to the table
+	 * Construct a DataRow. And add it to the table
 	 *
 	 * @param values array of new values
 	 * @return the new constructed DataRow
@@ -74,6 +86,8 @@ public class DataTableBuilder {
 	 * what the columns expects
 	 */
 	public DataRow createRow(DataValue... values) {
-		return new DataRow(columns.toArray(new DataColumn[columns.size()]), values);
+		DataRow row = new DataRow(columns.toArray(new DataColumn[columns.size()]), values);
+		addRow(row);
+		return row;
 	}
 }

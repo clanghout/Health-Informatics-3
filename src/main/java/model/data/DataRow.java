@@ -11,11 +11,10 @@ import java.util.stream.Collectors;
 /**
  * Class that represents a row of data.
  */
-public class DataRow {
+public class DataRow implements Row {
 	private Logger log = Logger.getLogger("DataRow");
 
-	private Map<String, DataValue> values = new HashMap<>();
-
+	private Map<DataColumn, DataValue> values = new HashMap<>();
 	private Set<DataConnection> connections = new HashSet<>();
 
 
@@ -42,7 +41,7 @@ public class DataRow {
 		}
 		for (int i = 0; i < columnArray.length; i++) {
 			if (columnArray[i].getType().isInstance(valueArray[i])) {
-				values.put(columnArray[i].getName(), valueArray[i]);
+				values.put(columnArray[i], valueArray[i]);
 			} else {
 				throwTypeMismatchException();
 			}
@@ -72,16 +71,12 @@ public class DataRow {
 	 * @param value The value of the added column
 	 */
 	public void setValue(DataColumn column, DataValue value) {
-		values.put(column.getName(), value);
+		values.put(column, value);
 	}
 
-	/**
-	 * Add the column with the value to the row.
-	 * @param column The column the value belongs to
-	 * @param value The value you want to set
-	 */
-	public void setValue(String column, DataValue value) {
-		values.put(column, value);
+	@Override
+	public boolean hasColumn(DataColumn column) {
+		return values.containsKey(column);
 	}
 
 
@@ -92,9 +87,6 @@ public class DataRow {
 	 * @return the value of the column of this row
 	 */
 	public DataValue getValue(DataColumn column) {
-		return values.get(column.getName());
-	}
-	public DataValue getValue(String column) {
 		return values.get(column);
 	}
 

@@ -22,9 +22,9 @@ public class DataRowTest {
 	public void testConstructor() throws Exception {
 		DataColumn[] columns = new DataColumn[3];
 		DataValue[] values = new DataValue[3];
-		columns[0] = new DataColumn("a", StringValue.class);
-		columns[1] = new DataColumn("b", StringValue.class);
-		columns[2] = new DataColumn("c", DataValue.class);
+		columns[0] = new DataColumn("a", null, StringValue.class);
+		columns[1] = new DataColumn("b", null, StringValue.class);
+		columns[2] = new DataColumn("c", null, DataValue.class);
 
 		values[0] = new StringValue("test1");
 		values[1] = new StringValue("test2");
@@ -40,9 +40,9 @@ public class DataRowTest {
 	public void testConstructorMismatchNotEnoughValues() throws Exception {
 		DataColumn[] columns = new DataColumn[3];
 		DataValue[] values = new DataValue[2];
-		columns[0] = new DataColumn("a", StringValue.class);
-		columns[1] = new DataColumn("b", StringValue.class);
-		columns[2] = new DataColumn("c", StringValue.class);
+		columns[0] = new DataColumn("a", null, StringValue.class);
+		columns[1] = new DataColumn("b", null, StringValue.class);
+		columns[2] = new DataColumn("c", null, StringValue.class);
 
 		values[0] = new StringValue("test1");
 		values[1] = new StringValue("test2");
@@ -53,8 +53,8 @@ public class DataRowTest {
 	public void testConstructorMismatchNotEnoughColumns() throws Exception {
 		DataColumn[] columns = new DataColumn[2];
 		DataValue[] values = new DataValue[3];
-		columns[0] = new DataColumn("a", StringValue.class);
-		columns[1] = new DataColumn("b", StringValue.class);
+		columns[0] = new DataColumn("a", null, StringValue.class);
+		columns[1] = new DataColumn("b", null, StringValue.class);
 
 		values[0] = new StringValue("test1");
 		values[1] = new StringValue("test2");
@@ -67,8 +67,8 @@ public class DataRowTest {
 	public void testConstructorTypeMismatch() throws Exception {
 		DataColumn[] columns = new DataColumn[2];
 		DataValue[] values = new DataValue[2];
-		columns[0] = new DataColumn("a", StringValue.class);
-		columns[1] = new DataColumn("b", StringValue.class);
+		columns[0] = new DataColumn("a", null, StringValue.class);
+		columns[1] = new DataColumn("b", null, StringValue.class);
 
 		values[0] = new StringValue("test1");
 		DataRow row = new DataRow(columns, values);
@@ -78,7 +78,7 @@ public class DataRowTest {
 	public void testSetValue() throws Exception {
 		DataRow row = new DataRow();
 		DataColumn[] columns = new DataColumn[2];
-		columns[0] = new DataColumn("a", StringValue.class);
+		columns[0] = new DataColumn("a", null, StringValue.class);
 
 		row.setValue(columns[0], new StringValue("test1"));
 		assertEquals(row.getValue(columns[0]).getValue(), "test1");
@@ -88,7 +88,7 @@ public class DataRowTest {
 	public void testSetExistingValue() throws Exception {
 		DataRow row = new DataRow();
 		DataColumn[] columns = new DataColumn[2];
-		columns[0] = new DataColumn("a", StringValue.class);
+		columns[0] = new DataColumn("a", null, StringValue.class);
 
 		row.setValue(columns[0], new StringValue("test1"));
 		assertEquals(row.getValue(columns[0]).getValue(), "test1");
@@ -100,7 +100,7 @@ public class DataRowTest {
 	@Test
 	public void testGetNotExistingValue() throws Exception {
 		DataRow row = new DataRow();
-		DataColumn column = new DataColumn("a", StringValue.class);
+		DataColumn column = new DataColumn("a", null, StringValue.class);
 
 		assertEquals(row.getValue(column), null);
 
@@ -149,6 +149,41 @@ public class DataRowTest {
 
 		assertTrue(row.getResultsIn().contains(connection));
 		assertTrue(row.getCausedBy().contains(connection));
+	}
+
+	@Test
+	public void testHasColumnTrue() throws Exception {
+		DataColumn[] columns = new DataColumn[3];
+		DataValue[] values = new DataValue[3];
+		columns[0] = new DataColumn("a", null, StringValue.class);
+		columns[1] = new DataColumn("b", null, StringValue.class);
+		columns[2] = new DataColumn("c", null, DataValue.class);
+
+		values[0] = new StringValue("test1");
+		values[1] = new StringValue("test2");
+		values[2] = new StringValue("test3");
+		DataRow row = new DataRow(columns, values);
+
+		assertTrue(row.hasColumn(columns[2]));
+		assertTrue(row.hasColumn(columns[1]));
+		assertTrue(row.hasColumn(columns[0]));
+	}
+
+	@Test
+	public void testHasColumnFalse() throws Exception {
+		DataColumn column = new DataColumn("c", null, DataValue.class);
+
+		DataColumn[] columns = new DataColumn[2];
+		DataValue[] values = new DataValue[2];
+		columns[0] = new DataColumn("a", null, StringValue.class);
+		columns[1] = new DataColumn("b", null, StringValue.class);
+
+		values[0] = new StringValue("test1");
+		values[1] = new StringValue("test2");
+
+		DataRow row = new DataRow(columns, values);
+
+		assertFalse(row.hasColumn(column));
 	}
 
 }
