@@ -17,4 +17,23 @@ public class Identifier<T> {
 	public String getName() {
 		return name;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+
+		Identifier<?> that = (Identifier<?>) o;
+
+		return name.equals(that.name);
+	}
+
+	@Override
+	public int hashCode() {
+		return name.hashCode();
+	}
 }
