@@ -2,7 +2,7 @@ package input.file;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
@@ -14,30 +14,23 @@ import java.util.Scanner;
  */
 public class PlainTextFile extends DataFile {
 	
+	private Scanner scanner;
+	private StringBuilder builder;
+	private int counter;
+	
 	public PlainTextFile(String path) {
 		super(path);
 	}
 	
 	@Override
-	public InputStream getDataStream() throws FileNotFoundException {
+	public InputStream getDataStream() throws IOException {
+		builder = new StringBuilder();
+		counter = 1;
 		InputStream stream = new FileInputStream(getFile());
-		Scanner scanner = new Scanner(stream, "UTF-8");
+		scanner = new Scanner(stream, "UTF-8");
 		scanner.useDelimiter("\\A");
-		StringBuilder builder = new StringBuilder();
-		int i = 1;
-
-		//Skip to beginline
-		while (i != getStartLine() && scanner.hasNextLine()) {
-			scanner.nextLine();
-			i++;
-		}
-		
-		while (i <= getEndLine() && scanner.hasNextLine()) {
-			
-			builder.append(scanner.nextLine() + "\n");
-			i++;
-		}
-		
+		skipToStartLine();
+		readLines();
 		scanner.close();
 		
 		InputStream newStream = new ByteArrayInputStream(
@@ -46,5 +39,23 @@ public class PlainTextFile extends DataFile {
 		
 		return newStream;
 	}
-
+	
+	private void skipToStartLine() throws IOException {
+		if (!scanner.hasNextLine()) {
+			scanner.close();
+			throw new IOException("Nothing to read");
+		}
+		
+		while (counter != getStartLine() && scanner.hasNextLine()) {
+			scanner.nextLine();
+			counter++;
+		}
+	}
+	
+	private void readLines() {
+		while (counter <= getEndLine() && scanner.hasNextLine()) {
+			builder.append(scanner.nextLine() + "\n");
+			counter++;
+		}
+	}
 }

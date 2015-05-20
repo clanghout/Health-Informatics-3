@@ -1,7 +1,6 @@
 package input.file;
 
 import static org.junit.Assert.*;
-import input.file.PlainTextFile;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -85,5 +84,12 @@ public class PlainTextFileTest {
 		assertEquals("footer",  reader.readLine());
 		assertNull(reader.readLine());
 		reader.close();
+	}
+	
+	@Test(expected = IOException.class)
+	public void testEmptyFile() throws IOException {
+		String emptyFile = getClass().getResource("/input/ADMIRE.txt").getFile();
+		PlainTextFile failFile = new PlainTextFile(emptyFile);
+		failFile.getDataStream();
 	}
 }

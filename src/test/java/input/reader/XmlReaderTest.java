@@ -1,7 +1,6 @@
 package input.reader;
 
 import input.file.DataFile;
-import input.reader.XmlReader;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,10 +1,6 @@
 package input.file;
 
 import static org.junit.Assert.*;
-import input.file.DataFile;
-import input.file.PlainTextFile;
-import input.file.XlsFile;
-import input.file.XlsxFile;
 
 import java.io.*;
 

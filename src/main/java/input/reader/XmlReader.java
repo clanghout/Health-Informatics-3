@@ -132,8 +132,7 @@ public class XmlReader {
 		if (pathElement != null) {
 			String path  = elem.getElementsByTagName(PATH_TAG).item(0).getTextContent();
 			completePath = parentDir + File.separator + path + File.separator + fileName;			
-		}
-		else {
+		} else {
 			completePath = fileName;
 		}
 		DataFile theDataFile = DataFile.createDataFile(completePath, type);

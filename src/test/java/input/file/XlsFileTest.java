@@ -1,7 +1,6 @@
 package input.file;
 
 import static org.junit.Assert.*;
-import input.file.XlsFile;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,7 +17,7 @@ import org.junit.Test;
  */
 public class XlsFileTest {
 
-	XlsFile xlsFile;
+	private XlsFile xlsFile;
 	
 	@Before
 	public void setUp() {
