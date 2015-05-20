@@ -10,10 +10,18 @@ public class Identifier<T> {
 
 	private String name;
 
+	/**
+	 * Construct a new Identifier.
+	 * @param name The name of the identifier.
+	 */
 	public Identifier(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Get the name of this identifier.
+	 * @return The name of this identifier.
+	 */
 	public String getName() {
 		return name;
 	}
