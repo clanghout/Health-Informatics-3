@@ -2,7 +2,6 @@ package model.data.process.functions;
 
 import model.data.DataTable;
 import model.data.describer.DataDescriber;
-import model.data.value.DataValue;
 import model.data.value.FloatValue;
 import model.data.value.NumberValue;
 
