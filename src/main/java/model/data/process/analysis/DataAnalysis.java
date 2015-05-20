@@ -1,6 +1,5 @@
 package model.data.process.analysis;
 
-import model.data.DataTable;
 import model.data.Table;
 import model.data.process.DataProcess;
 

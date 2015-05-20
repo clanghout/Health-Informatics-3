@@ -1,6 +1,5 @@
 package model.data.process;
 
-import model.data.DataTable;
 import model.data.Table;
 
 /**

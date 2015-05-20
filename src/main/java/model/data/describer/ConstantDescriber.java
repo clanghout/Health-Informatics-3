@@ -1,6 +1,5 @@
 package model.data.describer;
 
-import model.data.DataRow;
 import model.data.Row;
 import model.data.value.DataValue;
 

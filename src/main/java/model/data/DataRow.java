@@ -6,7 +6,6 @@ import model.data.value.DataValue;
 
 import java.util.*;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * Class that represents a row of data.

@@ -10,7 +10,7 @@ import java.util.Iterator;
 public interface Table {
 
 	/**
-	 * Create an iterator that iterates over all rows of the table
+	 * Create an iterator that iterates over all rows of the table.
 	 * @return an iterator that iterates over all rows
 	 */
 	Iterator<? extends Row> iterator();

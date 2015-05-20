@@ -1,14 +1,10 @@
 package model.data.process.analysis;
 
-import model.data.DataRow;
-import model.data.DataTable;
 import model.data.Row;
 import model.data.Table;
 import model.data.process.analysis.operations.constraints.Constraint;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Implements the constraints analysis.

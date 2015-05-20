@@ -34,7 +34,7 @@ public class CombinedDataTable implements Iterable, Table {
 	@Override
 	public boolean flagNotDelete(Row row) {
 		boolean result = true;
-		if(row instanceof CombinedDataRow) {
+		if (row instanceof CombinedDataRow) {
 			CombinedDataRow combRow = (CombinedDataRow) row;
 			List<DataRow> rows = combRow.getRows();
 			for (DataRow dataRow : rows) {
