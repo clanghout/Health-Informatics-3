@@ -151,4 +151,39 @@ public class DataRowTest {
 		assertTrue(row.getCausedBy().contains(connection));
 	}
 
+	@Test
+	public void testHasColumnTrue() throws Exception {
+		DataColumn[] columns = new DataColumn[3];
+		DataValue[] values = new DataValue[3];
+		columns[0] = new DataColumn("a", null, StringValue.class);
+		columns[1] = new DataColumn("b", null, StringValue.class);
+		columns[2] = new DataColumn("c", null, DataValue.class);
+
+		values[0] = new StringValue("test1");
+		values[1] = new StringValue("test2");
+		values[2] = new StringValue("test3");
+		DataRow row = new DataRow(columns, values);
+
+		assertTrue(row.hasColumn(columns[2]));
+		assertTrue(row.hasColumn(columns[1]));
+		assertTrue(row.hasColumn(columns[0]));
+	}
+
+	@Test
+	public void testHasColumnFalse() throws Exception {
+		DataColumn column = new DataColumn("c", null, DataValue.class);
+
+		DataColumn[] columns = new DataColumn[2];
+		DataValue[] values = new DataValue[2];
+		columns[0] = new DataColumn("a", null, StringValue.class);
+		columns[1] = new DataColumn("b", null, StringValue.class);
+
+		values[0] = new StringValue("test1");
+		values[1] = new StringValue("test2");
+
+		DataRow row = new DataRow(columns, values);
+
+		assertFalse(row.hasColumn(column));
+	}
+
 }

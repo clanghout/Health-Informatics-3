@@ -1,6 +1,7 @@
 package model.data;
 
 import exceptions.ColumnValueMismatchException;
+import model.data.value.DataValue;
 import model.data.value.StringValue;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +34,6 @@ public class DataTableBuilderTest {
 		builder.setName("test");
 
 		DataColumn column = builder.createColumn("test", StringValue.class);
-		builder.addColumn(column);
 		DataRow row = builder.createRow(new StringValue("v1"));
 		assertEquals(row.getValue(column).getValue(), "v1");
 	}
@@ -64,7 +64,7 @@ public class DataTableBuilderTest {
 		builder.createRow(new StringValue("v1"));
 	}
 
-	@Test(expected = NameNotSetException.class)
+	@Test(expected = IllegalStateException.class)
 	public void testCreateNoName() throws Exception {
 		DataTableBuilder builder =  new DataTableBuilder();
 		builder.build();
@@ -90,11 +90,13 @@ public class DataTableBuilderTest {
 	public void testAddRow() throws Exception {
 		DataTableBuilder builder =  new DataTableBuilder();
 		builder.setName("test");
-
-		builder.addColumn(builder.createColumn("test", StringValue.class));
+		DataColumn[] column = new DataColumn[1];
+		DataValue[] values = new DataValue[1];
+		column[0] = builder.createColumn("test", StringValue.class);
 		assertTrue(builder.build().getRows().isEmpty());
+		values[0] = new StringValue("v1");
 
-		DataRow row = builder.createRow(new StringValue("v1"));
+		DataRow row = new DataRow(column, values);
 		builder.addRow(row);
 		assertEquals(builder.build().getRows().get(0),row);
 	}

@@ -3,7 +3,6 @@ package model.reader;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.DataRow;
-import model.data.NameNotSetException;
 import model.data.value.DataValue;
 import model.data.value.StringValue;
 
@@ -28,7 +27,7 @@ public class DataReader {
 	 * @return A DataTable containing the data from the specified file
 	 * @throws IOException If anything goes wrong reading the file
 	 */
-	public DataTable readData(String filename) throws IOException, NameNotSetException {
+	public DataTable readData(String filename) throws IOException {
 		File file = new File(filename);
 		name = filename;
 		return readData(file);
@@ -40,7 +39,7 @@ public class DataReader {
 	 * @return A DataTable containing the data from the specified file
 	 * @throws IOException If anything goes wrong reading the file
 	 */
-	public DataTable readData(File file) throws IOException, NameNotSetException {
+	public DataTable readData(File file) throws IOException {
 		BufferedInputStream stream = new BufferedInputStream(new FileInputStream(file));
 		return readData(stream);
 	}
@@ -51,7 +50,7 @@ public class DataReader {
 	 * @return A DataTable containing the data from the specified stream
 	 * @throws IOException If anything goes wrong reading the stream
 	 */
-	public DataTable readData(InputStream stream) throws IOException, NameNotSetException {
+	public DataTable readData(InputStream stream) throws IOException {
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"))) {
 			skipToContent(reader);
 
@@ -74,25 +73,24 @@ public class DataReader {
 		}
 	}
 
-	private DataTable readRows(BufferedReader reader, DataTableBuilder builder) throws IOException, NameNotSetException {
+	private DataTable readRows(BufferedReader reader, DataTableBuilder builder) throws IOException {
 		String line;
 		while (!(line = reader.readLine()).contains("]")) {
 			String[] sections = line.split(",");
 			Stream<DataValue> values = Arrays.stream(sections).map(StringValue::new);
 
-			DataRow row = builder.createRow(values.toArray(DataValue[]::new));
-			builder.addRow(row);
+			builder.createRow(values.toArray(DataValue[]::new));
 		}
 
 		return builder.build();
 	}
 
 	private void addColumns(DataTableBuilder builder) {
-		builder.addColumn(builder.createColumn("quantity", StringValue.class));
-		builder.addColumn(builder.createColumn("measurement", StringValue.class));
-		builder.addColumn(builder.createColumn("unit", StringValue.class));
-		builder.addColumn(builder.createColumn("ignore", StringValue.class));
-		builder.addColumn(builder.createColumn("date", StringValue.class));
-		builder.addColumn(builder.createColumn("time", StringValue.class));
+		builder.createColumn("quantity", StringValue.class);
+		builder.createColumn("measurement", StringValue.class);
+		builder.createColumn("unit", StringValue.class);
+		builder.createColumn("ignore", StringValue.class);
+		builder.createColumn("date", StringValue.class);
+		builder.createColumn("time", StringValue.class);
 	}
 }

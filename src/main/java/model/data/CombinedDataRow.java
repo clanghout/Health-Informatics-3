@@ -31,7 +31,7 @@ public class CombinedDataRow implements Row {
 	@Override
 	public DataValue getValue(DataColumn column) {
 		for (DataRow row : rows) {
-			if (row.getValue(column) != null) {
+			if (row.hasColumn(column)) {
 				return row.getValue(column);
 			}
 		}
@@ -41,11 +41,22 @@ public class CombinedDataRow implements Row {
 	@Override
 	public void setValue(DataColumn column, DataValue value) {
 		for (DataRow row : rows) {
-			if (row.getValue(column) != null) {
+			if (row.hasColumn(column)) {
 				row.setValue(column, value);
 				return;
 			}
 		}
+	}
+
+	@Override
+	public boolean hasColumn(DataColumn column) {
+		for (DataRow row : rows) {
+			if (row.hasColumn(column)) {
+				return true;
+			}
+			System.out.println("test");
+		}
+		return false;
 	}
 
 }

@@ -77,6 +77,11 @@ public class DataRow implements Row {
 		values.put(column, value);
 	}
 
+	@Override
+	public boolean hasColumn(DataColumn column) {
+		return values.containsKey(column);
+	}
+
 	/**
 	 * Add the column with the value to the row.
 	 * @param column The column the value belongs to

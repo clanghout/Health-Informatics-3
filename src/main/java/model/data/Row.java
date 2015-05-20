@@ -8,4 +8,5 @@ import model.data.value.DataValue;
 public interface Row {
 	DataValue getValue(DataColumn column);
 	void setValue(DataColumn column, DataValue value);
+	boolean hasColumn(DataColumn column);
 }
