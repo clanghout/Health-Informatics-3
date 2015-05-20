@@ -27,7 +27,7 @@ public class DataTable implements Table, Iterable {
 	 */
 	public DataTable(String name, List<DataRow> rows, List<DataColumn> columns) {
 		this();
-		this.rows = rows;
+		this.rows = new ArrayList<>(rows);
 		for (DataColumn c : columns) {
 			this.columns.put(c.getName(), c);
 		}
