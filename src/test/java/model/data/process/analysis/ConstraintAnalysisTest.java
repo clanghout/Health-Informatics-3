@@ -21,15 +21,14 @@ public class ConstraintAnalysisTest {
 
 	@Test
 	public void testAnalyse() throws Exception {
-		DataTableBuilder builder = new DataTableBuilder();
+		DataTableBuilder builder =  new DataTableBuilder();
+		builder.setName("test");
 
 		DataColumn column = builder.createColumn("test", StringValue.class);
-		builder.addColumn(column);
 
 		DataRow pieRow = builder.createRow(new StringValue("Pie"));
-		builder.addRow(pieRow);
-		builder.addRow(builder.createRow(new StringValue("is")));
-		builder.addRow(builder.createRow(new StringValue("nice")));
+		builder.createRow(new StringValue("is"));
+		builder.createRow(new StringValue("nice"));
 
 		DataTable input = builder.build();
 

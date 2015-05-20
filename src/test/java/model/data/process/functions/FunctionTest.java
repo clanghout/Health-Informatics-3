@@ -47,4 +47,9 @@ public class FunctionTest {
 	public void testEmptyTableSum() throws Exception {
 		Sum f = new Sum(table, new RowValueDescriber<>(column));
 	}
+	
+	@Test(expected = FunctionInputMismatchException.class)
+	public void testEmptyTableDeviation() throws Exception {
+		StandardDeviation f = new StandardDeviation(table, new RowValueDescriber<>(column));
+	}
 }

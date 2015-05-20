@@ -41,6 +41,7 @@ public class MaximumTest {
 	@Before
 	public void setUp() throws Exception {
 		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("test");
 
 		stringColumn = builder.createColumn("string", StringValue.class);
 		intColumn = builder.createColumn("int", FloatValue.class);
@@ -49,20 +50,13 @@ public class MaximumTest {
 		floatsColumn = builder.createColumn("floats", FloatValue.class);
 		floatersColumn = builder.createColumn("floaters", FloatValue.class);
 
-		builder.addColumn(stringColumn);
-		builder.addColumn(intColumn);
-		builder.addColumn(intsColumn);
-		builder.addColumn(floatColumn);
-		builder.addColumn(floatsColumn);
-		builder.addColumn(floatersColumn);
-
 		StringValue string = new StringValue("What");
 		FloatValue int1 = new FloatValue(9);
 		FloatValue int2 = new FloatValue(12);
 		FloatValue float1 = new FloatValue(6.9f);
 		FloatValue float2 = new FloatValue(8.8f);
 		FloatValue float3 = new FloatValue(6.6f);
-		builder.addRow(builder.createRow(string, int1, int2, float1, float2, float3));
+		builder.createRow(string, int1, int2, float1, float2, float3);
 
 		string = new StringValue("Can");
 		int1 = new FloatValue(5);
@@ -70,7 +64,7 @@ public class MaximumTest {
 		float1 = new FloatValue(6.5f);
 		float2 = new FloatValue(6.9f);
 		float3 = new FloatValue(6.6f);
-		builder.addRow(builder.createRow(string, int1, int2, float1, float2, float3));
+		builder.createRow(string, int1, int2, float1, float2, float3);
 
 		string = new StringValue("You");
 		int1 = new FloatValue(3);
@@ -78,7 +72,7 @@ public class MaximumTest {
 		float1 = new FloatValue(5.9f);
 		float2 = new FloatValue(8.8f);
 		float3 = new FloatValue(6.4f);
-		builder.addRow(builder.createRow(string, int1, int2, float1, float2, float3));
+		builder.createRow(string, int1, int2, float1, float2, float3);
 
 		string = new StringValue("Do");
 		int1 = new FloatValue(10);
@@ -86,7 +80,7 @@ public class MaximumTest {
 		float1 = new FloatValue(6.2f);
 		float2 = new FloatValue(5.3f);
 		float3 = new FloatValue(6.6f);
-		builder.addRow(builder.createRow(string, int1, int2, float1, float2, float3));
+		builder.createRow(string, int1, int2, float1, float2, float3);
 
 		table = builder.build();
 	}
