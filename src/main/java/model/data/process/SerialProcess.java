@@ -1,6 +1,6 @@
 package model.data.process;
 
-import model.data.DataTable;
+import model.data.Table;
 
 import java.util.List;
 
@@ -22,8 +22,8 @@ public class SerialProcess extends DataProcess {
 	}
 
 	@Override
-	protected DataTable doProcess() {
-		DataTable result = getInput();
+	protected Table doProcess() {
+		Table result = getInput();
 		for (DataProcess i : processList) {
 			i.setInput(result);
 			result = i.process();

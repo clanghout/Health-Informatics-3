@@ -2,6 +2,7 @@ package model.data.process;
 
 import language.Identifier;
 import model.data.DataTable;
+import model.data.Table;
 
 /**
  * This process simply reads a table from memory and outputs it.
@@ -17,7 +18,7 @@ public class FromProcess extends DataProcess {
 	}
 
 	@Override
-	protected DataTable doProcess() {
+	protected Table doProcess() {
 		return getDataModel().getByName(identifier.getName());
 	}
 }

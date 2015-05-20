@@ -1,14 +1,12 @@
 package model.data.process.functions;
 
+import exceptions.FunctionInputMismatchException;
 import model.data.describer.RowValueDescriber;
-import model.data.process.functions.Maximum;
 import model.data.value.DataValue;
 import model.data.value.FloatValue;
-
 import org.junit.Test;
 
-import exceptions.FunctionInputMismatchException;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test for maximum.

@@ -1,13 +1,11 @@
 package model.data.process.functions;
 
+import exceptions.FunctionInputMismatchException;
 import model.data.DataColumn;
 import model.data.DataTable;
 import model.data.describer.RowValueDescriber;
-
 import org.junit.Before;
 import org.junit.Test;
-
-import exceptions.FunctionInputMismatchException;
 
 /**
  * Standard tests which should pass on all types of functions.

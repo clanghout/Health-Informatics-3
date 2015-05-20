@@ -1,7 +1,7 @@
 package model.data.process;
 
-import model.data.Table;
 import model.data.DataModel;
+import model.data.Table;
 
 /**
  * This class defines a data process.

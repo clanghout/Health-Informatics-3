@@ -1,13 +1,12 @@
 package model.data.process.functions;
 
-import org.junit.Before;
-
 import model.data.DataColumn;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.value.FloatValue;
 import model.data.value.IntValue;
 import model.data.value.StringValue;
+import org.junit.Before;
 
 /**
  * This test framework provides a datamodel for a test to use.
