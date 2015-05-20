@@ -107,51 +107,6 @@ public class DataRowTest {
 	}
 
 	@Test
-	public void testGetCausedBy() throws Exception {
-		DataRow resultsIn = new DataRow();
-		DataRow cause = new DataRow();
-		DataConnection connection = new DataConnection();
-		connection.addCausedBy(cause);
-		connection.addResultsIn(resultsIn);
-
-		Set<DataConnection> result = new HashSet<>();
-		result.add(connection);
-
-		assertEquals(resultsIn.getCausedBy(), result);
-		assertTrue(cause.getCausedBy().isEmpty());
-	}
-
-	@Test
-	public void testGetResultsIn() throws Exception {
-		DataRow resultsIn = new DataRow();
-		DataRow cause = new DataRow();
-		DataConnection connection = new DataConnection();
-		connection.addResultsIn(resultsIn);
-		connection.addCausedBy(cause);
-
-		Set<DataConnection> result = new HashSet<>();
-		result.add(connection);
-
-		assertEquals(cause.getResultsIn(), result);
-		assertTrue(resultsIn.getResultsIn().isEmpty());
-	}
-
-	@Test
-	public void testAddConnection() throws Exception {
-		DataRow row = new DataRow();
-
-		assertTrue(row.getCausedBy().isEmpty());
-		assertTrue(row.getResultsIn().isEmpty());
-
-		DataConnection connection = new DataConnection();
-		connection.addResultsIn(row);
-		connection.addCausedBy(row);
-
-		assertTrue(row.getResultsIn().contains(connection));
-		assertTrue(row.getCausedBy().contains(connection));
-	}
-
-	@Test
 	public void testHasColumnTrue() throws Exception {
 		DataColumn[] columns = new DataColumn[3];
 		DataValue[] values = new DataValue[3];

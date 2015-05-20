@@ -38,6 +38,7 @@ public class ConstraintAnalysis extends DataAnalysis {
 			}
 		}
 		//TODO some solution for the name
-		return new DataTable(input.getName(), out, new ArrayList<>(input.getColumns().values()));
+	return null;
+	//	return new DataTable(input.getName(), out, new ArrayList<>(input.getColumns().values()));
 	}
 }
