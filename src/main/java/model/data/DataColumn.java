@@ -3,7 +3,7 @@ package model.data;
 import model.data.value.DataValue;
 
 /**
- * Class that specified what the data in a column is.
+ * Class that specifies what the data in a column is.
  */
 public class DataColumn {
 	private String name;
