@@ -29,10 +29,18 @@ public class DataColumn {
 		return name;
 	}
 
+	/**
+	 * Set the table to which the column belongs to.
+	 * @param table the table to which the column belongs to
+	 */
 	public void setTable(DataTable table) {
 		this.table = table;
 	}
 
+	/**
+	 * Get the table to which the column belongs to.
+	 * @return te table that contains this column
+	 */
 	public DataTable getTable() {
 		return table;
 	}

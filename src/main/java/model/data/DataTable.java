@@ -7,6 +7,7 @@ import java.util.*;
  */
 public class DataTable implements Table, Iterable {
 	private List<DataRow> rows;
+	private Set<DataRow> flaggedNoDelete;
 	private Map<String, DataColumn> columns;
 	private String name;
 
@@ -16,6 +17,7 @@ public class DataTable implements Table, Iterable {
 	public DataTable() {
 		rows = new ArrayList<>();
 		columns = new HashMap<>();
+		flaggedNoDelete = new HashSet<>();
 	}
 
 	/**
@@ -51,6 +53,7 @@ public class DataTable implements Table, Iterable {
 		return Collections.unmodifiableList(rows);
 	}
 
+
 	/**
 	 * Returns the amounts of rows.
 	 * @return The amount of rows
@@ -68,6 +71,10 @@ public class DataTable implements Table, Iterable {
 		return columns;
 	}
 
+	/**
+	 * Get the name of the table.
+	 * @return the name of the table.
+	 */
 	public String getName() {
 		return name;
 	}
@@ -75,5 +82,22 @@ public class DataTable implements Table, Iterable {
 	@Override
 	public Iterator<DataRow> iterator() {
 		return rows.iterator();
+	}
+
+	@Override
+	public boolean flagNotDelete(Row row) {
+		if ((row instanceof DataRow) && (rows.contains(row))) {
+			flaggedNoDelete.add((DataRow) row);
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+	@Override
+	public void deleteNotFlagged() {
+		rows = new ArrayList<DataRow>(flaggedNoDelete);
+		flaggedNoDelete = new HashSet<>();
 	}
 }

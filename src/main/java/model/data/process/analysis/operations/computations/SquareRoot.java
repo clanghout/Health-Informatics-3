@@ -1,6 +1,6 @@
 package model.data.process.analysis.operations.computations;
 
-import model.data.DataRow;
+import model.data.Row;
 import model.data.describer.DataDescriber;
 import model.data.value.FloatValue;
 import model.data.value.IntValue;
@@ -24,7 +24,7 @@ public class SquareRoot<T extends NumberValue> extends UnaryComputation<T> {
 	 * @return new FloatValue containing the computed value.
 	 */
 	@Override
-	public NumberValue compute(DataRow row) {
+	public NumberValue compute(Row row) {
 		T operand = getOperand().resolve(row);
 		if (operand instanceof FloatValue) {
 			float value = (float) operand.getValue();

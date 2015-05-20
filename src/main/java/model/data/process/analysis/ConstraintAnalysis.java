@@ -1,11 +1,10 @@
 package model.data.process.analysis;
 
-import model.data.DataRow;
-import model.data.DataTable;
+import model.data.Row;
+import model.data.Table;
 import model.data.process.analysis.operations.constraints.Constraint;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
 /**
  * Implements the constraints analysis.
@@ -25,15 +24,15 @@ public class ConstraintAnalysis extends DataAnalysis {
 	}
 
 	@Override
-	public DataTable analyse(DataTable input) {
-		List<DataRow> out = new ArrayList<>();
-		List<DataRow> rows = input.getRows();
-		for (DataRow row: rows) {
+	public Table analyse(Table input) {
+		Iterator<? extends Row> rows = input.iterator();
+		while (rows.hasNext()) {
+			Row row = rows.next();
 			if (constraint.check(row)) {
-				out.add(row);
+				input.flagNotDelete(row);
 			}
 		}
-		//TODO some solution for the name
-		return new DataTable(input.getName(), out, new ArrayList<>(input.getColumns().values()));
+		input.deleteNotFlagged();
+	return input;
 	}
 }
