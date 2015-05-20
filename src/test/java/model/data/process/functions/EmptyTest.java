@@ -14,7 +14,7 @@ import exceptions.FunctionInputMismatchException;
  * 
  * @author Louis Gosschalk 19-05-2015
  */
-public class FunctionTest {
+public class EmptyTest {
 	private DataTable table;
 	private DataColumn column;
 
