@@ -2,6 +2,10 @@ package language;
 
 import org.parboiled.BaseParser;
 import org.parboiled.Rule;
+import org.parboiled.support.Var;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The parser for the analysis language.
@@ -13,6 +17,7 @@ import org.parboiled.Rule;
  */
 @SuppressWarnings("ALL")
 public class LanguageParser extends BaseParser<Object> {
+
 
 	Rule Identifier() {
 		return Sequence(
@@ -74,6 +79,7 @@ public class LanguageParser extends BaseParser<Object> {
 
 	Rule Params() {
 		return Sequence(
+				push(new ArrayList<Object>()),
 				"(",
 				Optional(ParamDecl()),
 				")"
@@ -81,7 +87,13 @@ public class LanguageParser extends BaseParser<Object> {
 	}
 
 	Rule ParamDecl() {
-		return Sequence(Variable(), ParamRest());
+		Var<List<Object>> paramList = new Var<List<Object>>();
+		return Sequence(
+				paramList.set((List<Object>) pop()),
+				Variable(),
+				paramList.get().add(pop()),
+				push(paramList.get()),
+				ParamRest());
 	}
 
 	Rule ParamRest() {
@@ -97,7 +109,15 @@ public class LanguageParser extends BaseParser<Object> {
 	}
 
 	Rule Process() {
-		return Sequence(Identifier(), Params());
+		Var<Identifier> processName = new Var<Identifier>();
+		Var<List<Object>> params = new Var<List<Object>>();
+		return Sequence(
+				Identifier(),
+				processName.set((Identifier) pop()),
+				Params(),
+				params.set((List<Object>) pop()),
+				push(new ProcessInfo(processName.get(), params.get().toArray()))
+		);
 	}
 
 	Rule Pipe() {
