@@ -1,7 +1,5 @@
 package model.data.process.functions;
 
-import model.data.DataColumn;
-import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.describer.RowValueDescriber;
 import model.data.process.functions.Median;
@@ -10,7 +8,6 @@ import model.data.value.FloatValue;
 import model.data.value.IntValue;
 import model.data.value.StringValue;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import exceptions.FunctionInputMismatchException;
@@ -22,67 +19,7 @@ import static org.junit.Assert.*;
  * 
  * @author Louis Gosschalk 16-05-2015
  */
-public class MedianTest {
-
-	private DataTable table;
-	private DataColumn stringColumn;
-	private DataColumn intColumn;
-	private DataColumn intsColumn;
-	private DataColumn floatColumn;
-	private DataColumn floatsColumn;
-	private DataColumn floatersColumn;
-	private DataTableBuilder builder;
-
-	/**
-	 * simulate datamodel with single Median for each column type.
-	 * 
-	 * @throws Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-		builder = new DataTableBuilder();
-
-		stringColumn = builder.createColumn("string", StringValue.class);
-		intColumn = builder.createColumn("int", IntValue.class);
-		intsColumn = builder.createColumn("ints", IntValue.class);
-		floatColumn = builder.createColumn("float", FloatValue.class);
-		floatsColumn = builder.createColumn("floats", FloatValue.class);
-		floatersColumn = builder.createColumn("floaters", FloatValue.class);
-
-		StringValue string = new StringValue("What");
-		IntValue int1 = new IntValue(9);
-		IntValue int2 = new IntValue(12);
-		FloatValue float1 = new FloatValue(6.9f);
-		FloatValue float2 = new FloatValue(8.8f);
-		FloatValue float3 = new FloatValue(6.6f);
-		builder.createRow(string, int1, int2, float1, float2, float3);
-
-		string = new StringValue("Can");
-		int1 = new IntValue(5);
-		int2 = new IntValue(10);
-		float1 = new FloatValue(6.5f);
-		float2 = new FloatValue(6.9f);
-		float3 = new FloatValue(6.6f);
-		builder.createRow(string, int1, int2, float1, float2, float3);
-
-		string = new StringValue("You");
-		int1 = new IntValue(3);
-		int2 = new IntValue(3);
-		float1 = new FloatValue(5.9f);
-		float2 = new FloatValue(8.8f);
-		float3 = new FloatValue(6.4f);
-		builder.createRow(string, int1, int2, float1, float2, float3);
-
-		string = new StringValue("Do");
-		int1 = new IntValue(10);
-		int2 = new IntValue(12);
-		float1 = new FloatValue(6.2f);
-		float2 = new FloatValue(5.3f);
-		float3 = new FloatValue(6.6f);
-		builder.createRow(string, int1, int2, float1, float2, float3);
-		builder.setName("test");
-		table = builder.build();
-	}
+public class MedianTest extends FunctionTest {
 
 	/**
 	 * column of strings should throw exception.
@@ -129,15 +66,7 @@ public class MedianTest {
 
 	@Test
 	public void testMedianOdd() throws Exception {
-		StringValue string = new StringValue("What");
-		IntValue int1 = new IntValue(11);
-		IntValue int2 = new IntValue(53);
-		FloatValue float1 = new FloatValue(9.2f);
-		FloatValue float2 = new FloatValue(4.8f);
-		FloatValue float3 = new FloatValue(7.0f);
-		builder.createRow(string, int1, int2, float1, float2, float3);
-
-		table = builder.build();
+		extendTable();
 
 		DataValue med = new Median(table, new RowValueDescriber<>(floatColumn)).calculate();
 		assertEquals(new FloatValue(6.5f), med);

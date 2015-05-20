@@ -73,7 +73,7 @@ public class DataController {
 					new ConstantDescriber<>(new StringValue("0803"))
 			);
 			DataAnalysis analysis = new ConstraintAnalysis(constraint);
-			out = analysis.analyse(input);
+			out = (DataTable) analysis.analyse(input);
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "Error reading XML file", e);
 		}

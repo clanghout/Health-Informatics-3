@@ -21,61 +21,7 @@ import static org.junit.Assert.*;
  * 
  * @author Louis Gosschalk 12-05-2015
  */
-public class AverageTest {
-
-	private DataTable table;
-	private DataColumn stringColumn;
-	private DataColumn intColumn;
-	private DataColumn intsColumn;
-	private DataColumn floatColumn;
-	private DataColumn floatsColumn;
-
-	/**
-	 * simulate datamodel with single average for each column type.
-	 * 
-	 * @throws Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-		DataTableBuilder builder = new DataTableBuilder();
-		builder.setName("test");
-
-		stringColumn = builder.createColumn("string", StringValue.class);
-		intColumn = builder.createColumn("int", IntValue.class);
-		intsColumn = builder.createColumn("ints", IntValue.class);
-		floatColumn = builder.createColumn("float", FloatValue.class);
-		floatsColumn = builder.createColumn("floats", FloatValue.class);
-
-		StringValue string = new StringValue("What");
-		IntValue int1 = new IntValue(9);
-		IntValue int2 = new IntValue(12);
-		FloatValue float1 = new FloatValue(6.9f);
-		FloatValue float2 = new FloatValue(8.8f);
-		builder.createRow(string, int1, int2, float1, float2);
-
-		string = new StringValue("Can");
-		int1 = new IntValue(5);
-		int2 = new IntValue(10);
-		float1 = new FloatValue(6.5f);
-		float2 = new FloatValue(6.9f);
-		builder.createRow(string, int1, int2, float1, float2);
-
-		string = new StringValue("You");
-		int1 = new IntValue(3);
-		int2 = new IntValue(3);
-		float1 = new FloatValue(5.9f);
-		float2 = new FloatValue(8.8f);
-		builder.createRow(string, int1, int2, float1, float2);
-
-		string = new StringValue("Do");
-		int1 = new IntValue(10);
-		int2 = new IntValue(12);
-		float1 = new FloatValue(6.2f);
-		float2 = new FloatValue(5.3f);
-		builder.createRow(string, int1, int2, float1, float2);
-
-		table = builder.build();
-	}
+public class AverageTest extends FunctionTest {
 
 	/**
 	 * column of strings should throw exception.
@@ -83,8 +29,8 @@ public class AverageTest {
 	 * @throws Exception
 	 */
 	@Test(expected = FunctionInputMismatchException.class)
-	public void TestStringMinimum() throws Exception {
-		DataValue minimum = new Average(table, new RowValueDescriber<>(stringColumn)).calculate();
+	public void TestStringAverage() throws Exception {
+		DataValue av = new Average(table, new RowValueDescriber<>(stringColumn)).calculate();
 	}
 
 	@Test

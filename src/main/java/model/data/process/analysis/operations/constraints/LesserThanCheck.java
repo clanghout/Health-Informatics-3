@@ -1,6 +1,6 @@
 package model.data.process.analysis.operations.constraints;
 
-import model.data.DataRow;
+import model.data.Row;
 import model.data.describer.DataDescriber;
 import model.data.value.NumberValue;
 
@@ -28,7 +28,7 @@ public final class LesserThanCheck<T extends NumberValue>
 	 * @return True if the left side is lesser than the right side.
 	 */
 	@Override
-	public boolean check(DataRow row) {
+	public boolean check(Row row) {
 		return compare(row) < 0;
 	}
 

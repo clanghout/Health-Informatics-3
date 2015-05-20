@@ -1,10 +1,10 @@
 package model.data.process.analysis;
 
-import model.data.DataRow;
-import model.data.DataTable;
+import model.data.*;
 import model.data.process.analysis.operations.computations.Computation;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -19,12 +19,18 @@ public class ComputationAnalysis extends DataAnalysis {
 	}
 
 	@Override
-	public DataTable analyse(DataTable input) {
-		List<DataRow> out = new ArrayList<>();
-		List<DataRow> rows = input.getRows();
+	public Table analyse(Table input) {
+		List<? extends Row> out;
+		if (input instanceof DataTable) {
+			out = new ArrayList<DataRow>();
+		} else {
+			out = new ArrayList<CombinedDataRow>();
+		}
+		Iterator<? extends Row> rows = input.iterator();
 // TODO: Add code which specifies what analysis should be computed on which data.
 //		for (DataRow row: rows) {
 //		}
-		return new DataTable(input.getName(), out, new ArrayList<>(input.getColumns().values()));
+
+		return input;
 	}
 }

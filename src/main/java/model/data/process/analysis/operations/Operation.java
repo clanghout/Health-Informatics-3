@@ -1,6 +1,6 @@
 package model.data.process.analysis.operations;
 
-import model.data.DataRow;
+import model.data.Row;
 import model.data.value.DataValue;
 
 /**
@@ -15,5 +15,5 @@ public abstract class Operation<T extends DataValue> {
 	 * @param row The row you want to operate on.
 	 * @return The result of the operation.
 	 */
-	public abstract T operate(DataRow row);
+	public abstract T operate(Row row);
 }

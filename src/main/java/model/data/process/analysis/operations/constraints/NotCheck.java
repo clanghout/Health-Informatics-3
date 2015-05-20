@@ -1,6 +1,6 @@
 package model.data.process.analysis.operations.constraints;
 
-import model.data.DataRow;
+import model.data.Row;
 import model.data.describer.DataDescriber;
 import model.data.value.BoolValue;
 
@@ -26,7 +26,7 @@ public class NotCheck extends Constraint {
 	 * @return The inverse of the operand
 	 */
 	@Override
-	public boolean check(DataRow row) {
+	public boolean check(Row row) {
 		boolean value = operand.resolve(row).getValue();
 		return !value;
 	}

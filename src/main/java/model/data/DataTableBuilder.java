@@ -23,6 +23,10 @@ public class DataTableBuilder {
 		columns = new ArrayList<DataColumn>();
 	}
 
+	/**
+	 * Set the name of the table.
+	 * @param name name of the table
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
