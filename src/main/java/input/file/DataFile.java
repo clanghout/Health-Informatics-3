@@ -59,7 +59,7 @@ public abstract class DataFile {
 	*/
 	public static DataFile createDataFile(String path, String type) 
 			throws DataFileNotRecognizedException {
-		switch(type) {
+		switch (type) {
 			case "plaintext": return new PlainTextFile(path);
 			case "xls": return new XlsFile(path);
 			case "xlsx": return new XlsxFile(path);
