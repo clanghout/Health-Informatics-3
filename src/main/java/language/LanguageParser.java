@@ -1,32 +1,39 @@
 package language;
 
-import model.data.process.DataProcess;
 import org.parboiled.BaseParser;
 import org.parboiled.Rule;
+import org.parboiled.support.Var;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The parser for the analysis language.
- *
- * Since this class is rather declarative in its working, the style deviates from the default Java style and is more
- * PEG based.
- *
+ * <p/>
+ * Since this class is rather declarative in its working, the style deviates from the default
+ * Java style and is more PEG based.
+ * <p/>
  * Created by Boudewijn on 20-5-2015.
  */
 @SuppressWarnings("ALL")
-public class LanguageParser extends BaseParser<DataProcess> {
+class LanguageParser extends BaseParser<Object> {
+
 
 	Rule Identifier() {
 		return Sequence(
-				FirstOf(
-						CharRange('a', 'z'),
-						CharRange('A', 'Z')
-				), OneOrMore(
+				Sequence(
 						FirstOf(
-								Digit(),
 								CharRange('a', 'z'),
 								CharRange('A', 'Z')
+						), OneOrMore(
+								FirstOf(
+										Digit(),
+										CharRange('a', 'z'),
+										CharRange('A', 'Z')
+								)
 						)
-				)
+				),
+				push(new Identifier<>(match()))
 		);
 	}
 
@@ -34,7 +41,9 @@ public class LanguageParser extends BaseParser<DataProcess> {
 		return Sequence(
 				"\"",
 				ZeroOrMore(Character()),
-				"\"");
+				push(matchOrDefault("")),
+				"\""
+		);
 	}
 
 	Rule Character() {
@@ -46,14 +55,20 @@ public class LanguageParser extends BaseParser<DataProcess> {
 	}
 
 	Rule IntLiteral() {
-		return OneOrMore(Digit());
+		return Sequence(
+				OneOrMore(Digit()),
+				push(Integer.parseInt(matchOrDefault("0")))
+		);
 	}
 
 	Rule FloatLiteral() {
 		return Sequence(
-				OneOrMore(Digit()),
-				".",
-				OneOrMore(Digit())
+				Sequence(
+						OneOrMore(Digit()),
+						".",
+						OneOrMore(Digit())
+				),
+				push(Float.parseFloat(matchOrDefault("0.0")))
 		);
 	}
 
@@ -63,6 +78,7 @@ public class LanguageParser extends BaseParser<DataProcess> {
 
 	Rule Params() {
 		return Sequence(
+				push(new ArrayList<Object>()),
 				"(",
 				Optional(ParamDecl()),
 				")"
@@ -70,7 +86,13 @@ public class LanguageParser extends BaseParser<DataProcess> {
 	}
 
 	Rule ParamDecl() {
-		return Sequence(Variable(), ParamRest());
+		Var<List<Object>> paramList = new Var<List<Object>>();
+		return Sequence(
+				paramList.set((List<Object>) pop()),
+				Variable(),
+				paramList.get().add(pop()),
+				push(paramList.get()),
+				ParamRest());
 	}
 
 	Rule ParamRest() {
@@ -86,16 +108,26 @@ public class LanguageParser extends BaseParser<DataProcess> {
 	}
 
 	Rule Process() {
-		return Sequence(Identifier(), Params());
+		Var<Identifier> processName = new Var<Identifier>();
+		Var<List<Object>> params = new Var<List<Object>>();
+		return Sequence(
+				Identifier(),
+				processName.set((Identifier) pop()),
+				Params(),
+				params.set((List<Object>) pop()),
+				push(new ProcessInfo(processName.get(), params.get().toArray()))
+		);
 	}
 
 	Rule Pipe() {
 		return Sequence(
 				Process(),
-				"|",
-				FirstOf(
-						Pipe(),
-						Process()
+				Optional(
+						"|",
+						FirstOf(
+								Pipe(),
+								Process()
+						)
 				)
 		);
 	}

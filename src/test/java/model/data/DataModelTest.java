@@ -24,8 +24,8 @@ public class DataModelTest {
 	public void setUp() throws Exception {
 		model = new DataModel();
 
-		firstTable = new DataTable();
-		secondTable = new DataTable();
+		firstTable = new DataTable("first");
+		secondTable = new DataTable("second");
 		thirdTable = new DataTable();
 	}
 
@@ -112,5 +112,14 @@ public class DataModelTest {
 
 		assertEquals(0, model.indexOf(firstTable));
 		assertEquals(-1, model.indexOf(secondTable));
+	}
+
+	@Test
+	public void testGetByName() throws Exception {
+		model.add(firstTable);
+		model.add(secondTable);
+
+		assertEquals(firstTable, model.getByName(firstTable.getName()));
+		assertEquals(secondTable, model.getByName(secondTable.getName()));
 	}
 }

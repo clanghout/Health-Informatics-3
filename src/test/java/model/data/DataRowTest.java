@@ -6,12 +6,7 @@ import model.data.value.DataValue;
 import model.data.value.StringValue;
 import org.junit.Test;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by jens on 4/29/15.

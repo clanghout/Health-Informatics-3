@@ -85,4 +85,16 @@ public class DataModel implements Iterable<DataTable> {
 	public DataTable get(int index) {
 		return dataTables.get(index);
 	}
+
+	/**
+	 * Get the DataTable by the given name.
+	 * @param name The name of the DataTable you want to get.
+	 * @return The DataTable with the given name or null if none was found.
+	 */
+	public Table getByName(String name) {
+		return dataTables.stream()
+				.filter(
+						x -> x.getName().equals(name)
+				).findFirst().get();
+	}
 }

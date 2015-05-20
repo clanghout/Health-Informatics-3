@@ -1,6 +1,5 @@
 package model.data;
 
-import model.data.describer.ConstantDescriber;
 import model.data.describer.RowValueDescriber;
 import model.data.process.analysis.ConstraintAnalysis;
 import model.data.process.analysis.operations.constraints.Constraint;

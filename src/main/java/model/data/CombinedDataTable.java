@@ -1,7 +1,10 @@
 package model.data;
 
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * This class simulates the join of the tables.

@@ -1,21 +1,12 @@
 package model.data.process.functions;
 
-import model.data.DataColumn;
-import model.data.DataTable;
-import model.data.DataTableBuilder;
+import exceptions.FunctionInputMismatchException;
 import model.data.describer.RowValueDescriber;
-import model.data.process.functions.Sum;
 import model.data.value.DataValue;
 import model.data.value.FloatValue;
-import model.data.value.IntValue;
-import model.data.value.StringValue;
-
-import org.junit.Before;
 import org.junit.Test;
 
-import exceptions.FunctionInputMismatchException;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test for sum.
