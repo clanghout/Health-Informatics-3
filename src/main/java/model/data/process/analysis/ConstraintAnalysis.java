@@ -1,8 +1,8 @@
 package model.data.process.analysis;
 
-import model.data.DataTable;
 import model.data.DataRow;
-import model.data.process.analysis.constraints.Constraint;
+import model.data.DataTable;
+import model.data.process.analysis.operations.constraints.Constraint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +33,7 @@ public class ConstraintAnalysis extends DataAnalysis {
 				out.add(row);
 			}
 		}
-		return new DataTable(out, new ArrayList<>(input.getColumns().values()));
+		//TODO some solution for the name
+		return new DataTable(input.getName(), out, new ArrayList<>(input.getColumns().values()));
 	}
 }

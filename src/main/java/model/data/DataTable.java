@@ -5,9 +5,10 @@ import java.util.*;
 /**
  * Class that represents the data that should be analysed.
  */
-public class DataTable {
+public class DataTable implements Table, Iterable {
 	private List<DataRow> rows;
 	private Map<String, DataColumn> columns;
+	private String name;
 
 	/**
 	 * Create a new empty DataTable.
@@ -22,12 +23,13 @@ public class DataTable {
 	 * @param rows rows of the DataTable
 	 * @param columns columns of the DataTable
 	 */
-	public DataTable(List<DataRow> rows, List<DataColumn> columns) {
+	public DataTable(String name, List<DataRow> rows, List<DataColumn> columns) {
 		this();
 		this.rows = new ArrayList<>(rows);
 		for (DataColumn c : columns) {
 			this.columns.put(c.getName(), c);
 		}
+		this.name = name;
 	}
 
 	/**
@@ -66,4 +68,12 @@ public class DataTable {
 		return columns;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public Iterator<DataRow> iterator() {
+		return rows.iterator();
+	}
 }

@@ -19,6 +19,7 @@ import java.util.stream.Stream;
 public class DataReader {
 
 	private Logger log = Logger.getLogger("DataReader");
+	private String name;
 
 	/**
 	 * Read the data from the file with the specified filename.
@@ -28,6 +29,7 @@ public class DataReader {
 	 */
 	public DataTable readData(String filename) throws IOException {
 		File file = new File(filename);
+		name = filename;
 		return readData(file);
 	}
 
@@ -53,6 +55,7 @@ public class DataReader {
 			skipToContent(reader);
 
 			DataTableBuilder builder = new DataTableBuilder();
+			builder.setName("test");
 			addColumns(builder);
 
 			DataTable table = readRows(reader, builder);
@@ -76,19 +79,18 @@ public class DataReader {
 			String[] sections = line.split(",");
 			Stream<DataValue> values = Arrays.stream(sections).map(StringValue::new);
 
-			DataRow row = builder.createRow(values.toArray(DataValue[]::new));
-			builder.addRow(row);
+			builder.createRow(values.toArray(DataValue[]::new));
 		}
 
 		return builder.build();
 	}
 
 	private void addColumns(DataTableBuilder builder) {
-		builder.addColumn(builder.createColumn("quantity", StringValue.class));
-		builder.addColumn(builder.createColumn("measurement", StringValue.class));
-		builder.addColumn(builder.createColumn("unit", StringValue.class));
-		builder.addColumn(builder.createColumn("ignore", StringValue.class));
-		builder.addColumn(builder.createColumn("date", StringValue.class));
-		builder.addColumn(builder.createColumn("time", StringValue.class));
+		builder.createColumn("quantity", StringValue.class);
+		builder.createColumn("measurement", StringValue.class);
+		builder.createColumn("unit", StringValue.class);
+		builder.createColumn("ignore", StringValue.class);
+		builder.createColumn("date", StringValue.class);
+		builder.createColumn("time", StringValue.class);
 	}
 }

@@ -1,0 +1,8 @@
+This is plain text line one
+
+line 3
+foo
+bar
+line 6
+
+footer

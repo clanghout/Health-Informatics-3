@@ -1,13 +1,22 @@
 <?xml version="1.0"?>
-<document name="user_save.xml">
+<input>
+    <file name="ADMIRE2.txt">
+        <data>
+            <start>7</start>
+            <end>57</end>
+        </data>
+        <type>plaintext</type>
+    </file>
 	<file name="ADMIRE.txt">
-		<header>[\s\S]+(?=\[)</header>
-		<type>userinput</type>
-		<path>input</path>
+        <type>plaintext</type>
+        <path>input</path>
 	</file>
 	<file name="statsensor.txt">
-		<header>[\s\S]+(?=\[)</header>
-		<type>statsensor</type>
+	    <data>
+	       <start>7</start>
+	       <end>8</end>
+	    </data>
+		<type>plaintext</type>
 		<path>input</path>
 	</file>
-</document>
+</input>
