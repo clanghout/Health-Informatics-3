@@ -39,11 +39,10 @@ public class LanguageParser extends BaseParser<Object> {
 
 	Rule StringLiteral() {
 		return Sequence(
-				Sequence(
-						"\"",
-						ZeroOrMore(Character()),
-						"\""),
-				push(matchOrDefault(""))
+				"\"",
+				ZeroOrMore(Character()),
+				push(matchOrDefault("")),
+				"\""
 		);
 	}
 
