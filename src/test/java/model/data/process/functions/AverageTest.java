@@ -29,7 +29,7 @@ public class AverageTest extends FunctionTest {
 	 * @throws Exception
 	 */
 	@Test(expected = FunctionInputMismatchException.class)
-	public void TestStringMinimum() throws Exception {
+	public void TestStringAverage() throws Exception {
 		DataValue av = new Average(table, new RowValueDescriber<>(stringColumn)).calculate();
 	}
 
