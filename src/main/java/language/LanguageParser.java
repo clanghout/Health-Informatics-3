@@ -7,13 +7,13 @@ import org.parboiled.Rule;
 /**
  * The parser for the analysis language.
  *
- * Since this class is rather declarative in its working, the style deviates from the default Java style and is more
- * PEG based.
+ * Since this class is rather declarative in its working, the style deviates from the default
+ * Java style and is more PEG based.
  *
  * Created by Boudewijn on 20-5-2015.
  */
 @SuppressWarnings("ALL")
-public class LanguageParser extends BaseParser<DataProcess> {
+public final class LanguageParser extends BaseParser<DataProcess> {
 
 	Rule Identifier() {
 		return Sequence(
