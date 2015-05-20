@@ -43,7 +43,7 @@ public class CombinedDataRow implements Row {
 				return row.getValue(column);
 			}
 		}
-		return null;
+		throw new IllegalArgumentException("no such column");
 	}
 
 	@Override
@@ -54,6 +54,7 @@ public class CombinedDataRow implements Row {
 				return;
 			}
 		}
+		throw new IllegalArgumentException("no such column");
 	}
 
 	@Override

@@ -116,8 +116,8 @@ public class DataTableTest {
 		dataTable.flagNotDelete(rows.get(2));
 		dataTable.deleteNotFlagged();
 		assertEquals(dataTable.getRowCount(), 2, 0.1);
-		assertEquals(dataTable.getRow(1), rows.get(0));
-		assertEquals(dataTable.getRow(0), rows.get(2));
+		assertEquals(dataTable.getRow(0), rows.get(0));
+		assertEquals(dataTable.getRow(1), rows.get(2));
 	}
 
 	@Test

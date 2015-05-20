@@ -140,4 +140,41 @@ public class CombinedDataTableTest {
 		assertEquals(row.getValue(columns[1][1]).toString(), "asf");
 		assertFalse(it.hasNext());
 	}
+
+
+	@Test
+	public void testDelete() throws Exception {
+		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
+		Iterator<? extends Row> it = comb.iterator();
+		comb.flagNotDelete(it.next());
+		it.next();
+		it.next();
+		comb.flagNotDelete(it.next());
+		it.next();
+		comb.flagNotDelete(it.next());
+
+		comb.deleteNotFlagged();
+
+		assertEquals(dataTables.get(0).getRowCount(), 2);
+		assertEquals(dataTables.get(1).getRowCount(), 2);
+		assertEquals(dataTables.get(2).getRowCount(), 1);
+	}
+
+	@Test
+	public void testDelete2() throws Exception {
+		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
+		Iterator<? extends Row> it = comb.iterator();
+		comb.flagNotDelete(it.next());
+		it.next();
+		it.next();
+		it.next();
+		it.next();
+		it.next();
+
+		comb.deleteNotFlagged();
+
+		assertEquals(dataTables.get(0).getRowCount(), 1);
+		assertEquals(dataTables.get(1).getRowCount(), 1);
+		assertEquals(dataTables.get(2).getRowCount(), 1);
+	}
 }
