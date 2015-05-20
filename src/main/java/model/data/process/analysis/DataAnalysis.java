@@ -1,6 +1,7 @@
 package model.data.process.analysis;
 
 import model.data.DataTable;
+import model.data.Table;
 import model.data.process.DataProcess;
 
 /**
@@ -16,10 +17,10 @@ public abstract class DataAnalysis extends DataProcess {
 	 * @param input The input for the analysis
 	 * @return The output of the analysis
 	 */
-	public abstract DataTable analyse(DataTable input);
+	public abstract Table analyse(Table input);
 
 	@Override
-	protected final DataTable doProcess() {
+	protected final Table doProcess() {
 		return analyse(getInput());
 	}
 }

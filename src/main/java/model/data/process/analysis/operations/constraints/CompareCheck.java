@@ -1,6 +1,6 @@
 package model.data.process.analysis.operations.constraints;
 
-import model.data.DataRow;
+import model.data.Row;
 import model.data.describer.DataDescriber;
 import model.data.value.NumberValue;
 
@@ -25,8 +25,9 @@ public abstract class CompareCheck<T extends NumberValue>
 	/**
 	 * Compare the values.
 	 * @return The result of the Comparable#compareTo() of the operands
+	 * @param row
 	 */
-	public int compare(DataRow row) {
+	public int compare(Row row) {
 		T left = getLeftSide().resolve(row);
 		T right = getRightSide().resolve(row);
 		return left.compareTo(right);

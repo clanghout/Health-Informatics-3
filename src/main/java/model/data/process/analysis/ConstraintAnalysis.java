@@ -2,9 +2,12 @@ package model.data.process.analysis;
 
 import model.data.DataRow;
 import model.data.DataTable;
+import model.data.Row;
+import model.data.Table;
 import model.data.process.analysis.operations.constraints.Constraint;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -25,10 +28,11 @@ public class ConstraintAnalysis extends DataAnalysis {
 	}
 
 	@Override
-	public DataTable analyse(DataTable input) {
-		List<DataRow> out = new ArrayList<>();
-		List<DataRow> rows = input.getRows();
-		for (DataRow row: rows) {
+	public Table analyse(Table input) {
+		List<Row> out = new ArrayList<>();
+		Iterator<? extends Row> rows = input.iterator();
+		while (rows.hasNext()) {
+			Row row = rows.next();
 			if (constraint.check(row)) {
 				out.add(row);
 			}

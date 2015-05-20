@@ -1,6 +1,7 @@
 package model.data.process;
 
 import model.data.DataTable;
+import model.data.Table;
 
 /**
  * This class defines a data process.
@@ -11,16 +12,16 @@ import model.data.DataTable;
  */
 public abstract class DataProcess {
 
-	private DataTable input;
-	private DataTable output;
+	private Table input;
+	private Table output;
 
 	/**
 	 * Runs this process.
 	 *
 	 * @return The data table resulting from running this process.
 	 */
-	public final DataTable process() {
-		DataTable table = doProcess();
+	public final Table process() {
+		Table table = doProcess();
 		if (table == null) {
 			throw new NullPointerException("A process should always result in an output");
 		}
@@ -33,14 +34,14 @@ public abstract class DataProcess {
 	 *
 	 * @return The output of the data process
 	 */
-	protected abstract DataTable doProcess();
+	protected abstract Table doProcess();
 
 	/**
 	 * Set the input for the data process.
 	 * Note: Setting an input isn't required.
 	 * @param input The input for the data process
 	 */
-	public final void setInput(DataTable input) {
+	public final void setInput(Table input) {
 		this.input = input;
 	}
 
@@ -49,7 +50,7 @@ public abstract class DataProcess {
 	 *
 	 * @return The input for this data process or null if none is set.
 	 */
-	public final DataTable getInput() {
+	public final Table getInput() {
 		return input;
 	}
 
@@ -58,7 +59,7 @@ public abstract class DataProcess {
 	 *
 	 * @return The output of the data process
 	 */
-	public final DataTable getOutput() {
+	public final Table getOutput() {
 		return output;
 	}
 }

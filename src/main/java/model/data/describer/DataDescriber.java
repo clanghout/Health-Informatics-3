@@ -1,6 +1,7 @@
 package model.data.describer;
 
 import model.data.DataRow;
+import model.data.Row;
 import model.data.value.DataValue;
 
 /**
@@ -19,5 +20,5 @@ public abstract class DataDescriber<Type extends DataValue> {
 	 * @param row The row the value should be resolved from
 	 * @return The value described by this DataDescriber.
 	 */
-	public abstract Type resolve(DataRow row);
+	public abstract Type resolve(Row row);
 }

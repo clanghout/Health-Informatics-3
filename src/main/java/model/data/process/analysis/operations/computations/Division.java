@@ -1,6 +1,6 @@
 package model.data.process.analysis.operations.computations;
 
-import model.data.DataRow;
+import model.data.Row;
 import model.data.describer.DataDescriber;
 import model.data.value.FloatValue;
 import model.data.value.IntValue;
@@ -25,7 +25,7 @@ public class Division<T extends NumberValue> extends Computation<T> {
 	 * @return A new FloatValue with the new value.
 	 */
 	@Override
-	public NumberValue compute(DataRow row) {
+	public NumberValue compute(Row row) {
 		T left = getLeftSide().resolve(row);
 		T right = getRightSide().resolve(row);
 		if (left instanceof IntValue && right instanceof IntValue) {

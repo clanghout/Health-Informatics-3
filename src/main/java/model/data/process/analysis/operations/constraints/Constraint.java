@@ -1,6 +1,6 @@
 package model.data.process.analysis.operations.constraints;
 
-import model.data.DataRow;
+import model.data.Row;
 import model.data.process.analysis.operations.Operation;
 import model.data.value.BoolValue;
 
@@ -16,10 +16,10 @@ public abstract class Constraint extends Operation<BoolValue> {
 	 * @param row The row the check should be performed on.
 	 * @return True if the check passed, false if not
 	 */
-	public abstract boolean check(DataRow row);
+	public abstract boolean check(Row row);
 
 	@Override
-	public BoolValue operate(DataRow row) {
+	public BoolValue operate(Row row) {
 		return new BoolValue(check(row));
 	}
 }
