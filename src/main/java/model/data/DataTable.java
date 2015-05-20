@@ -71,6 +71,10 @@ public class DataTable implements Table, Iterable {
 		return columns;
 	}
 
+	/**
+	 * Get the name of the table.
+	 * @return the name of the table.
+	 */
 	public String getName() {
 		return name;
 	}
@@ -82,7 +86,7 @@ public class DataTable implements Table, Iterable {
 
 	@Override
 	public boolean flagNotDelete(Row row) {
-		if (row instanceof DataRow && rows.contains(row)) {
+		if ((row instanceof DataRow) && (rows.contains(row))) {
 			flaggedNoDelete.add((DataRow) row);
 			return true;
 		} else {
