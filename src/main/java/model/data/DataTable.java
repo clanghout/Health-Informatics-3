@@ -19,6 +19,15 @@ public class DataTable implements Table, Iterable {
 	}
 
 	/**
+	 * Create an new empty DataTable with the given name.
+	 * @param name The name you want to give to this DataTable
+	 */
+	public DataTable(String name) {
+		this();
+		this.name = name;
+	}
+
+	/**
 	 * Create a new DataTable.
 	 * @param rows rows of the DataTable
 	 * @param columns columns of the DataTable

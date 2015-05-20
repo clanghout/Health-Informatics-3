@@ -1,5 +1,6 @@
 package model.data.process;
 
+import model.data.DataModel;
 import model.data.DataTable;
 
 /**
@@ -13,6 +14,8 @@ public abstract class DataProcess {
 
 	private DataTable input;
 	private DataTable output;
+
+	private DataModel model;
 
 	/**
 	 * Runs this process.
@@ -60,5 +63,23 @@ public abstract class DataProcess {
 	 */
 	public final DataTable getOutput() {
 		return output;
+	}
+
+	/**
+	 * Set the DataModel for this process.
+	 *
+	 * @param model The model for this process.
+	 */
+	public final void setDataModel(DataModel model) {
+		this.model = model;
+	}
+
+	/**
+	 * Get the DataModel for this process.
+	 *
+	 * @return The model for this process.
+	 */
+	public final DataModel getDataModel() {
+		return model;
 	}
 }

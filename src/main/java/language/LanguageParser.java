@@ -1,40 +1,45 @@
 package language;
 
-import model.data.process.DataProcess;
 import org.parboiled.BaseParser;
 import org.parboiled.Rule;
 
 /**
  * The parser for the analysis language.
- *
+ * <p/>
  * Since this class is rather declarative in its working, the style deviates from the default
  * Java style and is more PEG based.
- *
+ * <p/>
  * Created by Boudewijn on 20-5-2015.
  */
 @SuppressWarnings("ALL")
-public final class LanguageParser extends BaseParser<DataProcess> {
+public class LanguageParser extends BaseParser<Object> {
 
 	Rule Identifier() {
 		return Sequence(
-				FirstOf(
-						CharRange('a', 'z'),
-						CharRange('A', 'Z')
-				), OneOrMore(
+				Sequence(
 						FirstOf(
-								Digit(),
 								CharRange('a', 'z'),
 								CharRange('A', 'Z')
+						), OneOrMore(
+								FirstOf(
+										Digit(),
+										CharRange('a', 'z'),
+										CharRange('A', 'Z')
+								)
 						)
-				)
+				),
+				push(new Identifier<>(match()))
 		);
 	}
 
 	Rule StringLiteral() {
 		return Sequence(
-				"\"",
-				ZeroOrMore(Character()),
-				"\"");
+				Sequence(
+						"\"",
+						ZeroOrMore(Character()),
+						"\""),
+				push(matchOrDefault(""))
+		);
 	}
 
 	Rule Character() {
@@ -46,14 +51,20 @@ public final class LanguageParser extends BaseParser<DataProcess> {
 	}
 
 	Rule IntLiteral() {
-		return OneOrMore(Digit());
+		return Sequence(
+				OneOrMore(Digit()),
+				push(Integer.parseInt(matchOrDefault("0")))
+		);
 	}
 
 	Rule FloatLiteral() {
 		return Sequence(
-				OneOrMore(Digit()),
-				".",
-				OneOrMore(Digit())
+				Sequence(
+						OneOrMore(Digit()),
+						".",
+						OneOrMore(Digit())
+				),
+				push(Float.parseFloat(matchOrDefault("0.0")))
 		);
 	}
 
