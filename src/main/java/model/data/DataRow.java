@@ -15,8 +15,6 @@ public class DataRow implements Row {
 	private Logger log = Logger.getLogger("DataRow");
 
 	private Map<DataColumn, DataValue> values = new HashMap<>();
-	private Map<String, DataColumn> columns = new HashMap<>();
-
 	private Set<DataConnection> connections = new HashSet<>();
 
 
@@ -44,7 +42,6 @@ public class DataRow implements Row {
 		for (int i = 0; i < columnArray.length; i++) {
 			if (columnArray[i].getType().isInstance(valueArray[i])) {
 				values.put(columnArray[i], valueArray[i]);
-				columns.put(columnArray[i].getName(), columnArray[i]);
 			} else {
 				throwTypeMismatchException();
 			}
@@ -82,15 +79,6 @@ public class DataRow implements Row {
 		return values.containsKey(column);
 	}
 
-	/**
-	 * Add the column with the value to the row.
-	 * @param column The column the value belongs to
-	 * @param value The value you want to set
-	 */
-	public void setValue(String column, DataValue value) {
-		values.put(columns.get(column), value);
-	}
-
 
 	/**
 	 * Get the value of a column.
@@ -100,9 +88,6 @@ public class DataRow implements Row {
 	 */
 	public DataValue getValue(DataColumn column) {
 		return values.get(column);
-	}
-	public DataValue getValue(String column) {
-		return values.get(columns.get(column));
 	}
 
 	/**
