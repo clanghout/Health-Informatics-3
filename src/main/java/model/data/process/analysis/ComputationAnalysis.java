@@ -31,13 +31,6 @@ public class ComputationAnalysis extends DataAnalysis {
 //		for (DataRow row: rows) {
 //		}
 
-		if (input instanceof DataTable) {
-			DataTable dataInput = (DataTable) input;
-			return new DataTable(dataInput.getName(), (ArrayList<DataRow>) out, new ArrayList<>(dataInput.getColumns().values()));
-		} else {
-			//TODO ...
-			CombinedDataTable combInput = (CombinedDataTable) input;
-			return null;
-		}
+		return input;
 	}
 }
