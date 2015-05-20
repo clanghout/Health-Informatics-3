@@ -190,8 +190,9 @@ public class CombinedDataTableTest {
 		DataTableBuilder builder1 = new DataTableBuilder();
 		builder1.setName("table1");
 		DataColumn column1 = builder1.createColumn("column1", IntValue.class);
+		DataRow[] rows1 = new DataRow[5];
 		for (int i = 0; i < 5; i++) {
-			builder1.createRow(new IntValue(i));
+			rows1[i] = builder1.createRow(new IntValue(i));
 		}
 
 		DataTable table1 = builder1.build();
@@ -199,8 +200,9 @@ public class CombinedDataTableTest {
 		DataTableBuilder builder2 = new DataTableBuilder();
 		builder2.setName("table1");
 		DataColumn column2 = builder2.createColumn("column2", IntValue.class);
+		DataRow[] rows2 = new DataRow[5];
 		for (int i = 0; i < 10; i = i + 2) {
-			builder2.createRow(new IntValue(i));
+			rows2[i/2] = builder2.createRow(new IntValue(i));
 		}
 
 		DataTable table2 = builder2.build();
@@ -223,13 +225,12 @@ public class CombinedDataTableTest {
 
 		table1.getRows();
 
-		assertEquals(table1.getRow(0).getValue(column1).toString(), "4");
-		assertEquals(table1.getRow(1).getValue(column1).toString(), "2");
-		assertEquals(table1.getRow(2).getValue(column1).toString(), "0");
+		assertTrue(table1.getRows().contains(rows1[0]));
+		assertTrue(table1.getRows().contains(rows1[2]));
+		assertTrue(table1.getRows().contains(rows1[4]));
 
-		assertEquals(table2.getRow(0).getValue(column2).toString(), "2");
-		assertEquals(table2.getRow(1).getValue(column2).toString(), "4");
-		assertEquals(table2.getRow(2).getValue(column2).toString(), "0");
-
+		assertTrue(table2.getRows().contains(rows2[0]));
+		assertTrue(table2.getRows().contains(rows2[1]));
+		assertTrue(table2.getRows().contains(rows2[2]));
 	}
 }
