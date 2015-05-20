@@ -10,7 +10,7 @@ import model.data.value.IntValue;
 import model.data.value.StringValue;
 
 /**
- * This test framework provides a datamodel for tests to use.
+ * This test framework provides a datamodel for a test to use.
  * @author Louis Gosschalk 20-05-2015
  *
  */
