@@ -19,7 +19,9 @@ hs_err_pid*
 .classpath
 .project
 .settings/
+.checkstyle
 out/
+testFile.txt
 
 #latex docs that are not needed
 *.aux
