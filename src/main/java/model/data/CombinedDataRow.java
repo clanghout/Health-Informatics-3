@@ -28,6 +28,14 @@ public class CombinedDataRow implements Row {
 		rows.add(row);
 	}
 
+	/**
+	 * return the rows of this combinedDataRow.
+	 * @return a list of the rows in the combinedDataRow
+	 */
+	public List<DataRow> getRows() {
+		return rows;
+	}
+
 	@Override
 	public DataValue getValue(DataColumn column) {
 		for (DataRow row : rows) {

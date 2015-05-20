@@ -31,6 +31,16 @@ public class CombinedDataTable implements Iterable, Table {
 		}
 	}
 
+	@Override
+	public void flagNotDelete(Row row) {
+
+	}
+
+	@Override
+	public void deleteNotFlagged() {
+
+	}
+
 
 	private Iterator<CombinedDataRow> combinedIterator() {
 		return new Iterator<CombinedDataRow>() {

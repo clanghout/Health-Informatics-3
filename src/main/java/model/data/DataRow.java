@@ -15,8 +15,6 @@ public class DataRow implements Row {
 	private Logger log = Logger.getLogger("DataRow");
 
 	private Map<DataColumn, DataValue> values = new HashMap<>();
-	private Set<DataConnection> connections = new HashSet<>();
-
 
 	/**
 	 * Create an empty row.
@@ -89,38 +87,5 @@ public class DataRow implements Row {
 	public DataValue getValue(DataColumn column) {
 		return values.get(column);
 	}
-
-	/**
-	 * Add a connection to this row.
-	 * @param connection a connection that this row is involved in.
-	 */
-	public void addConnection(DataConnection connection) {
-		connections.add(connection);
-	}
-
-	/**
-	 * Get all the connections that influence this row.
-	 * @return A Set of all the connections that influence this row.
-	 */
-	public Set<DataConnection> getCausedBy() {
-		return connections.stream()
-				.filter(c ->
-				        c.getResultsIn().contains(this))
-				.collect(Collectors.toSet());
-	}
-
-	/**
-	 * Get all the connections that are influenced by this row.
-	 * @return A set of connections that are influenced by this row.
-	 */
-	public Set<DataConnection> getResultsIn() {
-		return connections.stream()
-				.filter(c ->
-				        c.getCausedBy().contains(this))
-				.collect(Collectors.toSet());
-	}
-
-
-
 
 }

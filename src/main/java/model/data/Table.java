@@ -7,4 +7,7 @@ import java.util.Iterator;
  */
 public interface Table {
 	Iterator<? extends Row> iterator();
+
+	void flagNotDelete(Row row);
+	void deleteNotFlagged();
 }
