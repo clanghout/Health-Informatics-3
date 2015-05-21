@@ -57,10 +57,14 @@ public abstract class Table implements Iterable{
 
 		if (otherColumns.size() == columns.size()) {
 			for (int i = 0; i < columns.size(); i++) {
+				boolean result = false;
 				for (int j = 0; j < otherColumns.size(); j++) {
-					if (!otherColumns.get(j).equalsExcludeTable(columns.get(i))) {
-						return false;
+					if (otherColumns.get(j).equalsExcludeTable(columns.get(i))) {
+						result = true;
 					}
+				}
+				if(!result) {
+					return false;
 				}
 			}
 			return true;

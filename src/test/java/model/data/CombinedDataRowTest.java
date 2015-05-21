@@ -207,7 +207,7 @@ public class CombinedDataRowTest {
 		DataRow row1C = builder2.createRow(new StringValue("test"));
 
 		DataRow row2 = builder.createRow(new StringValue("test2"));
-		DataRow row2C = builder2.createRow(new StringValue("test2"));;
+		DataRow row2C = builder2.createRow(new StringValue("test2"));
 
 		builder.build();
 		builder2.build();
@@ -236,7 +236,7 @@ public class CombinedDataRowTest {
 		DataRow row1C = builder2.createRow(new StringValue("test"));
 
 		DataRow row2 = builder.createRow(new StringValue("test2"));
-		DataRow row2C = builder2.createRow(new StringValue("test2"));;
+		DataRow row2C = builder2.createRow(new StringValue("test2"));
 
 		builder.build();
 		builder2.build();

@@ -64,9 +64,11 @@ public class CombinedDataTable extends Table {
 		}
 		CombinedDataTable other = (CombinedDataTable) obj;
 		if (this.combined != null) {
-			return table.equals(((CombinedDataTable) obj).table) && this.combined.equals(other.combined);
+			System.out.println("test");
+			return table.equals(other.table) && this.combined.equals(other.combined);
 		}
-		return table.equals(((CombinedDataTable) obj).table) && other.combined == null;
+		System.out.println("b");
+		return table.equals(other.table) && other.combined == null;
 	}
 
 	@Override

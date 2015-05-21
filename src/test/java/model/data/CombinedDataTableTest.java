@@ -237,4 +237,80 @@ public class CombinedDataTableTest {
 		assertTrue(table2.getRows().contains(rows2[1]));
 		assertTrue(table2.getRows().contains(rows2[2]));
 	}
+
+	@Test
+	public void testCopy() throws Exception {
+		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
+		CombinedDataTable copy = comb.copy();
+
+		assertEquals(comb,copy);
+	}
+
+	@Test
+	public void testEquals() throws Exception {
+		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
+		CombinedDataTable copy = comb.copy();
+
+		assertTrue(comb.equals(copy));
+	}
+
+
+	@Test
+	public void testEqualsSoft() throws Exception {
+
+		DataTableBuilder builder = new DataTableBuilder();
+		DataTableBuilder builder2 = new DataTableBuilder();
+		builder.setName("t1");
+		builder2.setName("t2");
+
+		builder.createColumn("t1", StringValue.class);
+		builder2.createColumn("t1", StringValue.class);
+
+		DataRow row1 = builder.createRow(new StringValue("test"));
+		DataRow row1C = builder2.createRow(new StringValue("test"));
+
+		DataRow row2 = builder.createRow(new StringValue("test2"));
+		DataRow row2C = builder2.createRow(new StringValue("test2"));
+
+		CombinedDataTable comb = new CombinedDataTable(builder.build());
+		CombinedDataTable copy = new CombinedDataTable(builder2.build());
+
+		assertFalse(comb.equals(copy));
+		assertTrue(comb.equalsSoft(copy));
+	}
+
+	@Test
+	public void testHashCode() throws Exception {
+
+		DataTableBuilder builder = new DataTableBuilder();
+		DataTableBuilder builder2 = new DataTableBuilder();
+		builder.setName("t1");
+		builder2.setName("t2");
+
+		builder.createColumn("t1", StringValue.class);
+		builder2.createColumn("t1", StringValue.class);
+
+		DataRow row1 = builder.createRow(new StringValue("test"));
+		DataRow row1C = builder2.createRow(new StringValue("test"));
+
+		DataRow row2 = builder.createRow(new StringValue("test2"));
+		DataRow row2C = builder2.createRow(new StringValue("test2"));
+
+		CombinedDataTable comb = new CombinedDataTable(builder.build());
+		CombinedDataTable copy = new CombinedDataTable(builder2.build());
+
+		assertEquals(comb.hashCode(), copy.hashCode());
+	}
+
+	@Test
+	public void testgetColumns() throws Exception {
+		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
+		List<DataColumn> columnsList = comb.getColumns();
+		assertEquals(columnsList.size(), columns[0].length + columns[1].length + columns[2].length);
+		assertTrue(columnsList.contains(columns[1][1]));
+		assertTrue(columnsList.contains(columns[0][0]));
+		assertTrue(columnsList.contains(columns[2][0]));
+	}
+
+
 }
