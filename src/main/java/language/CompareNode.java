@@ -6,8 +6,6 @@ import model.data.describer.DataDescriber;
 import model.data.describer.RowValueDescriber;
 import model.data.process.analysis.operations.constraints.Constraint;
 import model.data.process.analysis.operations.constraints.EqualityCheck;
-import model.data.process.analysis.operations.constraints.LesserEqualsCheck;
-import model.data.value.BoolValue;
 import model.data.value.DataValue;
 import org.parboiled.trees.ImmutableBinaryTreeNode;
 
@@ -29,7 +27,7 @@ final class CompareNode extends ImmutableBinaryTreeNode<CompareNode> {
 		this.operator = operator;
 	}
 
-	public Constraint resolve(DataModel model) {
+	Constraint resolve(DataModel model) {
 		DataDescriber<DataValue> leftSide = resolveNode(model, left);
 		DataDescriber<DataValue> rightSide = resolveNode(model, right);
 
