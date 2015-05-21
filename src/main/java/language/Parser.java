@@ -1,5 +1,6 @@
 package language;
 
+import model.data.DataModel;
 import model.data.process.DataProcess;
 import model.data.process.SerialProcess;
 import org.parboiled.Parboiled;
@@ -25,7 +26,7 @@ public class Parser {
 	 * @param input The SUGAR code.
 	 * @return The DataProcesses parsed from the given string.
 	 */
-	public DataProcess parse(String input) {
+	public DataProcess parse(String input, DataModel model) {
 		LanguageParser parser = Parboiled.createParser(LanguageParser.class);
 		BasicParseRunner runner = new BasicParseRunner(parser.Pipe());
 

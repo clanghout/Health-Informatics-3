@@ -24,7 +24,7 @@ public class ParserTest {
 		model.add(test1);
 
 		Parser parser = new Parser();
-		DataProcess process = parser.parse(input);
+		DataProcess process = parser.parse(input, model);
 
 		process.setDataModel(model);
 		Table result = process.process();
