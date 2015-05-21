@@ -3,8 +3,10 @@ package ui;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
 import model.data.DataModel;
+import model.data.DataTable;
 import model.data.Row;
 
 import java.util.Observable;
@@ -26,6 +28,9 @@ public class TableViewController implements Observer {
 	
 	private DataModel model;
 	private ObservableList<Row> data = FXCollections.observableArrayList();
+
+	@FXML
+	private ListView<DataTable> inputTables;
 	
 	/**
 	 * Creates a new TableViewController.
@@ -70,7 +75,12 @@ public class TableViewController implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		if (o instanceof DataModel) {
+			updateList();
 			fillTable();
 		}
+	}
+
+	private void updateList() {
+		inputTables.setItems(model.getObservableList());
 	}
 }
