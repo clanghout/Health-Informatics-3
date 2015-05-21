@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 public class ParserTest {
 
 	@Test
-	public void testParse() throws Exception {
+	public void testParseFrom() throws Exception {
 		String input = "from(test1)";
 
 		DataModel model = new DataModel();

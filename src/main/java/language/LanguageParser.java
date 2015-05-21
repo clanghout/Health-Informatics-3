@@ -1,10 +1,8 @@
 package language;
 
-import org.apache.poi.hssf.util.HSSFColor;
 import org.parboiled.BaseParser;
 import org.parboiled.Rule;
 import org.parboiled.support.Var;
-import org.parboiled.trees.ImmutableBinaryTreeNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -170,6 +168,15 @@ class LanguageParser extends BaseParser<Object> {
 				MacroVariable(),
 				swap3(),
 				push(new CompareNode(pop(), (Character) pop(), pop()))
+		);
+	}
+
+	Rule Sugar() {
+		return ZeroOrMore(
+				FirstOf(
+						Macro(),
+						Pipe()
+				)
 		);
 	}
 

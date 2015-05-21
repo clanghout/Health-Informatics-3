@@ -1,5 +1,8 @@
 package language;
 
+import model.data.DataModel;
+import model.data.process.analysis.operations.Operation;
+
 import java.util.List;
 
 /**
@@ -7,10 +10,19 @@ import java.util.List;
  */
 class MacroInfo {
 
-
+	private Identifier identifier;
+	private List<Object> params;
+	private MacroType type;
+	private String body;
 
 	MacroInfo(Identifier identifier, List<Object> params, MacroType type, String body) {
+		this.identifier = identifier;
+		this.params = params;
+		this.type = type;
+		this.body = body;
+	}
 
-
+	public Operation parse(DataModel model) {
+		return type.parse(body, model);
 	}
 }

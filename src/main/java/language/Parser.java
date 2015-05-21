@@ -3,6 +3,7 @@ package language;
 import model.data.DataModel;
 import model.data.process.DataProcess;
 import model.data.process.SerialProcess;
+import model.data.process.analysis.operations.Operation;
 import org.parboiled.Parboiled;
 import org.parboiled.parserunners.BasicParseRunner;
 import org.parboiled.support.ParsingResult;
@@ -28,14 +29,22 @@ public class Parser {
 	 */
 	public DataProcess parse(String input, DataModel model) {
 		LanguageParser parser = Parboiled.createParser(LanguageParser.class);
-		BasicParseRunner runner = new BasicParseRunner(parser.Pipe());
+		BasicParseRunner runner = new BasicParseRunner(parser.Sugar());
 
 		ParsingResult result = runner.run(input);
 		List<DataProcess> processes = new ArrayList<>();
+		List<Operation> macros = new ArrayList<>();
 
 		while (!result.valueStack.isEmpty()) {
-			ProcessInfo info = (ProcessInfo) result.valueStack.pop();
-			processes.add(info.resolve());
+			Object info = result.valueStack.pop();
+			if (info instanceof ProcessInfo) {
+				ProcessInfo processInfo = (ProcessInfo) info;
+				processes.add(processInfo.resolve());
+			} else if (info instanceof MacroInfo) {
+				macros.add(((MacroInfo) info).parse(model));
+			} else {
+				throw new UnsupportedOperationException("Not yet implemented");
+			}
 		}
 
 		return new SerialProcess(processes);
