@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * Class that represents the data that should be analysed.
  */
-public class DataTable implements Table, Iterable {
+public class DataTable extends Table {
 	private List<DataRow> rows;
 	private Set<DataRow> flaggedNoDelete;
 	private Map<String, DataColumn> columns;
@@ -127,27 +127,18 @@ public class DataTable implements Table, Iterable {
 		for(DataRow row : rows) {
 			builder.addRow(row.copy(copy));
 		}
+		return null;
 	}
 
 	@Override
-	public boolean equalStructure(Object obj) {
-		if (!obj instanceof Table) {
-			return false;
-		}
-
-		Table table = (Table) obj;
-		List<DataColumn> otherColumns = table.getColumns();
-
-		if (otherColumns.size() == columns.size()) {
-			for (int i = 0; i < columns.size(); i++) {
-				for (int j = 0; j < otherColumns.size(); j++) {
-					if (!otherColumns.get(j).equalsExcludeTable(columns.get(i))) {
-						return false;
-					}
-				}
-			}
-			return true;
-			}
+	public boolean equals(Object obj) {
 		return false;
 	}
+
+	@Override
+	public int hashCode() {
+		return 0;
+	}
+
+
 }

@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 /**
  * Class that represents a row of data.
  */
-public class DataRow implements Row {
+public class DataRow extends Row {
 	private Logger log = Logger.getLogger("DataRow");
 
 	private Map<DataColumn, DataValue> values = new HashMap<>();
@@ -96,6 +96,17 @@ public class DataRow implements Row {
 		DataColumn[] columns = values.keySet().toArray(new DataColumn[ values.keySet().size()]);
 		if (columns.length > 0 && table.equalStructure(columns[0].getTable()));
 			table.getColumns();
+		return null;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return 0;
 	}
 
 	@Override
@@ -114,4 +125,8 @@ public class DataRow implements Row {
 		return values.get(column);
 	}
 
+	@Override
+	public Iterator iterator() {
+		return null;
+	}
 }

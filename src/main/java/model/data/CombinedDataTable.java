@@ -10,7 +10,7 @@ import java.util.*;
  *
  * Created by jens on 5/18/15.
  */
-public class CombinedDataTable implements Iterable, Table {
+public class CombinedDataTable extends Table {
 	private DataTable table;
 	private CombinedDataTable combined;
 
@@ -43,6 +43,25 @@ public class CombinedDataTable implements Iterable, Table {
 		}
 		return result;
 
+	}
+
+	CombinedDataTable() {
+
+	}
+
+	@Override
+	public Table copy() {
+		return null;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return 0;
 	}
 
 	/**

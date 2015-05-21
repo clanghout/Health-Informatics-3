@@ -77,4 +77,14 @@ public class CombinedDataRow implements Row {
 		return combRow;
 	}
 
+	@Override
+	public Row copyForTable(Table table) {
+		return null;
+	}
+
+	@Override
+	public Row copy(Table table) {
+		return null;
+	}
+
 }

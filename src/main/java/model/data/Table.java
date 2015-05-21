@@ -9,13 +9,13 @@ import java.util.List;
  *
  * Created by jens on 5/19/15.
  */
-public interface Table {
+public abstract class Table implements Iterable{
 
 	/**
 	 * Create an iterator that iterates over all rows of the table.
 	 * @return an iterator that iterates over all rows
 	 */
-	Iterator<? extends Row> iterator();
+	public abstract Iterator<? extends Row> iterator();
 
 	/**
 	 * Flag the row that it should not be deleted.
@@ -23,38 +23,60 @@ public interface Table {
 	 * @param row the row that should not be deleted.
 	 * @return true if the row has been found.
 	 */
-	boolean flagNotDelete(Row row);
+	public abstract boolean flagNotDelete(Row row);
 
 	/**
 	 * Delete all rows, except the rows that are flagged.
 	 * Remove the flags from the remaining rows.
 	 */
-	void deleteNotFlagged();
+	public abstract void deleteNotFlagged();
 
 	/**
-<<<<<<< HEAD
 	 * Return a copy of this table
 	 * @return a copy of this row
 	 */
-	Table copy();
+	public abstract Table copy();
 
 	@Override
-	boolean equals(Object obj);
+	public abstract boolean equals(Object obj);
 
 	/**
 	 * Check if the columns are equals
 	 * @param obj
 	 * @return
 	 */
-	boolean equalStructure(Object obj);
+	public boolean equalStructure(Object obj) {
+		if (! (obj instanceof Table)) {
+			return false;
+		}
+
+		Table table = (Table) obj;
+		List<DataColumn> otherColumns = table.getColumns();
+		List<DataColumn> columns = table.getColumns();
+
+
+		if (otherColumns.size() == columns.size()) {
+			for (int i = 0; i < columns.size(); i++) {
+				for (int j = 0; j < otherColumns.size(); j++) {
+					if (!otherColumns.get(j).equalsExcludeTable(columns.get(i))) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+		return false;
+	}
 
 	@Override
-	int hashCode();
+	public abstract int hashCode();
 
 	/**
 	 * Get the columns of the DataTable.
 	 *
 	 * @return A list that contains all the columns
 	 */
-	List<DataColumn> getColumns();
+	public abstract List<DataColumn> getColumns();
+
+
 }
