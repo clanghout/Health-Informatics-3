@@ -90,7 +90,6 @@ public class DataRow extends Row {
 		return row;
 	}
 
-	@Override
 	public Row copy(Table table) {
 		DataRow row = new DataRow();
 		DataColumn[] columns = values.keySet().toArray(new DataColumn[ values.keySet().size()]);

@@ -40,11 +40,6 @@ public abstract class Row {
 	public abstract boolean equalsSoft(Object obj);
 	public abstract int hashCode();
 
-	/**
-	 * Return a copy of this row and use the columns from the table table
-	 * @return a copy of this row
-	 */
-	public abstract Row copy(Table table);
 
 
 }

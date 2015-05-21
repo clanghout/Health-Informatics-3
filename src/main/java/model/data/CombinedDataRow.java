@@ -79,22 +79,53 @@ public class CombinedDataRow extends Row {
 	}
 
 	@Override
-	public Row copyForTable(Table table) {
-		return null;
+	public boolean equals(Object obj) {
+		if (!(obj instanceof CombinedDataRow)) {
+			return false;
+		}
+		CombinedDataRow other = (CombinedDataRow) obj;
+		if (rows.size() != other.rows.size()) {
+			return false;
+		}
+		for (DataRow row : rows) {
+			if (! other.rows.contains(row)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		return false;
+	public boolean equalsSoft(Object obj) {
+		if (!(obj instanceof CombinedDataRow)) {
+			return false;
+		}
+		CombinedDataRow other = (CombinedDataRow) obj;
+		if (rows.size() != other.rows.size()) {
+			return false;
+		}
+		for (DataRow row : rows) {
+			boolean res = false;
+			for (DataRow rowOther : other.rows) {
+				if (row.equalsSoft(rowOther)) {
+					res = true;
+					break;
+				}
+			}
+			if(!res) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
 	public int hashCode() {
-		return 0;
+		int res = 0;
+		for (DataRow row : rows) {
+			res += row.hashCode();
+		}
+		return res;
 	}
 
-	@Override
-	public Row copy(Table table) {
-		return null;
-	}
 }
