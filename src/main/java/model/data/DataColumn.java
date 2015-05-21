@@ -77,7 +77,9 @@ public class DataColumn {
 			return false;
 		}
 		DataColumn other = (DataColumn) obj;
-		return this.table.equals(other.table) && this.type.equals(other.type)
+
+		// table must point to the same table
+		return this.table == other.table && this.type.equals(other.type)
 				&& this.name.equals(other.name);
 	}
 

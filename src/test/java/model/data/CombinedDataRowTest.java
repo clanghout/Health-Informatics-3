@@ -24,11 +24,11 @@ public class CombinedDataRowTest {
 	@Test
 	public void testGetValue() throws Exception {
 		CombinedDataRow combRow = new CombinedDataRow();
-		DataColumn column1 = new DataColumn("test1", null, StringValue.class);
+		DataColumn column1 = new DataColumn("test1", new DataTable(), StringValue.class);
 		DataRow dataRow = new DataRow();
 		dataRow.setValue(column1, new StringValue("test"));
 
-		DataColumn column2 = new DataColumn("test1", null, StringValue.class);
+		DataColumn column2 = new DataColumn("test1", new DataTable(), StringValue.class);
 		DataRow dataRow2 = new DataRow();
 		dataRow.setValue(column2, new StringValue("test2"));
 
@@ -61,11 +61,11 @@ public class CombinedDataRowTest {
 	@Test
 	public void testhasColumnFalse() throws Exception {
 		CombinedDataRow combRow = new CombinedDataRow();
-		DataColumn column1 = new DataColumn("test1", null, StringValue.class);
+		DataColumn column1 = new DataColumn("test1", new DataTable(), StringValue.class);
 		DataRow dataRow = new DataRow();
 		dataRow.setValue(column1, new StringValue("test"));
 
-		DataColumn column2 = new DataColumn("test1", null, StringValue.class);
+		DataColumn column2 = new DataColumn("test1", new DataTable(), StringValue.class);
 		DataRow dataRow2 = new DataRow();
 		dataRow2.setValue(column2, new StringValue("test2"));
 
@@ -78,11 +78,11 @@ public class CombinedDataRowTest {
 	@Test
 	public void testSetValue() throws Exception {
 		CombinedDataRow combRow = new CombinedDataRow();
-		DataColumn column1 = new DataColumn("test1", null, StringValue.class);
+		DataColumn column1 = new DataColumn("test1", new DataTable(), StringValue.class);
 		DataRow dataRow = new DataRow();
 		dataRow.setValue(column1, new StringValue("test"));
 
-		DataColumn column2 = new DataColumn("test1", null, StringValue.class);
+		DataColumn column2 = new DataColumn("test1", new DataTable(), StringValue.class);
 		DataRow dataRow2 = new DataRow();
 		dataRow.setValue(column2, new StringValue("test2"));
 
