@@ -19,7 +19,7 @@ public class IsProcess extends DataProcess {
 
 	@Override
 	protected Table doProcess() {
-		getDataModel().add((DataTable) getInput().copy());
+		getDataModel().add(getInput().export(table.getName()));
 		return getInput();
 	}
 }
