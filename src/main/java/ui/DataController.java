@@ -5,8 +5,10 @@ import input.reader.XmlReader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
+import model.data.DataModel;
 import model.data.DataTable;
 import model.data.describer.ConstantDescriber;
 import model.data.describer.RowValueDescriber;
@@ -20,6 +22,8 @@ import output.DataTableWriter;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,16 +33,33 @@ import java.util.logging.Logger;
  * Created by Boudewijn on 6-5-2015.
  */
 public class DataController {
+	
 	@FXML
 	private TextField fileNameField;
+	
 	@FXML
 	private Parent root;
-
+	
+	@FXML
+	private TableView tableView;
+	
+	@FXML
+	private TableViewController tableViewController;
+	
+	private DataModel model;
+	
 	private Logger logger = Logger.getLogger("DataController");
 
 	private File file;
 	private DataTable out;
-
+	private DataTable in;
+	
+	/**
+	 * Creates a new TableViewController.
+	 */
+	public DataController() {
+	}
+	
 	@FXML
 	protected void handleImportButtonAction(ActionEvent event) {
 		FileChooser fileChooser = new FileChooser();
@@ -66,14 +87,18 @@ public class DataController {
 			reader.read(file);
 			DataFile dataFile = reader.getDataFiles().get(0);
 			DataReader dataReader = new DataReader();
-			DataTable input = dataReader.readData(dataFile.getDataStream());
-
+			in = dataReader.readData(dataFile.getDataStream());
+			model = new DataModel();
+			model.add(in);
+			tableViewController = new TableViewController();
+			tableViewController.setDataModel(model);
+			System.out.println(tableViewController);
 			Constraint constraint = new EqualityCheck<>(
-					new RowValueDescriber<>(input.getColumns().get("time")),
+					new RowValueDescriber<>(in.getColumns().get("time")),
 					new ConstantDescriber<>(new StringValue("0803"))
 			);
 			DataAnalysis analysis = new ConstraintAnalysis(constraint);
-			out = analysis.analyse(input);
+			out = analysis.analyse(in);
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "Error reading XML file", e);
 		}
@@ -102,5 +127,4 @@ public class DataController {
 			}
 		}
 	}
-
 }

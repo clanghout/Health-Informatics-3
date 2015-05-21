@@ -14,14 +14,8 @@
 					<items>
 						<AnchorPane styleClass="table-container">
 							<children>
-								<TableView styleClass="data-table" fx:id="datatable">
-								 <columns>
-									<TableColumn styleClass="table-column" text="Column X" />
-									<TableColumn styleClass="table-column" text="Column X" />
-									<TableColumn styleClass="table-column" text="Column X" />
-									<TableColumn styleClass="table-column" text="Column X" />
-								 </columns>
-								</TableView>
+								<TableView styleClass="data-table" 
+								fx:id="tableView"/>
 							</children>
 						</AnchorPane>
 						<AnchorPane styleClass="data-fields-container" fx:id="datafields" />
