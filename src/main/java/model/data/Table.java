@@ -5,7 +5,7 @@ import java.util.List;
 
 
 /**
- * The interface that defines a table.
+ * Abstract class that defines a table.
  *
  * Created by jens on 5/19/15.
  */
