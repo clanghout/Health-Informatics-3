@@ -1,5 +1,7 @@
 package model.data;
 
+import model.data.process.analysis.operations.constraints.Constraint;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -85,6 +87,15 @@ public abstract class Table implements Iterable {
 
 	@Override
 	public abstract int hashCode();
+
+	/**
+	 * Convert the table in a new DataTable.
+	 * This clones a DataTable, a CombTable will be joined, so it becomes a DataTable
+	 *
+	 * @param name name of the new table
+	 * @return a DataTable that represents the table
+	 */
+	public abstract DataTable export(String name);
 
 	/**
 	 * Get the columns of the DataTable.
