@@ -93,7 +93,7 @@ public class CombinedDataTable extends Table {
 	}
 
 	/**
-	 * Create the columns for the DataTable
+	 * Create the columns for the DataTable.
 	 * @param builder builder used to create the datatanle
 	 * @return a mapping of old columns to new columns
 	 */
@@ -105,16 +105,17 @@ public class CombinedDataTable extends Table {
 		List<DataColumn> columns = getColumns();
 		for (DataColumn column : columns) {
 			String nameColumn = column.getName();
-			if(mappingNewNameToOldColumns.containsKey(nameColumn)) {
+			if (mappingNewNameToOldColumns.containsKey(nameColumn)) {
 				forbidden.add(nameColumn);
-				String newName = mappingNewNameToOldColumns.get(nameColumn).getTable().getName() + "." + nameColumn;
+				String newName = mappingNewNameToOldColumns.get(nameColumn).getTable().getName()
+						+ "." + nameColumn;
 				DataColumn tempColumn = mappingNewNameToOldColumns.remove(nameColumn);
-				mappingNewNameToOldColumns.put(newName,tempColumn);
+				mappingNewNameToOldColumns.put(newName, tempColumn);
 			}
 			if (forbidden.contains(nameColumn)) {
 				nameColumn = column.getTable().getName() + "." + nameColumn;
 			}
-			mappingNewNameToOldColumns.put(nameColumn,column);
+			mappingNewNameToOldColumns.put(nameColumn, column);
 		}
 
 		for (Map.Entry<String, DataColumn> entry: mappingNewNameToOldColumns.entrySet()) {

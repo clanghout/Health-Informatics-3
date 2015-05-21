@@ -1,7 +1,5 @@
 package model.data;
 
-import model.data.process.analysis.operations.constraints.Constraint;
-
 import java.util.Iterator;
 import java.util.List;
 
