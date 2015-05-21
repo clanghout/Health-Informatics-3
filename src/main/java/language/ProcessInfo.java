@@ -2,6 +2,7 @@ package language;
 
 import model.data.process.DataProcess;
 import model.data.process.FromProcess;
+import model.data.process.IsProcess;
 
 /**
  * Contains the information required to produce a DataProcess.
@@ -29,6 +30,8 @@ class ProcessInfo {
 	DataProcess resolve() {
 		if (name.getName().equals("from")) {
 			return new FromProcess((Identifier) parameters[0]);
+		} else if (name.getName().equals("is")) {
+			return new IsProcess((Identifier) parameters[0]);
 		}
 		throw new UnsupportedOperationException("This code has not been implemented yet");
 	}
