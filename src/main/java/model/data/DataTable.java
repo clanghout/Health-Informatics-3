@@ -114,6 +114,8 @@ public class DataTable implements Table, Iterable {
 		flaggedNoDelete = new HashSet<>();
 	}
 
+
+	//TODO
 	@Override
 	public DataTable copy() {
 		DataTableBuilder builder = new DataTableBuilder();
@@ -129,20 +131,23 @@ public class DataTable implements Table, Iterable {
 
 	@Override
 	public boolean equalStructure(Object obj) {
-		if (obj instanceof Table) {
-			Table table = (Table) obj;
-			List<DataColumn> otherColumns = table.getColumns();
+		if (!obj instanceof Table) {
+			return false;
+		}
 
-			if (otherColumns.size() == columns.size()) {
-				for (int i = 0; i < columns.size(); i++) {
-					if (!otherColumns.contains(columns.get(i))) {
+		Table table = (Table) obj;
+		List<DataColumn> otherColumns = table.getColumns();
+
+		if (otherColumns.size() == columns.size()) {
+			for (int i = 0; i < columns.size(); i++) {
+				for (int j = 0; j < otherColumns.size(); j++) {
+					if (!otherColumns.get(j).equalsExcludeTable(columns.get(i))) {
 						return false;
 					}
 				}
-				return true;
 			}
-		}
-
+			return true;
+			}
 		return false;
 	}
 }
