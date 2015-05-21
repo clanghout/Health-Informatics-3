@@ -60,4 +60,30 @@ public class DataColumn {
 	public DataColumn copy() {
 		return new DataColumn(name, table, type);
 	}
+
+	/**
+	 * create a copy of this column and set it to belong to table table.
+	 *
+	 * @parem the table this column belongs to
+	 * @return a copy of this column
+	 */
+	public DataColumn copy(DataTable table) {
+		return new DataColumn(name, table, type);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof DataColumn)) {
+			return false;
+		}
+		DataColumn other = (DataColumn) obj;
+		return this.table.equals(other.table) && this.type.equals(other.type)
+				&& this.name.equals(other.name);
+	}
+
+	@Override
+	public int hashCode() {
+		return type.hashCode() + name.hashCode();
+	}
+
 }
