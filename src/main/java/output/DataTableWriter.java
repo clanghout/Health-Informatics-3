@@ -64,14 +64,7 @@ public class DataTableWriter {
 	}
 
 	public List<DataColumn> readColumns(DataTable in) {
-		ArrayList<DataColumn> res = new ArrayList<>();
-		Map<String, DataColumn> columnsData = in.getColumns();
-		for (Object o : columnsData.entrySet()) {
-			Map.Entry pair = (Map.Entry) o;
-			DataColumn column = (DataColumn) pair.getValue();
-			res.add(column);
-		}
-		return res;
+		return in.getColumns();
 	}
 
 	public String addQuotes(DataValue value) {

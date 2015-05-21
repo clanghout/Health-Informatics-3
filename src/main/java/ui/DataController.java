@@ -69,7 +69,7 @@ public class DataController {
 			DataTable input = dataReader.readData(dataFile.getDataStream());
 
 			Constraint constraint = new EqualityCheck<>(
-					new RowValueDescriber<>(input.getColumns().get("time")),
+					new RowValueDescriber<>(input.getColumn("time")),
 					new ConstantDescriber<>(new StringValue("0803"))
 			);
 			DataAnalysis analysis = new ConstraintAnalysis(constraint);

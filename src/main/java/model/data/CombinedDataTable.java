@@ -1,10 +1,7 @@
 package model.data;
 
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * This class simulates the join of the tables.
@@ -68,6 +65,20 @@ public class CombinedDataTable implements Iterable, Table {
 		table.deleteNotFlagged();
 		if (combined != null) {
 			combined.deleteNotFlagged();
+		}
+	}
+
+	@Override
+	public List<DataColumn> getColumns() {
+		if (combined != null) {
+			Set<DataColumn> columnSet = new HashSet<>();
+
+			columnSet.addAll(combined.getColumns());
+			columnSet.addAll(table.getColumns());
+
+			return new ArrayList<>(columnSet);
+		} else {
+			return table.getColumns();
 		}
 	}
 
