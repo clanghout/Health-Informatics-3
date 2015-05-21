@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 /**
  * Class that represents a row of data.
  */
-public class DataRow implements Row {
+public class DataRow extends Row {
 	private Logger log = Logger.getLogger("DataRow");
 
 	private Map<DataColumn, DataValue> values = new HashMap<>();
@@ -76,6 +76,99 @@ public class DataRow implements Row {
 	public boolean hasColumn(DataColumn column) {
 		return values.containsKey(column);
 	}
+
+	@Override
+	public DataRow copy() {
+		DataRow row = new DataRow();
+		for (Map.Entry<DataColumn, DataValue> entry : values.entrySet()) {
+			row.setValue(entry.getKey(), values.get(entry.getKey()).copy());
+		}
+		return row;
+	}
+
+	/**
+	 * Copy the dataRow to the table table.
+	 * @param table the table this row should be copied to.
+	 * @return a copy of this row in table table
+	 */
+	public DataRow copy(DataTable table) {
+		DataRow row = new DataRow();
+		DataColumn[] columns = values.keySet().toArray(new DataColumn[ values.keySet().size()]);
+		if (columns.length > 0 && table.equalStructure(columns[0].getTable())) {
+			for (DataColumn column : table.getColumns()) {
+				for (Map.Entry<DataColumn, DataValue> entry : values.entrySet()) {
+					if (entry.getKey().equalsExcludeTable(column)) {
+						row.setValue(column,
+								values.get(entry.getKey()).copy());
+						break;
+					}
+				}
+			}
+			return row;
+		} else {
+			throw new IllegalArgumentException("table not the right structure");
+		}
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof DataRow)) {
+			return false;
+		}
+		DataRow other = (DataRow) obj;
+		if (values.keySet().size() != other.values.keySet().size()) {
+			return false;
+		}
+
+		for (DataColumn column : values.keySet()) {
+			if (!this.getValue(column).equals(other.getValue(column))) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public boolean equalsSoft(Object obj) {
+		if (!(obj instanceof DataRow)) {
+			return false;
+		}
+		DataRow other = (DataRow) obj;
+		if (values.keySet().size() != other.values.keySet().size()) {
+			return false;
+		}
+
+		for (DataColumn column : values.keySet()) {
+			boolean same = false;
+			for (DataColumn otherColumn : other.values.keySet()) {
+				if (column.equalsExcludeTable(otherColumn)) {
+					if (!this.getValue(column).equals(other.getValue(otherColumn))) {
+						return false;
+					} else {
+						same = true;
+						break;
+					}
+				}
+			}
+			if (!same) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int res = 0;
+		for (Map.Entry<DataColumn, DataValue> entry : values.entrySet()) {
+			DataColumn key = entry.getKey();
+			DataValue value = entry.getValue();
+
+			res += key.hashCode() * value.hashCode();
+		}
+		return res;
+	}
+
 
 
 	/**

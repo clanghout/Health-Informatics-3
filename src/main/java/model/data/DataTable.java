@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * Class that represents the data that should be analysed.
  */
-public class DataTable implements Table, Iterable {
+public class DataTable extends Table {
 	private List<DataRow> rows;
 	private Set<DataRow> flaggedNoDelete;
 	private Map<String, DataColumn> columns;
@@ -73,7 +73,7 @@ public class DataTable implements Table, Iterable {
 
 	@Override
 	public List<DataColumn> getColumns() {
-		return new ArrayList<DataColumn>(columns.values());
+		return new ArrayList<>(columns.values());
 	}
 
 	/**
@@ -84,7 +84,6 @@ public class DataTable implements Table, Iterable {
 	public DataColumn getColumn(String columnName) {
 		return columns.get(columnName);
 	}
-
 	/**
 	 * Get the name of the table.
 	 * @return the name of the table.
@@ -100,7 +99,7 @@ public class DataTable implements Table, Iterable {
 
 	@Override
 	public boolean flagNotDelete(Row row) {
-		if ((row instanceof DataRow) && (rows.contains(row))) {
+		if (row instanceof DataRow && rows.contains(row)) {
 			flaggedNoDelete.add((DataRow) row);
 			return true;
 		} else {
@@ -111,7 +110,85 @@ public class DataTable implements Table, Iterable {
 
 	@Override
 	public void deleteNotFlagged() {
-		rows = new ArrayList<DataRow>(flaggedNoDelete);
+		rows = new ArrayList<>(flaggedNoDelete);
 		flaggedNoDelete = new HashSet<>();
 	}
+
+
+	@Override
+	public DataTable copy() {
+		DataTable table = new DataTable();
+		table.name = this.name;
+		for (DataColumn column : columns.values()) {
+			DataColumn newColumn = column.copy();
+			table.columns.put(newColumn.getName(), newColumn);
+			newColumn.setTable(table);
+		}
+		for (DataRow row : rows) {
+			DataRow newRow = row.copy();
+			table.rows.add(newRow);
+		}
+		return table;
+	}
+
+	@Override
+	public boolean equalsSoft(Object obj) {
+		if (!(obj instanceof DataTable) || !(this.equalStructure(obj))) {
+			return false;
+		}
+		DataTable other = (DataTable) obj;
+
+		for (DataRow row : rows) {
+			boolean res = false;
+			for (DataRow rowOther : other.rows) {
+				if (row.equalsSoft(rowOther)) {
+					res = true;
+					break;
+				}
+			}
+			if (!res) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof DataTable) || !(this.equalStructure(obj))) {
+			return false;
+		}
+		DataTable other = (DataTable) obj;
+
+		//first if is to enable that name is null, else there would be a nullpointer
+		if (this.name != other.name && (this.name == null
+				|| !other.name.equals(this.name))) {
+				return false;
+		}
+
+		for (DataRow row : rows) {
+			boolean same = false;
+			for (DataRow rowOther : other.rows) {
+				if (row.equals(rowOther)) {
+					same = true;
+					break;
+				}
+			}
+			if (!same) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int res = 0;
+		for (DataColumn column : columns.values()) {
+			res += column.hashCode();
+		}
+		return res;
+	}
+
+
 }

@@ -12,7 +12,7 @@ import java.util.List;
  *
  * Created by jens on 5/18/15.
  */
-public class CombinedDataRow implements Row {
+public class CombinedDataRow extends Row {
 	private List<DataRow> rows;
 
 	public CombinedDataRow() {
@@ -65,6 +65,66 @@ public class CombinedDataRow implements Row {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public CombinedDataRow copy() {
+		CombinedDataRow combRow = new CombinedDataRow();
+		for (DataRow row : rows) {
+			combRow.addDataRow(row.copy());
+		}
+
+		return combRow;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof CombinedDataRow)) {
+			return false;
+		}
+		CombinedDataRow other = (CombinedDataRow) obj;
+		if (rows.size() != other.rows.size()) {
+			return false;
+		}
+		for (DataRow row : rows) {
+			if (!other.rows.contains(row)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public boolean equalsSoft(Object obj) {
+		if (!(obj instanceof CombinedDataRow)) {
+			return false;
+		}
+		CombinedDataRow other = (CombinedDataRow) obj;
+		if (rows.size() != other.rows.size()) {
+			return false;
+		}
+		for (DataRow row : rows) {
+			boolean same = false;
+			for (DataRow rowOther : other.rows) {
+				if (row.equalsSoft(rowOther)) {
+					same = true;
+					break;
+				}
+			}
+			if (!same) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int res = 0;
+		for (DataRow row : rows) {
+			res += row.hashCode();
+		}
+		return res;
 	}
 
 }

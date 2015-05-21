@@ -10,7 +10,7 @@ import java.util.*;
  *
  * Created by jens on 5/18/15.
  */
-public class CombinedDataTable implements Iterable, Table {
+public class CombinedDataTable extends Table {
 	private DataTable table;
 	private CombinedDataTable combined;
 
@@ -45,19 +45,61 @@ public class CombinedDataTable implements Iterable, Table {
 
 	}
 
+
+	@Override
+	public CombinedDataTable copy() {
+		CombinedDataTable combined = null;
+		if (this.combined != null) {
+			combined = this.combined.copy();
+		}
+		CombinedDataTable result = new CombinedDataTable(table.copy());
+		result.combined = combined;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof CombinedDataTable)) {
+			return false;
+		}
+		CombinedDataTable other = (CombinedDataTable) obj;
+		if (this.combined != null) {
+			return table.equals(other.table) && this.combined.equals(other.combined);
+		}
+		return table.equals(other.table) && other.combined == null;
+	}
+
+	@Override
+	public boolean equalsSoft(Object obj) {
+		if (!(obj instanceof CombinedDataTable)) {
+			return false;
+		}
+		CombinedDataTable other = (CombinedDataTable) obj;
+		if (this.combined != null) {
+			return table.equalsSoft(((CombinedDataTable) obj).table)
+					&& this.combined.equalsSoft(other.combined);
+		}
+		return table.equalsSoft(((CombinedDataTable) obj).table) && other.combined == null;
+
+	}
+
+	@Override
+	public int hashCode() {
+		int res = 0;
+		if (combined != null) {
+			res += combined.hashCode();
+		}
+		return table.hashCode() + res;
+	}
+
 	/**
 	 * flag a datarRow for no delete in the correct dataTable of the combined dataTable.
 	 * @param row row that must not be delete
 	 * @return true if there is a table found that had this row.
 	 */
 	public boolean flagNotDelete(DataRow row) {
-		if (table.flagNotDelete(row)) {
-			return true;
-		} else if (combined != null) {
-			return combined.flagNotDelete(row);
-		} else {
-			return false;
-		}
+		return table.flagNotDelete(row)
+				|| combined != null && combined.flagNotDelete(row);
 	}
 
 	@Override
