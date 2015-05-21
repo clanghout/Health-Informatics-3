@@ -42,4 +42,14 @@ public class StringValueTest {
 		DataValue samevalue = new StringValue(val);
 		assertEquals(samevalue.hashCode(), value.hashCode());
 	}
+
+	@Test
+	public void testcopy() throws Exception {
+		String val = "testen";
+		DataValue value = new StringValue(val);
+		DataValue copy = value.copy();
+		assertEquals(copy.getValue(),value.getValue());
+		assertEquals(copy.getClass(),value.getClass());
+	}
+
 }
