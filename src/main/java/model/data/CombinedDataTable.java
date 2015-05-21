@@ -94,7 +94,7 @@ public class CombinedDataTable extends Table {
 
 	/**
 	 * Create the columns for the DataTable.
-	 * @param builder builder used to create the datatanle
+	 * @param builder builder used to create the datatable
 	 * @return a mapping of old columns to new columns
 	 */
 	private Map<DataColumn, DataColumn> addColumns(DataTableBuilder builder) {
