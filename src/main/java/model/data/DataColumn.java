@@ -52,4 +52,12 @@ public class DataColumn {
 	public Class<? extends DataValue> getType() {
 		return type;
 	}
+
+	/**
+	 * create a copy of this column
+	 * @return a copy of this column
+	 */
+	public DataColumn copy() {
+		return new DataColumn(name, table, type);
+	}
 }

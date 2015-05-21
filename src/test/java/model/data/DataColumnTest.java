@@ -37,4 +37,14 @@ public class DataColumnTest {
 		column.setTable(table1);
 		assertEquals(column.getTable(), table1);
 	}
+
+	@Test
+	public void testCopy() throws Exception {
+		DataTable table1 = new DataTable();
+		DataColumn column = new DataColumn("test", table1, StringValue.class);
+		DataColumn copy = column.copy();
+		assertEquals(column.getTable(), copy.getTable());
+		assertEquals(column.getName(), copy.getName());
+		assertEquals(column.getType(), copy.getType());
+	}
 }
