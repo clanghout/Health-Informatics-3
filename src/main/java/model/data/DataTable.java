@@ -71,15 +71,19 @@ public class DataTable implements Table, Iterable {
 		return rows.size();
 	}
 
-	/**
-	 * Get the columns of the DataTable.
-	 *
-	 * @return A Map that contains all the columns, the key is the column name.
-	 */
-	public Map<String, DataColumn> getColumns() {
-		return columns;
+	@Override
+	public List<DataColumn> getColumns() {
+		return new ArrayList<DataColumn>(columns.values());
 	}
 
+	/**
+	 * get the column with the name columnName.
+	 * @param columnName the name of the column
+	 * @return the column with the name columnName
+	 */
+	public DataColumn getColumns(String columnName) {
+		return columns.get(columnName);
+	}
 	/**
 	 * Get the name of the table.
 	 * @return the name of the table.
@@ -108,5 +112,23 @@ public class DataTable implements Table, Iterable {
 	public void deleteNotFlagged() {
 		rows = new ArrayList<DataRow>(flaggedNoDelete);
 		flaggedNoDelete = new HashSet<>();
+	}
+
+	@Override
+	public DataTable copy() {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName(name);
+		for(DataColumn column : columns.values()) {
+			builder.addColumn(column);
+		}
+		DataTable copy = builder.build();
+		for(DataRow row : rows) {
+			builder.addRow(row.copy(copy));
+		}
+	}
+
+	@Override
+	public boolean equalStructure(Object obj) {
+		return false;
 	}
 }

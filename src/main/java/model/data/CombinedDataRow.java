@@ -67,4 +67,14 @@ public class CombinedDataRow implements Row {
 		return false;
 	}
 
+	@Override
+	public CombinedDataRow copy() {
+		CombinedDataRow combRow = new CombinedDataRow();
+		for(DataRow row : rows) {
+			combRow.addDataRow(row.copy());
+		}
+
+		return combRow;
+	}
+
 }

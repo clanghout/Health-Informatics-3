@@ -136,4 +136,20 @@ public class DataRowTest {
 		assertFalse(row.hasColumn(column));
 	}
 
+	@Test
+	public void testCopy() throws Exception {
+		DataColumn[] columns = new DataColumn[2];
+		DataValue[] values = new DataValue[2];
+		columns[0] = new DataColumn("a", null, StringValue.class);
+		columns[1] = new DataColumn("b", null, StringValue.class);
+
+		values[0] = new StringValue("test1");
+		values[1] = new StringValue("test2");
+
+		DataRow row = new DataRow(columns, values);
+		DataRow copy = row.copy();
+		assertEquals(copy.getValue(columns[0]), row.getValue(columns[0]));
+	}
+
+
 }

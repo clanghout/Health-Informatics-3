@@ -29,4 +29,27 @@ public interface Row {
 	 */
 	boolean hasColumn(DataColumn column);
 
+	/**
+	 * Return a copy of this row
+	 * @return a copy of this row
+	 */
+	Row copy();
+
+	/**
+	 * Return a copy of this row and use the columns from the table table
+	 * @return a copy of this row
+	 */
+	Row copyForTable(Table table);
+
+	boolean equals(Object obj);
+
+	int hashCode();
+
+	/**
+	 * Return a copy of this row and use the columns from the table table
+	 * @return a copy of this row
+	 */
+	Row copy(Table table);
+
+
 }

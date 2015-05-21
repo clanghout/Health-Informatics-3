@@ -5,7 +5,9 @@ import exceptions.ColumnValueTypeMismatchException;
 import model.data.value.DataValue;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -75,6 +77,30 @@ public class DataRow implements Row {
 	@Override
 	public boolean hasColumn(DataColumn column) {
 		return values.containsKey(column);
+	}
+
+	@Override
+	public DataRow copy() {
+		DataRow row = new DataRow();
+		Iterator<DataColumn> columns = values.keySet().iterator();
+		while (columns.hasNext()) {
+			DataColumn column = columns.next();
+			row.setValue(column.copy(), values.get(column).copy());
+		}
+
+		return row;
+	}
+
+	@Override
+	public Row copyForTable(Table table) {
+		DataColumn[] columns = values.keySet().toArray(new DataColumn[ values.keySet().size()]);
+		if (columns.length > 0 && table.equalStructure(columns[0].getTable()));
+			table.getColumns();
+	}
+
+	@Override
+	public Row copy(Table table) {
+		return null;
 	}
 
 
