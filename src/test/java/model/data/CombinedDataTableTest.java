@@ -24,12 +24,14 @@ public class CombinedDataTableTest {
 
 	@Before
 	public void setUp() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("test1");
 		rows = new ArrayList<DataRow>();
 		dataTables = new ArrayList<>();
 		columns[0] = new DataColumn[]{
-				new DataColumn("column1", null, StringValue.class),
-				new DataColumn("column2", null, StringValue.class),
-				new DataColumn("column3", null, StringValue.class)
+				builder.createColumn("column1", StringValue.class),
+				builder.createColumn("column2", StringValue.class),
+				builder.createColumn("column3", StringValue.class)
 		};
 
 		DataValue[] valuesRow1 = {
@@ -49,17 +51,18 @@ public class CombinedDataTableTest {
 				new StringValue("value2c"),
 				new StringValue("value3c")
 		};
-		rows.add(new DataRow(columns[0], valuesRow1));
-		rows.add(new DataRow(columns[0], valuesRow2));
-		rows.add(new DataRow(columns[0], valuesRow3));
+		rows.add(builder.createRow(valuesRow1));
+		rows.add(builder.createRow(valuesRow2));
+		rows.add(builder.createRow(valuesRow3));
 
-		dataTables.add(new DataTable("test1", rows, Arrays.asList(columns[0])));
+		dataTables.add(builder.build());
 
-
+		builder = new DataTableBuilder();
+		builder.setName("test2");
 		rows = new ArrayList<DataRow>();
 		columns[1] = new DataColumn[]{
-				new DataColumn("column1", null, StringValue.class),
-				new DataColumn("column2", null, StringValue.class)
+				builder.createColumn("column1", StringValue.class),
+				builder.createColumn("column2", StringValue.class)
 		};
 
 		DataValue[] valuesRow4 = {
@@ -72,25 +75,27 @@ public class CombinedDataTableTest {
 				new StringValue("asf")
 		};
 
-		rows.add(new DataRow(columns[1], valuesRow4));
-		rows.add(new DataRow(columns[1], valuesRow5));
+		rows.add(builder.createRow(valuesRow4));
+		rows.add(builder.createRow(valuesRow5));
 
 
-		dataTables.add(new DataTable("test2", rows, Arrays.asList(columns[1])));
-
+		dataTables.add(builder.build());
+		builder = new DataTableBuilder();
+		builder.setName("test3")
+		;
 		rows = new ArrayList<DataRow>();
 		columns[2] = new DataColumn[]{
-				new DataColumn("column1", null, StringValue.class)
+				builder.createColumn("column1", StringValue.class)
 		};
 
 		DataValue[] valuesRow6 = {
 				new StringValue("ewa")
 		};
 
-		rows.add(new DataRow(columns[2], valuesRow6));
+		rows.add(builder.createRow(valuesRow6));
 
 
-		dataTables.add(new DataTable("test3", rows, Arrays.asList(columns[2])));
+		dataTables.add(builder.build());
 
 	}
 
@@ -232,4 +237,80 @@ public class CombinedDataTableTest {
 		assertTrue(table2.getRows().contains(rows2[1]));
 		assertTrue(table2.getRows().contains(rows2[2]));
 	}
+
+	@Test
+	public void testCopy() throws Exception {
+		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
+		CombinedDataTable copy = comb.copy();
+
+		assertEquals(comb,copy);
+	}
+
+	@Test
+	public void testEquals() throws Exception {
+		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
+		CombinedDataTable copy = comb.copy();
+
+		assertTrue(comb.equals(copy));
+	}
+
+
+	@Test
+	public void testEqualsSoft() throws Exception {
+
+		DataTableBuilder builder = new DataTableBuilder();
+		DataTableBuilder builder2 = new DataTableBuilder();
+		builder.setName("t1");
+		builder2.setName("t2");
+
+		builder.createColumn("t1", StringValue.class);
+		builder2.createColumn("t1", StringValue.class);
+
+		DataRow row1 = builder.createRow(new StringValue("test"));
+		DataRow row1C = builder2.createRow(new StringValue("test"));
+
+		DataRow row2 = builder.createRow(new StringValue("test2"));
+		DataRow row2C = builder2.createRow(new StringValue("test2"));
+
+		CombinedDataTable comb = new CombinedDataTable(builder.build());
+		CombinedDataTable copy = new CombinedDataTable(builder2.build());
+
+		assertFalse(comb.equals(copy));
+		assertTrue(comb.equalsSoft(copy));
+	}
+
+	@Test
+	public void testHashCode() throws Exception {
+
+		DataTableBuilder builder = new DataTableBuilder();
+		DataTableBuilder builder2 = new DataTableBuilder();
+		builder.setName("t1");
+		builder2.setName("t2");
+
+		builder.createColumn("t1", StringValue.class);
+		builder2.createColumn("t1", StringValue.class);
+
+		DataRow row1 = builder.createRow(new StringValue("test"));
+		DataRow row1C = builder2.createRow(new StringValue("test"));
+
+		DataRow row2 = builder.createRow(new StringValue("test2"));
+		DataRow row2C = builder2.createRow(new StringValue("test2"));
+
+		CombinedDataTable comb = new CombinedDataTable(builder.build());
+		CombinedDataTable copy = new CombinedDataTable(builder2.build());
+
+		assertEquals(comb.hashCode(), copy.hashCode());
+	}
+
+	@Test
+	public void testgetColumns() throws Exception {
+		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
+		List<DataColumn> columnsList = comb.getColumns();
+		assertEquals(columnsList.size(), columns[0].length + columns[1].length + columns[2].length);
+		assertTrue(columnsList.contains(columns[1][1]));
+		assertTrue(columnsList.contains(columns[0][0]));
+		assertTrue(columnsList.contains(columns[2][0]));
+	}
+
+
 }
