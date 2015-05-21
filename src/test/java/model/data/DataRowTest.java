@@ -161,10 +161,10 @@ public class DataRowTest {
 		DataColumn[] columnsCopy  = new DataColumn[2];
 
 		columns[0] = builder.createColumn("a", StringValue.class);
-		columns[1] = builder.createColumn("a", StringValue.class);
+		columns[1] = builder.createColumn("b", StringValue.class);
 
 		columnsCopy[0] = builderCopy.createColumn("a", StringValue.class);
-		columnsCopy[1] = builderCopy.createColumn("a", StringValue.class);
+		columnsCopy[1] = builderCopy.createColumn("b", StringValue.class);
 
 		DataValue[] values = new DataValue[2];
 

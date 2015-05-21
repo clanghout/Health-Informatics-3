@@ -3,7 +3,6 @@ package model.data;
 import model.data.value.DataValue;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -105,14 +104,14 @@ public class CombinedDataRow extends Row {
 			return false;
 		}
 		for (DataRow row : rows) {
-			boolean res = false;
+			boolean same = false;
 			for (DataRow rowOther : other.rows) {
 				if (row.equalsSoft(rowOther)) {
-					res = true;
+					same = true;
 					break;
 				}
 			}
-			if(!res) {
+			if(!same) {
 				return false;
 			}
 		}

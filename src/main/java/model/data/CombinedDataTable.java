@@ -64,10 +64,8 @@ public class CombinedDataTable extends Table {
 		}
 		CombinedDataTable other = (CombinedDataTable) obj;
 		if (this.combined != null) {
-			System.out.println("test");
 			return table.equals(other.table) && this.combined.equals(other.combined);
 		}
-		System.out.println("b");
 		return table.equals(other.table) && other.combined == null;
 	}
 
@@ -99,13 +97,8 @@ public class CombinedDataTable extends Table {
 	 * @return true if there is a table found that had this row.
 	 */
 	public boolean flagNotDelete(DataRow row) {
-		if (table.flagNotDelete(row)) {
-			return true;
-		} else if (combined != null) {
-			return combined.flagNotDelete(row);
-		} else {
-			return false;
-		}
+		return (table.flagNotDelete(row)) ||
+				(combined != null && combined.flagNotDelete(row));
 	}
 
 	@Override

@@ -73,7 +73,7 @@ public class DataTable extends Table {
 
 	@Override
 	public List<DataColumn> getColumns() {
-		return new ArrayList<DataColumn>(columns.values());
+		return new ArrayList<>(columns.values());
 	}
 
 	/**
@@ -110,7 +110,7 @@ public class DataTable extends Table {
 
 	@Override
 	public void deleteNotFlagged() {
-		rows = new ArrayList<DataRow>(flaggedNoDelete);
+		rows = new ArrayList<>(flaggedNoDelete);
 		flaggedNoDelete = new HashSet<>();
 	}
 
@@ -138,10 +138,7 @@ public class DataTable extends Table {
 		}
 		DataTable other = (DataTable) obj;
 
-
-		Iterator<DataRow> rows = this.rows.iterator();
-		while (rows.hasNext()) {
-			DataRow row = rows.next();
+		for(DataRow row : rows) {
 			boolean res = false;
 			for (DataRow rowOther : other.rows) {
 				if (row.equalsSoft(rowOther)) {
@@ -164,24 +161,20 @@ public class DataTable extends Table {
 		DataTable other = (DataTable) obj;
 
 		//first if is to enable that name is null, else there would be a nullpointer
-		if (this.name != other.name) {
-			if (this.name == null || other.name == null || (!other.name.equals(this.name))) {
+		if ((this.name != other.name) && (this.name == null
+				|| (!other.name.equals(this.name)))) {
 				return false;
-			}
 		}
 
-
-		Iterator<DataRow> rows = this.rows.iterator();
-		while (rows.hasNext()) {
-			DataRow row = rows.next();
-			boolean res = false;
+		for (DataRow row : rows) {
+			boolean same = false;
 			for (DataRow rowOther : other.rows) {
 				if (row.equals(rowOther)) {
-					res = true;
+					same = true;
 					break;
 				}
 			}
-			if(!res) {
+			if(!same) {
 				return false;
 			}
 		}

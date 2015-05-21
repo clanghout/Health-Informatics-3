@@ -39,11 +39,21 @@ public abstract class Table implements Iterable{
 
 	@Override
 	public abstract boolean equals(Object obj);
+
+	/**
+	 * Check if two objects have the same values
+	 *
+	 * Equals wants that the references to the attributes are the same.
+	 * equalsSoft want that the value of the attributes are the same.
+	 * So equals is more strict than equalsSoft.
+	 * @param obj the table that should be compared
+	 * @return true if object is the same as this.
+	 */
 	public abstract boolean equalsSoft(Object obj);
 	/**
-	 * Check if the columns are equals
-	 * @param obj
-	 * @return
+	 * Check if the columns has the same name and type.
+	 * @param obj the table that should be compared
+	 * @return true if the tables have the same structure
 	 */
 	public boolean equalStructure(Object obj) {
 		if (! (obj instanceof Table)) {
@@ -56,14 +66,15 @@ public abstract class Table implements Iterable{
 
 
 		if (otherColumns.size() == columns.size()) {
-			for (int i = 0; i < columns.size(); i++) {
-				boolean result = false;
-				for (int j = 0; j < otherColumns.size(); j++) {
-					if (otherColumns.get(j).equalsExcludeTable(columns.get(i))) {
-						result = true;
+			for (DataColumn column : columns) {
+				boolean same = false;
+				for (DataColumn otherColumn : otherColumns) {
+					if (otherColumn.equalsExcludeTable(column)) {
+						same = true;
+						break;
 					}
 				}
-				if(!result) {
+				if(!same) {
 					return false;
 				}
 			}

@@ -19,8 +19,8 @@ public class DataTableBuilder {
 	 * Create a new builder.
 	 */
 	public DataTableBuilder() {
-		rows =  new ArrayList<DataRow>();
-		columns = new ArrayList<DataColumn>();
+		rows =  new ArrayList<>();
+		columns = new ArrayList<>();
 	}
 
 	/**

@@ -82,24 +82,23 @@ public class DataRow extends Row {
 	@Override
 	public DataRow copy() {
 		DataRow row = new DataRow();
-		Iterator<DataColumn> columns = values.keySet().iterator();
-		while (columns.hasNext()) {
-			DataColumn column = columns.next();
+		for (DataColumn column : values.keySet()) {
 			row.setValue(column, values.get(column).copy());
 		}
 		return row;
 	}
 
+	/**
+	 * Copy the dataRow to the table table.
+	 * @param table the table this row should be copied to.
+	 * @return a copy of this row in table table
+	 */
 	public DataRow copy(DataTable table) {
 		DataRow row = new DataRow();
 		DataColumn[] columns = values.keySet().toArray(new DataColumn[ values.keySet().size()]);
 		if (columns.length > 0 && table.equalStructure(columns[0].getTable())) {
-			Iterator<DataColumn> columnsTable = table.getColumns().iterator();
-			while (columnsTable.hasNext()) {
-				DataColumn column = columnsTable.next();
-				Iterator<DataColumn> columnsThis =  values.keySet().iterator();
-				while (columnsThis.hasNext()) {
-					DataColumn columnThis = columnsThis.next();
+			for (DataColumn column : table.getColumns()) {
+				for (DataColumn columnThis : values.keySet()) {
 					if(columnThis.equalsExcludeTable(column)) {
 						row.setValue(column,
 								values.get(columnThis).copy());
@@ -123,9 +122,7 @@ public class DataRow extends Row {
 			return false;
 		}
 
-		Iterator<DataColumn> columns = values.keySet().iterator();
-		while (columns.hasNext()) {
-			DataColumn column = columns.next();
+		for (DataColumn column : values.keySet()) {
 			if (! this.getValue(column).equals(other.getValue(column))) {
 				return false;
 			}
@@ -133,11 +130,7 @@ public class DataRow extends Row {
 		return true;
 	}
 
-	/**
-	 * equals method, return true if the columns and the values are softequal
-	 * @param obj other row
-	 * @return true if column is softequals to this row
-	 */
+	@Override
 	public boolean equalsSoft(Object obj) {
 		if (!(obj instanceof DataRow)) {
 			return false;
@@ -147,22 +140,19 @@ public class DataRow extends Row {
 			return false;
 		}
 
-		Iterator<DataColumn> columns = values.keySet().iterator();
-		while (columns.hasNext()) {
-			Iterator<DataColumn> otherColumns = other.values.keySet().iterator();
-			DataColumn column = columns.next();
-			boolean res = false;
-			while (otherColumns.hasNext() && !res) {
-				DataColumn otherColumn = otherColumns.next();
+		for (DataColumn column : values.keySet()) {
+			boolean same = false;
+			for (DataColumn otherColumn : other.values.keySet()) {
 				if( column.equalsExcludeTable(otherColumn)) {
 					if (! this.getValue(column).equals(other.getValue(otherColumn))) {
 						return false;
 					} else {
-						res = true;
+						same = true;
+						break;
 					}
 				}
 			}
-			if(!res) {
+			if(!same) {
 				return false;
 			}
 		}

@@ -37,7 +37,19 @@ public abstract class Row {
 
 	@Override
 	public abstract boolean equals(Object obj);
+
+	/**
+	 * Check if two rows have the same values
+	 *
+	 * Equals wants that the references to the attributes are the same.
+	 * equalsSoft want that the value of the attributes are the same.
+	 * So equals is more strict than equalsSoft.
+	 * @param obj the row that should be compared
+	 * @return true if object is the same as this.
+	 */
 	public abstract boolean equalsSoft(Object obj);
+
+	@Override
 	public abstract int hashCode();
 
 

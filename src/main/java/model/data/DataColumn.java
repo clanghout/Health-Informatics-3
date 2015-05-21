@@ -64,7 +64,7 @@ public class DataColumn {
 	/**
 	 * create a copy of this column and set it to belong to table table.
 	 *
-	 * @parem the table this column belongs to
+	 * @param table the table this column belongs to
 	 * @return a copy of this column
 	 */
 	public DataColumn copy(DataTable table) {
