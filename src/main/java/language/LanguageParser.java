@@ -22,14 +22,11 @@ class LanguageParser extends BaseParser<Object> {
 	Rule Identifier() {
 		return Sequence(
 				Sequence(
-						FirstOf(
-								CharRange('a', 'z'),
-								CharRange('A', 'Z')
-						), OneOrMore(
+						SafeCharacter(),
+						OneOrMore(
 								FirstOf(
 										Digit(),
-										CharRange('a', 'z'),
-										CharRange('A', 'Z')
+										SafeCharacter()
 								)
 						)
 				),
@@ -52,6 +49,13 @@ class LanguageParser extends BaseParser<Object> {
 
 	Rule NormalCharacter() {
 		return Sequence(TestNot(AnyOf("\"")), ANY);
+	}
+
+	Rule SafeCharacter() {
+		return FirstOf(
+				CharRange('a', 'z'),
+				CharRange('A', 'Z')
+		);
 	}
 
 	Rule IntLiteral() {
@@ -135,4 +139,83 @@ class LanguageParser extends BaseParser<Object> {
 	Rule Digit() {
 		return CharRange('0', '9');
 	}
+
+	Rule ColumnIdentifier() {
+		return Sequence(
+				Identifier(),
+				".",
+				Identifier(),
+				swap(),
+				push(new ColumnIdentifier((Identifier) pop(), (Identifier) pop()))
+		);
+	}
+
+	Rule MacroVariable() {
+		return FirstOf(ColumnIdentifier(), IntLiteral(), FloatLiteral(), StringLiteral());
+	}
+
+	Rule CompareOperator() {
+		return Sequence(
+				FirstOf("<=", ">=", "=", ">", "<"),
+				push(match())
+		);
+	}
+
+	Rule Comparison() {
+		return Sequence(
+				MacroVariable(),
+				CompareOperator(),
+				MacroVariable(),
+				swap3(),
+				push(new CompareNode(pop(), (Character) pop(), pop()))
+		);
+	}
+
+	Rule Sugar() {
+		return ZeroOrMore(
+				FirstOf(
+						Macro(),
+						Pipe()
+				)
+		);
+	}
+
+	Rule Macro() {
+		return Sequence(
+				"def",
+				WhiteSpace(),
+				Identifier(),
+				Params(),
+				WhiteSpace(),
+				":",
+				WhiteSpace(),
+				MacroType(),
+				WhiteSpace(),
+				"=",
+				WhiteSpace(),
+				MacroBody(),
+				";",
+				swap4(),
+				push(
+						new MacroInfo(
+								(Identifier) pop(),
+								(List<Object>) pop(),
+								new MacroType((String) pop()),
+								(String) pop()
+						)
+				)
+		);
+	}
+
+	Rule MacroBody() {
+		return Sequence(OneOrMore(NormalCharacter(), ANY), push(match()));
+	}
+
+	Rule MacroType() {
+		return Sequence(
+				Sequence(CharRange('A', 'Z'), ZeroOrMore(SafeCharacter())),
+				push(match())
+		);
+	}
+
 }

@@ -1,12 +1,15 @@
 package language;
 
+import model.data.DataModel;
 import model.data.process.DataProcess;
 import model.data.process.SerialProcess;
+import model.data.process.analysis.operations.Operation;
 import org.parboiled.Parboiled;
 import org.parboiled.parserunners.BasicParseRunner;
 import org.parboiled.support.ParsingResult;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -25,18 +28,30 @@ public class Parser {
 	 * @param input The SUGAR code.
 	 * @return The DataProcesses parsed from the given string.
 	 */
-	public DataProcess parse(String input) {
+	public DataProcess parse(String input, DataModel model) {
 		LanguageParser parser = Parboiled.createParser(LanguageParser.class);
-		BasicParseRunner runner = new BasicParseRunner(parser.Pipe());
+		BasicParseRunner runner = new BasicParseRunner(parser.Sugar());
 
 		ParsingResult result = runner.run(input);
 		List<DataProcess> processes = new ArrayList<>();
+		List<Operation> macros = new ArrayList<>();
 
 		while (!result.valueStack.isEmpty()) {
-			ProcessInfo info = (ProcessInfo) result.valueStack.pop();
-			processes.add(info.resolve());
+			Object info = result.valueStack.pop();
+			if (info instanceof ProcessInfo) {
+				ProcessInfo processInfo = (ProcessInfo) info;
+				processes.add(processInfo.resolve());
+			} else if (info instanceof MacroInfo) {
+				macros.add(((MacroInfo) info).parse(model));
+			} else {
+				throw new UnsupportedOperationException("Not yet implemented");
+			}
 		}
 
-		return new SerialProcess(processes);
+		Collections.reverse(processes);
+
+		SerialProcess process = new SerialProcess(processes);
+		process.setDataModel(model);
+		return process;
 	}
 }
