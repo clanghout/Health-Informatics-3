@@ -163,8 +163,11 @@ public class DataTable extends Table {
 		}
 		DataTable other = (DataTable) obj;
 
-		if(other.name != this.name) {
-			return false;
+		//first if is to enable that name is null, else there would be a nullpointer
+		if (this.name != other.name) {
+			if (this.name == null || other.name == null || (!other.name.equals(this.name))) {
+				return false;
+			}
 		}
 
 
@@ -187,10 +190,11 @@ public class DataTable extends Table {
 
 	@Override
 	public int hashCode() {
-		if(name == null) {
-			throw new IllegalStateException("name is not set");
+		int res = 0;
+		for (DataColumn column : columns.values()) {
+			res += column.hashCode();
 		}
-		return name.hashCode();
+		return res;
 	}
 
 
