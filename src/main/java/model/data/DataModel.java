@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Observable;
 
 /**
  * A container for the various data tables.
  * Created by Boudewijn on 12-5-2015.
  */
-public class DataModel implements Iterable<DataTable> {
+public class DataModel extends Observable implements Iterable<DataTable> {
 
 	private List<DataTable> dataTables = new ArrayList<>();
 
@@ -40,6 +41,8 @@ public class DataModel implements Iterable<DataTable> {
 	 */
 	public void add(DataTable table) {
 		dataTables.add(table);
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -48,6 +51,8 @@ public class DataModel implements Iterable<DataTable> {
 	 */
 	public void addAll(Collection<DataTable> tables) {
 		dataTables.addAll(tables);
+		setChanged();
+		notifyObservers();
 	}
 
 	/**

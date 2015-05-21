@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Tab text="View" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<Tab fx:controller="ui.TableViewController" text="View" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 <content>
 	<AnchorPane>
 		 <children>
@@ -14,14 +14,8 @@
 					<items>
 						<AnchorPane styleClass="table-container">
 							<children>
-								<TableView styleClass="data-table" fx:id="datatable">
-								 <columns>
-									<TableColumn styleClass="table-column" text="Column X" />
-									<TableColumn styleClass="table-column" text="Column X" />
-									<TableColumn styleClass="table-column" text="Column X" />
-									<TableColumn styleClass="table-column" text="Column X" />
-								 </columns>
-								</TableView>
+								<TableView styleClass="data-table" 
+								fx:id="tableView"/>
 							</children>
 						</AnchorPane>
 						<AnchorPane styleClass="data-fields-container" fx:id="datafields" />
