@@ -80,8 +80,8 @@ public class DataRow extends Row {
 	@Override
 	public DataRow copy() {
 		DataRow row = new DataRow();
-		for (DataColumn column : values.keySet()) {
-			row.setValue(column, values.get(column).copy());
+		for (Map.Entry<DataColumn, DataValue> entry : values.entrySet()) {
+			row.setValue(entry.getKey(), values.get(entry.getKey()).copy());
 		}
 		return row;
 	}
@@ -96,10 +96,10 @@ public class DataRow extends Row {
 		DataColumn[] columns = values.keySet().toArray(new DataColumn[ values.keySet().size()]);
 		if (columns.length > 0 && table.equalStructure(columns[0].getTable())) {
 			for (DataColumn column : table.getColumns()) {
-				for (DataColumn columnThis : values.keySet()) {
-					if (columnThis.equalsExcludeTable(column)) {
+				for (Map.Entry<DataColumn, DataValue> entry : values.entrySet()) {
+					if (entry.getKey().equalsExcludeTable(column)) {
 						row.setValue(column,
-								values.get(columnThis).copy());
+								values.get(entry.getKey()).copy());
 						break;
 					}
 				}

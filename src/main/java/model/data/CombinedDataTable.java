@@ -98,8 +98,8 @@ public class CombinedDataTable extends Table {
 	 * @return true if there is a table found that had this row.
 	 */
 	public boolean flagNotDelete(DataRow row) {
-		return (table.flagNotDelete(row))
-				|| (combined != null && combined.flagNotDelete(row));
+		return table.flagNotDelete(row)
+				|| combined != null && combined.flagNotDelete(row);
 	}
 
 	@Override

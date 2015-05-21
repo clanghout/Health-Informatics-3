@@ -99,7 +99,7 @@ public class DataTable extends Table {
 
 	@Override
 	public boolean flagNotDelete(Row row) {
-		if ((row instanceof DataRow) && (rows.contains(row))) {
+		if (row instanceof DataRow && rows.contains(row)) {
 			flaggedNoDelete.add((DataRow) row);
 			return true;
 		} else {
@@ -161,8 +161,8 @@ public class DataTable extends Table {
 		DataTable other = (DataTable) obj;
 
 		//first if is to enable that name is null, else there would be a nullpointer
-		if ((this.name != other.name) && (this.name == null
-				|| (!other.name.equals(this.name)))) {
+		if (this.name != other.name && (this.name == null
+				|| !other.name.equals(this.name))) {
 				return false;
 		}
 
