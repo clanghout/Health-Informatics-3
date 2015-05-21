@@ -2,10 +2,7 @@ package model.data;
 
 import java.util.Iterator;
 import java.util.List;
-<<<<<<< HEAD
-import java.util.Objects;
-=======
->>>>>>> 6c316f31273d2b2bab7c120d415ca54b28da09c1
+
 
 /**
  * The interface that defines a table.

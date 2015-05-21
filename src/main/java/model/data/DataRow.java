@@ -99,7 +99,7 @@ public class DataRow implements Row {
 	}
 
 	@Override
-	public Row copy(Table table) {
+	public DataRow copy(Table table) {
 		return null;
 	}
 
