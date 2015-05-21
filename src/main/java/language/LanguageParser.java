@@ -135,4 +135,14 @@ class LanguageParser extends BaseParser<Object> {
 	Rule Digit() {
 		return CharRange('0', '9');
 	}
+
+	Rule ColumnIdentifier() {
+		return Sequence(
+				Identifier(),
+				".",
+				Identifier(),
+				swap(),
+				push(new ColumnIdentifier((Identifier) pop(), (Identifier) pop()))
+		);
+	}
 }

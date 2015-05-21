@@ -54,7 +54,9 @@ public class LanguageParserMatchTest {
 				{ parser.Params(), "(test, dingen, nogMeer)", true },
 				{ parser.Params(), "(test, 5.0, 3, \"Test\")", true },
 				{ parser.Process(), "test()", true },
-				{ parser.Pipe(), "test()|test2()", true}
+				{ parser.Pipe(), "test()|test2()", true },
+				{ parser.ColumnIdentifier(), "test.dignen", true },
+				{ parser.ColumnIdentifier(), "test", false }
 		};
 
 		return Arrays.asList(testData);
