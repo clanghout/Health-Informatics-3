@@ -71,13 +71,18 @@ public class DataTable implements Table, Iterable {
 		return rows.size();
 	}
 
+	@Override
+	public List<DataColumn> getColumns() {
+		return new ArrayList<DataColumn>(columns.values());
+	}
+
 	/**
-	 * Get the columns of the DataTable.
-	 *
-	 * @return A Map that contains all the columns, the key is the column name.
+	 * get the column with the name columnName.
+	 * @param columnName the name of the column
+	 * @return the column with the name columnName
 	 */
-	public Map<String, DataColumn> getColumns() {
-		return columns;
+	public DataColumn getColumn(String columnName) {
+		return columns.get(columnName);
 	}
 
 	/**

@@ -74,9 +74,9 @@ public class DataTableTest {
 
 	@Test
 	public void testGetColumns() throws Exception {
-		Map<String, DataColumn> actual = dataTable.getColumns();
+		List<DataColumn> actual = dataTable.getColumns();
 		for (DataColumn c : columns) {
-			assertEquals(actual.get(c.getName()), c);
+			assertTrue(actual.contains(c));
 		}
 	}
 
@@ -121,5 +121,10 @@ public class DataTableTest {
 	@Test
 	public void testGetName() throws Exception {
 		assertEquals(dataTable.getName(), "test");
+	}
+
+	@Test
+	public void testGetColumnName() throws Exception {
+		assertEquals(dataTable.getColumn("column1"), columns[0]);
 	}
 }
