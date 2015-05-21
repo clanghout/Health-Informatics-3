@@ -45,23 +45,50 @@ public class CombinedDataTable extends Table {
 
 	}
 
-	CombinedDataTable() {
-
-	}
 
 	@Override
-	public Table copy() {
-		return null;
+	public CombinedDataTable copy() {
+		CombinedDataTable combined = null;
+		if (this.combined != null) {
+			combined = this.combined.copy();
+		}
+		CombinedDataTable result = new CombinedDataTable(table.copy());
+		result.combined = combined;
+		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		return false;
+		if (!(obj instanceof CombinedDataTable)) {
+			return false;
+		}
+		CombinedDataTable other = (CombinedDataTable) obj;
+		if (this.combined != null) {
+			return table.equals(((CombinedDataTable) obj).table) && this.combined.equals(other.combined);
+		}
+		return table.equals(((CombinedDataTable) obj).table) && other.combined == null;
+	}
+
+	@Override
+	public boolean equalsSoft(Object obj) {
+		if (!(obj instanceof CombinedDataTable)) {
+			return false;
+		}
+		CombinedDataTable other = (CombinedDataTable) obj;
+		if (this.combined != null) {
+			return table.equalsSoft(((CombinedDataTable) obj).table) && this.combined.equalsSoft(other.combined);
+		}
+		return table.equalsSoft(((CombinedDataTable) obj).table) && other.combined == null;
+
 	}
 
 	@Override
 	public int hashCode() {
-		return 0;
+		int res = 0;
+		if (combined != null) {
+			res += combined.hashCode();
+		}
+		return table.hashCode() + res;
 	}
 
 	/**

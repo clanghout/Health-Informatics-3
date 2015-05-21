@@ -115,29 +115,79 @@ public class DataTable extends Table {
 	}
 
 
-	//TODO
 	@Override
 	public DataTable copy() {
-		DataTableBuilder builder = new DataTableBuilder();
-		builder.setName(name);
+		DataTable table = new DataTable();
+		table.name = this.name;
 		for(DataColumn column : columns.values()) {
-			builder.addColumn(column);
+			DataColumn newColumn = column.copy();
+			table.columns.put(newColumn.getName(), newColumn);
+			newColumn.setTable(table);
 		}
-		DataTable copy = builder.build();
 		for(DataRow row : rows) {
-			builder.addRow(row.copy(copy));
+			DataRow newRow = row.copy();
+			table.rows.add(newRow);
 		}
-		return null;
+		return table;
+	}
+
+	@Override
+	public boolean equalsSoft(Object obj) {
+		if (!(obj instanceof DataTable) || !(this.equalStructure(obj))) {
+			return false;
+		}
+		DataTable other = (DataTable) obj;
+
+
+		Iterator<DataRow> rows = this.rows.iterator();
+		while (rows.hasNext()) {
+			DataRow row = rows.next();
+			boolean res = false;
+			for (DataRow rowOther : other.rows) {
+				if (row.equalsSoft(rowOther)) {
+					res = true;
+					break;
+				}
+			}
+			if(!res) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		return false;
+		if (!(obj instanceof DataTable) || !(this.equalStructure(obj))) {
+			return false;
+		}
+		DataTable other = (DataTable) obj;
+
+		if(other.name != this.name) {
+			return false;
+		}
+
+
+		Iterator<DataRow> rows = this.rows.iterator();
+		while (rows.hasNext()) {
+			DataRow row = rows.next();
+			boolean res = false;
+			for (DataRow rowOther : other.rows) {
+				if (row.equals(rowOther)) {
+					res = true;
+					break;
+				}
+			}
+			if(!res) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
 	public int hashCode() {
-		return 0;
+		return name.hashCode();
 	}
 
 

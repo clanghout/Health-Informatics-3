@@ -39,7 +39,7 @@ public abstract class Table implements Iterable{
 
 	@Override
 	public abstract boolean equals(Object obj);
-
+	public abstract boolean equalsSoft(Object obj);
 	/**
 	 * Check if the columns are equals
 	 * @param obj
