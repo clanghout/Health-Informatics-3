@@ -42,6 +42,8 @@ public final class ConstantDescriber<Type extends DataValue> extends DataDescrib
 			return new ConstantDescriber<>(new FloatValue((float) value));
 		} else if (value instanceof String) {
 			return new ConstantDescriber<>(new StringValue((String) value));
-		} else throw new UnsupportedOperationException("This type has not yet been implemented");
+		} else {
+			throw new UnsupportedOperationException("This type has not yet been implemented");
+		}
 	}
 }
