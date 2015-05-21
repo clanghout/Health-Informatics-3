@@ -52,4 +52,54 @@ public class DataColumn {
 	public Class<? extends DataValue> getType() {
 		return type;
 	}
+
+	/**
+	 * create a copy of this column.
+	 * @return a copy of this column
+	 */
+	public DataColumn copy() {
+		return new DataColumn(name, table, type);
+	}
+
+	/**
+	 * create a copy of this column and set it to belong to table table.
+	 *
+	 * @param table the table this column belongs to
+	 * @return a copy of this column
+	 */
+	public DataColumn copy(DataTable table) {
+		return new DataColumn(name, table, type);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof DataColumn)) {
+			return false;
+		}
+		DataColumn other = (DataColumn) obj;
+
+		// table must point to the same table
+		return this.table == other.table && this.type.equals(other.type)
+				&& this.name.equals(other.name);
+	}
+
+	/**
+	 * equals method, return true if name and type are equals.
+	 * @param obj other column
+	 * @return true if column is equals to this column
+	 */
+	public boolean equalsExcludeTable(Object obj) {
+		if (!(obj instanceof DataColumn)) {
+			return false;
+		}
+		DataColumn other = (DataColumn) obj;
+		return this.type.equals(other.type)
+				&& this.name.equals(other.name);
+	}
+
+	@Override
+	public int hashCode() {
+		return type.hashCode() + name.hashCode();
+	}
+
 }

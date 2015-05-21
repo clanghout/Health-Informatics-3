@@ -32,6 +32,11 @@ public final class BoolValue extends DataValue<Boolean> {
 	}
 
 	@Override
+	public BoolValue copy() {
+		return new BoolValue(value);
+	}
+
+	@Override
 	public String toString() {
 		return String.valueOf(value);
 	}

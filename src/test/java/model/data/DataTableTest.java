@@ -127,4 +127,119 @@ public class DataTableTest {
 	public void testGetColumnName() throws Exception {
 		assertEquals(dataTable.getColumn("column1"), columns[0]);
 	}
+
+	@Test
+	public void testCopy() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("t");
+		builder.createColumn("column1", StringValue.class);
+		builder.createRow(new StringValue("te"));
+		DataTable table = builder.build();
+
+		DataTable copy = table.copy();
+
+		assertFalse(copy == table);
+		assertTrue(table.equals(copy));
+	}
+
+	@Test
+	public void testCopyEmptyTable() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("t");
+		DataTable table = builder.build();
+
+		DataTable copy = table.copy();
+
+		assertFalse(copy == table);
+		assertEquals(table, copy);
+	}
+
+	@Test
+	public void testEquals() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("t");
+		builder.createColumn("column1", StringValue.class);
+		builder.createRow(new StringValue("te"));
+		DataTable table = builder.build();
+
+		DataTable copy = table.copy();
+
+		assertTrue(table.equals(copy));
+	}
+
+	@Test
+	public void testEqualsSoft() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("t");
+		builder.createColumn("column1", StringValue.class);
+		builder.createRow(new StringValue("te"));
+		DataTable table = builder.build();
+
+		builder = new DataTableBuilder();
+		builder.setName("t2");
+		builder.createColumn("column1", StringValue.class);
+		builder.createRow(new StringValue("te"));
+
+		DataTable copy = builder.build();
+
+		assertFalse(table.equals(copy));
+		assertTrue(table.equalsSoft(copy));
+	}
+
+	@Test
+	public void testEqualsSoftFalse() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("t");
+		builder.createColumn("column1", StringValue.class);
+		builder.createRow(new StringValue("te"));
+		DataTable table = builder.build();
+
+		builder = new DataTableBuilder();
+		builder.setName("t2");
+		builder.createColumn("column2", StringValue.class);
+		builder.createRow(new StringValue("te"));
+
+		DataTable copy = builder.build();
+
+		assertFalse(table.equals(copy));
+		assertFalse(table.equalsSoft(copy));
+	}
+
+	@Test
+	public void testEqualsStructure() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("t");
+		builder.createColumn("column1", StringValue.class);
+		builder.createRow(new StringValue("te"));
+		DataTable table = builder.build();
+
+		builder = new DataTableBuilder();
+		builder.setName("t2");
+		builder.createColumn("column1", StringValue.class);
+		builder.createRow(new StringValue("tawfe"));
+
+		DataTable copy = builder.build();
+
+		assertFalse(table.equals(copy));
+		assertFalse(table.equalsSoft(copy));
+		assertTrue(table.equalStructure(copy));
+	}
+
+	@Test
+	public void testHasCode() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("t");
+		builder.createColumn("column1", StringValue.class);
+		builder.createRow(new StringValue("te"));
+		DataTable table = builder.build();
+
+		builder = new DataTableBuilder();
+		builder.setName("t2");
+		builder.createColumn("column1", StringValue.class);
+		builder.createRow(new StringValue("tawfe"));
+
+		DataTable copy = builder.build();
+
+		assertEquals(table.hashCode(), copy.hashCode());
+	}
 }
