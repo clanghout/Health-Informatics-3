@@ -9,6 +9,7 @@ import org.parboiled.parserunners.BasicParseRunner;
 import org.parboiled.support.ParsingResult;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -47,6 +48,10 @@ public class Parser {
 			}
 		}
 
-		return new SerialProcess(processes);
+		Collections.reverse(processes);
+
+		SerialProcess process = new SerialProcess(processes);
+		process.setDataModel(model);
+		return process;
 	}
 }
