@@ -5,7 +5,6 @@ import input.reader.XmlReader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import model.data.DataModel;
@@ -22,8 +21,6 @@ import output.DataTableWriter;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -57,6 +54,9 @@ public class DataController {
 	
 	public void initialize(MainUIController mainUIController) {
 		this.mainUIController = mainUIController;
+		
+		//for testing purposes!
+		file = new File("/mnt/sda4/SQT_Dev/Health-Informatics-3/res/user_save.xml");
 	}
 	
 	@FXML

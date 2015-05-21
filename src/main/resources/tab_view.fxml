@@ -21,10 +21,6 @@
 						<AnchorPane styleClass="data-fields-container" fx:id="datafields" />
 					</items>
 				</SplitPane>
-				<Button
-                    styleClass="analyse-button"
-                    onAction="#fillTable"
-                    text="Analyze" />
 		 </children>
 	</AnchorPane>
 </content>

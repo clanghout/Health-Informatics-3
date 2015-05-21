@@ -1,19 +1,20 @@
 package ui;
 
-import java.io.IOException;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import model.data.DataColumn;
 import model.data.DataModel;
+import model.data.DataRow;
 import model.data.DataTable;
+import model.data.Row;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
@@ -31,36 +32,36 @@ public class TableViewController implements Observer {
 	private MainUIController mainUIController;
 	
 	private DataModel model;
+	private ObservableList<Row> data = FXCollections.observableArrayList();
 	
 	/**
 	 * Creates a new TableViewController.
 	 */
-	public TableViewController() { 
-		System.out.println(this);
-//	    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/tab_view.fxml"));
-//	    fxmlLoader.setController(this);
-//	    try {
-//	        fxmlLoader.load();
-//	    } catch (Exception e) {
-//			logger.log(Level.SEVERE, "Failed to read fxml file", e);
-//	    }
+	public TableViewController() {
 	}
 	
 	public void initialize(MainUIController mainUIController) {
 		this.mainUIController = mainUIController;
+		tableView.setItems(data);
 	}
 	
 	public void fillTable()  {
 		logger.info("update table");
-		logger.info("Model = " + model);
-			for (DataTable t: model) {
-			Map<String, DataColumn> m = t.getColumns();
-			Set<String> set = m.keySet();
-			for (String header : set) {
-				logger.info(header);
-				TableColumn col = new TableColumn(header);
-				tableView.getColumns().addAll(col);
+		for (DataTable table: model) {
+			Map<String, DataColumn> columns = table.getColumns();
+			Set<String> nameSet = columns.keySet();
+			Iterator<DataRow> rowIterator = table.iterator();
+			for(String name : nameSet) {
+				TableColumn uiColumn = new TableColumn(name);
+				tableView.getColumns().add(uiColumn);
 			}
+			while(rowIterator.hasNext()) {
+				DataRow row = rowIterator.next();
+				data.add(row);
+			}
+		}
+		for(int i = 0; i< data.size(); i++) {
+			System.out.println(data.get(i));
 		}
 	}
 	
