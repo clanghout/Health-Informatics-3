@@ -3,7 +3,7 @@ package model.data;
 import model.data.value.DataValue;
 
 /**
- * The interface that defines a tableRow.
+ * Abstract class that defines a tableRow.
  *
  * Created by jens on 5/19/15.
  */
