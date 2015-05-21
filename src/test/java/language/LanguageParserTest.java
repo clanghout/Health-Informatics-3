@@ -1,0 +1,56 @@
+package language;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.parboiled.Parboiled;
+import org.parboiled.parserunners.BasicParseRunner;
+import org.parboiled.support.ParsingResult;
+
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+
+/**
+ * Contains the more complicated tests for LanguageParser.
+ *
+ * Created by Boudewijn on 20-5-2015.
+ */
+public class LanguageParserTest {
+
+	private LanguageParser parser;
+
+	@Before
+	public void setUp() throws Exception {
+		parser = Parboiled.createParser(LanguageParser.class);
+	}
+
+	@Test
+	public void testProcess() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.Process());
+		ParsingResult result = runner.run("test(3, 4, 5)");
+		ProcessInfo info = (ProcessInfo) result.valueStack.pop();
+
+		assertEquals("test", info.getIdentifier().getName());
+		assertArrayEquals(new Object[]{3, 4, 5}, info.getParameters());
+	}
+
+	@Test
+	public void testPipe() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.Pipe());
+		ParsingResult result = runner.run("test()|test2(\"aap\", sjon, 2.0)");
+		ProcessInfo info = (ProcessInfo) result.valueStack.pop();
+
+		assertEquals("test2", info.getIdentifier().getName());
+		assertArrayEquals(
+				new Object[]{"aap", new Identifier<>("sjon"), 2.0f},
+				info.getParameters()
+		);
+
+		info = (ProcessInfo) result.valueStack.pop();
+
+		assertEquals("test", info.getIdentifier().getName());
+		assertArrayEquals(
+				new Object[]{},
+				info.getParameters()
+		);
+	}
+}

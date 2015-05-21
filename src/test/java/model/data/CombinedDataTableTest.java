@@ -1,6 +1,11 @@
 package model.data;
 
+import model.data.describer.RowValueDescriber;
+import model.data.process.analysis.ConstraintAnalysis;
+import model.data.process.analysis.operations.constraints.Constraint;
+import model.data.process.analysis.operations.constraints.EqualityCheck;
 import model.data.value.DataValue;
+import model.data.value.IntValue;
 import model.data.value.StringValue;
 import org.junit.Before;
 import org.junit.Test;
@@ -139,5 +144,92 @@ public class CombinedDataTableTest {
 		assertEquals(row.getValue(columns[0][1]).toString(), "value2c");
 		assertEquals(row.getValue(columns[1][1]).toString(), "asf");
 		assertFalse(it.hasNext());
+	}
+
+
+	@Test
+	public void testDelete() throws Exception {
+		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
+		Iterator<? extends Row> it = comb.iterator();
+		comb.flagNotDelete(it.next());
+		it.next();
+		it.next();
+		comb.flagNotDelete(it.next());
+		it.next();
+		comb.flagNotDelete(it.next());
+
+		comb.deleteNotFlagged();
+
+		assertEquals(dataTables.get(0).getRowCount(), 2);
+		assertEquals(dataTables.get(1).getRowCount(), 2);
+		assertEquals(dataTables.get(2).getRowCount(), 1);
+	}
+
+	@Test
+	public void testDelete2() throws Exception {
+		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
+		Iterator<? extends Row> it = comb.iterator();
+		comb.flagNotDelete(it.next());
+		it.next();
+		it.next();
+		it.next();
+		it.next();
+		it.next();
+
+		comb.deleteNotFlagged();
+
+		assertEquals(dataTables.get(0).getRowCount(), 1);
+		assertEquals(dataTables.get(1).getRowCount(), 1);
+		assertEquals(dataTables.get(2).getRowCount(), 1);
+	}
+
+
+	@Test
+	public void testConstrantOverMultipleRows() throws Exception {
+		DataTableBuilder builder1 = new DataTableBuilder();
+		builder1.setName("table1");
+		DataColumn column1 = builder1.createColumn("column1", IntValue.class);
+		DataRow[] rows1 = new DataRow[5];
+		for (int i = 0; i < 5; i++) {
+			rows1[i] = builder1.createRow(new IntValue(i));
+		}
+
+		DataTable table1 = builder1.build();
+
+		DataTableBuilder builder2 = new DataTableBuilder();
+		builder2.setName("table1");
+		DataColumn column2 = builder2.createColumn("column2", IntValue.class);
+		DataRow[] rows2 = new DataRow[5];
+		for (int i = 0; i < 10; i = i + 2) {
+			rows2[i/2] = builder2.createRow(new IntValue(i));
+		}
+
+		DataTable table2 = builder2.build();
+
+		CombinedDataTable comb = new CombinedDataTable(table1, table2);
+
+		Constraint columnCheck = new EqualityCheck<>(
+				new RowValueDescriber<>(column1),
+				new RowValueDescriber<>(column2)
+		);
+
+		ConstraintAnalysis analysis = new ConstraintAnalysis(columnCheck);
+
+		assertEquals(table1.getRowCount(), 5);
+		assertEquals(table2.getRowCount(), 5);
+		analysis.analyse(comb);
+
+		assertEquals(table1.getRowCount(), 3);
+		assertEquals(table2.getRowCount(), 3);
+
+		table1.getRows();
+
+		assertTrue(table1.getRows().contains(rows1[0]));
+		assertTrue(table1.getRows().contains(rows1[2]));
+		assertTrue(table1.getRows().contains(rows1[4]));
+
+		assertTrue(table2.getRows().contains(rows2[0]));
+		assertTrue(table2.getRows().contains(rows2[1]));
+		assertTrue(table2.getRows().contains(rows2[2]));
 	}
 }

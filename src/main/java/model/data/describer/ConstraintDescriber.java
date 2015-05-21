@@ -1,6 +1,6 @@
 package model.data.describer;
 
-import model.data.DataRow;
+import model.data.Row;
 import model.data.process.analysis.operations.constraints.Constraint;
 import model.data.value.BoolValue;
 
@@ -26,7 +26,7 @@ public final class ConstraintDescriber extends DataDescriber<BoolValue> {
 	 * @return A BoolValue containing the result of the constraint on the row
 	 */
 	@Override
-	public BoolValue resolve(DataRow row) {
+	public BoolValue resolve(Row row) {
 		return new BoolValue(constraint.check(row));
 	}
 }

@@ -1,6 +1,6 @@
 package model.data.process.analysis.operations.computations;
 
-import model.data.DataRow;
+import model.data.Row;
 import model.data.describer.DataDescriber;
 import model.data.process.analysis.operations.Operation;
 import model.data.value.NumberValue;
@@ -23,7 +23,7 @@ public abstract class Computation<T extends NumberValue> extends Operation<Numbe
 	 * @param row The row you want to perform the computation on.
 	 * @return The result of the computation.
 	 */
-	public abstract NumberValue compute(DataRow row);
+	public abstract NumberValue compute(Row row);
 
 	/**
 	 * Get the DataDescriber for the left side operand.
@@ -42,7 +42,7 @@ public abstract class Computation<T extends NumberValue> extends Operation<Numbe
 	}
 
 	@Override
-	public NumberValue operate(DataRow row) {
+	public NumberValue operate(Row row) {
 		return compute(row);
 	}
 }

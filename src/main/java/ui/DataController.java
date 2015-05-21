@@ -52,7 +52,7 @@ public class DataController {
 
 	private File file;
 	private DataTable out;
-	private DataTable in;
+	private DataTable input;
 	
 	/**
 	 * Creates a new TableViewController.
@@ -87,18 +87,18 @@ public class DataController {
 			reader.read(file);
 			DataFile dataFile = reader.getDataFiles().get(0);
 			DataReader dataReader = new DataReader();
-			in = dataReader.readData(dataFile.getDataStream());
+			input = dataReader.readData(dataFile.getDataStream());
 			model = new DataModel();
-			model.add(in);
+			model.add(input);
 			tableViewController = new TableViewController();
 			tableViewController.setDataModel(model);
 			System.out.println(tableViewController);
 			Constraint constraint = new EqualityCheck<>(
-					new RowValueDescriber<>(in.getColumns().get("time")),
+					new RowValueDescriber<>(input.getColumns().get("time")),
 					new ConstantDescriber<>(new StringValue("0803"))
 			);
 			DataAnalysis analysis = new ConstraintAnalysis(constraint);
-			out = analysis.analyse(in);
+			out = (DataTable) analysis.analyse(input);
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "Error reading XML file", e);
 		}

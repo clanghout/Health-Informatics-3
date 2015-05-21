@@ -8,9 +8,7 @@ import org.junit.Test;
 
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by jens on 4/30/15.
@@ -92,5 +90,36 @@ public class DataTableTest {
 		assertTrue(iterator.hasNext());
 		assertEquals(iterator.next(), rows.get(2));
 		assertFalse(iterator.hasNext());
+	}
+
+
+	@Test
+	public void testFlaggedDelete() throws Exception {
+		dataTable.flagNotDelete(rows.get(1));
+		assertEquals(dataTable.getRow(1), rows.get(1));
+		assertEquals(dataTable.getRow(2), rows.get(2));
+	}
+
+	@Test
+	public void testDelete() throws Exception {
+		dataTable.flagNotDelete(rows.get(1));
+		dataTable.deleteNotFlagged();
+		assertEquals(dataTable.getRow(0), rows.get(1));
+		assertEquals(dataTable.getRowCount(), 1, 0.1);
+	}
+
+	@Test
+	public void testDelete2() throws Exception {
+		dataTable.flagNotDelete(rows.get(0));
+		dataTable.flagNotDelete(rows.get(2));
+		dataTable.deleteNotFlagged();
+		assertEquals(dataTable.getRowCount(), 2, 0.1);
+		assertTrue(dataTable.getRows().contains(rows.get(0)));
+		assertTrue(dataTable.getRows().contains(rows.get(2)));
+	}
+
+	@Test
+	public void testGetName() throws Exception {
+		assertEquals(dataTable.getName(), "test");
 	}
 }

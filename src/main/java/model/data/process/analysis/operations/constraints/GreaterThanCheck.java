@@ -1,6 +1,6 @@
 package model.data.process.analysis.operations.constraints;
 
-import model.data.DataRow;
+import model.data.Row;
 import model.data.describer.DataDescriber;
 import model.data.value.NumberValue;
 
@@ -18,7 +18,7 @@ public final class GreaterThanCheck<T extends NumberValue>
 	}
 
 	@Override
-	public boolean check(DataRow row) {
+	public boolean check(Row row) {
 		return compare(row) > 0;
 	}
 }

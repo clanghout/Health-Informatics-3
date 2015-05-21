@@ -1,6 +1,6 @@
 package model.data.process.analysis.operations.constraints;
 
-import model.data.DataRow;
+import model.data.Row;
 import model.data.describer.DataDescriber;
 import model.data.value.DataValue;
 
@@ -26,7 +26,7 @@ public class EqualityCheck<T extends DataValue> extends BinaryCheck<T> {
 	 * @return True if the values are equal, false if not
 	 */
 	@Override
-	public boolean check(DataRow row) {
+	public boolean check(Row row) {
 		return getLeftSide().resolve(row).equals(getRightSide().resolve(row));
 	}
 }

@@ -38,7 +38,7 @@ public class ConstraintAnalysisTest {
 		);
 
 		ConstraintAnalysis analysis = new ConstraintAnalysis(pieCheck);
-		DataTable output = analysis.analyse(input);
+		DataTable output = (DataTable) analysis.analyse(input);
 
 		assertEquals(1, output.getRowCount());
 		assertEquals(pieRow, output.getRow(0));
