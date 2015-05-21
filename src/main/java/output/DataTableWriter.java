@@ -7,9 +7,7 @@ import model.data.value.DataValue;
 import model.data.value.StringValue;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
