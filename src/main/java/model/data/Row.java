@@ -7,7 +7,7 @@ import model.data.value.DataValue;
  *
  * Created by jens on 5/19/15.
  */
-public abstract class Row implements Iterable {
+public abstract class Row {
 	/**
 	 * Get the value of the column in this row.
 	 * @param column the column that should be looked up
@@ -35,15 +35,9 @@ public abstract class Row implements Iterable {
 	 */
 	public abstract Row copy();
 
-	/**
-	 * Return a copy of this row and use the columns from the table table
-	 * @return a copy of this row
-	 */
-	public abstract Row copyForTable(Table table);
-
 	@Override
 	public abstract boolean equals(Object obj);
-
+	public abstract boolean equalsSoft(Object obj);
 	public abstract int hashCode();
 
 	/**

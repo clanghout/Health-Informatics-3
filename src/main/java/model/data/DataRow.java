@@ -85,34 +85,95 @@ public class DataRow extends Row {
 		Iterator<DataColumn> columns = values.keySet().iterator();
 		while (columns.hasNext()) {
 			DataColumn column = columns.next();
-			row.setValue(column.copy(), values.get(column).copy());
+			row.setValue(column, values.get(column).copy());
 		}
-
 		return row;
 	}
 
 	@Override
-	public Row copyForTable(Table table) {
+	public Row copy(Table table) {
+		DataRow row = new DataRow();
 		DataColumn[] columns = values.keySet().toArray(new DataColumn[ values.keySet().size()]);
-		if (columns.length > 0 && table.equalStructure(columns[0].getTable()));
-			table.getColumns();
-		return null;
+		if (columns.length > 0 && table.equalStructure(columns[0].getTable())) {
+			Iterator<DataColumn> columnsTable = table.getColumns().iterator();
+			while (columnsTable.hasNext()) {
+				DataColumn column = columnsTable.next();
+				row.setValue(column, values.get(column).copy());
+			}
+			return row;
+		} else {
+			throw new IllegalArgumentException("table not the right structure");
+		}
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		return false;
+		if (!(obj instanceof DataRow)) {
+			return false;
+		}
+		DataRow other = (DataRow) obj;
+		if (values.keySet().size() != other.values.keySet().size()) {
+			return false;
+		}
+
+		Iterator<DataColumn> columns = values.keySet().iterator();
+		while (columns.hasNext()) {
+			DataColumn column = columns.next();
+			if (! this.getValue(column).equals(other.getValue(column))) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * equals method, return true if name and type are equals
+	 * @param obj other column
+	 * @return true if column is equals to this column
+	 */
+	public boolean equalsSoft(Object obj) {
+		if (!(obj instanceof DataRow)) {
+			return false;
+		}
+		DataRow other = (DataRow) obj;
+		if (values.keySet().size() != other.values.keySet().size()) {
+			return false;
+		}
+
+		Iterator<DataColumn> columns = values.keySet().iterator();
+		while (columns.hasNext()) {
+			Iterator<DataColumn> otherColumns = other.values.keySet().iterator();
+			DataColumn column = columns.next();
+			boolean res = false;
+			while (otherColumns.hasNext() && !res) {
+				DataColumn otherColumn = columns.next();
+				if( column.equalsExcludeTable(otherColumn)) {
+					if (! this.getValue(column).equals(other.getValue(otherColumn))) {
+						return false;
+					} else {
+						res = true;
+					}
+				}
+			}
+			if(!res) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
 	public int hashCode() {
-		return 0;
+		int res = 0;
+		for(Map.Entry<DataColumn, DataValue> entry : values.entrySet()) {
+			DataColumn key = entry.getKey();
+			DataValue value = entry.getValue();
+
+			res += key.hashCode() * value.hashCode();
+		}
+		return res;
 	}
 
-	@Override
-	public DataRow copy(Table table) {
-		return null;
-	}
 
 
 	/**
@@ -125,8 +186,4 @@ public class DataRow extends Row {
 		return values.get(column);
 	}
 
-	@Override
-	public Iterator iterator() {
-		return null;
-	}
 }

@@ -97,9 +97,4 @@ public class CombinedDataRow extends Row {
 	public Row copy(Table table) {
 		return null;
 	}
-
-	@Override
-	public Iterator iterator() {
-		return null;
-	}
 }
