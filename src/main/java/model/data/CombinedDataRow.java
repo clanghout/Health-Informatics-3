@@ -70,7 +70,7 @@ public class CombinedDataRow extends Row {
 	@Override
 	public CombinedDataRow copy() {
 		CombinedDataRow combRow = new CombinedDataRow();
-		for(DataRow row : rows) {
+		for (DataRow row : rows) {
 			combRow.addDataRow(row.copy());
 		}
 
@@ -87,7 +87,7 @@ public class CombinedDataRow extends Row {
 			return false;
 		}
 		for (DataRow row : rows) {
-			if (! other.rows.contains(row)) {
+			if (!other.rows.contains(row)) {
 				return false;
 			}
 		}
@@ -111,7 +111,7 @@ public class CombinedDataRow extends Row {
 					break;
 				}
 			}
-			if(!same) {
+			if (!same) {
 				return false;
 			}
 		}

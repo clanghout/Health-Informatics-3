@@ -30,7 +30,7 @@ public abstract class Row {
 	public abstract boolean hasColumn(DataColumn column);
 
 	/**
-	 * Return a copy of this row
+	 * Return a copy of this row.
 	 * @return a copy of this row
 	 */
 	public abstract Row copy();

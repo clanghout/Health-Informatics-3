@@ -9,7 +9,7 @@ import java.util.List;
  *
  * Created by jens on 5/19/15.
  */
-public abstract class Table implements Iterable{
+public abstract class Table implements Iterable {
 
 	/**
 	 * Create an iterator that iterates over all rows of the table.
@@ -32,7 +32,7 @@ public abstract class Table implements Iterable{
 	public abstract void deleteNotFlagged();
 
 	/**
-	 * Return a copy of this table
+	 * Return a copy of this table.
 	 * @return a copy of this row
 	 */
 	public abstract Table copy();
@@ -56,7 +56,7 @@ public abstract class Table implements Iterable{
 	 * @return true if the tables have the same structure
 	 */
 	public boolean equalStructure(Object obj) {
-		if (! (obj instanceof Table)) {
+		if (!(obj instanceof Table)) {
 			return false;
 		}
 
@@ -74,7 +74,7 @@ public abstract class Table implements Iterable{
 						break;
 					}
 				}
-				if(!same) {
+				if (!same) {
 					return false;
 				}
 			}

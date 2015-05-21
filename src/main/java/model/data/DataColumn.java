@@ -54,7 +54,7 @@ public class DataColumn {
 	}
 
 	/**
-	 * create a copy of this column
+	 * create a copy of this column.
 	 * @return a copy of this column
 	 */
 	public DataColumn copy() {
@@ -84,7 +84,7 @@ public class DataColumn {
 	}
 
 	/**
-	 * equals method, return true if name and type are equals
+	 * equals method, return true if name and type are equals.
 	 * @param obj other column
 	 * @return true if column is equals to this column
 	 */

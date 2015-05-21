@@ -76,7 +76,8 @@ public class CombinedDataTable extends Table {
 		}
 		CombinedDataTable other = (CombinedDataTable) obj;
 		if (this.combined != null) {
-			return table.equalsSoft(((CombinedDataTable) obj).table) && this.combined.equalsSoft(other.combined);
+			return table.equalsSoft(((CombinedDataTable) obj).table)
+					&& this.combined.equalsSoft(other.combined);
 		}
 		return table.equalsSoft(((CombinedDataTable) obj).table) && other.combined == null;
 
@@ -97,8 +98,8 @@ public class CombinedDataTable extends Table {
 	 * @return true if there is a table found that had this row.
 	 */
 	public boolean flagNotDelete(DataRow row) {
-		return (table.flagNotDelete(row)) ||
-				(combined != null && combined.flagNotDelete(row));
+		return (table.flagNotDelete(row))
+				|| (combined != null && combined.flagNotDelete(row));
 	}
 
 	@Override

@@ -119,12 +119,12 @@ public class DataTable extends Table {
 	public DataTable copy() {
 		DataTable table = new DataTable();
 		table.name = this.name;
-		for(DataColumn column : columns.values()) {
+		for (DataColumn column : columns.values()) {
 			DataColumn newColumn = column.copy();
 			table.columns.put(newColumn.getName(), newColumn);
 			newColumn.setTable(table);
 		}
-		for(DataRow row : rows) {
+		for (DataRow row : rows) {
 			DataRow newRow = row.copy();
 			table.rows.add(newRow);
 		}
@@ -138,7 +138,7 @@ public class DataTable extends Table {
 		}
 		DataTable other = (DataTable) obj;
 
-		for(DataRow row : rows) {
+		for (DataRow row : rows) {
 			boolean res = false;
 			for (DataRow rowOther : other.rows) {
 				if (row.equalsSoft(rowOther)) {
@@ -146,7 +146,7 @@ public class DataTable extends Table {
 					break;
 				}
 			}
-			if(!res) {
+			if (!res) {
 				return false;
 			}
 		}
@@ -174,7 +174,7 @@ public class DataTable extends Table {
 					break;
 				}
 			}
-			if(!same) {
+			if (!same) {
 				return false;
 			}
 		}

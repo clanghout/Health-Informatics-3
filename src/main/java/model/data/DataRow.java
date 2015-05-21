@@ -5,9 +5,7 @@ import exceptions.ColumnValueTypeMismatchException;
 import model.data.value.DataValue;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -99,7 +97,7 @@ public class DataRow extends Row {
 		if (columns.length > 0 && table.equalStructure(columns[0].getTable())) {
 			for (DataColumn column : table.getColumns()) {
 				for (DataColumn columnThis : values.keySet()) {
-					if(columnThis.equalsExcludeTable(column)) {
+					if (columnThis.equalsExcludeTable(column)) {
 						row.setValue(column,
 								values.get(columnThis).copy());
 						break;
@@ -123,7 +121,7 @@ public class DataRow extends Row {
 		}
 
 		for (DataColumn column : values.keySet()) {
-			if (! this.getValue(column).equals(other.getValue(column))) {
+			if (!this.getValue(column).equals(other.getValue(column))) {
 				return false;
 			}
 		}
@@ -143,8 +141,8 @@ public class DataRow extends Row {
 		for (DataColumn column : values.keySet()) {
 			boolean same = false;
 			for (DataColumn otherColumn : other.values.keySet()) {
-				if( column.equalsExcludeTable(otherColumn)) {
-					if (! this.getValue(column).equals(other.getValue(otherColumn))) {
+				if (column.equalsExcludeTable(otherColumn)) {
+					if (!this.getValue(column).equals(other.getValue(otherColumn))) {
 						return false;
 					} else {
 						same = true;
@@ -152,7 +150,7 @@ public class DataRow extends Row {
 					}
 				}
 			}
-			if(!same) {
+			if (!same) {
 				return false;
 			}
 		}
@@ -162,7 +160,7 @@ public class DataRow extends Row {
 	@Override
 	public int hashCode() {
 		int res = 0;
-		for(Map.Entry<DataColumn, DataValue> entry : values.entrySet()) {
+		for (Map.Entry<DataColumn, DataValue> entry : values.entrySet()) {
 			DataColumn key = entry.getKey();
 			DataValue value = entry.getValue();
 
