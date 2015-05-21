@@ -2,10 +2,9 @@ package ui;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import model.data.DataModel;
 
 import java.util.logging.Logger;
-
-import model.data.DataModel;
 
 /**
  * Controls the elements of the GUI.
@@ -16,7 +15,7 @@ public class MainUIController {
 
 	@FXML private TableViewController tableViewController;
 	@FXML private DataController dataController;
-//	@FXML private AnalysisController analysisController;
+	@FXML private AnalysisController analysisController;
 //	@FXML private VisualizationController visualizationController;
 	
 	private DataModel model;
@@ -26,7 +25,6 @@ public class MainUIController {
 	@FXML public void initialize() {
 		this.tableViewController.initialize(this);
 		this.dataController.initialize(this);
-//		this.analysisController.initialize(this);
 //		this.visualizationController.initialize(this);
 	}
 	
@@ -43,6 +41,7 @@ public class MainUIController {
 	public void setModel(DataModel model) {
 		this.model = model;
 		tableViewController.setDataModel(model);
+		analysisController.setDataModel(model);
 	}
 
 }
