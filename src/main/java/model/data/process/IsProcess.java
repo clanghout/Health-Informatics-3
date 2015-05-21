@@ -13,6 +13,10 @@ public class IsProcess extends DataProcess {
 
 	private final Identifier<DataTable> table;
 
+	/**
+	 * Construct a new IsProcess.
+	 * @param table The name you want to give to the table.
+	 */
 	public IsProcess(Identifier<DataTable> table) {
 		this.table = table;
 	}
