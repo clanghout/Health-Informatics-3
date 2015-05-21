@@ -190,5 +190,13 @@ public class DataTable extends Table {
 		return res;
 	}
 
+	@Override
+	public DataTable export(String name) {
+		DataTable res = copy();
+		res.name = name;
+
+		return res;
+	}
+
 
 }

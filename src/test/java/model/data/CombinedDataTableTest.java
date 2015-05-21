@@ -312,5 +312,30 @@ public class CombinedDataTableTest {
 		assertTrue(columnsList.contains(columns[2][0]));
 	}
 
+	@Test
+	public void testExport() throws Exception {
+		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
+		DataTable copy = comb.export("test");
+
+		List<DataRow> rowsCopy = copy.getRows();
+		assertEquals(rowsCopy.get(0).getValue(copy.getColumn("test1.column1")).toString(), "value1");
+		assertEquals(rowsCopy.get(0).getValue(copy.getColumn("test2.column2")).toString(), "fsa");
+		assertEquals(rowsCopy.get(0).getValue(copy.getColumn("test3.column1")).toString(), "ewa");
+
+		assertEquals(rowsCopy.get(1).getValue(copy.getColumn("test1.column1")).toString(), "value1b");
+		assertEquals(rowsCopy.get(1).getValue(copy.getColumn("test2.column2")).toString(), "fsa");
+		assertEquals(rowsCopy.get(1).getValue(copy.getColumn("test3.column1")).toString(), "ewa");
+
+		assertEquals(rowsCopy.get(3).getValue(copy.getColumn("column3")).toString(), "value3");
+		assertEquals(rowsCopy.get(3).getValue(copy.getColumn("test2.column2")).toString(), "asf");
+		assertEquals(rowsCopy.get(3).getValue(copy.getColumn("test3.column1")).toString(), "ewa");
+
+		assertEquals(rowsCopy.get(5).getValue(copy.getColumn("test1.column2")).toString(), "value2c");
+		assertEquals(rowsCopy.get(5).getValue(copy.getColumn("test2.column1")).toString(), "sfa");
+		assertEquals(rowsCopy.get(5).getValue(copy.getColumn("test3.column1")).toString(), "ewa");
+
+		assertEquals(copy.getName(), "test");
+	}
+
 
 }
