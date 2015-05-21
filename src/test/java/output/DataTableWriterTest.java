@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -65,10 +66,8 @@ public class DataTableWriterTest {
 		rows.add(new DataRow(columns, valuesRow2));
 		rows.add(new DataRow(columns, valuesRow3));
 
-		HashMap<String, DataColumn> columnsMap = new HashMap<>();
-		for (DataColumn c : this.columns) {
-			columnsMap.put(c.getName(), c);
-		}
+		ArrayList<DataColumn> columnsMap = new ArrayList<>(Arrays.asList(this.columns));
+
 		when(dataTable.getRows()).thenReturn(unmodifiableList(rows));
 		when(dataTable.getColumns()).thenReturn(columnsMap);
 
@@ -76,11 +75,11 @@ public class DataTableWriterTest {
 		writer.write(dataTable, testFile, ",");
 		BufferedReader reader = new BufferedReader(new FileReader(testFile));
 		String firstLine = reader.readLine();
-		assertEquals(firstLine, "value1,value3,value2");
+		assertEquals(firstLine, "value1,value2,value3");
 		String secondLine = reader.readLine();
-		assertEquals(secondLine, "value1b,value3b,value2b");
+		assertEquals(secondLine, "value1b,value2b,value3b");
 		String thirdLine = reader.readLine();
-		assertEquals(thirdLine, "value1c,value3c,value2c");
+		assertEquals(thirdLine, "value1c,value2c,value3c");
 	}
 
 	@Test
@@ -98,10 +97,8 @@ public class DataTableWriterTest {
 		};
 		rows.add(new DataRow(columns, valuesRow1));
 
-		HashMap<String, DataColumn> columnsMap = new HashMap<>();
-		for (DataColumn c : this.columns) {
-			columnsMap.put(c.getName(), c);
-		}
+		ArrayList<DataColumn> columnsMap = new ArrayList<>(Arrays.asList(this.columns));
+
 		when(dataTable.getRows()).thenReturn(unmodifiableList(rows));
 		when(dataTable.getColumns()).thenReturn(columnsMap);
 
@@ -109,11 +106,11 @@ public class DataTableWriterTest {
 		writer.write(dataTable, testFile, "\t");
 		BufferedReader reader = new BufferedReader(new FileReader(testFile));
 		String firstLine = reader.readLine();
-		assertEquals(firstLine, "value1\tvalue3\tvalue2");
+		assertEquals(firstLine, "value1\tvalue2\tvalue3");
 		writer.write(dataTable, testFile, " ");
 		reader = new BufferedReader(new FileReader(testFile));
 		firstLine = reader.readLine();
-		assertEquals(firstLine, "value1 value3 value2");
+		assertEquals(firstLine, "value1 value2 value3");
 	}
 
 	@Test

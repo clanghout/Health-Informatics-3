@@ -2,7 +2,6 @@ package model.reader;
 
 import model.data.DataTable;
 import model.data.DataTableBuilder;
-import model.data.DataRow;
 import model.data.value.DataValue;
 import model.data.value.StringValue;
 

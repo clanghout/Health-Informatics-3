@@ -41,6 +41,11 @@ public final class IntValue extends NumberValue<Integer> {
 	}
 
 	@Override
+	public IntValue copy() {
+		return new IntValue(value);
+	}
+
+	@Override
 	public int hashCode() {
 		return value;
 	}

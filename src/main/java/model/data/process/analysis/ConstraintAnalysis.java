@@ -33,6 +33,6 @@ public class ConstraintAnalysis extends DataAnalysis {
 			}
 		}
 		input.deleteNotFlagged();
-	return input;
+		return input;
 	}
 }
