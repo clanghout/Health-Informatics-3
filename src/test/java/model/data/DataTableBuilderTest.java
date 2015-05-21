@@ -83,7 +83,7 @@ public class DataTableBuilderTest {
 		assertEquals(builder.build().getColumns().size(), 0, 0.1);
 		DataColumn column = builder.createColumn("test", StringValue.class);
 		builder.addColumn(column);
-		assertEquals(builder.build().getColumns().get("test"), column);
+		assertEquals(builder.build().getColumn("test"), column);
 	}
 
 	@Test

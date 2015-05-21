@@ -2,7 +2,10 @@ package model.data;
 
 import java.util.Iterator;
 import java.util.List;
+<<<<<<< HEAD
 import java.util.Objects;
+=======
+>>>>>>> 6c316f31273d2b2bab7c120d415ca54b28da09c1
 
 /**
  * The interface that defines a table.
@@ -32,6 +35,7 @@ public interface Table {
 	void deleteNotFlagged();
 
 	/**
+<<<<<<< HEAD
 	 * Return a copy of this table
 	 * @return a copy of this row
 	 */
@@ -56,5 +60,4 @@ public interface Table {
 	 * @return A list that contains all the columns
 	 */
 	List<DataColumn> getColumns();
-
 }

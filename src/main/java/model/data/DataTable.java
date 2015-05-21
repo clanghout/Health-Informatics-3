@@ -81,7 +81,7 @@ public class DataTable implements Table, Iterable {
 	 * @param columnName the name of the column
 	 * @return the column with the name columnName
 	 */
-	public DataColumn getColumns(String columnName) {
+	public DataColumn getColumn(String columnName) {
 		return columns.get(columnName);
 	}
 	/**
