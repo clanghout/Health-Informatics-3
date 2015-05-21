@@ -22,6 +22,7 @@ class MacroType {
 		LanguageParser parser = Parboiled.createParser(LanguageParser.class);
 		if (type.equals("Constraint")) {
 			BasicParseRunner runner = new BasicParseRunner(parser.Comparison());
+			runner.run(body);
 			CompareNode node = (CompareNode) runner.getValueStack().pop();
 			return node.resolve(model);
 		} else {
