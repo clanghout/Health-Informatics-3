@@ -242,4 +242,20 @@ public class DataTableTest {
 
 		assertEquals(table.hashCode(), copy.hashCode());
 	}
+
+	@Test
+	public void testExport() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("t");
+		builder.createColumn("column1", StringValue.class);
+		builder.createRow(new StringValue("te"));
+		DataTable table = builder.build();
+
+		DataTable copy = table.export("t2");
+
+		assertFalse(copy == table);
+		assertEquals(copy.getName(), "t2");
+		assertFalse(table.equals(copy));
+		assertTrue(table.equalsSoft(copy));
+	}
 }
