@@ -5,17 +5,35 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 /**
- * Data Class containing a value with type Time.
+ * Data Class containing a value with type Calendar.
+ * <p> type of value
+ * This is the parent class of the dateValue and TimeValue.
  */
 public class DateTimeValue extends DataValue<Calendar> {
 	private SimpleDateFormat simpleDateFormat;
 	private Calendar value;
 
+	/**
+	 * Construct new GregorianCalendar object and simpleDateFormat.
+	 *
+	 * @param year   the year as int
+	 * @param month  the month as int, in the calendar months start by 0 so
+	 *               the parameter -1 is used in the creation of the calendar.
+	 * @param day    the day as int
+	 * @param hour   the hour as int
+	 * @param minute the minute as int
+	 * @param second the second as int
+	 */
 	public DateTimeValue(int year, int month, int day, int hour, int minute, int second) {
 		this.value = new GregorianCalendar(year, month - 1, day, hour, minute, second);
 		setSimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 	}
 
+	/**
+	 * Set the format of the toString.
+	 *
+	 * @param format String that specifies the format of the date.
+	 */
 	public void setSimpleDateFormat(String format) {
 		this.simpleDateFormat = new SimpleDateFormat(format);
 	}
