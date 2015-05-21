@@ -62,4 +62,10 @@ public class DateTimeValue extends DataValue<Calendar> {
 	public int hashCode() {
 		return value.hashCode();
 	}
+
+	@Override
+	public DataValue copy() {
+		//TODO
+		return null;
+	}
 }

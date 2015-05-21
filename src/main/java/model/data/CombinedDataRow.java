@@ -3,6 +3,7 @@ package model.data;
 import model.data.value.DataValue;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ import java.util.List;
  *
  * Created by jens on 5/18/15.
  */
-public class CombinedDataRow implements Row {
+public class CombinedDataRow extends Row {
 	private List<DataRow> rows;
 
 	public CombinedDataRow() {
@@ -83,8 +84,22 @@ public class CombinedDataRow implements Row {
 	}
 
 	@Override
+	public boolean equals(Object obj) {
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return 0;
+	}
+
+	@Override
 	public Row copy(Table table) {
 		return null;
 	}
 
+	@Override
+	public Iterator iterator() {
+		return null;
+	}
 }
