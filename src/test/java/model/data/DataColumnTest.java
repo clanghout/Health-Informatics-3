@@ -50,6 +50,18 @@ public class DataColumnTest {
 	}
 
 	@Test
+	public void testCopyWithTable() throws Exception {
+		DataTable table1 = new DataTable("t1");
+		DataTable table2 = new DataTable("t2");
+		DataColumn column = new DataColumn("test", table1, StringValue.class);
+		DataColumn copy = column.copy(table2);
+		assertNotEquals(column.getTable(), copy.getTable());
+		assertEquals(copy.getTable(), table2);
+		assertEquals(column.getName(), copy.getName());
+		assertEquals(column.getType(), copy.getType());
+	}
+
+	@Test
 	public void testEqualsTrue() throws Exception {
 		DataTable table1 = new DataTable();
 		DataColumn column = new DataColumn("test", table1, StringValue.class);
@@ -66,6 +78,15 @@ public class DataColumnTest {
 
 		assertFalse(column.equals(column2));
 		assertFalse(column.equals(column3));
+	}
+
+	@Test
+	public void testEqualsExcludeTable() throws Exception {
+		DataTable table1 = new DataTable();
+		DataColumn column = new DataColumn("test", table1, StringValue.class);
+		DataColumn column2 = new DataColumn("test", new DataTable(), StringValue.class);
+		assertFalse(column.equals(column2));
+		assertTrue(column.equalsExcludeTable(column2));
 	}
 
 	@Test

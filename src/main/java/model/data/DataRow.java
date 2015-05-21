@@ -90,14 +90,22 @@ public class DataRow extends Row {
 		return row;
 	}
 
-	public Row copy(Table table) {
+	public DataRow copy(DataTable table) {
 		DataRow row = new DataRow();
 		DataColumn[] columns = values.keySet().toArray(new DataColumn[ values.keySet().size()]);
 		if (columns.length > 0 && table.equalStructure(columns[0].getTable())) {
 			Iterator<DataColumn> columnsTable = table.getColumns().iterator();
 			while (columnsTable.hasNext()) {
 				DataColumn column = columnsTable.next();
-				row.setValue(column, values.get(column).copy());
+				Iterator<DataColumn> columnsThis =  values.keySet().iterator();
+				while (columnsThis.hasNext()) {
+					DataColumn columnThis = columnsThis.next();
+					if(columnThis.equalsExcludeTable(column)) {
+						row.setValue(column,
+								values.get(columnThis).copy());
+						break;
+					}
+				}
 			}
 			return row;
 		} else {
@@ -126,9 +134,9 @@ public class DataRow extends Row {
 	}
 
 	/**
-	 * equals method, return true if name and type are equals
-	 * @param obj other column
-	 * @return true if column is equals to this column
+	 * equals method, return true if the columns and the values are softequal
+	 * @param obj other row
+	 * @return true if column is softequals to this row
 	 */
 	public boolean equalsSoft(Object obj) {
 		if (!(obj instanceof DataRow)) {
@@ -145,7 +153,7 @@ public class DataRow extends Row {
 			DataColumn column = columns.next();
 			boolean res = false;
 			while (otherColumns.hasNext() && !res) {
-				DataColumn otherColumn = columns.next();
+				DataColumn otherColumn = otherColumns.next();
 				if( column.equalsExcludeTable(otherColumn)) {
 					if (! this.getValue(column).equals(other.getValue(otherColumn))) {
 						return false;

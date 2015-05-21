@@ -187,6 +187,9 @@ public class DataTable extends Table {
 
 	@Override
 	public int hashCode() {
+		if(name == null) {
+			throw new IllegalStateException("name is not set");
+		}
 		return name.hashCode();
 	}
 

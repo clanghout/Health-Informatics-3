@@ -151,5 +151,112 @@ public class DataRowTest {
 		assertEquals(copy.getValue(columns[0]), row.getValue(columns[0]));
 	}
 
+	@Test
+	public void testCopyTable() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		DataTableBuilder builderCopy = new DataTableBuilder();
+		builder.setName("t1");
+		builderCopy.setName("t1C");
+		DataColumn[] columns = new DataColumn[2];
+		DataColumn[] columnsCopy  = new DataColumn[2];
+
+		columns[0] = builder.createColumn("a", StringValue.class);
+		columns[1] = builder.createColumn("a", StringValue.class);
+
+		columnsCopy[0] = builderCopy.createColumn("a", StringValue.class);
+		columnsCopy[1] = builderCopy.createColumn("a", StringValue.class);
+
+		DataValue[] values = new DataValue[2];
+
+
+		values[0] = new StringValue("test1");
+		values[1] = new StringValue("test2");
+
+		DataRow row = builder.createRow(values);
+		builder.build();
+		DataTable copyTable = builderCopy.build();
+		Row copy = row.copy(copyTable);
+		assertEquals(copy.getValue(columns[0]), row.getValue(columnsCopy[0]));
+	}
+
+	@Test
+	public void testEqual() throws Exception {
+		DataColumn[] columns = new DataColumn[2];
+		DataValue[] values = new DataValue[2];
+		columns[0] = new DataColumn("a", new DataTable(), StringValue.class);
+		columns[1] = new DataColumn("b", new DataTable(), StringValue.class);
+
+		values[0] = new StringValue("test1");
+		values[1] = new StringValue("test2");
+
+		DataRow row = new DataRow(columns, values);
+		DataRow copy = row.copy();
+		assertTrue(row.equals(copy));
+	}
+
+	@Test
+	public void testEqualsFalse() throws Exception {
+		DataColumn[] columns = new DataColumn[2];
+		DataValue[] values = new DataValue[2];
+		DataColumn[] columns2 = new DataColumn[2];
+		DataValue[] values2 = new DataValue[2];
+		columns[0] = new DataColumn("a", new DataTable(), StringValue.class);
+		columns[1] = new DataColumn("b", new DataTable(), StringValue.class);
+		columns2[0] = new DataColumn("a", new DataTable(), StringValue.class);
+		columns2[1] = new DataColumn("b", new DataTable(), StringValue.class);
+
+		values[0] = new StringValue("test1");
+		values[1] = new StringValue("test2");
+		values2[0] = new StringValue("test1");
+		values2[1] = new StringValue("test2");
+
+		DataRow row = new DataRow(columns, values);
+		DataRow copy = new DataRow(columns2, values2);
+		assertFalse(row.equals(copy));
+	}
+
+	@Test
+	public void testSoftEqual() throws Exception {
+		DataColumn[] columns = new DataColumn[2];
+		DataValue[] values = new DataValue[2];
+		DataColumn[] columns2 = new DataColumn[2];
+		DataValue[] values2 = new DataValue[2];
+		columns[0] = new DataColumn("a", new DataTable(), StringValue.class);
+		columns[1] = new DataColumn("b", new DataTable(), StringValue.class);
+		columns2[0] = new DataColumn("a", new DataTable(), StringValue.class);
+		columns2[1] = new DataColumn("b", new DataTable(), StringValue.class);
+
+		values[0] = new StringValue("test1");
+		values[1] = new StringValue("test2");
+		values2[0] = new StringValue("test1");
+		values2[1] = new StringValue("test2");
+
+		DataRow row = new DataRow(columns, values);
+		DataRow copy = new DataRow(columns2, values2);
+		assertTrue(row.equalsSoft(copy));
+	}
+
+	@Test
+	public void testHasCode() throws Exception {
+		DataColumn[] columns = new DataColumn[2];
+		DataValue[] values = new DataValue[2];
+		DataColumn[] columns2 = new DataColumn[2];
+		DataValue[] values2 = new DataValue[2];
+		columns[0] = new DataColumn("a", new DataTable(), StringValue.class);
+		columns[1] = new DataColumn("b", new DataTable(), StringValue.class);
+		columns2[0] = new DataColumn("a", new DataTable(), StringValue.class);
+		columns2[1] = new DataColumn("b", new DataTable(), StringValue.class);
+
+		values[0] = new StringValue("test1");
+		values[1] = new StringValue("test2");
+		values2[0] = new StringValue("test1");
+		values2[1] = new StringValue("test2");
+
+		DataRow row = new DataRow(columns, values);
+		DataRow copy = new DataRow(columns2, values2);
+		assertEquals(row.hashCode(), copy.hashCode());
+	}
+
+
 
 }
