@@ -1,6 +1,7 @@
 package model.data;
 
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * The interface that defines a table.
@@ -28,4 +29,11 @@ public interface Table {
 	 * Remove the flags from the remaining rows.
 	 */
 	void deleteNotFlagged();
+
+	/**
+	 * Get the columns of the table.
+	 *
+	 * @return A List that contains all the columns
+	 */
+	List<DataColumn> getColumns();
 }
