@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Tab text="View" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<Tab fx:controller="ui.TableViewController" text="View" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 <content>
 	<AnchorPane>
 		 <children>
@@ -21,6 +21,10 @@
 						<AnchorPane styleClass="data-fields-container" fx:id="datafields" />
 					</items>
 				</SplitPane>
+				<Button
+                    styleClass="analyse-button"
+                    onAction="#fillTable"
+                    text="Analyze" />
 		 </children>
 	</AnchorPane>
 </content>

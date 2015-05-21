@@ -29,10 +29,10 @@
 		<children>
 			<TabPane AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" tabClosingPolicy="UNAVAILABLE">
 				<tabs>
-					<fx:include source="tab_data.fxml"/>
-					<fx:include source="tab_view.fxml"/>
-					<fx:include source="tab_analysis.fxml"/>
-					<fx:include source="tab_visualization.fxml"/>
+					<fx:include source="tab_data.fxml" fx:id="data"/>
+					<fx:include source="tab_view.fxml" fx:id="tableView"/>
+					<fx:include source="tab_analysis.fxml" fx:id="analysis"/>
+					<fx:include source="tab_visualization.fxml" fx:id="visualization"/>
 				</tabs>
 			</TabPane>
 		</children>

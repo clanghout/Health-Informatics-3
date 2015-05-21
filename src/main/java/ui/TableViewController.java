@@ -26,35 +26,42 @@ public class TableViewController implements Observer {
 	
 	private Logger logger = Logger.getLogger("TabViewController");
 	
-	@FXML
-	private TableView datatable;
+	@FXML private TableView tableView;
+	
+	private MainUIController mainUIController;
+	
 	private DataModel model;
 	
 	/**
 	 * Creates a new TableViewController.
 	 */
 	public TableViewController() { 
-	    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/tab_view.fxml"));
-	    fxmlLoader.setController(this);
-	    try {
-	        fxmlLoader.load();
-	    } catch (Exception e) {
-			logger.log(Level.SEVERE, "Failed to read fxml file", e);
-	    }
+		System.out.println(this);
+//	    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/tab_view.fxml"));
+//	    fxmlLoader.setController(this);
+//	    try {
+//	        fxmlLoader.load();
+//	    } catch (Exception e) {
+//			logger.log(Level.SEVERE, "Failed to read fxml file", e);
+//	    }
+	}
+	
+	public void initialize(MainUIController mainUIController) {
+		this.mainUIController = mainUIController;
 	}
 	
 	public void fillTable()  {
 		logger.info("update table");
 		logger.info("Model = " + model);
-//			for (DataTable t: model) {
-//			Map<String, DataColumn> m = t.getColumns();
-//			Set<String> set = m.keySet();
-//			for (String header : set) {
-//				logger.info(header);
-//				TableColumn col = new TableColumn(header);
-//				datatable.getColumns().addAll(col);
-//			}
-//		}
+			for (DataTable t: model) {
+			Map<String, DataColumn> m = t.getColumns();
+			Set<String> set = m.keySet();
+			for (String header : set) {
+				logger.info(header);
+				TableColumn col = new TableColumn(header);
+				tableView.getColumns().addAll(col);
+			}
+		}
 	}
 	
 	/**

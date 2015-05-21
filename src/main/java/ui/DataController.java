@@ -40,12 +40,7 @@ public class DataController {
 	@FXML
 	private Parent root;
 	
-	@FXML
-	private TableView tableView;
-	
-	@FXML
-	private TableViewController tableViewController;
-	
+	private MainUIController mainUIController;
 	private DataModel model;
 	
 	private Logger logger = Logger.getLogger("DataController");
@@ -58,6 +53,10 @@ public class DataController {
 	 * Creates a new TableViewController.
 	 */
 	public DataController() {
+	}
+	
+	public void initialize(MainUIController mainUIController) {
+		this.mainUIController = mainUIController;
 	}
 	
 	@FXML
@@ -89,10 +88,9 @@ public class DataController {
 			DataReader dataReader = new DataReader();
 			input = dataReader.readData(dataFile.getDataStream());
 			model = new DataModel();
+			mainUIController.setModel(model);
 			model.add(input);
-			tableViewController = new TableViewController();
-			tableViewController.setDataModel(model);
-			System.out.println(tableViewController);
+			
 			Constraint constraint = new EqualityCheck<>(
 					new RowValueDescriber<>(input.getColumns().get("time")),
 					new ConstantDescriber<>(new StringValue("0803"))
