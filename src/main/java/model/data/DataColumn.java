@@ -81,6 +81,20 @@ public class DataColumn {
 				&& this.name.equals(other.name);
 	}
 
+	/**
+	 * equals method, return true if name and type are equals
+	 * @param obj other column
+	 * @return true if column is equals to this column
+	 */
+	public boolean equalsExcludeTable(Object obj) {
+		if (!(obj instanceof DataColumn)) {
+			return false;
+		}
+		DataColumn other = (DataColumn) obj;
+		return this.type.equals(other.type)
+				&& this.name.equals(other.name);
+	}
+
 	@Override
 	public int hashCode() {
 		return type.hashCode() + name.hashCode();

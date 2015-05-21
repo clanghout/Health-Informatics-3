@@ -129,6 +129,20 @@ public class DataTable implements Table, Iterable {
 
 	@Override
 	public boolean equalStructure(Object obj) {
+		if (obj instanceof Table) {
+			Table table = (Table) obj;
+			List<DataColumn> otherColumns = table.getColumns();
+
+			if (otherColumns.size() == columns.size()) {
+				for (int i = 0; i < columns.size(); i++) {
+					if (!otherColumns.contains(columns.get(i))) {
+						return false;
+					}
+				}
+				return true;
+			}
+		}
+
 		return false;
 	}
 }
