@@ -52,12 +52,12 @@ analysis.
 
 \subsection{Code quality}
 In the project we strive to have good code readability and the code must be easy to understand. This is also an important part of the static analysis. We handle the pull based system on Github. For each new feature that will be implemented the author of that feature must create a new branch and do all his work in that branch so that the master branch always consists of a working version of the software. If someone wants to commit he has to make a pull request first. His code will then be reviewed by at least 2 teammembers and eventually fixed before it can be merged with the working version in the master branch.\\
-We make use of validating tools that provides information about the quality of the software:
+We make use of static analysis tools that provide information about the quality of the software:
 \begin{description}
-\item[Corbertura] 
+\item[Corbertura] We use this tool to find out how much test coverage we have in our system. Our goal is to keep the test coverage at at least 75\%.
 \item[Checkstyle] To improve code quality in terms of styling we have code conventions which the writer should follow before his code is accepted. This is done by the Checkstyle plugin in the IDE that makes sure these conventions are followed.
-\item[FindBugs] 
-\item[PMD] 
+\item[FindBugs] This tool will help us find where our program may contain some faults. This also makes code reviewing for teammembers easier since the process is automated. If there are faults, the writer should fix them to make the code acceptable.
+\item[PMD] To find some other potential mistakes in the code we use PMD to detect these mistakes.
 \end{description}
 
 It is up to the writer to fix the warnings produced by these tools, or provide a clear explanation whether the warning will not be fixed.
@@ -125,7 +125,7 @@ provided to us in excel formats. Another reason is that it is developed by the
 Apache Software Foundation which also created Maven so it was easy to include in
 the build.
 
-\item[Java SAX] Reading the xml file that specify the datafiles. This choice is
+\item[Java SAX] Reading the xml file that specifies the datafiles. This choice is
 made because it is easy to use and well documented. The library is also included
 in the JDK so it did not require any additional installation effort.
 
@@ -147,6 +147,7 @@ stub certain object needed by the method.
 \item[Analysis] An analysis that can be done on measuring data to come to an answer to a specific question.
 \item[Git \& GitHub] Git is the tool to control the versions in a repository. GitHub is the web-tool to make the versions available for group use.
 \item[GUI] Graphical User Interface.
+\item[IDE] Integrated Development Environment
 \item[JDK] Java development kit
 \item[SUGAR] The scripting language used to create analyses.
 \item[Pull Request] Are made on GitHub to get your commits to the code verified and merged with the master branch.
