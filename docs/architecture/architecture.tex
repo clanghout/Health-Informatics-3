@@ -129,7 +129,13 @@ the build.
 made because it is easy to use and well documented. The library is also included
 in the JDK so it did not require any additional installation effort.
 
-\item[Parboiled]
+\item[Parboiled] In the parser department we had lots of choice. We tried to find a
+framework which was both simple to use and still powerful enough for our use. This lead
+us to Parboiled. The beauty of Parboiled is the fact that you can write your rules in
+plain Java. This means you don't get an extra build process. The disadvantage is that
+Parboiled does some magical stuff which our analysis tools don't fully understand, 
+so you need to be aware of it. All in all we're really satisfied with the strength of
+Parboiled and feel that we've made the right choice.
 
 \end{description}
 
