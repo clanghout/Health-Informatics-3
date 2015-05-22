@@ -78,6 +78,8 @@ The software is based on the model-view-controller design pattern. The idea is t
 
 \subsection{Subsystem decomposition}
 
+As mentioned before our program consists of modules that work together. In figure~\ref{fig:modules} these modules are laid out.
+
 \begin{figure}[h]
 	\centering
     	\includegraphics[scale=0.5]{images/modules.jpg}
@@ -85,15 +87,23 @@ The software is based on the model-view-controller design pattern. The idea is t
 	\label{fig:modules}
 \end{figure}
 
-The input module should be able to read the data. With that data a dataModel
-can be constructed. \\
-The Analysis Specification module processes the script that defines how the
-data should be analyzed. The user provides this script. This module translate
-the script in operations that can be performed by the Analysis Module.\\
-The Analysis Module perform the analyses over the dataModel. The output of this
-module is the result of the analysis, this is a dataModel.\\
-The Visualization module creates a certain visual representation of a
-dataModel. For example it can create a box-plot of the creatine levels.
+\begin{description}
+\item[Input]
+The input module is able to read the data from provided files that are specified in an xml file. With that data a dataModel can be constructed.
+\item[Model]
+The model module contains and manages the data that was read and/or analyzed by the user. This data will also be provided to the controller and analysis modules. The data is stored in tables.
+\item[Analysis Specification]
+The Analysis Specification module processes the SUGAR script that defines how the data should be analyzed. The user provides this script. In this module the script is parsed in operations that can be performed by the Analysis Module.
+\item[Analysis]
+The Analysis Module performs the analyses over the dataModel. It contains all the operations (the 8 C's) to make the exploratory sequential data analysis possible. The output of this module is the result of the analysis, this is a table that will be added to the model.
+\item[Controller]
+The controller module is responsible for the program's front-end behaviour. It is the module to which the user has access. The controller uses the current state of the model to produce the according view for the user.
+\item[Visualization]
+The Visualization module creates a certain visual representation of a dataModel. For example it can create a box-plot of the creatine levels.
+\item[View]
+The view module is responsible for the appearance of the user interface. Determining by the controller, the view can change accordingly.
+
+\end{description}
 \newpage
 \subsection{State diagram}
 Below is the state diagram which describes the flow of the program.
