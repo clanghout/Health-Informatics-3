@@ -100,10 +100,31 @@ We also use the JavaFX Scene Builder as a tool to design parts of the GUI becaus
 
 \subsection{Used libraries}
 \begin{description}
-\item[JavaFX] Creating the graphical user interface.
-\item[Mockito] Mocking objects to test behavior.
-\item[Apache POI] Reading data analysis files stored in the Microsoft Excel format.
-\item[Java SAX] Reading the xml file that specify the datafiles.
+
+\item[JavaFX] Creating the graphical user interface. We chose JavaFX since this
+is Java's latest framework to create these interfaces and provides some
+improvements on the previous frameworks. One of these is the use of fxml to
+construct the static part (view) of the GUI. Some of us already gained some
+experience with it during the Software Engineering Methods course.
+
+\item[Mockito] Mocking objects to test behavior. We did not specifically choose
+for this framework but we have used it before in previous courses and it did not
+seem like a big necessity to change to a different mocking framework as this
+will only require more effort to learn it.
+
+\item[Apache POI] Reading data analysis files stored in the Microsoft Excel
+format. This is one of the main excel parsers and easy to use. We chose this
+library because it applies very good solution for reading the data that was
+provided to us in excel formats. Another reason is that it is developed by the 
+Apache Software Foundation which also created Maven so it was easy to include in
+the build.
+
+\item[Java SAX] Reading the xml file that specify the datafiles. This choice is
+made because it is easy to use and well documented. The library is also included
+in the JDK so it did not require any additional installation effort.
+
+\item[Parboiled]
+
 \end{description}
 
 \section{Testing}
@@ -118,11 +139,10 @@ stub certain object needed by the method.
 \begin{description}
 
 \item[Analysis] An analysis that can be done on measuring data to come to an answer to a specific question.
-
 \item[Git \& GitHub] Git is the tool to control the versions in a repository. GitHub is the web-tool to make the versions available for group use.
-
+\item[GUI] Graphical User Interface.
+\item[JDK] Java development kit
 \item[SUGAR] The scripting language used to create analyses.
-
 \item[Pull Request] Are made on GitHub to get your commits to the code verified and merged with the master branch.
 
 \end{description}
