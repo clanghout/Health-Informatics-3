@@ -52,9 +52,15 @@ analysis.
 
 \subsection{Code quality}
 In the project we strive to have good code readability and the code must be easy to understand. This is also an important part of the static analysis. We handle the pull based system on Github. For each new feature that will be implemented the author of that feature must create a new branch and do all his work in that branch so that the master branch always consists of a working version of the software. If someone wants to commit he has to make a pull request first. His code will then be reviewed by at least 2 teammembers and eventually fixed before it can be merged with the working version in the master branch.\\
-To improve code quality we have code conventions which the writer should follow before
-his code is accepted. This is done by the Checkstyle plugin in the IDE that makes
-sure these conventions are followed.
+We make use of validating tools that provides information about the quality of the software:
+\begin{description}
+\item[Corbertura] 
+\item[Checkstyle] To improve code quality in terms of styling we have code conventions which the writer should follow before his code is accepted. This is done by the Checkstyle plugin in the IDE that makes sure these conventions are followed.
+\item[FindBugs] 
+\item[PMD] 
+\end{description}
+
+It is up to the writer to fix the warnings produced by these tools, or provide a clear explanation whether the warning will not be fixed.
 
 
 \section{Software architecture views}
