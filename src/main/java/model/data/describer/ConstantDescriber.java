@@ -2,6 +2,9 @@ package model.data.describer;
 
 import model.data.Row;
 import model.data.value.DataValue;
+import model.data.value.FloatValue;
+import model.data.value.IntValue;
+import model.data.value.StringValue;
 
 /**
  * The describer for values that don't change.
@@ -30,5 +33,17 @@ public final class ConstantDescriber<Type extends DataValue> extends DataDescrib
 	@Override
 	public Type resolve(Row row) {
 		return constant;
+	}
+
+	public static ConstantDescriber<DataValue> resolveType(Object value) {
+		if (value instanceof Integer) {
+			return new ConstantDescriber<>(new IntValue((Integer) value));
+		} else if (value instanceof Float) {
+			return new ConstantDescriber<>(new FloatValue((Float) value));
+		} else if (value instanceof String) {
+			return new ConstantDescriber<>(new StringValue((String) value));
+		} else {
+			throw new UnsupportedOperationException("This type has not yet been implemented");
+		}
 	}
 }
