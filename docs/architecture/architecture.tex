@@ -42,7 +42,7 @@ This document describes the design of the architecture and it is continuously up
 We will have frequent meetings with the clients. During these meetings we want to be able to show a working prototype of the software in the current state. The feedback provided during the meetings can then be used for improvement. If there are extra features the client wants, we can decide if we will implement them.
 
 \subsection{Modularity}
-The program can be split into a number of modules. These modules should be implemented independently of the other modules. Interaction between modules is only possible by making use of defined interfaces.
+The program can be split into a number of modules. These modules should be implemented independently of the other modules. Interaction between modules is only possible by making use of defined interfaces. The system is also based on the model-view-controller (MVC) design pattern. See section~\ref{subsec:mvc} for further details on this pattern.
 
 \subsection{Continuous Integration}
 There should be always a working product. Each sprint should add one or more features.
@@ -55,7 +55,7 @@ scripting language in our application before he/she is able to use it for
 analysis.
 
 \subsection{Code quality}
-In the project we strive to have good code readability and the code must be easy to understand. This is also an important part of the static analysis. We handle the pull based system on Github. For each new feature that will be implemented the author of that feature must create a new branch and do all his work in that branch so that the master branch always consists of a working version of the software. If someone wants to commit he has to make a pull request first. His code will then be reviewed by at least 2 teammembers and eventually fixed before it can be merged with the working version in the master branch. In addition the code must be diagnosed using static analysis (see See section~\ref{sec:static})
+In the project we strive to have good code readability and the code must be easy to understand. This is also an important part of the static analysis. We handle the pull based system on Github. For each new feature that will be implemented the author of that feature must create a new branch and do all his work in that branch so that the master branch always consists of a working version of the software. If someone wants to commit he has to make a pull request first. His code will then be reviewed by at least 2 teammembers and eventually fixed before it can be merged with the working version in the master branch. In addition the code must be diagnosed using static analysis (see section~\ref{sec:static})
 
 \section{Static analysis}
 \label{sec:static}
@@ -71,7 +71,14 @@ It is up to the writer to fix the warnings produced by these tools, or provide a
 
 
 \section{Software architecture views}
+
+\subsection{Model View Controller}
+\label{subsec:mvc}
+The software is based on the model-view-controller design pattern. The idea is that we want the analyis data in the columns (model) separated from the user interface (view). The interaction between these modules will be accomplished with the controller module. The controller is able to change the view and uses data that is obtained from the model. The user will be able to modify the model by providing operations to the controller which will then change the model.
+
 \subsection{Subsystem decomposition}
+
+As mentioned before our program consists of modules that work together. In figure~\ref{fig:modules} these modules are laid out. We realized that the structure we have now does not entirely fit the MVC pattern since there are modules that are not really a part of the MVC. We will change the structure in the near future in a way that each model is a part of a module in the MVC.
 
 \begin{figure}[h]
 	\centering
@@ -80,16 +87,24 @@ It is up to the writer to fix the warnings produced by these tools, or provide a
 	\label{fig:modules}
 \end{figure}
 
-The input module should be able to read the data. With that data a dataModel
-can be constructed. \\
-The Analysis Specification module processes the script that defines how the
-data should be analyzed. The user provides this script. This module translate
-the script in operations that can be performed by the Analysis Module.\\
-The Analysis Module perform the analyses over the dataModel. The output of this
-module is the result of the analysis, this is a dataModel.\\
-The Visualization module creates a certain visual representation of a
-dataModel. For example it can create a box-plot of the creatine levels.
+\begin{description}
+\item[Input]
+The input module is able to read the data from provided files that are specified in an xml file. With that data a dataModel can be constructed.
+\item[Model]
+The model module contains and manages the data that was read and/or analyzed by the user. This data will also be provided to the controller and analysis modules. The data is stored in tables.
+\item[Analysis Specification]
+The Analysis Specification module processes the SUGAR script that defines how the data should be analyzed. The user provides this script. In this module the script is parsed in operations that can be performed by the Analysis Module.
+\item[Analysis]
+The Analysis Module performs the analyses over the dataModel. It contains all the operations (the 8 C's) to make the exploratory sequential data analysis possible. The output of this module is the result of the analysis, this is a table that will be added to the model. In terms of package structuring, the analysis module of our current version is located in the model package. We realized that the analysis is more likely a part of the controller module since it is used to modify data. We will make this change in structure in the coming week.
+\item[Controller]
+The controller module is responsible for the program's front-end behaviour. It is the module to which the user has access. The controller uses the current state of the model to produce the according view for the user.
+\item[Visualization]
+The Visualization module creates a certain visual representation of a dataModel. For example it can create a box-plot of the creatine levels.
+\item[View]
+The view module is responsible for the appearance of the user interface. Determining by the controller, the view can change accordingly.
 
+\end{description}
+\newpage
 \subsection{State diagram}
 Below is the state diagram which describes the flow of the program.
 \begin{figure}[h]
@@ -159,8 +174,9 @@ stub certain object needed by the method.
 \item[Analysis] An analysis that can be done on measuring data to come to an answer to a specific question.
 \item[Git \& GitHub] Git is the tool to control the versions in a repository. GitHub is the web-tool to make the versions available for group use.
 \item[GUI] Graphical User Interface.
-\item[IDE] Integrated Development Environment
-\item[JDK] Java development kit
+\item[IDE] Integrated Development Environment.
+\item[JDK] Java development kit.
+\item[MVC] The Model-View-Controller design pattern.
 \item[SUGAR] The scripting language used to create analyses.
 \item[Pull Request] Are made on GitHub to get your commits to the code verified and merged with the master branch.
 
