@@ -37,6 +37,10 @@
 This document describes the design of the architecture and it is continuously updated to the current state of the software. It also states the design goals we want to achieve during the project. Furthermore the subsystem decomposition is laid out.
 
 \section{Design goals}
+
+\subsection{Availability}
+We will have frequent meetings with the clients. During these meetings we want to be able to show a working prototype of the software in the current state. The feedback provided during the meetings can then be used for improvement. If there are extra features the client wants, we can decide if we will implement them.
+
 \subsection{Modularity}
 The program can be split into a number of modules. These modules should be implemented independently of the other modules. Interaction between modules is only possible by making use of defined interfaces.
 
@@ -51,7 +55,10 @@ scripting language in our application before he/she is able to use it for
 analysis.
 
 \subsection{Code quality}
-In the project we strive to have good code readability and the code must be easy to understand. This is also an important part of the static analysis. We handle the pull based system on Github. For each new feature that will be implemented the author of that feature must create a new branch and do all his work in that branch so that the master branch always consists of a working version of the software. If someone wants to commit he has to make a pull request first. His code will then be reviewed by at least 2 teammembers and eventually fixed before it can be merged with the working version in the master branch.\\
+In the project we strive to have good code readability and the code must be easy to understand. This is also an important part of the static analysis. We handle the pull based system on Github. For each new feature that will be implemented the author of that feature must create a new branch and do all his work in that branch so that the master branch always consists of a working version of the software. If someone wants to commit he has to make a pull request first. His code will then be reviewed by at least 2 teammembers and eventually fixed before it can be merged with the working version in the master branch. In addition the code must be diagnosed using static analysis (see See section~\ref{sec:static})
+
+\section{Static analysis}
+\label{sec:static}
 We make use of static analysis tools that provide information about the quality of the software:
 \begin{description}
 \item[Corbertura] We use this tool to find out how much test coverage we have in our system. Our goal is to keep the test coverage at at least 75\%.
@@ -110,7 +117,7 @@ We also use the JavaFX Scene Builder as a tool to design parts of the GUI becaus
 \item[JavaFX] Creating the graphical user interface. We chose JavaFX since this
 is Java's latest framework to create these interfaces and provides some
 improvements on the previous frameworks. One of these is the use of fxml to
-construct the static part (view) of the GUI. Some of us already gained some
+construct the static part (view) of the GUI. The advantage of fxml is that this static part is separated from the controller part so we do not have cluttered up code and long methods just to build up a window. Some of us already gained some
 experience with it during the Software Engineering Methods course.
 
 \item[Mockito] Mocking objects to test behavior. We did not specifically choose
