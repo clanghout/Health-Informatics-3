@@ -42,7 +42,7 @@ This document describes the design of the architecture and it is continuously up
 We will have frequent meetings with the clients. During these meetings we want to be able to show a working prototype of the software in the current state. The feedback provided during the meetings can then be used for improvement. If there are extra features the client wants, we can decide if we will implement them.
 
 \subsection{Modularity}
-The program can be split into a number of modules. These modules should be implemented independently of the other modules. Interaction between modules is only possible by making use of defined interfaces.
+The program can be split into a number of modules. These modules should be implemented independently of the other modules. Interaction between modules is only possible by making use of defined interfaces. The system is also based on the model-view-controller (MVC) design pattern. See section~\ref{subsec:mvc} for further details on this pattern.
 
 \subsection{Continuous Integration}
 There should be always a working product. Each sprint should add one or more features.
@@ -55,7 +55,7 @@ scripting language in our application before he/she is able to use it for
 analysis.
 
 \subsection{Code quality}
-In the project we strive to have good code readability and the code must be easy to understand. This is also an important part of the static analysis. We handle the pull based system on Github. For each new feature that will be implemented the author of that feature must create a new branch and do all his work in that branch so that the master branch always consists of a working version of the software. If someone wants to commit he has to make a pull request first. His code will then be reviewed by at least 2 teammembers and eventually fixed before it can be merged with the working version in the master branch. In addition the code must be diagnosed using static analysis (see See section~\ref{sec:static})
+In the project we strive to have good code readability and the code must be easy to understand. This is also an important part of the static analysis. We handle the pull based system on Github. For each new feature that will be implemented the author of that feature must create a new branch and do all his work in that branch so that the master branch always consists of a working version of the software. If someone wants to commit he has to make a pull request first. His code will then be reviewed by at least 2 teammembers and eventually fixed before it can be merged with the working version in the master branch. In addition the code must be diagnosed using static analysis (see section~\ref{sec:static})
 
 \section{Static analysis}
 \label{sec:static}
@@ -71,6 +71,11 @@ It is up to the writer to fix the warnings produced by these tools, or provide a
 
 
 \section{Software architecture views}
+
+\subsection{Model View Controller}
+\label{subsec:mvc}
+The software is based on the model-view-controller design pattern. The idea is that we want the analyis data in the columns (model) separated from the user interface (view). The interaction between these modules will be accomplished with the controller module. The controller is able to change the view and uses data that is obtained from the model. The user will be able to modify the model by providing operations to the controller which will then change the model.
+
 \subsection{Subsystem decomposition}
 
 \begin{figure}[h]
