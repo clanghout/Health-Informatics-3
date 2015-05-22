@@ -37,6 +37,10 @@
 This document describes the design of the architecture and it is continuously updated to the current state of the software. It also states the design goals we want to achieve during the project. Furthermore the subsystem decomposition is laid out.
 
 \section{Design goals}
+
+\subsection{Availability}
+We will have frequent meetings with the clients. During these meetings we want to be able to show a working prototype of the software in the current state. The feedback provided during the meetings can then be used for improvement. If there are extra features the client wants, we can decide if we will implement them.
+
 \subsection{Modularity}
 The program can be split into a number of modules. These modules should be implemented independently of the other modules. Interaction between modules is only possible by making use of defined interfaces.
 
@@ -51,10 +55,19 @@ scripting language in our application before he/she is able to use it for
 analysis.
 
 \subsection{Code quality}
-In the project we strive to have good code readability and the code must be easy to understand. This is also an important part of the static analysis. We handle the pull based system on Github. For each new feature that will be implemented the author of that feature must create a new branch and do all his work in that branch so that the master branch always consists of a working version of the software. If someone wants to commit he has to make a pull request first. His code will then be reviewed by at least 2 teammembers and eventually fixed before it can be merged with the working version in the master branch.\\
-To improve code quality we have code conventions which the writer should follow before
-his code is accepted. This is done by the Checkstyle plugin in the IDE that makes
-sure these conventions are followed.
+In the project we strive to have good code readability and the code must be easy to understand. This is also an important part of the static analysis. We handle the pull based system on Github. For each new feature that will be implemented the author of that feature must create a new branch and do all his work in that branch so that the master branch always consists of a working version of the software. If someone wants to commit he has to make a pull request first. His code will then be reviewed by at least 2 teammembers and eventually fixed before it can be merged with the working version in the master branch. In addition the code must be diagnosed using static analysis (see See section~\ref{sec:static})
+
+\section{Static analysis}
+\label{sec:static}
+We make use of static analysis tools that provide information about the quality of the software:
+\begin{description}
+\item[Corbertura] We use this tool to find out how much test coverage we have in our system. Our goal is to keep the line coverage as well as the branch coverage at at least 75\%. This means that not only cases where the program works well should be tested, but also the cases where the program should fail.
+\item[Checkstyle] To improve code quality in terms of styling we have code conventions which the writer should follow before his code is accepted. This is done by the Checkstyle plugin in the IDE that makes sure these conventions are followed.
+\item[FindBugs] This tool will help us find where our program may contain some faults. This also makes code reviewing for teammembers easier since the process is automated. If there are faults, the writer should fix them to make the code acceptable.
+\item[PMD] The program can contain some programming mistakes such as unused imports or dead code. Since we do not want these mistakes in the code we use PMD to detect these mistakes using PMD's built-in rules.
+\end{description}
+
+It is up to the writer to fix the warnings produced by these tools, or provide a clear explanation whether the warning will not be fixed.
 
 
 \section{Software architecture views}
@@ -100,10 +113,36 @@ We also use the JavaFX Scene Builder as a tool to design parts of the GUI becaus
 
 \subsection{Used libraries}
 \begin{description}
-\item[JavaFX] Creating the graphical user interface.
-\item[Mockito] Mocking objects to test behavior.
-\item[Apache POI] Reading data analysis files stored in the Microsoft Excel format.
-\item[Java SAX] Reading the xml file that specify the datafiles.
+
+\item[JavaFX] Creating the graphical user interface. We mainly chose JavaFX because it is already included in Oracle's Java 8 and provides some
+improvements on Oracle's previous frameworks. One of these is the use of fxml to
+construct the static part (view) of the GUI. The advantage of fxml is that this static part is separated from the controller part so we do not have cluttered up code and long methods just to build up a window. Some of us already gained some
+experience with it during the Software Engineering Methods course.
+
+\item[Mockito] Mocking objects to test behavior. We did not specifically choose
+for this framework but we have used it before in previous courses and it did not
+seem like a big necessity to change to a different mocking framework as this
+will only require more effort to learn it.
+
+\item[Apache POI] Reading data analysis files stored in the Microsoft Excel
+format. This is one of the main excel parsers and easy to use. We chose this
+library because it applies very good solution for reading the data that was
+provided to us in excel formats. Another reason is that it is developed by the 
+Apache Software Foundation which also created Maven so it was easy to include in
+the build.
+
+\item[Java SAX] Reading the xml file that specifies the datafiles. This choice is
+made because it is easy to use and well documented. The library is also included
+in the JDK so it did not require any additional installation effort.
+
+\item[Parboiled] In the parser department we had lots of choice. We tried to find a
+framework which was both simple to use and still powerful enough for our use. This lead
+us to Parboiled. The beauty of Parboiled is the fact that you can write your rules in
+plain Java. This means you don't get an extra build process. The disadvantage is that
+Parboiled does some magical stuff which our analysis tools don't fully understand, 
+so you need to be aware of it. All in all we're really satisfied with the strength of
+Parboiled and feel that we've made the right choice.
+
 \end{description}
 
 \section{Testing}
@@ -118,11 +157,11 @@ stub certain object needed by the method.
 \begin{description}
 
 \item[Analysis] An analysis that can be done on measuring data to come to an answer to a specific question.
-
 \item[Git \& GitHub] Git is the tool to control the versions in a repository. GitHub is the web-tool to make the versions available for group use.
-
+\item[GUI] Graphical User Interface.
+\item[IDE] Integrated Development Environment
+\item[JDK] Java development kit
 \item[SUGAR] The scripting language used to create analyses.
-
 \item[Pull Request] Are made on GitHub to get your commits to the code verified and merged with the master branch.
 
 \end{description}
