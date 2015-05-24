@@ -1,14 +1,26 @@
 package ui;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
+import javafx.util.Callback;
+import model.data.DataColumn;
 import model.data.DataModel;
+import model.data.DataRow;
 import model.data.DataTable;
 import model.data.Row;
+import model.data.value.StringValue;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Logger;
@@ -22,15 +34,14 @@ public class TableViewController implements Observer {
 	
 	private Logger logger = Logger.getLogger("TabViewController");
 	
-	@FXML private TableView tableView;
-	
-	private MainUIController mainUIController;
-	
-	private DataModel model;
-	private ObservableList<Row> data = FXCollections.observableArrayList();
-
+	@FXML 
+	private TableView<ObservableList<StringProperty>> tableView;
 	@FXML
 	private ListView<DataTable> inputTables;
+	
+	private DataTable currentTable;
+	private DataModel model;
+
 	
 	/**
 	 * Creates a new TableViewController.
@@ -38,29 +49,61 @@ public class TableViewController implements Observer {
 	public TableViewController() {
 	}
 	
-	public void initialize(MainUIController mainUIController) {
-		this.mainUIController = mainUIController;
-		tableView.setItems(data);
+	/**
+	 * Loads the data from the model and updates the view for the user.
+	 */
+	private void fillTable() {
+		logger.info("update table");
+		tableView.getItems().clear();
+		tableView.getColumns().clear();
+		
+		currentTable = model.get(0);
+		List<DataColumn> columns = currentTable.getColumns();
+		Iterator<DataRow> rowIterator = currentTable.iterator();
+		
+		tableView.setPlaceholder(new Label("Loading..."));
+		fillTableHeaders(columns);
+		
+		while(rowIterator.hasNext()) {
+			Row currentRow = rowIterator.next();
+			ObservableList<StringProperty> row = FXCollections.observableArrayList();
+			for (int i = 0; i < columns.size(); i++) {
+				StringValue value = (StringValue) currentRow.getValue(columns.get(i));
+				String val = value.getValue();
+				row.add(new SimpleStringProperty(val));
+			}
+			tableView.getItems().add(row);
+		}
 	}
 	
-	public void fillTable()  {
-//		logger.info("update table");
-//		for (DataTable table: model) {
-//			Map<String, DataColumn> columns = table.getColumns();
-//			Set<String> nameSet = columns.keySet();
-//			Iterator<DataRow> rowIterator = table.iterator();
-//			for(String name : nameSet) {
-//				TableColumn uiColumn = new TableColumn(name);
-//				tableView.getColumns().add(uiColumn);
-//			}
-//			while(rowIterator.hasNext()) {
-//				DataRow row = rowIterator.next();
-//				data.add(row);
-//			}
-//		}
-//		for(int i = 0; i< data.size(); i++) {
-//			System.out.println(data.get(i));
-//		}
+	/**
+	 * Fills the headers of the table.
+	 * @param columns A List containing the DataColumns
+	 */
+	private void fillTableHeaders(List<DataColumn> columns) {
+		for (int i = 0; i < columns.size(); i++) {
+			TableColumn<ObservableList<StringProperty>, String> fxColumn = createColumn(i, columns.get(i).getName());
+			fxColumn.setPrefWidth(100);
+			tableView.getColumns().add(fxColumn);
+		}
+	}
+	
+	/**
+	 * Creates a new TableColumn based on an observable list with StringProperties.
+	 * @param index The index of the column that will be created
+	 * @param columnTitle The name of the column
+	 * @see <a href="https://docs.oracle.com/javafx/2/api/javafx/scene/control/TableView.html">The TableView Class</a>
+	 * @return The created TableColumn
+	 */
+	private TableColumn<ObservableList<StringProperty>, String> createColumn(int index, String columnTitle) {
+		TableColumn<ObservableList<StringProperty>, String> column = new TableColumn<>(columnTitle);
+		column.setCellValueFactory(new Callback<CellDataFeatures<ObservableList<StringProperty>, String>, ObservableValue<String>>() {
+			@Override
+			public ObservableValue<String> call(CellDataFeatures<ObservableList<StringProperty>, String> cellDataFeatures) {
+				return cellDataFeatures.getValue().get(index);
+			}
+		});
+		return column;
 	}
 	
 	/**

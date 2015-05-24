@@ -23,7 +23,6 @@ public class MainUIController {
 	private Logger logger = Logger.getLogger("MainUIController");
 
 	@FXML public void initialize() {
-		this.tableViewController.initialize(this);
 		this.dataController.initialize(this);
 //		this.visualizationController.initialize(this);
 	}
