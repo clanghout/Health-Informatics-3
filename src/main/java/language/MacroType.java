@@ -4,6 +4,7 @@ import model.data.DataModel;
 import model.data.process.analysis.operations.Operation;
 import org.parboiled.Parboiled;
 import org.parboiled.parserunners.BasicParseRunner;
+import org.parboiled.support.ParsingResult;
 
 /**
  * Represents the type of a Macro.
@@ -22,8 +23,8 @@ class MacroType {
 		LanguageParser parser = Parboiled.createParser(LanguageParser.class);
 		if (type.equals("Constraint")) {
 			BasicParseRunner runner = new BasicParseRunner(parser.Comparison());
-			runner.run(body);
-			CompareNode node = (CompareNode) runner.getValueStack().pop();
+			ParsingResult result = runner.run(body);
+			CompareNode node = (CompareNode) result.valueStack.pop();
 			return node.resolve(model);
 		} else {
 			throw new UnsupportedOperationException("Code has not yet been implemented");

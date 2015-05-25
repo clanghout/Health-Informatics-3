@@ -157,14 +157,16 @@ class LanguageParser extends BaseParser<Object> {
 	Rule CompareOperator() {
 		return Sequence(
 				FirstOf("<=", ">=", "=", ">", "<"),
-				push(match())
+				push(matchedChar())
 		);
 	}
 
 	Rule Comparison() {
 		return Sequence(
 				MacroVariable(),
+				WhiteSpace(),
 				CompareOperator(),
+				WhiteSpace(),
 				MacroVariable(),
 				swap3(),
 				push(new CompareNode(pop(), (Character) pop(), pop()))
@@ -175,7 +177,8 @@ class LanguageParser extends BaseParser<Object> {
 		return ZeroOrMore(
 				FirstOf(
 						Macro(),
-						Pipe()
+						Pipe(),
+						ANY
 				)
 		);
 	}
@@ -208,7 +211,7 @@ class LanguageParser extends BaseParser<Object> {
 	}
 
 	Rule MacroBody() {
-		return Sequence(OneOrMore(NormalCharacter(), ANY), push(match()));
+		return Sequence(OneOrMore(TestNot(AnyOf(";")), ANY), push(match()));
 	}
 
 	Rule MacroType() {
