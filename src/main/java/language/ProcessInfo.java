@@ -1,11 +1,10 @@
 package language;
 
+import model.data.describer.DataDescriber;
 import model.data.process.DataProcess;
 import model.data.process.FromProcess;
 import model.data.process.IsProcess;
 import model.data.process.analysis.ConstraintAnalysis;
-import model.data.process.analysis.operations.Operation;
-import model.data.process.analysis.operations.constraints.Constraint;
 
 import java.util.Map;
 
@@ -32,14 +31,14 @@ class ProcessInfo {
 		return name;
 	}
 
-	DataProcess resolve(Map<Identifier, Operation> macros) {
+	DataProcess resolve(Map<Identifier, DataDescriber> macros) {
 		switch (name.getName()) {
 			case "from":
 				return new FromProcess((Identifier) parameters[0]);
 			case "is":
 				return new IsProcess((Identifier) parameters[0]);
 			case "constraint":
-				return new ConstraintAnalysis((Constraint) macros.get(parameters[0]));
+				return new ConstraintAnalysis((DataDescriber) macros.get(parameters[0]));
 			default:
 				throw new UnsupportedOperationException("This code has not been implemented yet");
 		}

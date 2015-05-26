@@ -1,7 +1,7 @@
 package language;
 
 import model.data.DataModel;
-import model.data.process.analysis.operations.Operation;
+import model.data.describer.DataDescriber;
 import org.parboiled.Parboiled;
 import org.parboiled.parserunners.BasicParseRunner;
 import org.parboiled.support.ParsingResult;
@@ -19,7 +19,7 @@ class MacroType {
 		this.type = type;
 	}
 
-	Operation parse(String body, DataModel model) {
+	DataDescriber parse(String body, DataModel model) {
 		LanguageParser parser = Parboiled.createParser(LanguageParser.class);
 		if (type.equals("Constraint")) {
 			BasicParseRunner runner = new BasicParseRunner(parser.Comparison());

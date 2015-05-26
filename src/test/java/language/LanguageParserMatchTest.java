@@ -59,7 +59,12 @@ public class LanguageParserMatchTest {
 				{ parser.ColumnIdentifier(), "test", false },
 				{ parser.Macro(), "def test() : Constraint = test;", true},
 				{ parser.CompareOperator(), "=", true},
-				{ parser.Comparison(), "test.dingen = 10", true}
+				{ parser.Comparison(), "test.dingen = 10", true},
+				{ parser.BooleanExpression(), "true", true},
+				{ parser.BooleanExpression(), "false", true},
+				{ parser.BooleanExpression(), "5 = 5", true},
+				{ parser.BooleanExpression(), "5 = 5 AND true", true},
+				{ parser.BooleanExpression(), "NOT(false)", true}
 		};
 
 		return Arrays.asList(testData);

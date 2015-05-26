@@ -8,6 +8,7 @@ import org.parboiled.support.ParsingResult;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Contains the more complicated tests for LanguageParser.
@@ -62,5 +63,48 @@ public class LanguageParserTest {
 		MacroInfo info = (MacroInfo) result.valueStack.pop();
 
 		assertEquals("test", info.getIdentifier().getName());
+	}
+
+	@Test
+	public void testBooleanLiteral() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.BooleanExpression());
+		ParsingResult result = runner.run("true");
+
+		assertTrue(result.matched);
+		BooleanNode node = (BooleanNode) result.valueStack.pop();
+		assertTrue(node.resolve(null).resolve(null).getValue());
+	}
+
+	@Test
+	public void testBooleanOperation() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.BooleanOperation());
+		ParsingResult result = runner.run("false OR true");
+
+		assertTrue(result.matched);
+		BooleanNode node = (BooleanNode) result.valueStack.pop();
+		assertTrue(node.resolve(null).resolve(null).getValue());
+	}
+
+	@Test
+	public void testBooleanExpression() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.BooleanOperation());
+		String input = "((false AND true) OR (5 = 5 AND (5 > 2 OR (2 > 5 OR NOT(false)))))" +
+				" AND NOT(5 < 2)";
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+		BooleanNode node = (BooleanNode) result.valueStack.pop();
+		assertTrue(node.resolve(null).resolve(null).getValue());
+	}
+
+	@Test
+	public void testNotOperation() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.BooleanExpression());
+		String input = "NOT(false)";
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+		BooleanNode node = (BooleanNode) result.valueStack.pop();
+		assertTrue(node.resolve(null).resolve(null).getValue());
 	}
 }
