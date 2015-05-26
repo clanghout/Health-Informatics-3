@@ -117,18 +117,7 @@ public class DataTable extends Table {
 
 	@Override
 	public DataTable copy() {
-		DataTable table = new DataTable();
-		table.name = this.name;
-		for (DataColumn column : columns.values()) {
-			DataColumn newColumn = column.copy();
-			table.columns.put(newColumn.getName(), newColumn);
-			newColumn.setTable(table);
-		}
-		for (DataRow row : rows) {
-			DataRow newRow = row.copy();
-			table.rows.add(newRow);
-		}
-		return table;
+		return export(this.name);
 	}
 
 	@Override
@@ -189,14 +178,5 @@ public class DataTable extends Table {
 		}
 		return res;
 	}
-
-	@Override
-	public DataTable export(String name) {
-		DataTable res = copy();
-		res.name = name;
-
-		return res;
-	}
-
 
 }
