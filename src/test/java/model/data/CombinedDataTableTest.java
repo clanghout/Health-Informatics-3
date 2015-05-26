@@ -243,13 +243,13 @@ public class CombinedDataTableTest {
 		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
 		CombinedDataTable copy = comb.copy();
 
-		assertEquals(comb,copy);
+		assertTrue(comb.equalsSoft(copy));
 	}
 
 	@Test
 	public void testEquals() throws Exception {
 		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
-		CombinedDataTable copy = comb.copy();
+		CombinedDataTable copy = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
 
 		assertTrue(comb.equals(copy));
 	}

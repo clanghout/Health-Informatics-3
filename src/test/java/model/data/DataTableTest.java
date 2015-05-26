@@ -139,7 +139,7 @@ public class DataTableTest {
 		DataTable copy = table.copy();
 
 		assertFalse(copy == table);
-		assertTrue(table.equals(copy));
+		assertTrue(table.equalsSoft(copy));
 	}
 
 	@Test
@@ -157,12 +157,15 @@ public class DataTableTest {
 	@Test
 	public void testEquals() throws Exception {
 		DataTableBuilder builder = new DataTableBuilder();
+		DataTableBuilder builder2 = new DataTableBuilder();
 		builder.setName("t");
-		builder.createColumn("column1", StringValue.class);
+		builder2.setName("t");
+		builder2.addColumn(builder.createColumn("column1", StringValue.class));
 		builder.createRow(new StringValue("te"));
+		builder2.createRow(new StringValue("te"));
 		DataTable table = builder.build();
 
-		DataTable copy = table.copy();
+		DataTable copy =  builder2.build();
 
 		assertTrue(table.equals(copy));
 	}
