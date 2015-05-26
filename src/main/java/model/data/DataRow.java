@@ -161,6 +161,11 @@ public class DataRow extends Row {
 	}
 
 	@Override
+	public Set<String> getCodes() {
+		return codes;
+	}
+
+	@Override
 	public int hashCode() {
 		int res = 0;
 		for (Map.Entry<DataColumn, DataValue> entry : values.entrySet()) {
@@ -189,6 +194,6 @@ public class DataRow extends Row {
 	 * @param code the code that must be added to the row.
 	 */
 	public void addCode(String code) {
-		//TODO
+		codes.add(code);
 	}
 }

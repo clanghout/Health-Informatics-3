@@ -3,7 +3,9 @@ package model.data;
 import model.data.value.DataValue;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * This class is able to store multiple rows.
@@ -116,6 +118,16 @@ public class CombinedDataRow extends Row {
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public Set<String> getCodes() {
+		Set<String> codes = new HashSet<>();
+		for (DataRow row : rows) {
+			codes.addAll(row.getCodes());
+		}
+
+		return codes;
 	}
 
 	@Override

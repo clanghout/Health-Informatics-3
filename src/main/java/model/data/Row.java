@@ -62,7 +62,7 @@ public abstract class Row {
 	 * @param code the code that row might have.
 	 * @return true if row has code code
 	 */
-	public boolean containCode(String code) {
+	public boolean containsCode(String code) {
 		return getCodes().contains(code);
 	}
 
