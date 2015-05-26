@@ -56,6 +56,10 @@ public class CombinedDataTableTest {
 		rows.add(builder.createRow(valuesRow2));
 		rows.add(builder.createRow(valuesRow3));
 
+		rows.get(1).addCode("test1");
+		rows.get(1).addCode("test2");
+		rows.get(2).addCode("test2");
+
 		dataTables.add(builder.build());
 
 		builder = new DataTableBuilder();
@@ -78,6 +82,8 @@ public class CombinedDataTableTest {
 
 		rows.add(builder.createRow(valuesRow4));
 		rows.add(builder.createRow(valuesRow5));
+
+		rows.get(1).addCode("test3");
 
 
 		dataTables.add(builder.build());
@@ -338,5 +344,30 @@ public class CombinedDataTableTest {
 		assertEquals(copy.getName(), "test");
 	}
 
+	@Test
+	public void testExportCodes() throws Exception {
+
+		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
+		DataTable copy = comb.export("test");
+
+		List<DataRow> rowsCopy = copy.getRows();
+		assertFalse(rowsCopy.get(0).containsCode("test1"));
+		assertFalse(rowsCopy.get(0).containsCode("test2"));
+		assertFalse(rowsCopy.get(0).containsCode("test3"));
+
+		assertTrue(rowsCopy.get(1).containsCode("test1"));
+		assertTrue(rowsCopy.get(1).containsCode("test2"));
+		assertFalse(rowsCopy.get(1).containsCode("test3"));
+
+		assertFalse(rowsCopy.get(2).containsCode("test1"));
+		assertTrue(rowsCopy.get(2).containsCode("test2"));
+		assertFalse(rowsCopy.get(2).containsCode("test3"));
+
+		assertTrue(rowsCopy.get(4).containsCode("test1"));
+		assertTrue(rowsCopy.get(4).containsCode("test2"));
+		assertTrue(rowsCopy.get(4).containsCode("test3"));
+
+
+	}
 
 }

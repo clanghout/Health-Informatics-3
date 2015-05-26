@@ -5,7 +5,9 @@ import exceptions.ColumnValueTypeMismatchException;
 import model.data.value.DataValue;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -14,6 +16,7 @@ import java.util.logging.Logger;
 public class DataRow extends Row {
 	private Logger log = Logger.getLogger("DataRow");
 
+	private Set<String> codes = new HashSet<>();
 	private Map<DataColumn, DataValue> values = new HashMap<>();
 
 	/**
@@ -82,6 +85,7 @@ public class DataRow extends Row {
 		DataRow row = new DataRow();
 		for (Map.Entry<DataColumn, DataValue> entry : values.entrySet()) {
 			row.setValue(entry.getKey(), values.get(entry.getKey()).copy());
+			row.addCodes(this.codes);
 		}
 		return row;
 	}
@@ -100,6 +104,7 @@ public class DataRow extends Row {
 					if (entry.getKey().equalsExcludeTable(column)) {
 						row.setValue(column,
 								values.get(entry.getKey()).copy());
+						row.addCodes(this.codes);
 						break;
 					}
 				}
@@ -158,6 +163,11 @@ public class DataRow extends Row {
 	}
 
 	@Override
+	public Set<String> getCodes() {
+		return codes;
+	}
+
+	@Override
 	public int hashCode() {
 		int res = 0;
 		for (Map.Entry<DataColumn, DataValue> entry : values.entrySet()) {
@@ -181,4 +191,20 @@ public class DataRow extends Row {
 		return values.get(column);
 	}
 
+	/**
+	 * Add the code code to the row.
+	 * @param code the code that must be added to the row.
+	 */
+	public void addCode(String code) {
+		codes.add(code);
+	}
+
+
+	/**
+	 * Add the codes codes to the row.
+	 * @param codes the codes that must be added to the row.
+	 */
+	public void addCodes(Set<String> codes) {
+		this.codes.addAll(codes);
+	}
 }
