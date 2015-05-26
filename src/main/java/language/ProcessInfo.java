@@ -40,7 +40,8 @@ class ProcessInfo {
 				return new IsProcess((Identifier) parameters[0]);
 			case "constraint":
 				return new ConstraintAnalysis((Constraint) macros.get(parameters[0]));
+			default:
+				throw new UnsupportedOperationException("This code has not been implemented yet");
 		}
-		throw new UnsupportedOperationException("This code has not been implemented yet");
 	}
 }
