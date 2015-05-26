@@ -1,9 +1,9 @@
 package language;
 
 import model.data.DataModel;
+import model.data.describer.DataDescriber;
 import model.data.process.DataProcess;
 import model.data.process.SerialProcess;
-import model.data.process.analysis.operations.Operation;
 import org.parboiled.Parboiled;
 import org.parboiled.parserunners.ParseRunner;
 import org.parboiled.parserunners.ReportingParseRunner;
@@ -34,7 +34,7 @@ public class Parser {
 
 		ParsingResult result = runner.run(input);
 		List<ProcessInfo> processInfos = new ArrayList<>();
-		Map<Identifier, Operation> macros = new HashMap<>();
+		Map<Identifier, DataDescriber> macros = new HashMap<>();
 
 		while (!result.valueStack.isEmpty()) {
 			Object info = result.valueStack.pop();

@@ -173,6 +173,38 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
+	Rule BooleanExpression() {
+		return Sequence(
+				BooleanOperation(),
+				Comparison(),
+				BooleanLiteral()
+		);
+	}
+
+	Rule BooleanLiteral() {
+		return Sequence(
+				FirstOf("true", "false"),
+				push(new ConstantNode(Boolean.parseBoolean(match())))
+		);
+	}
+
+	Rule BooleanOperation() {
+		return Sequence(
+				BooleanExpression(),
+				WhiteSpace(),
+				BooleanOperator(),
+				WhiteSpace(),
+				BooleanExpression()
+		);
+	}
+
+	Rule BooleanOperator() {
+		return Sequence(
+				FirstOf("AND", "OR"),
+				push(match())
+		);
+	}
+
 	Rule Sugar() {
 		return ZeroOrMore(
 				FirstOf(
