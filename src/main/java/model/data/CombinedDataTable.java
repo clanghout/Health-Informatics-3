@@ -45,7 +45,6 @@ public class CombinedDataTable extends Table {
 
 	}
 
-
 	@Override
 	public CombinedDataTable copy() {
 		CombinedDataTable combined = null;
@@ -90,70 +89,6 @@ public class CombinedDataTable extends Table {
 			res += combined.hashCode();
 		}
 		return table.hashCode() + res;
-	}
-
-	/**
-	 * Create the columns for the DataTable.
-	 * @param builder builder used to create the datatable
-	 * @return a mapping of old columns to new columns
-	 */
-	private Map<DataColumn, DataColumn> addColumns(DataTableBuilder builder) {
-		Map<DataColumn, DataColumn> mappingColumns = new HashMap<>();
-		Map<String, DataColumn> mappingNewNameToOldColumns = new HashMap<>();
-		Set<String> forbidden = new HashSet<>();
-
-		List<DataColumn> columns = getColumns();
-		for (DataColumn column : columns) {
-			String nameColumn = column.getName();
-			if (mappingNewNameToOldColumns.containsKey(nameColumn)) {
-				forbidden.add(nameColumn);
-				String newName = mappingNewNameToOldColumns.get(nameColumn).getTable().getName()
-						+ "." + nameColumn;
-				DataColumn tempColumn = mappingNewNameToOldColumns.remove(nameColumn);
-				mappingNewNameToOldColumns.put(newName, tempColumn);
-			}
-			if (forbidden.contains(nameColumn)) {
-				nameColumn = column.getTable().getName() + "." + nameColumn;
-			}
-			mappingNewNameToOldColumns.put(nameColumn, column);
-		}
-
-		for (Map.Entry<String, DataColumn> entry: mappingNewNameToOldColumns.entrySet()) {
-			DataColumn newColumn = new DataColumn(entry.getKey(), null, entry.getValue().getType());
-			builder.addColumn(newColumn);
-			mappingColumns.put(entry.getValue(), newColumn);
-		}
-
-		return mappingColumns;
-	}
-
-	/**
-	 * Add the rows to the dataTable.
-	 * @param mappingColumns the mapping of the pld columns to the new columns
-	 * @param builder the dataBuilder used for constructing the table.
-	 */
-	private void processRows(Map<DataColumn, DataColumn> mappingColumns, DataTableBuilder builder) {
-		Iterator<? extends Row> iterator = iterator();
-		while (iterator.hasNext()) {
-			DataRow newRow = new DataRow();
-			Row row = iterator.next();
-
-			for (Map.Entry<DataColumn, DataColumn> entry: mappingColumns.entrySet()) {
-				newRow.setValue(entry.getValue(), row.getValue(entry.getKey()).copy());
-			}
-			builder.addRow(newRow);
-		}
-	}
-
-	@Override
-	public DataTable export(String nameTable) {
-		DataTableBuilder builder = new DataTableBuilder();
-		builder.setName(nameTable);
-
-		Map<DataColumn, DataColumn> mappingColumns = addColumns(builder);
-		processRows(mappingColumns, builder);
-
-		return builder.build();
 	}
 
 	/**
