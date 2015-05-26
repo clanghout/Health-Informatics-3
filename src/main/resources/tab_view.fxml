@@ -1,27 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
-<Tab text="View" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.layout.AnchorPane?>
+<Tab fx:controller="ui.TableViewController" text="View" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 <content>
 	<AnchorPane>
 		 <children>
 			<Button layoutX="562.0" layoutY="263.0" text="Save" />
-				<ListView styleClass="model-list" fx:id="inputtables" layoutX="14.0" layoutY="18.0" />
+				<ListView styleClass="model-list" fx:id="inputTables" layoutX="14.0" layoutY="18.0" />
 				<SplitPane styleClass="data-container" dividerPositions="0.5" layoutX="147.0" layoutY="18.0">
 					<items>
 						<AnchorPane styleClass="table-container">
 							<children>
-								<TableView styleClass="data-table" fx:id="datatable">
-								 <columns>
-									<TableColumn styleClass="table-column" text="Column X" />
-									<TableColumn styleClass="table-column" text="Column X" />
-									<TableColumn styleClass="table-column" text="Column X" />
-									<TableColumn styleClass="table-column" text="Column X" />
-								 </columns>
-								</TableView>
+								<TableView styleClass="data-table" 
+								fx:id="tableView"/>
 							</children>
 						</AnchorPane>
 						<AnchorPane styleClass="data-fields-container" fx:id="datafields" />

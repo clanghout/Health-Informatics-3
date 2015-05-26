@@ -1,17 +1,17 @@
 package model.data;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import java.util.*;
 
 /**
  * A container for the various data tables.
  * Created by Boudewijn on 12-5-2015.
  */
-public class DataModel implements Iterable<DataTable> {
+public class DataModel extends Observable implements Iterable<DataTable> {
 
-	private List<DataTable> dataTables = new ArrayList<>();
+	private List<DataTable> tables = new ArrayList<>();
 
 	/**
 	 * Construct a new empty DataModel.
@@ -23,7 +23,7 @@ public class DataModel implements Iterable<DataTable> {
 	 * @param tables The tables you want to add to this data model.
 	 */
 	public DataModel(Collection<DataTable> tables) {
-		dataTables.addAll(tables);
+		this.tables.addAll(tables);
 	}
 
 	/**
@@ -31,7 +31,7 @@ public class DataModel implements Iterable<DataTable> {
 	 * @return An iterator over this DataModel.
 	 */
 	public Iterator<DataTable> iterator() {
-		return dataTables.iterator();
+		return tables.iterator();
 	}
 
 	/**
@@ -39,7 +39,9 @@ public class DataModel implements Iterable<DataTable> {
 	 * @param table The table you want to add
 	 */
 	public void add(DataTable table) {
-		dataTables.add(table);
+		tables.add(table);
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -47,7 +49,9 @@ public class DataModel implements Iterable<DataTable> {
 	 * @param tables The tables you want to add
 	 */
 	public void addAll(Collection<DataTable> tables) {
-		dataTables.addAll(tables);
+		this.tables.addAll(tables);
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -55,7 +59,7 @@ public class DataModel implements Iterable<DataTable> {
 	 * @return The number of tables in this DataModel.
 	 */
 	public int size() {
-		return dataTables.size();
+		return tables.size();
 	}
 
 	/**
@@ -64,7 +68,7 @@ public class DataModel implements Iterable<DataTable> {
 	 * @return True if the DataModel contains the table, false if not.
 	 */
 	public boolean contains(DataTable table) {
-		return dataTables.contains(table);
+		return tables.contains(table);
 	}
 
 	/**
@@ -73,7 +77,7 @@ public class DataModel implements Iterable<DataTable> {
 	 * @return The index or -1 if the table isn't contained in this DataModel.
 	 */
 	public int indexOf(DataTable table) {
-		return dataTables.indexOf(table);
+		return tables.indexOf(table);
 	}
 
 	/**
@@ -83,7 +87,7 @@ public class DataModel implements Iterable<DataTable> {
 	 * @return The DataTable at the given index.
 	 */
 	public DataTable get(int index) {
-		return dataTables.get(index);
+		return tables.get(index);
 	}
 
 	/**
@@ -92,9 +96,13 @@ public class DataModel implements Iterable<DataTable> {
 	 * @return The DataTable with the given name or null if none was found.
 	 */
 	public DataTable getByName(String name) {
-		return dataTables.stream()
+		return tables.stream()
 				.filter(
 						x -> x.getName().equals(name)
 				).findFirst().get();
+	}
+
+	public ObservableList<DataTable> getObservableList() {
+		return FXCollections.observableList(tables);
 	}
 }
