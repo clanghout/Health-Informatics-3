@@ -10,10 +10,10 @@ import model.data.process.analysis.operations.comparisons.Comparison;
  */
 public class ComparisonAnalysis extends DataAnalysis {
 	
-	private final Comparison compare;
+	private final Comparison comparison;
 	
-	public ComparisonAnalysis(Comparison compare) {
-		this.compare = compare;
+	public ComparisonAnalysis(Comparison comparison) {
+		this.comparison = comparison;
 	}
 
 	@Override
