@@ -164,10 +164,67 @@ class LanguageParser extends BaseParser<Object> {
 	Rule Comparison() {
 		return Sequence(
 				MacroVariable(),
+				WhiteSpace(),
 				CompareOperator(),
+				WhiteSpace(),
 				MacroVariable(),
 				swap3(),
-				push(new CompareNode(pop(), (Character) pop(), pop()))
+				push(new CompareNode(pop(), (String) pop(), pop()))
+		);
+	}
+
+	Rule BooleanExpression() {
+		return FirstOf(
+				NotOperation(),
+				BooleanOperation(),
+				Comparison(),
+				BooleanLiteral()
+		);
+	}
+
+	Rule BooleanLiteral() {
+		return Sequence(
+				FirstOf("true", "false"),
+				push(new ConstantNode(Boolean.parseBoolean(match())))
+		);
+	}
+
+	Rule NotOperation() {
+		return Sequence(
+				"NOT(",
+				BooleanExpression(),
+				")",
+				push(new BooleanOperationNode((BooleanNode) pop(), "NOT", null))
+		);
+	}
+
+	Rule BooleanOperation() {
+		return Sequence(
+				FirstOf(
+						BooleanLiteral(),
+						Comparison(),
+						NotOperation(),
+						Sequence("(", BooleanExpression(), ")")),
+				WhiteSpace(),
+				BooleanOperator(),
+				WhiteSpace(),
+				FirstOf(
+						BooleanLiteral(),
+						Comparison(),
+						NotOperation(),
+						Sequence("(", BooleanExpression(), ")")),
+				swap3(),
+				push(new BooleanOperationNode(
+						(BooleanNode) pop(),
+						(String) pop(),
+						(BooleanNode) pop()))
+		);
+	}
+
+	Rule BooleanOperator() {
+		return Sequence(
+				FirstOf("OR", "AND"),
+				push(match())
 		);
 	}
 
@@ -175,7 +232,8 @@ class LanguageParser extends BaseParser<Object> {
 		return ZeroOrMore(
 				FirstOf(
 						Macro(),
-						Pipe()
+						Pipe(),
+						ANY
 				)
 		);
 	}
@@ -208,7 +266,7 @@ class LanguageParser extends BaseParser<Object> {
 	}
 
 	Rule MacroBody() {
-		return Sequence(OneOrMore(NormalCharacter(), ANY), push(match()));
+		return Sequence(OneOrMore(TestNot(AnyOf(";")), ANY), push(match()));
 	}
 
 	Rule MacroType() {

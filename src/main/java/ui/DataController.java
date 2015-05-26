@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import model.data.DataTable;
 import model.data.describer.ConstantDescriber;
+import model.data.describer.ConstraintDescriber;
 import model.data.describer.RowValueDescriber;
 import model.data.process.analysis.ConstraintAnalysis;
 import model.data.process.analysis.DataAnalysis;
@@ -72,7 +73,7 @@ public class DataController {
 					new RowValueDescriber<>(input.getColumn("time")),
 					new ConstantDescriber<>(new StringValue("0803"))
 			);
-			DataAnalysis analysis = new ConstraintAnalysis(constraint);
+			DataAnalysis analysis = new ConstraintAnalysis(new ConstraintDescriber(constraint));
 			out = (DataTable) analysis.analyse(input);
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "Error reading XML file", e);

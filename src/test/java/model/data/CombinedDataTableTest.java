@@ -1,5 +1,6 @@
 package model.data;
 
+import model.data.describer.ConstraintDescriber;
 import model.data.describer.RowValueDescriber;
 import model.data.process.analysis.ConstraintAnalysis;
 import model.data.process.analysis.operations.constraints.Constraint;
@@ -224,7 +225,7 @@ public class CombinedDataTableTest {
 				new RowValueDescriber<>(column2)
 		);
 
-		ConstraintAnalysis analysis = new ConstraintAnalysis(columnCheck);
+		ConstraintAnalysis analysis = new ConstraintAnalysis(new ConstraintDescriber(columnCheck));
 
 		assertEquals(table1.getRowCount(), 5);
 		assertEquals(table2.getRowCount(), 5);

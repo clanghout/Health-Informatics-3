@@ -1,7 +1,7 @@
 package language;
 
 import model.data.DataModel;
-import model.data.process.analysis.operations.Operation;
+import model.data.describer.DataDescriber;
 
 import java.util.List;
 
@@ -22,7 +22,11 @@ class MacroInfo {
 		this.body = body;
 	}
 
-	public Operation parse(DataModel model) {
+	DataDescriber parse(DataModel model) {
 		return type.parse(body, model);
+	}
+
+	Identifier getIdentifier() {
+		return identifier;
 	}
 }

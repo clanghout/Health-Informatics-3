@@ -1,16 +1,16 @@
 package language;
 
 import model.data.DataModel;
+import model.data.describer.DataDescriber;
 import model.data.process.DataProcess;
 import model.data.process.SerialProcess;
-import model.data.process.analysis.operations.Operation;
 import org.parboiled.Parboiled;
-import org.parboiled.parserunners.BasicParseRunner;
+import org.parboiled.parserunners.ParseRunner;
+import org.parboiled.parserunners.ReportingParseRunner;
 import org.parboiled.support.ParsingResult;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * The parser for SUGAR.
@@ -30,23 +30,28 @@ public class Parser {
 	 */
 	public DataProcess parse(String input, DataModel model) {
 		LanguageParser parser = Parboiled.createParser(LanguageParser.class);
-		BasicParseRunner runner = new BasicParseRunner(parser.Sugar());
+		ParseRunner runner = new ReportingParseRunner<>(parser.Sugar());
 
 		ParsingResult result = runner.run(input);
-		List<DataProcess> processes = new ArrayList<>();
-		List<Operation> macros = new ArrayList<>();
+		List<ProcessInfo> processInfos = new ArrayList<>();
+		Map<Identifier, DataDescriber> macros = new HashMap<>();
 
 		while (!result.valueStack.isEmpty()) {
 			Object info = result.valueStack.pop();
 			if (info instanceof ProcessInfo) {
 				ProcessInfo processInfo = (ProcessInfo) info;
-				processes.add(processInfo.resolve());
+				processInfos.add(processInfo);
 			} else if (info instanceof MacroInfo) {
-				macros.add(((MacroInfo) info).parse(model));
+				MacroInfo macroInfo = (MacroInfo) info;
+				macros.put(macroInfo.getIdentifier(), macroInfo.parse(model));
 			} else {
 				throw new UnsupportedOperationException("Not yet implemented");
 			}
 		}
+
+		List<DataProcess> processes = processInfos.stream()
+				.map(x -> x.resolve(macros))
+				.collect(Collectors.toList());
 
 		Collections.reverse(processes);
 

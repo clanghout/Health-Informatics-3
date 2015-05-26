@@ -1,8 +1,12 @@
 package language;
 
+import model.data.describer.DataDescriber;
 import model.data.process.DataProcess;
 import model.data.process.FromProcess;
 import model.data.process.IsProcess;
+import model.data.process.analysis.ConstraintAnalysis;
+
+import java.util.Map;
 
 /**
  * Contains the information required to produce a DataProcess.
@@ -27,12 +31,16 @@ class ProcessInfo {
 		return name;
 	}
 
-	DataProcess resolve() {
-		if (name.getName().equals("from")) {
-			return new FromProcess((Identifier) parameters[0]);
-		} else if (name.getName().equals("is")) {
-			return new IsProcess((Identifier) parameters[0]);
+	DataProcess resolve(Map<Identifier, DataDescriber> macros) {
+		switch (name.getName()) {
+			case "from":
+				return new FromProcess((Identifier) parameters[0]);
+			case "is":
+				return new IsProcess((Identifier) parameters[0]);
+			case "constraint":
+				return new ConstraintAnalysis((DataDescriber) macros.get(parameters[0]));
+			default:
+				throw new UnsupportedOperationException("This code has not been implemented yet");
 		}
-		throw new UnsupportedOperationException("This code has not been implemented yet");
 	}
 }
