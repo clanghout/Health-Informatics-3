@@ -249,4 +249,91 @@ public class CombinedDataRowTest {
 		assertEquals(combRow.hashCode(), copy.hashCode());
 	}
 
+	@Test
+	public void testGetCodesNowRows() throws Exception {
+		CombinedDataRow comb = new CombinedDataRow();
+		assertTrue(comb.getCodes().size() == 0);
+	}
+
+	@Test
+	public void testGetCodesOneRow() throws Exception {
+		CombinedDataRow comb = new CombinedDataRow();
+		comb.addDataRow(row1);
+		assertTrue(comb.getCodes().size() == 0);
+
+		row1.addCode("test");
+		row1.addCode("test2");
+
+		assertTrue(comb.getCodes().size() == 2);
+		assertTrue(comb.getCodes().contains("test"));
+		assertTrue(comb.getCodes().contains("test2"));
+	}
+
+	@Test
+	public void testGetCodesMultipleRows() throws Exception {
+		CombinedDataRow comb = new CombinedDataRow();
+		comb.addDataRow(row1);
+		comb.addDataRow(row2);
+		assertTrue(comb.getCodes().size() == 0);
+
+		row1.addCode("test");
+		row1.addCode("test2");
+		row2.addCode("test3");
+
+		assertTrue(comb.getCodes().size() == 3);
+		assertTrue(comb.getCodes().contains("test"));
+		assertTrue(comb.getCodes().contains("test2"));
+		assertTrue(comb.getCodes().contains("test3"));
+	}
+
+	@Test
+	public void testGetCodesMultipleRowsSameCode() throws Exception {
+		CombinedDataRow comb = new CombinedDataRow();
+		comb.addDataRow(row1);
+		comb.addDataRow(row2);
+		assertTrue(comb.getCodes().size() == 0);
+
+		row1.addCode("test");
+		row1.addCode("test2");
+		row2.addCode("test2");
+
+		assertTrue(comb.getCodes().size() == 2);
+		assertTrue(comb.getCodes().contains("test"));
+		assertTrue(comb.getCodes().contains("test2"));
+	}
+
+
+
+
+	@Test
+	public void testContainsCodeEmpty() throws Exception {
+		CombinedDataRow comb = new CombinedDataRow();
+		assertFalse(comb.containsCode("test"));
+	}
+
+	@Test
+	public void testContainsCodeTrue() throws Exception {
+		CombinedDataRow comb = new CombinedDataRow();
+		comb.addDataRow(row1);
+		comb.addDataRow(row2);
+		row1.addCode("test1");
+		row2.addCode("test2");
+		row1.addCode("test3");
+		assertTrue(comb.containsCode("test1"));
+		assertTrue(comb.containsCode("test2"));
+		assertTrue(comb.containsCode("test3"));
+	}
+
+	@Test
+	public void testContainsCodeFalse() throws Exception {
+		CombinedDataRow comb = new CombinedDataRow();
+		comb.addDataRow(row1);
+		comb.addDataRow(row2);
+		row1.addCode("test");
+		row1.addCode("test2");
+		row2.addCode("test3");
+		assertFalse(comb.containsCode("test5"));
+
+	}
+
 }
