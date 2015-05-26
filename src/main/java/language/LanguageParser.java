@@ -190,11 +190,11 @@ class LanguageParser extends BaseParser<Object> {
 
 	Rule BooleanOperation() {
 		return Sequence(
-				FirstOf(BooleanLiteral(), Comparison(), BooleanOperation()),
+				FirstOf(BooleanLiteral(), Comparison(), Sequence("(", BooleanExpression(), ")")),
 				WhiteSpace(),
 				BooleanOperator(),
 				WhiteSpace(),
-				BooleanExpression(),
+				FirstOf(BooleanLiteral(), Comparison(), Sequence("(", BooleanExpression(), ")")),
 				swap3(),
 				push(new BooleanOperationNode(
 						(BooleanNode) pop(),
