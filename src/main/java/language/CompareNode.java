@@ -56,20 +56,22 @@ final class CompareNode extends ImmutableBinaryTreeNode<CompareNode> {
 
 		switch (operator) {
 			case "=": return new EqualityCheck<>(left, right);
-			default: {
-				DataDescriber<NumberValue> leftNumber =
-						(DataDescriber) left;
-				DataDescriber<NumberValue> rightNumber =
-						(DataDescriber) right;
-				switch (operator) {
-					case ">": return new GreaterThanCheck<>(leftNumber, rightNumber);
-					case ">=": return new GreaterEqualsCheck<>(leftNumber, rightNumber);
-					case "<": return new LesserThanCheck<>(leftNumber, rightNumber);
-					case "<=": return new LesserEqualsCheck<>(leftNumber, rightNumber);
-					default: throw new UnsupportedOperationException("Code not yet implemented");
-				}
+			default:
+				return resolveComparison(left, operator, right);
+		}
+	}
 
-			}
+	private Constraint resolveComparison(DataDescriber left, String operator, DataDescriber right) {
+		DataDescriber<NumberValue> leftNumber =
+				left;
+		DataDescriber<NumberValue> rightNumber =
+				right;
+		switch (operator) {
+			case ">": return new GreaterThanCheck<>(leftNumber, rightNumber);
+			case ">=": return new GreaterEqualsCheck<>(leftNumber, rightNumber);
+			case "<": return new LesserThanCheck<>(leftNumber, rightNumber);
+			case "<=": return new LesserEqualsCheck<>(leftNumber, rightNumber);
+			default: throw new UnsupportedOperationException("Code not yet implemented");
 		}
 	}
 }
