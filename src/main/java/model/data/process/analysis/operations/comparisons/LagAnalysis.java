@@ -1,5 +1,6 @@
 package model.data.process.analysis.operations.comparisons;
 
+import model.data.DataColumn;
 import model.data.Table;
 import model.data.process.analysis.operations.constraints.Constraint;
 
@@ -11,6 +12,7 @@ import model.data.process.analysis.operations.constraints.Constraint;
 public class LagAnalysis extends Comparison {
 
 	private Table table;
+	private DataColumn col;
 
 	public LagAnalysis(Table table, Constraint constraint) {
 		super(table, constraint);
@@ -18,14 +20,20 @@ public class LagAnalysis extends Comparison {
 	}
 
 	/**
-	 * This function calculates the difference between the datevalues.
+	 * This function calculates the difference between the date values.
 	 * 
-	 * @return
+	 * @return Table of events and their lag.
 	 */
-	@Override
 	public Table compare() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/**
+	 * This function checks if the given table contains a date.
+	 * 
+	 * @return DataColumn if the given table contains a dataValue column.
+	 */
+	public DataColumn findDate() {
+		return null;
+	}
 }
