@@ -1,20 +1,21 @@
 package model.data.process.analysis.operations.comparisons;
 
-import model.data.Row;
-import model.data.process.analysis.ComparisonAnalysis;
-import model.data.process.analysis.operations.Operation;
-import model.data.value.NumberValue;
+import model.data.Table;
+import model.data.process.analysis.operations.Event;
+import model.data.process.analysis.operations.constraints.Constraint;
 
 /**
  * This class will initialize events and call its comparison.
  * 
  * @author Louis Gosschalk 21-05-2015
  */
-public class Comparison extends ComparisonAnalysis {
+public abstract class Comparison {
 
-	public Comparison(Comparison comparison) {
-		super(comparison);
-		// TODO Auto-generated constructor stub
+	protected Event event;
+
+	public Comparison(Table table, Constraint constraint) {
+		event = new Event(table, constraint);
 	}
 
+	public abstract Table compare();
 }
