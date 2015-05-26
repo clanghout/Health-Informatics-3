@@ -2,6 +2,8 @@ package model.data;
 
 import model.data.value.DataValue;
 
+import java.util.Set;
+
 /**
  * Abstract class that defines a tableRow.
  *
@@ -48,6 +50,21 @@ public abstract class Row {
 	 * @return true if object is the same as this.
 	 */
 	public abstract boolean equalsSoft(Object obj);
+
+	/**
+	 * Get a set of all the code of this row.
+	 * @return a set of all codes of this row.
+	 */
+	public abstract Set<String> getCodes();
+
+	/**
+	 * Returns true if this row contains the code code.
+	 * @param code the code that row might have.
+	 * @return true if row has code code
+	 */
+	public boolean containCode(String code) {
+		return getCodes().contains(code);
+	}
 
 	@Override
 	public abstract int hashCode();

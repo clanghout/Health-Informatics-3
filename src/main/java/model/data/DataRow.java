@@ -5,7 +5,9 @@ import exceptions.ColumnValueTypeMismatchException;
 import model.data.value.DataValue;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -14,6 +16,7 @@ import java.util.logging.Logger;
 public class DataRow extends Row {
 	private Logger log = Logger.getLogger("DataRow");
 
+	private Set<String> codes = new HashSet<>();
 	private Map<DataColumn, DataValue> values = new HashMap<>();
 
 	/**
@@ -181,4 +184,11 @@ public class DataRow extends Row {
 		return values.get(column);
 	}
 
+	/**
+	 * Add the code code to the row.
+	 * @param code the code that must be added to the row.
+	 */
+	public void addCode(String code) {
+		//TODO
+	}
 }
