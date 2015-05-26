@@ -52,7 +52,7 @@ public class ParserTest {
 		String input = "from(test1)|is(test2)";
 
 		Table result = parseAndProcess(input);
-		assertEquals(test1, result);
+		assertTrue(test1.equalsSoft(result));
 
 		Table test2 = model.getByName("test2");
 		assertTrue(test1.equalsSoft(test2));
