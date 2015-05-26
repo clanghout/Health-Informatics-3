@@ -157,7 +157,7 @@ class LanguageParser extends BaseParser<Object> {
 	Rule CompareOperator() {
 		return Sequence(
 				FirstOf("<=", ">=", "=", ">", "<"),
-				push(matchedChar())
+				push(match())
 		);
 	}
 
@@ -169,7 +169,7 @@ class LanguageParser extends BaseParser<Object> {
 				WhiteSpace(),
 				MacroVariable(),
 				swap3(),
-				push(new CompareNode(pop(), (Character) pop(), pop()))
+				push(new CompareNode(pop(), (String) pop(), pop()))
 		);
 	}
 
