@@ -189,10 +189,66 @@ public class DataRowTest {
 	}
 
 	@Test
-	public void testHasCode() throws Exception {
+	public void testHashCode() throws Exception {
 		DataRow row = new DataRow(columns1, values1);
 		DataRow copy = new DataRow(columns2, values2);
 		assertEquals(row.hashCode(), copy.hashCode());
+	}
+
+	@Test
+	public void testAddCode() throws Exception {
+		DataRow row = new DataRow(columns1, values1);
+		assertTrue(row.getCodes().size() == 0);
+		row.addCode("test");
+		row.addCode("test2");
+		assertTrue(row.getCodes().size() == 2);
+	}
+
+	@Test
+	public void testAddDubleCode() throws Exception {
+		DataRow row = new DataRow(columns1, values1);
+		assertTrue(row.getCodes().size() == 0);
+		row.addCode("test");
+		row.addCode("test");
+		assertTrue(row.getCodes().size() == 1);
+	}
+
+	@Test
+	public void testGetCodes() throws Exception {
+		DataRow row = new DataRow(columns1, values1);
+		assertTrue(row.getCodes().size() == 0);
+		row.addCode("test");
+		row.addCode("test2");
+		assertTrue(row.getCodes().size() == 2);
+		assertTrue(row.getCodes().contains("test"));
+		assertTrue(row.getCodes().contains("test2"));
+	}
+
+	@Test
+	public void testContainsCodeEmpty() throws Exception {
+		DataRow row = new DataRow(columns1, values1);
+		assertFalse(row.containsCode("test"));
+	}
+
+	@Test
+	public void testContainsCodeTrue() throws Exception {
+		DataRow row = new DataRow(columns1, values1);
+		row.addCode("test1");
+		row.addCode("test2");
+		row.addCode("test3");
+		assertTrue(row.containsCode("test1"));
+		assertTrue(row.containsCode("test2"));
+		assertTrue(row.containsCode("test3"));
+	}
+
+	@Test
+	public void testContainsCodeFalse() throws Exception {
+		DataRow row = new DataRow(columns1, values1);
+		row.addCode("test");
+		row.addCode("test2");
+		row.addCode("test3");
+		assertFalse(row.containsCode("test5"));
+
 	}
 
 
