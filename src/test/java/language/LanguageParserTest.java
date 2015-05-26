@@ -8,6 +8,7 @@ import org.parboiled.support.ParsingResult;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Contains the more complicated tests for LanguageParser.
@@ -62,5 +63,35 @@ public class LanguageParserTest {
 		MacroInfo info = (MacroInfo) result.valueStack.pop();
 
 		assertEquals("test", info.getIdentifier().getName());
+	}
+
+	@Test
+	public void testBooleanLiteral() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.BooleanExpression());
+		ParsingResult result = runner.run("true");
+
+		assertTrue(result.matched);
+		BooleanNode node = (BooleanNode) result.valueStack.pop();
+		assertTrue(node.resolve(null).resolve(null).getValue());
+	}
+
+	@Test
+	public void testBooleanOperation() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.BooleanOperation());
+		ParsingResult result = runner.run("false OR true");
+
+		assertTrue(result.matched);
+		BooleanNode node = (BooleanNode) result.valueStack.pop();
+		assertTrue(node.resolve(null).resolve(null).getValue());
+	}
+
+	@Test
+	public void testBooleanExpression() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.BooleanOperation());
+		ParsingResult result = runner.run("false AND true OR true");
+
+		assertTrue(result.matched);
+		BooleanNode node = (BooleanNode) result.valueStack.pop();
+		assertTrue(node.resolve(null).resolve(null).getValue());
 	}
 }

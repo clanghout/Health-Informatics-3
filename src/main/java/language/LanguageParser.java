@@ -174,7 +174,7 @@ class LanguageParser extends BaseParser<Object> {
 	}
 
 	Rule BooleanExpression() {
-		return Sequence(
+		return FirstOf(
 				BooleanOperation(),
 				Comparison(),
 				BooleanLiteral()
@@ -190,17 +190,22 @@ class LanguageParser extends BaseParser<Object> {
 
 	Rule BooleanOperation() {
 		return Sequence(
-				BooleanExpression(),
+				FirstOf(BooleanLiteral(), Comparison(), BooleanOperation()),
 				WhiteSpace(),
 				BooleanOperator(),
 				WhiteSpace(),
-				BooleanExpression()
+				BooleanExpression(),
+				swap3(),
+				push(new BooleanOperationNode(
+						(BooleanNode) pop(),
+						(String) pop(),
+						(BooleanNode) pop()))
 		);
 	}
 
 	Rule BooleanOperator() {
 		return Sequence(
-				FirstOf("AND", "OR"),
+				FirstOf("OR", "AND"),
 				push(match())
 		);
 	}
