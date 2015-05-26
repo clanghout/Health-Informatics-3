@@ -110,8 +110,14 @@ public class DataTable extends Table {
 
 	@Override
 	public void deleteNotFlagged() {
-		rows = new ArrayList<>(flaggedNoDelete);
-		flaggedNoDelete = new HashSet<>();
+		List<DataRow> newRows = new ArrayList<>();
+		for (DataRow row : rows) {
+			if (flaggedNoDelete.contains(row)) {
+				newRows.add(row);
+			}
+		}
+		rows = newRows;
+		flaggedNoDelete.clear();
 	}
 
 
