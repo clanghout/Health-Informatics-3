@@ -4,6 +4,7 @@ import exceptions.ColumnValueMismatchException;
 import exceptions.ColumnValueTypeMismatchException;
 import model.data.value.DataValue;
 import model.data.value.StringValue;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -13,48 +14,60 @@ import static org.junit.Assert.*;
  */
 public class DataRowTest {
 
+	private DataColumn[] columns1;
+	private DataColumn[] columns2;
+	private DataValue[] values1;
+	private DataValue[] values2;
+
+	@Before
+	public void setUp() throws Exception {
+		columns1 = new DataColumn[3];
+		columns1[0] = new DataColumn("a", new DataTable(), StringValue.class);
+		columns1[1] = new DataColumn("b", new DataTable(), StringValue.class);
+		columns1[2] = new DataColumn("c", new DataTable(), DataValue.class);
+
+		columns2 = new DataColumn[3];
+		columns2[0] = new DataColumn("a", new DataTable(), StringValue.class);
+		columns2[1] = new DataColumn("b", new DataTable(), StringValue.class);
+		columns2[2] = new DataColumn("c", new DataTable(), DataValue.class);
+
+		values1 = new DataValue[3];
+		values1[0] = new StringValue("test1");
+		values1[1] = new StringValue("test2");
+		values1[2] = new StringValue("test3");
+
+		values2 = new DataValue[3];
+		values2[0] = new StringValue("test1");
+		values2[1] = new StringValue("test2");
+		values2[2] = new StringValue("test3");
+	}
+
+
 	@Test
 	public void testConstructor() throws Exception {
-		DataColumn[] columns = new DataColumn[3];
-		DataValue[] values = new DataValue[3];
-		columns[0] = new DataColumn("a", null, StringValue.class);
-		columns[1] = new DataColumn("b", null, StringValue.class);
-		columns[2] = new DataColumn("c", null, DataValue.class);
+		DataRow row = new DataRow(columns1, values1);
 
-		values[0] = new StringValue("test1");
-		values[1] = new StringValue("test2");
-		values[2] = new StringValue("test3");
-		DataRow row = new DataRow(columns, values);
-
-		assertEquals(row.getValue(columns[0]).getValue(), "test1");
-		assertEquals(row.getValue(columns[1]).getValue(), "test2");
-		assertEquals(row.getValue(columns[2]).getValue(), "test3");
+		assertEquals(row.getValue(columns1[0]).getValue(), "test1");
+		assertEquals(row.getValue(columns1[1]).getValue(), "test2");
+		assertEquals(row.getValue(columns1[2]).getValue(), "test3");
 	}
 
 	@Test(expected = ColumnValueMismatchException.class)
 	public void testConstructorMismatchNotEnoughValues() throws Exception {
-		DataColumn[] columns = new DataColumn[3];
 		DataValue[] values = new DataValue[2];
-		columns[0] = new DataColumn("a", null, StringValue.class);
-		columns[1] = new DataColumn("b", null, StringValue.class);
-		columns[2] = new DataColumn("c", null, StringValue.class);
 
 		values[0] = new StringValue("test1");
 		values[1] = new StringValue("test2");
-		DataRow row = new DataRow(columns, values);
+		DataRow row = new DataRow(columns1, values);
 	}
 
 	@Test(expected = ColumnValueMismatchException.class)
 	public void testConstructorMismatchNotEnoughColumns() throws Exception {
 		DataColumn[] columns = new DataColumn[2];
-		DataValue[] values = new DataValue[3];
 		columns[0] = new DataColumn("a", null, StringValue.class);
 		columns[1] = new DataColumn("b", null, StringValue.class);
 
-		values[0] = new StringValue("test1");
-		values[1] = new StringValue("test2");
-		values[2] = new StringValue("test3");
-		DataRow row = new DataRow(columns, values);
+		DataRow row = new DataRow(columns, values1);
 	}
 
 	//TODO when we have more types, give value[1] a type
@@ -103,52 +116,27 @@ public class DataRowTest {
 
 	@Test
 	public void testHasColumnTrue() throws Exception {
-		DataColumn[] columns = new DataColumn[3];
-		DataValue[] values = new DataValue[3];
-		columns[0] = new DataColumn("a", null, StringValue.class);
-		columns[1] = new DataColumn("b", null, StringValue.class);
-		columns[2] = new DataColumn("c", null, DataValue.class);
+		DataRow row = new DataRow(columns1, values1);
 
-		values[0] = new StringValue("test1");
-		values[1] = new StringValue("test2");
-		values[2] = new StringValue("test3");
-		DataRow row = new DataRow(columns, values);
-
-		assertTrue(row.hasColumn(columns[2]));
-		assertTrue(row.hasColumn(columns[1]));
-		assertTrue(row.hasColumn(columns[0]));
+		assertTrue(row.hasColumn(columns1[2]));
+		assertTrue(row.hasColumn(columns1[1]));
+		assertTrue(row.hasColumn(columns1[0]));
 	}
 
 	@Test
 	public void testHasColumnFalse() throws Exception {
-		DataColumn column = new DataColumn("c", null, DataValue.class);
+		DataColumn column = new DataColumn("no", null, DataValue.class);
 
-		DataColumn[] columns = new DataColumn[2];
-		DataValue[] values = new DataValue[2];
-		columns[0] = new DataColumn("a", null, StringValue.class);
-		columns[1] = new DataColumn("b", null, StringValue.class);
-
-		values[0] = new StringValue("test1");
-		values[1] = new StringValue("test2");
-
-		DataRow row = new DataRow(columns, values);
+		DataRow row = new DataRow(columns1, values1);
 
 		assertFalse(row.hasColumn(column));
 	}
 
 	@Test
 	public void testCopy() throws Exception {
-		DataColumn[] columns = new DataColumn[2];
-		DataValue[] values = new DataValue[2];
-		columns[0] = new DataColumn("a", null, StringValue.class);
-		columns[1] = new DataColumn("b", null, StringValue.class);
-
-		values[0] = new StringValue("test1");
-		values[1] = new StringValue("test2");
-
-		DataRow row = new DataRow(columns, values);
+		DataRow row = new DataRow(columns1, values1);
 		DataRow copy = row.copy();
-		assertEquals(copy.getValue(columns[0]), row.getValue(columns[0]));
+		assertEquals(copy.getValue(columns1[0]), row.getValue(columns1[0]));
 	}
 
 	@Test
@@ -181,78 +169,28 @@ public class DataRowTest {
 
 	@Test
 	public void testEqual() throws Exception {
-		DataColumn[] columns = new DataColumn[2];
-		DataValue[] values = new DataValue[2];
-		columns[0] = new DataColumn("a", new DataTable(), StringValue.class);
-		columns[1] = new DataColumn("b", new DataTable(), StringValue.class);
-
-		values[0] = new StringValue("test1");
-		values[1] = new StringValue("test2");
-
-		DataRow row = new DataRow(columns, values);
+		DataRow row = new DataRow(columns1, values1);
 		DataRow copy = row.copy();
 		assertTrue(row.equals(copy));
 	}
 
 	@Test
 	public void testEqualsFalse() throws Exception {
-		DataColumn[] columns = new DataColumn[2];
-		DataValue[] values = new DataValue[2];
-		DataColumn[] columns2 = new DataColumn[2];
-		DataValue[] values2 = new DataValue[2];
-		columns[0] = new DataColumn("a", new DataTable(), StringValue.class);
-		columns[1] = new DataColumn("b", new DataTable(), StringValue.class);
-		columns2[0] = new DataColumn("a", new DataTable(), StringValue.class);
-		columns2[1] = new DataColumn("b", new DataTable(), StringValue.class);
-
-		values[0] = new StringValue("test1");
-		values[1] = new StringValue("test2");
-		values2[0] = new StringValue("test1");
-		values2[1] = new StringValue("test2");
-
-		DataRow row = new DataRow(columns, values);
+		DataRow row = new DataRow(columns1, values1);
 		DataRow copy = new DataRow(columns2, values2);
 		assertFalse(row.equals(copy));
 	}
 
 	@Test
 	public void testSoftEqual() throws Exception {
-		DataColumn[] columns = new DataColumn[2];
-		DataValue[] values = new DataValue[2];
-		DataColumn[] columns2 = new DataColumn[2];
-		DataValue[] values2 = new DataValue[2];
-		columns[0] = new DataColumn("a", new DataTable(), StringValue.class);
-		columns[1] = new DataColumn("b", new DataTable(), StringValue.class);
-		columns2[0] = new DataColumn("a", new DataTable(), StringValue.class);
-		columns2[1] = new DataColumn("b", new DataTable(), StringValue.class);
-
-		values[0] = new StringValue("test1");
-		values[1] = new StringValue("test2");
-		values2[0] = new StringValue("test1");
-		values2[1] = new StringValue("test2");
-
-		DataRow row = new DataRow(columns, values);
+		DataRow row = new DataRow(columns1, values1);
 		DataRow copy = new DataRow(columns2, values2);
 		assertTrue(row.equalsSoft(copy));
 	}
 
 	@Test
 	public void testHasCode() throws Exception {
-		DataColumn[] columns = new DataColumn[2];
-		DataValue[] values = new DataValue[2];
-		DataColumn[] columns2 = new DataColumn[2];
-		DataValue[] values2 = new DataValue[2];
-		columns[0] = new DataColumn("a", new DataTable(), StringValue.class);
-		columns[1] = new DataColumn("b", new DataTable(), StringValue.class);
-		columns2[0] = new DataColumn("a", new DataTable(), StringValue.class);
-		columns2[1] = new DataColumn("b", new DataTable(), StringValue.class);
-
-		values[0] = new StringValue("test1");
-		values[1] = new StringValue("test2");
-		values2[0] = new StringValue("test1");
-		values2[1] = new StringValue("test2");
-
-		DataRow row = new DataRow(columns, values);
+		DataRow row = new DataRow(columns1, values1);
 		DataRow copy = new DataRow(columns2, values2);
 		assertEquals(row.hashCode(), copy.hashCode());
 	}
