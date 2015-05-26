@@ -12,8 +12,7 @@ import model.data.value.NumberValue;
  */
 public class Comparison extends ComparisonAnalysis {
 
-	public Comparison(Comparison comparison) {
-		super(comparison);
+	public Comparison() {
 		// TODO Auto-generated constructor stub
 	}
 
