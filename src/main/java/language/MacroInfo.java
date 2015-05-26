@@ -22,7 +22,11 @@ class MacroInfo {
 		this.body = body;
 	}
 
-	public Operation parse(DataModel model) {
+	Operation parse(DataModel model) {
 		return type.parse(body, model);
+	}
+
+	Identifier getIdentifier() {
+		return identifier;
 	}
 }

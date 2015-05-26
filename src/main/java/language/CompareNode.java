@@ -4,9 +4,9 @@ import model.data.DataModel;
 import model.data.describer.ConstantDescriber;
 import model.data.describer.DataDescriber;
 import model.data.describer.RowValueDescriber;
-import model.data.process.analysis.operations.constraints.Constraint;
-import model.data.process.analysis.operations.constraints.EqualityCheck;
+import model.data.process.analysis.operations.constraints.*;
 import model.data.value.DataValue;
+import model.data.value.NumberValue;
 import org.parboiled.trees.ImmutableBinaryTreeNode;
 
 /**
@@ -18,9 +18,9 @@ final class CompareNode extends ImmutableBinaryTreeNode<CompareNode> {
 
 	private Object left;
 	private Object right;
-	private Character operator;
+	private String operator;
 
-	CompareNode(Object left, Character operator, Object right) {
+	CompareNode(Object left, String operator, Object right) {
 		super(null, null);
 		this.left = left;
 		this.right = right;
@@ -42,6 +42,8 @@ final class CompareNode extends ImmutableBinaryTreeNode<CompareNode> {
 					model.getByName(
 							columnIdentifier.getTable()
 					).getColumn(columnIdentifier.getColumn()));
+		} else if (node instanceof CompareNode) {
+			throw new UnsupportedOperationException("Code not yet implemented");
 		} else {
 			return ConstantDescriber.resolveType(node);
 		}
@@ -49,11 +51,27 @@ final class CompareNode extends ImmutableBinaryTreeNode<CompareNode> {
 
 	private Constraint resolveConstraint(
 			DataDescriber<DataValue> left,
-			Character operator,
+			String operator,
 			DataDescriber<DataValue> right) {
+
 		switch (operator) {
-			case '=': return new EqualityCheck<>(left, right);
-			default: throw new UnsupportedOperationException("Constraint not yet implemented");
+			case "=": return new EqualityCheck<>(left, right);
+			default:
+				return resolveComparison(left, operator, right);
+		}
+	}
+
+	private Constraint resolveComparison(DataDescriber left, String operator, DataDescriber right) {
+		DataDescriber<NumberValue> leftNumber =
+				left;
+		DataDescriber<NumberValue> rightNumber =
+				right;
+		switch (operator) {
+			case ">": return new GreaterThanCheck<>(leftNumber, rightNumber);
+			case ">=": return new GreaterEqualsCheck<>(leftNumber, rightNumber);
+			case "<": return new LesserThanCheck<>(leftNumber, rightNumber);
+			case "<=": return new LesserEqualsCheck<>(leftNumber, rightNumber);
+			default: throw new UnsupportedOperationException("Code not yet implemented");
 		}
 	}
 }

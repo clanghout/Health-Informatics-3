@@ -57,7 +57,9 @@ public class LanguageParserMatchTest {
 				{ parser.Pipe(), "test()|test2()", true },
 				{ parser.ColumnIdentifier(), "test.dignen", true },
 				{ parser.ColumnIdentifier(), "test", false },
-				{ parser.Macro(), "def test() : Constraint = test;", true}
+				{ parser.Macro(), "def test() : Constraint = test;", true},
+				{ parser.CompareOperator(), "=", true},
+				{ parser.Comparison(), "test.dingen = 10", true}
 		};
 
 		return Arrays.asList(testData);
