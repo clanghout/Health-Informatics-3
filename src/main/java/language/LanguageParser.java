@@ -175,6 +175,7 @@ class LanguageParser extends BaseParser<Object> {
 
 	Rule BooleanExpression() {
 		return FirstOf(
+				NotOperation(),
 				BooleanOperation(),
 				Comparison(),
 				BooleanLiteral()
@@ -188,13 +189,30 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
+	Rule NotOperation() {
+		return Sequence(
+				"NOT(",
+				BooleanExpression(),
+				")",
+				push(new BooleanOperationNode((BooleanNode) pop(), "NOT", null))
+		);
+	}
+
 	Rule BooleanOperation() {
 		return Sequence(
-				FirstOf(BooleanLiteral(), Comparison(), Sequence("(", BooleanExpression(), ")")),
+				FirstOf(
+						BooleanLiteral(),
+						Comparison(),
+						NotOperation(),
+						Sequence("(", BooleanExpression(), ")")),
 				WhiteSpace(),
 				BooleanOperator(),
 				WhiteSpace(),
-				FirstOf(BooleanLiteral(), Comparison(), Sequence("(", BooleanExpression(), ")")),
+				FirstOf(
+						BooleanLiteral(),
+						Comparison(),
+						NotOperation(),
+						Sequence("(", BooleanExpression(), ")")),
 				swap3(),
 				push(new BooleanOperationNode(
 						(BooleanNode) pop(),

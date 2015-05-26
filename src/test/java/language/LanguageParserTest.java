@@ -88,7 +88,18 @@ public class LanguageParserTest {
 	@Test
 	public void testBooleanExpression() throws Exception {
 		BasicParseRunner runner = new BasicParseRunner(parser.BooleanOperation());
-		String input = "(false AND true) OR (5 = 5 AND (5 > 2 OR (2 > 5 OR true)))";
+		String input = "(false AND true) OR (5 = 5 AND (5 > 2 OR (2 > 5 OR NOT(false))))";
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+		BooleanNode node = (BooleanNode) result.valueStack.pop();
+		assertTrue(node.resolve(null).resolve(null).getValue());
+	}
+
+	@Test
+	public void testNotOperation() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.BooleanExpression());
+		String input = "NOT(false)";
 		ParsingResult result = runner.run(input);
 
 		assertTrue(result.matched);
