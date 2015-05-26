@@ -19,8 +19,9 @@ public class Event {
 	}
 	
 	public Table create() {
-		ConstraintAnalysis constr = new ConstraintAnalysis(constraint);
-		Table event = constr.analyse(table);
-		return event;
+//		ConstraintAnalysis constr = new ConstraintAnalysis(constraint);
+//		Table event = constr.analyse(table);
+//		return event;
+		throw new UnsupportedOperationException("Code not yet implemented");
 	}
 }
