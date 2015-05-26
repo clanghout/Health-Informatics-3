@@ -23,7 +23,7 @@ public class CodeCheck extends Constraint {
 
 
 	/**
-	 * Check if this row contains the code
+	 * Check if this row contains the code.
 	 * @param row The row the check should be performed on.
 	 * @return true if the row contains the code.
 	 */
