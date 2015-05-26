@@ -85,6 +85,7 @@ public class DataRow extends Row {
 		DataRow row = new DataRow();
 		for (Map.Entry<DataColumn, DataValue> entry : values.entrySet()) {
 			row.setValue(entry.getKey(), values.get(entry.getKey()).copy());
+			row.addCodes(this.codes);
 		}
 		return row;
 	}
@@ -103,6 +104,7 @@ public class DataRow extends Row {
 					if (entry.getKey().equalsExcludeTable(column)) {
 						row.setValue(column,
 								values.get(entry.getKey()).copy());
+						row.addCodes(this.codes);
 						break;
 					}
 				}
@@ -195,5 +197,14 @@ public class DataRow extends Row {
 	 */
 	public void addCode(String code) {
 		codes.add(code);
+	}
+
+
+	/**
+	 * Add the codes codes to the row.
+	 * @param codes the codes that must be added to the row.
+	 */
+	public void addCodes(Set<String> codes) {
+		this.codes.addAll(codes);
 	}
 }

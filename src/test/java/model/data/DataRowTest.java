@@ -7,6 +7,9 @@ import model.data.value.StringValue;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.junit.Assert.*;
 
 /**
@@ -140,6 +143,16 @@ public class DataRowTest {
 	}
 
 	@Test
+	public void testCopyCodes() throws Exception {
+		DataRow row = new DataRow(columns1, values1);
+		row.addCode("test");
+		row.addCode("test2");
+		DataRow copy = row.copy();
+		assertTrue(copy.containsCode("test"));
+		assertTrue(copy.containsCode("test2"));
+	}
+
+	@Test
 	public void testCopyTable() throws Exception {
 		DataTableBuilder builder = new DataTableBuilder();
 		DataTableBuilder builderCopy = new DataTableBuilder();
@@ -165,6 +178,37 @@ public class DataRowTest {
 		DataTable copyTable = builderCopy.build();
 		Row copy = row.copy(copyTable);
 		assertEquals(copy.getValue(columns[0]), row.getValue(columnsCopy[0]));
+	}
+
+
+	@Test
+	public void testCopyTableCodes() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		DataTableBuilder builderCopy = new DataTableBuilder();
+		builder.setName("t1");
+		builderCopy.setName("t1C");
+
+		builder.createColumn("a", StringValue.class);
+		builder.createColumn("b", StringValue.class);
+
+		builderCopy.createColumn("a", StringValue.class);
+		builderCopy.createColumn("b", StringValue.class);
+
+		DataValue[] values = new DataValue[2];
+
+		values[0] = new StringValue("test1");
+		values[1] = new StringValue("test2");
+
+		DataRow row = builder.createRow(values);
+		row.addCode("test");
+		row.addCode("test2");
+
+		builder.build();
+		DataTable copyTable = builderCopy.build();
+
+		DataRow copy = row.copy(copyTable);
+		assertTrue(copy.containsCode("test"));
+		assertTrue(copy.containsCode("test2"));
 	}
 
 	@Test
@@ -251,6 +295,21 @@ public class DataRowTest {
 
 	}
 
+
+	@Test
+	public void testAddCodes() throws Exception {
+		DataRow row = new DataRow(columns1, values1);
+		Set<String> codes = new HashSet<>();
+		codes.add("test");
+		codes.add("test2");
+		row.addCode("test3");
+
+		row.addCodes(codes);
+		assertTrue(row.containsCode("test"));
+		assertTrue(row.containsCode("test2"));
+		assertTrue(row.containsCode("test3"));
+
+	}
 
 
 }
