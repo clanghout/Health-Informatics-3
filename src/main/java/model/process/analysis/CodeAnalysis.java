@@ -23,16 +23,30 @@ public class CodeAnalysis extends DataAnalysis {
 	private String code;
 	private List<DataTable> tables;
 
+	/**
+	 * Constuct a new code Analysis.
+	 * @param event event that must be detected
+	 * @param code the code that must be set
+	 * @param tables the tables where the code must be set
+	 */
 	public CodeAnalysis(Event event, String code, DataTable... tables) {
 		this.event = event;
 		this.code = code;
 		this.tables = new ArrayList<>(Arrays.asList(tables));
 	}
 
+	/**
+	 * set the table that must get the code.
+	 * @param tables the tables that must get the codes
+	 */
 	public void setTables(DataTable... tables) {
 		this.tables = new ArrayList<>(Arrays.asList(tables));
 	}
 
+	/**
+	 * Add a table that must get the code.
+	 * @param table the table that must get the code
+	 */
 	public void addTable(DataTable table) {
 		this.tables.add(table);
 	}
