@@ -2,9 +2,9 @@ package model.data;
 
 import model.data.describer.ConstraintDescriber;
 import model.data.describer.RowValueDescriber;
-import model.data.process.analysis.ConstraintAnalysis;
-import model.data.process.analysis.operations.constraints.Constraint;
-import model.data.process.analysis.operations.constraints.EqualityCheck;
+import model.process.analysis.ConstraintAnalysis;
+import model.process.analysis.operations.constraints.Constraint;
+import model.process.analysis.operations.constraints.EqualityCheck;
 import model.data.value.DataValue;
 import model.data.value.IntValue;
 import model.data.value.StringValue;

@@ -1,7 +1,7 @@
 package model.data;
 
-import exceptions.ColumnValueMismatchException;
-import exceptions.ColumnValueTypeMismatchException;
+import model.exceptions.ColumnValueMismatchException;
+import model.exceptions.ColumnValueTypeMismatchException;
 import model.data.value.DataValue;
 
 import java.util.HashMap;
