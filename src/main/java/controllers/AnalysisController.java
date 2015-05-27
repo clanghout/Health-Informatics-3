@@ -1,11 +1,11 @@
-package ui;
+package controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
-import language.Parser;
+import model.language.Parser;
 import model.data.DataModel;
-import model.data.process.DataProcess;
+import model.process.DataProcess;
 
 
 /**

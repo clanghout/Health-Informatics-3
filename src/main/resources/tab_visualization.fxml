@@ -2,24 +2,29 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
-<Tab fx:controller="ui.VisualizationController" text="Visualization" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<Tab fx:controller="controllers.VisualizationController" text="Visualization" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<content>
 		<AnchorPane>
 			<children>
-				<VBox styleClass="visualisation-default-dropdown" layoutX="14.0" layoutY="14.0">
+				<VBox styleClass="visualization-default-dropdown" layoutX="14.0" layoutY="14.0">
 					<children>
-						<ComboBox fx:id="visualisation" promptText="Visualisation"/>
+						<ComboBox fx:id="visualization" promptText="Visualization"/>
 						<ComboBox fx:id="table" promptText="Table to use"/>
 					</children>
 				</VBox>
-				<VBox styleClass="visualisation-extra-dropdown" layoutX="14.0" layoutY="86.0">
+				<VBox styleClass="visualization-extra-dropdown" layoutX="14.0" layoutY="86.0">
 					<children>
 						<ComboBox fx:id="xAxis" promptText="x-axis"/>
 						<ComboBox fx:id="yAxis" promptText="y-axis"/>
 					</children>
 				</VBox>
+                <VBox styleClass="visualization-graph">
+
+                </VBox>
 			</children>
 		</AnchorPane>
 	</content>

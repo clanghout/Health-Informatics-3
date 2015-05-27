@@ -19,13 +19,13 @@
 	-fx-spacing: 10px;
 }
 
-.visualisation-default-dropdown {
+.visualization-default-dropdown {
 	-fx-pref-height: 200px;
 	-fx-pref-width: 150px;
 	-fx-spacing: 10px;
 }
 
-.visualisation-extra-dropdown {
+.visualization-extra-dropdown {
 	-fx-pref-height: 200px;
 		-fx-pref-width: 150px;
     -fx-spacing: 10px;

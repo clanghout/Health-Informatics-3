@@ -110,20 +110,25 @@ public class DataTable extends Table {
 
 	@Override
 	public void deleteNotFlagged() {
-		List<DataRow> newRows = new ArrayList<>();
-		for (DataRow row : rows) {
-			if (flaggedNoDelete.contains(row)) {
-				newRows.add(row);
-			}
-		}
-		rows = newRows;
-		flaggedNoDelete.clear();
+		rows = new ArrayList<>(flaggedNoDelete);
+		flaggedNoDelete = new HashSet<>();
 	}
 
 
 	@Override
 	public DataTable copy() {
-		return export(this.name);
+		DataTable table = new DataTable();
+		table.name = this.name;
+		for (DataColumn column : columns.values()) {
+			DataColumn newColumn = column.copy();
+			table.columns.put(newColumn.getName(), newColumn);
+			newColumn.setTable(table);
+		}
+		for (DataRow row : rows) {
+			DataRow newRow = row.copy();
+			table.rows.add(newRow);
+		}
+		return table;
 	}
 
 	@Override
