@@ -4,21 +4,22 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Tab fx:controller="ui.VisualisationController" text="Visualization" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<Tab fx:controller="ui.VisualizationController" text="Visualization" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<content>
 		<AnchorPane>
 			<children>
-				<VBox styleClass="analysis-buttons" layoutX="14.0" layoutY="14.0">
+				<VBox styleClass="visualisation-default-dropdown" layoutX="14.0" layoutY="14.0">
 					<children>
-						<ComboBox fx:id="visualisation" promptText="Choose ding"/>
-						<ComboBox fx:id="table"/>
+						<ComboBox fx:id="visualisation" promptText="Visualisation"/>
+						<ComboBox fx:id="table" promptText="Table to use"/>
 					</children>
 				</VBox>
-				<TextFlow layoutX="114.0" layoutY="14.0">
+				<VBox styleClass="visualisation-extra-dropdown" layoutX="14.0" layoutY="86.0">
 					<children>
-						<TextArea styleClass="analysis-text" fx:id="userscript" />
+						<ComboBox fx:id="xAxis" promptText="x-axis"/>
+						<ComboBox fx:id="yAxis" promptText="y-axis"/>
 					</children>
-				</TextFlow>
+				</VBox>
 			</children>
 		</AnchorPane>
 	</content>
