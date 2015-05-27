@@ -84,7 +84,7 @@ public class TableViewController implements Observer {
 		for (int i = 0; i < columns.size(); i++) {
 			TableColumn<ObservableList<StringProperty>, String> fxColumn 
 				= createColumn(i, columns.get(i).getName());
-			fxColumn.setPrefWidth(100);
+			fxColumn.getStyleClass().add("table-column");
 			tableView.getColumns().add(fxColumn);
 		}
 	}
@@ -124,7 +124,7 @@ public class TableViewController implements Observer {
 	
 	/**
 	 * If the model changes, this method is called. It is mainly checked if the observed 
-	 * DataModel changes.
+	 * DataModel changes. If this happens, the view of the table will be updated.
 	 * @param o The observable object that changes
 	 * @param arg The eventual parameter that is passed by the observable
 	 */
