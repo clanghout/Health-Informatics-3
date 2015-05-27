@@ -64,7 +64,9 @@ public class LanguageParserMatchTest {
 				{ parser.BooleanExpression(), "false", true},
 				{ parser.BooleanExpression(), "5 = 5", true},
 				{ parser.BooleanExpression(), "5 = 5 AND true", true},
-				{ parser.BooleanExpression(), "NOT(false)", true}
+				{ parser.BooleanExpression(), "NOT(false)", true},
+				{ parser.NumberExpression(), "5 * 5", true},
+				{ parser.NumberExpression(), "(5 * 5) + 3", true}
 		};
 
 		return Arrays.asList(testData);
