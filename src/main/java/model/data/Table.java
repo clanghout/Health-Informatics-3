@@ -17,13 +17,18 @@ public abstract class Table implements Iterable {
 	public abstract Iterator<? extends Row> iterator();
 
 	/**
-	 * Flag the row that it should not be deleted.
-	 * The flag is removed when delete is called.
+	 * Flag the row so that it will be used in a future operation.
+	 * This is used for delete and codes.
+	 * The flag is removed when delete of flush is called.
 	 * @param row the row that should not be deleted.
 	 * @return true if the row has been found.
 	 */
-	public abstract boolean flagNotDelete(Row row);
+	public abstract boolean flagRow(Row row);
 
+	/**
+	 * Unflag all the rows.
+	 */
+	public abstract void resetFlags();
 	/**
 	 * Delete all rows, except the rows that are flagged.
 	 * Remove the flags from the remaining rows.

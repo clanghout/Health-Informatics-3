@@ -163,12 +163,12 @@ public class CombinedDataTableTest {
 	public void testDelete() throws Exception {
 		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
 		Iterator<? extends Row> it = comb.iterator();
-		comb.flagNotDelete(it.next());
+		comb.flagRow(it.next());
 		it.next();
 		it.next();
-		comb.flagNotDelete(it.next());
+		comb.flagRow(it.next());
 		it.next();
-		comb.flagNotDelete(it.next());
+		comb.flagRow(it.next());
 
 		comb.deleteNotFlagged();
 
@@ -181,7 +181,7 @@ public class CombinedDataTableTest {
 	public void testDelete2() throws Exception {
 		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
 		Iterator<? extends Row> it = comb.iterator();
-		comb.flagNotDelete(it.next());
+		comb.flagRow(it.next());
 		it.next();
 		it.next();
 		it.next();
