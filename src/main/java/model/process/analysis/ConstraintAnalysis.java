@@ -30,7 +30,7 @@ public class ConstraintAnalysis extends DataAnalysis {
 		while (rows.hasNext()) {
 			Row row = rows.next();
 			if (constraint.resolve(row).getValue()) {
-				input.flagNotDelete(row);
+				input.flagRow(row);
 			}
 		}
 		input.deleteNotFlagged();
