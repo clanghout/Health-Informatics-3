@@ -1,7 +1,7 @@
 package model.data.describer;
 
-import model.data.process.analysis.operations.constraints.Constraint;
-import model.data.process.analysis.operations.constraints.EqualityCheck;
+import model.process.analysis.operations.constraints.Constraint;
+import model.process.analysis.operations.constraints.EqualityCheck;
 import model.data.value.BoolValue;
 import org.junit.Test;
 

@@ -1,6 +1,6 @@
 package model.data;
 
-import exceptions.ColumnValueMismatchException;
+import model.exceptions.ColumnValueMismatchException;
 import model.data.value.DataValue;
 import model.data.value.StringValue;
 import org.junit.Before;

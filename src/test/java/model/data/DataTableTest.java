@@ -261,4 +261,18 @@ public class DataTableTest {
 		assertFalse(table.equals(copy));
 		assertTrue(table.equalsSoft(copy));
 	}
+
+	@Test
+	public void testExportCodes() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("t");
+		builder.createColumn("column1", StringValue.class);
+		DataRow row = builder.createRow(new StringValue("te"));
+		row.addCode("test");
+		DataTable table = builder.build();
+
+		DataTable copy = table.export("t2");
+
+		assertTrue(copy.getRow(0).containsCode("test"));
+	}
 }
