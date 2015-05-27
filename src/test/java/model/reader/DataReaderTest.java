@@ -1,13 +1,13 @@
 package model.reader;
 
-import model.data.DataTable;
-import org.junit.Test;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-
-import static org.junit.Assert.*;
+//import model.data.DataTable;
+//import org.junit.Test;
+//
+//import java.io.ByteArrayInputStream;
+//import java.io.InputStream;
+//import java.nio.charset.StandardCharsets;
+//
+//import static org.junit.Assert.*;
 
 /**
  * The tests for the DataReader.
