@@ -1,8 +1,5 @@
 package model.process.analysis.operations.comparisons;
 
-import model.data.*;
-import model.data.describer.DataDescriber;
-import model.data.value.DateValue;
 import model.process.analysis.operations.Event;
 
 /**
