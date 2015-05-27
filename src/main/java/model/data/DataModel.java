@@ -102,6 +102,11 @@ public class DataModel extends Observable implements Iterable<DataTable> {
 				).findFirst().get();
 	}
 
+	/**
+	 * Returns a new ObservableList with the DataTables that can be used 
+	 * by JavaFX components.
+	 * @return The new ObservableList
+	 */
 	public ObservableList<DataTable> getObservableList() {
 		return FXCollections.observableList(tables);
 	}

@@ -55,9 +55,6 @@ public class DataController {
 	
 	public void initialize(MainUIController mainUIController) {
 		this.mainUIController = mainUIController;
-		
-		//for testing purposes!
-		file = new File("/mnt/sda4/SQT_Dev/Health-Informatics-3/res/user_save.xml");
 	}
 	
 	@FXML

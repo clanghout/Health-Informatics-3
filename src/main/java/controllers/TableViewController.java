@@ -53,11 +53,11 @@ public class TableViewController implements Observer {
 	 * Loads the data from the model and updates the view for the user.
 	 */
 	private void fillTable() {
-		logger.info("update table");
+		currentTable = model.get(0);
+		logger.info("update table: " + currentTable);
 		tableView.getItems().clear();
 		tableView.getColumns().clear();
 		
-		currentTable = model.get(0);
 		List<DataColumn> columns = currentTable.getColumns();
 		Iterator<DataRow> rowIterator = currentTable.iterator();
 		
@@ -122,6 +122,12 @@ public class TableViewController implements Observer {
 		model.addObserver(this);
 	}
 	
+	/**
+	 * If the model changes, this method is called. It is mainly checked if the observed 
+	 * DataModel changes.
+	 * @param o The observable object that changes
+	 * @param arg The eventual parameter that is passed by the observable
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		if (o instanceof DataModel) {
