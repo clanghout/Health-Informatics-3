@@ -18,6 +18,9 @@ import java.util.List;
 @SuppressWarnings("ALL")
 class LanguageParser extends BaseParser<Object> {
 
+	/**
+	 * Matches a computation and pushes a NumberOperationNode on the stack.
+	 */
 	Rule Computation() {
 		return Sequence(
 				FirstOf(
@@ -47,6 +50,9 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
+	/**
+	 * Matches any expression resulting in a number.
+	 */
 	Rule NumberExpression() {
 		return FirstOf(
 				Sqrt(),
@@ -57,6 +63,9 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
+	/**
+	 * Matches a column and pushes a TableNumberNode on the stack.
+	 */
 	Rule NumberColumn() {
 		return Sequence(
 				ColumnIdentifier(),
@@ -134,6 +143,9 @@ class LanguageParser extends BaseParser<Object> {
 		return FirstOf(Identifier(), StringLiteral(), FloatLiteral(), IntLiteral());
 	}
 
+	/**
+	 * Matches a set of parameters and returns an ArrayList of them.
+	 */
 	Rule Params() {
 		return Sequence(
 				push(new ArrayList<Object>()),
@@ -165,6 +177,9 @@ class LanguageParser extends BaseParser<Object> {
 		return FirstOf(" ", "\t");
 	}
 
+	/**
+	 * Matches a process and pushes a ProcessInfo on the stack.
+	 */
 	Rule Process() {
 		Var<Identifier> processName = new Var<Identifier>();
 		Var<List<Object>> params = new Var<List<Object>>();
@@ -177,6 +192,9 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
+	/**
+	 * Matches the main process chain.
+	 */
 	Rule Pipe() {
 		return Sequence(
 				Process(),
@@ -194,6 +212,9 @@ class LanguageParser extends BaseParser<Object> {
 		return CharRange('0', '9');
 	}
 
+	/**
+	 * Matches table.column and pushes a ColumnIdentifier on the stack
+	 */
 	Rule ColumnIdentifier() {
 		return Sequence(
 				Identifier(),
@@ -204,10 +225,6 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
-	Rule MacroVariable() {
-		return FirstOf(ColumnIdentifier(), IntLiteral(), FloatLiteral(), StringLiteral());
-	}
-
 	Rule CompareOperator() {
 		return Sequence(
 				FirstOf("<=", ">=", "=", ">", "<"),
@@ -215,6 +232,9 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
+	/**
+	 * Matches any comparison and pushes a CompareNode on the stack.
+	 */
 	Rule Comparison() {
 		return Sequence(
 				FirstOf(
@@ -260,6 +280,9 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
+	/**
+	 * Matches the AND and OR operations and pushes a BooleanOperationNode on the stack.
+	 */
 	Rule BooleanOperation() {
 		return Sequence(
 				FirstOf(
@@ -290,6 +313,9 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
+	/**
+	 * The main entry point for our language.
+	 */
 	Rule Sugar() {
 		return ZeroOrMore(
 				FirstOf(
@@ -300,6 +326,9 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
+	/**
+	 * Matches a macro definition and pushes a MacroInfo on the stack.
+	 */
 	Rule Macro() {
 		return Sequence(
 				"def",
