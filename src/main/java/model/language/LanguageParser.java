@@ -34,12 +34,22 @@ class LanguageParser extends BaseParser<Object> {
 						NumberColumn(),
 						Sequence("(", NumberExpression(), ")")),
 				swap3(),
-				push(new NumberOperationNode((NumberNode) pop(), (char) pop(), (NumberNode) pop()))
+				push(new NumberOperationNode((NumberNode) pop(), (String) pop(), (NumberNode) pop()))
+		);
+	}
+
+	Rule Sqrt() {
+		return Sequence(
+				"SQRT(",
+				NumberExpression(),
+				")",
+				push(new NumberOperationNode((NumberNode) pop(), "SQRT", null))
 		);
 	}
 
 	Rule NumberExpression() {
 		return FirstOf(
+				Sqrt(),
 				Computation(),
 				FloatLiteral(),
 				IntLiteral(),
@@ -57,9 +67,9 @@ class LanguageParser extends BaseParser<Object> {
 	Rule NumberOperator() {
 		return Sequence(
 				FirstOf(
-						"*", "/", "+", "-"
+						"*", "/", "+", "-", "^"
 				),
-				push(matchedChar())
+				push(match())
 		);
 	}
 

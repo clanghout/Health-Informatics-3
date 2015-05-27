@@ -11,9 +11,9 @@ import model.process.analysis.operations.computations.*;
  */
 class NumberOperationNode extends NumberNode {
 
-	private final char operation;
+	private final String operation;
 
-	NumberOperationNode(NumberNode left, char operation, NumberNode right) {
+	NumberOperationNode(NumberNode left, String operation, NumberNode right) {
 		super(left, right);
 
 		this.operation = operation;
@@ -21,10 +21,12 @@ class NumberOperationNode extends NumberNode {
 
 	private Computation resolveComputation(DataModel model) {
 		switch (operation) {
-			case '+': return new Addition<>(left().resolve(model), right().resolve(model));
-			case '-': return new Subtraction<>(left().resolve(model), right().resolve(model));
-			case '*': return new Multiplication<>(left().resolve(model), right().resolve(model));
-			case '/': return new Division<>(left().resolve(model), right().resolve(model));
+			case "+": return new Addition<>(left().resolve(model), right().resolve(model));
+			case "-": return new Subtraction<>(left().resolve(model), right().resolve(model));
+			case "*": return new Multiplication<>(left().resolve(model), right().resolve(model));
+			case "/": return new Division<>(left().resolve(model), right().resolve(model));
+			case "^": return new Power<>(left().resolve(model), right().resolve(model));
+			case "SQRT": return new SquareRoot<>(left().resolve(model));
 			default:
 				throw new UnsupportedOperationException(
 						String.format("Operation %c not supported", operation)

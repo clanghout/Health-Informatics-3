@@ -116,11 +116,11 @@ public class LanguageParserTest {
 	@Test
 	public void testNumberExpression() throws Exception {
 		BasicParseRunner runner = new BasicParseRunner(parser.NumberExpression());
-		String input = "((5 * 5) + (3 - 4)) / 2";
+		String input = "SQRT((((5 * 5) + (3 - 4)) / 2) ^2)";
 		ParsingResult result = runner.run(input);
 
 		assertTrue(result.matched);
 		NumberNode node = (NumberNode) result.valueStack.pop();
-		assertEquals(12, node.resolve(null).resolve(null).getValue());
+		assertEquals(12.0f, node.resolve(null).resolve(null).getValue());
 	}
 }
