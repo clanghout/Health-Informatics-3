@@ -12,19 +12,13 @@ import model.process.analysis.operations.Event;
  * @author Louis Gosschalk 26-05-2015
  */
 public class LagSequentialAnalysis {
-
-	private Table table;
-	private DataDescriber<DateValue> col;
-
+	
+	/**
+	 * This class will put the events (tables) in one table, sorted chronologically.
+	 * @param eventA
+	 * @param eventB
+	 */
 	public LagSequentialAnalysis(Event eventA, Event eventB) {
 	}
 
-	/**
-	 * This function calculates the difference between the date values.
-	 * 
-	 * @return Table of events and their lag.
-	 */
-	public Table compare() {
-		return null;
-	}
 }
