@@ -18,6 +18,50 @@ import java.util.List;
 @SuppressWarnings("ALL")
 class LanguageParser extends BaseParser<Object> {
 
+	Rule Computation() {
+		return Sequence(
+				FirstOf(
+						FloatLiteral(),
+						IntLiteral(),
+						NumberColumn(),
+						Sequence("(", NumberExpression(), ")")),
+				WhiteSpace(),
+				NumberOperator(),
+				WhiteSpace(),
+				FirstOf(
+						FloatLiteral(),
+						IntLiteral(),
+						NumberColumn(),
+						Sequence("(", NumberExpression(), ")")),
+				swap3(),
+				push(new NumberOperationNode((NumberNode) pop(), (char) pop(), (NumberNode) pop()))
+		);
+	}
+
+	Rule NumberExpression() {
+		return FirstOf(
+				Computation(),
+				FloatLiteral(),
+				IntLiteral(),
+				NumberColumn()
+		);
+	}
+
+	Rule NumberColumn() {
+		return Sequence(
+				ColumnIdentifier(),
+				push(new TableNumberNode((ColumnIdentifier) pop()))
+		);
+	}
+
+	Rule NumberOperator() {
+		return Sequence(
+				FirstOf(
+						"*", "/", "+", "-"
+				),
+				push(matchedChar())
+		);
+	}
 
 	Rule Identifier() {
 		return Sequence(
@@ -61,7 +105,7 @@ class LanguageParser extends BaseParser<Object> {
 	Rule IntLiteral() {
 		return Sequence(
 				OneOrMore(Digit()),
-				push(Integer.parseInt(matchOrDefault("0")))
+				push(new NumberConstantNode(Integer.parseInt(matchOrDefault("0"))))
 		);
 	}
 
@@ -72,7 +116,7 @@ class LanguageParser extends BaseParser<Object> {
 						".",
 						OneOrMore(Digit())
 				),
-				push(Float.parseFloat(matchOrDefault("0.0")))
+				push(new NumberConstantNode(Float.parseFloat(matchOrDefault("0.0"))))
 		);
 	}
 
@@ -163,11 +207,19 @@ class LanguageParser extends BaseParser<Object> {
 
 	Rule Comparison() {
 		return Sequence(
-				MacroVariable(),
+				FirstOf(
+						BooleanLiteral(),
+						NotOperation(),
+						Sequence("(", BooleanExpression(), ")"),
+						NumberExpression()),
 				WhiteSpace(),
 				CompareOperator(),
 				WhiteSpace(),
-				MacroVariable(),
+				FirstOf(
+						BooleanLiteral(),
+						NotOperation(),
+						Sequence("(", BooleanExpression(), ")"),
+						NumberExpression()),
 				swap3(),
 				push(new CompareNode(pop(), (String) pop(), pop()))
 		);
@@ -185,7 +237,7 @@ class LanguageParser extends BaseParser<Object> {
 	Rule BooleanLiteral() {
 		return Sequence(
 				FirstOf("true", "false"),
-				push(new ConstantNode(Boolean.parseBoolean(match())))
+				push(new BoolConstantNode(Boolean.parseBoolean(match())))
 		);
 	}
 

@@ -6,6 +6,8 @@ import org.parboiled.Parboiled;
 import org.parboiled.parserunners.BasicParseRunner;
 import org.parboiled.support.ParsingResult;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -31,7 +33,10 @@ public class LanguageParserTest {
 		ProcessInfo info = (ProcessInfo) result.valueStack.pop();
 
 		assertEquals("test", info.getIdentifier().getName());
-		assertArrayEquals(new Object[]{3, 4, 5}, info.getParameters());
+		Object[] expected = Arrays.stream(new Number[]{3, 4, 5})
+				.map(NumberConstantNode::new)
+				.toArray(Object[]::new);
+		assertArrayEquals(expected, info.getParameters());
 	}
 
 	@Test
@@ -42,7 +47,7 @@ public class LanguageParserTest {
 
 		assertEquals("test2", info.getIdentifier().getName());
 		assertArrayEquals(
-				new Object[]{"aap", new Identifier<>("sjon"), 2.0f},
+				new Object[]{"aap", new Identifier<>("sjon"), new NumberConstantNode(2.0f) },
 				info.getParameters()
 		);
 
@@ -89,7 +94,7 @@ public class LanguageParserTest {
 	public void testBooleanExpression() throws Exception {
 		BasicParseRunner runner = new BasicParseRunner(parser.BooleanOperation());
 		String input = "((false AND true) OR (5 = 5 AND (5 > 2 OR (2 > 5 OR NOT(false)))))" +
-				" AND NOT(5 < 2)";
+				" AND NOT(5 < 2 + 1)";
 		ParsingResult result = runner.run(input);
 
 		assertTrue(result.matched);
@@ -106,5 +111,16 @@ public class LanguageParserTest {
 		assertTrue(result.matched);
 		BooleanNode node = (BooleanNode) result.valueStack.pop();
 		assertTrue(node.resolve(null).resolve(null).getValue());
+	}
+
+	@Test
+	public void testNumberExpression() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.NumberExpression());
+		String input = "((5 * 5) + (3 - 4)) / 2";
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+		NumberNode node = (NumberNode) result.valueStack.pop();
+		assertEquals(12, node.resolve(null).resolve(null).getValue());
 	}
 }

@@ -1,13 +1,10 @@
 package model.language;
 
 import model.data.DataModel;
-import model.data.describer.ConstantDescriber;
 import model.data.describer.ConstraintDescriber;
 import model.data.describer.DataDescriber;
-import model.data.describer.RowValueDescriber;
 import model.process.analysis.operations.constraints.*;
 import model.data.value.BoolValue;
-import model.data.value.DataValue;
 import model.data.value.NumberValue;
 
 /**
@@ -29,31 +26,26 @@ final class CompareNode extends BooleanNode {
 	}
 
 	DataDescriber<BoolValue> resolve(DataModel model) {
-		DataDescriber<DataValue> leftSide = resolveNode(model, left);
-		DataDescriber<DataValue> rightSide = resolveNode(model, right);
+		DataDescriber<NumberValue> leftSide = resolveNode(model, left);
+		DataDescriber<NumberValue> rightSide = resolveNode(model, right);
 
 		return new ConstraintDescriber(resolveConstraint(leftSide, operator, rightSide));
 	}
 
-	private DataDescriber<DataValue> resolveNode(DataModel model, Object node) {
-		if (node instanceof ColumnIdentifier) {
-			ColumnIdentifier columnIdentifier = (ColumnIdentifier) node;
+	private DataDescriber<NumberValue> resolveNode(DataModel model, Object node) {
+		if (node instanceof NumberNode) {
+			NumberNode number = (NumberNode) node;
 
-			return new RowValueDescriber<>(
-					model.getByName(
-							columnIdentifier.getTable()
-					).getColumn(columnIdentifier.getColumn()));
-		} else if (node instanceof CompareNode) {
-			throw new UnsupportedOperationException("Code not yet implemented");
+			return number.resolve(model);
 		} else {
-			return ConstantDescriber.resolveType(node);
+			throw new UnsupportedOperationException("Code not yet implemented");
 		}
 	}
 
 	private Constraint resolveConstraint(
-			DataDescriber<DataValue> left,
+			DataDescriber<NumberValue> left,
 			String operator,
-			DataDescriber<DataValue> right) {
+			DataDescriber<NumberValue> right) {
 
 		switch (operator) {
 			case "=": return new EqualityCheck<>(left, right);
