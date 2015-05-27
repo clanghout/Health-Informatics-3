@@ -33,7 +33,7 @@ public class DataReader {
 	}
 
 	/**
-	 * Read the data from the specifed file.
+	 * Read the data from the specified file.
 	 * @param file The file you want to read the data from
 	 * @return A DataTable containing the data from the specified file
 	 * @throws IOException If anything goes wrong reading the file
@@ -51,7 +51,6 @@ public class DataReader {
 	 */
 	public DataTable readData(InputStream stream) throws IOException {
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"))) {
-			skipToContent(reader);
 
 			DataTableBuilder builder = new DataTableBuilder();
 			builder.setName("test");
@@ -66,18 +65,14 @@ public class DataReader {
 		}
 	}
 
-	private void skipToContent(BufferedReader reader) throws IOException {
-		while (!reader.readLine().contains("[")) {
-			// Intentionally left empty
-		}
-	}
-
 	private DataTable readRows(BufferedReader reader, DataTableBuilder builder) throws IOException {
 		String line;
-		while (!(line = reader.readLine()).contains("]")) {
+		while (true) {
+			line = reader.readLine();
+			if (line == null)
+				break;
 			String[] sections = line.split(",");
 			Stream<DataValue> values = Arrays.stream(sections).map(StringValue::new);
-
 			builder.createRow(values.toArray(DataValue[]::new));
 		}
 
