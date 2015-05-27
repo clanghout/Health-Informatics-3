@@ -95,14 +95,14 @@ public class DataTableTest {
 
 	@Test
 	public void testFlaggedDelete() throws Exception {
-		dataTable.flagNotDelete(rows.get(1));
+		dataTable.flagRow(rows.get(1));
 		assertEquals(dataTable.getRow(1), rows.get(1));
 		assertEquals(dataTable.getRow(2), rows.get(2));
 	}
 
 	@Test
 	public void testDelete() throws Exception {
-		dataTable.flagNotDelete(rows.get(1));
+		dataTable.flagRow(rows.get(1));
 		dataTable.deleteNotFlagged();
 		assertEquals(dataTable.getRow(0), rows.get(1));
 		assertEquals(dataTable.getRowCount(), 1, 0.1);
@@ -110,8 +110,8 @@ public class DataTableTest {
 
 	@Test
 	public void testDelete2() throws Exception {
-		dataTable.flagNotDelete(rows.get(0));
-		dataTable.flagNotDelete(rows.get(2));
+		dataTable.flagRow(rows.get(0));
+		dataTable.flagRow(rows.get(2));
 		dataTable.deleteNotFlagged();
 		assertEquals(dataTable.getRowCount(), 2, 0.1);
 		assertTrue(dataTable.getRows().contains(rows.get(0)));

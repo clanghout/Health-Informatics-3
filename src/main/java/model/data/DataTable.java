@@ -7,7 +7,11 @@ import java.util.*;
  */
 public class DataTable extends Table {
 	private List<DataRow> rows;
-	private Set<DataRow> flaggedNoDelete;
+	/**
+	 * flaggedRows is used to flag a row that will get a code or will not get filtered out.
+	 * This is needed to allow certain operations to be performed on a combinedDataTable
+	 */
+	private Set<DataRow> flaggedRows;
 	private Map<String, DataColumn> columns;
 	private String name;
 
@@ -17,7 +21,7 @@ public class DataTable extends Table {
 	public DataTable() {
 		rows = new ArrayList<>();
 		columns = new HashMap<>();
-		flaggedNoDelete = new HashSet<>();
+		flaggedRows = new HashSet<>();
 	}
 
 	/**
@@ -98,9 +102,9 @@ public class DataTable extends Table {
 	}
 
 	@Override
-	public boolean flagNotDelete(Row row) {
+	public boolean flagRow(Row row) {
 		if (row instanceof DataRow && rows.contains(row)) {
-			flaggedNoDelete.add((DataRow) row);
+			flaggedRows.add((DataRow) row);
 			return true;
 		} else {
 			return false;
@@ -109,15 +113,28 @@ public class DataTable extends Table {
 	}
 
 	@Override
+	public void resetFlags() {
+		flaggedRows.clear();
+	}
+
+	@Override
 	public void deleteNotFlagged() {
 		List<DataRow> newRows = new ArrayList<>();
 		for (DataRow row : rows) {
-			if (flaggedNoDelete.contains(row)) {
+			if (flaggedRows.contains(row)) {
 				newRows.add(row);
 			}
 		}
 		rows = newRows;
-		flaggedNoDelete.clear();
+		resetFlags();
+	}
+
+	/**
+	 * return the flagged rows.
+	 * @return the rows that are flagged
+	 */
+	public Set<DataRow> getFlaggedRows() {
+		return flaggedRows;
 	}
 
 

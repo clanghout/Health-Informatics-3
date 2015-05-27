@@ -32,20 +32,6 @@ public class CombinedDataTable extends Table {
 	}
 
 	@Override
-	public boolean flagNotDelete(Row row) {
-		boolean result = true;
-		if (row instanceof CombinedDataRow) {
-			CombinedDataRow combRow = (CombinedDataRow) row;
-			List<DataRow> rows = combRow.getRows();
-			for (DataRow dataRow : rows) {
-				result = result && flagNotDelete(dataRow);
-			}
-		}
-		return result;
-
-	}
-
-	@Override
 	public CombinedDataTable copy() {
 		CombinedDataTable combined = null;
 		if (this.combined != null) {
@@ -92,13 +78,35 @@ public class CombinedDataTable extends Table {
 	}
 
 	/**
-	 * flag a datarRow for no delete in the correct dataTable of the combined dataTable.
-	 * @param row row that must not be delete
+	 * flag a datarRow in the correct dataTable of the combined dataTable.
+	 * @param row row that must be flagged
 	 * @return true if there is a table found that had this row.
 	 */
-	public boolean flagNotDelete(DataRow row) {
-		return table.flagNotDelete(row)
-				|| combined != null && combined.flagNotDelete(row);
+	public boolean flagRow(DataRow row) {
+		return table.flagRow(row)
+				|| combined != null && combined.flagRow(row);
+	}
+
+	@Override
+	public boolean flagRow(Row row) {
+		boolean result = true;
+		if (row instanceof CombinedDataRow) {
+			CombinedDataRow combRow = (CombinedDataRow) row;
+			List<DataRow> rows = combRow.getRows();
+			for (DataRow dataRow : rows) {
+				result = result && flagRow(dataRow);
+			}
+		}
+		return result;
+
+	}
+
+	@Override
+	public void resetFlags() {
+		table.resetFlags();
+		if (combined != null) {
+			combined.resetFlags();
+		}
 	}
 
 	@Override
