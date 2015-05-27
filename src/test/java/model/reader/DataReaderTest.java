@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  */
 public class DataReaderTest {
 
-	@Test
+/*	@Test
 	public void testReadData() throws Exception {
 		String text = "Nonsense\n" +
 				"Bla bla\n" +
@@ -35,4 +35,5 @@ public class DataReaderTest {
 
 		assertEquals(5, table.getRowCount());
 	}
+	*/
 }
