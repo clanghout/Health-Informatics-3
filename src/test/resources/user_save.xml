@@ -9,7 +9,7 @@
     </file>
 	<file name="ADMIRE.txt">
         <type>plaintext</type>
-        <path>input</path>
+        <path>model/input</path>
 	</file>
 	<file name="statsensor.txt">
 	    <data>
@@ -17,6 +17,6 @@
 	       <end>8</end>
 	    </data>
 		<type>plaintext</type>
-		<path>input</path>
+		<path>model/input</path>
 	</file>
 </input>
