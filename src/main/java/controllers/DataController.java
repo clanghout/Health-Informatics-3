@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
+import model.data.DataModel;
 import model.data.DataTable;
 import model.data.describer.ConstantDescriber;
 import model.data.describer.ConstraintDescriber;
@@ -30,16 +31,31 @@ import java.util.logging.Logger;
  * Created by Boudewijn on 6-5-2015.
  */
 public class DataController {
+	
 	@FXML
 	private TextField fileNameField;
+	
 	@FXML
 	private Parent root;
-
+	
+	private MainUIController mainUIController;
+	
 	private Logger logger = Logger.getLogger("DataController");
 
 	private File file;
 	private DataTable out;
-
+	private DataTable input;
+	
+	/**
+	 * Creates a new TableViewController.
+	 */
+	public DataController() {
+	}
+	
+	public void initialize(MainUIController mainUIController) {
+		this.mainUIController = mainUIController;
+	}
+	
 	@FXML
 	protected void handleImportButtonAction(ActionEvent event) {
 		FileChooser fileChooser = new FileChooser();
@@ -67,8 +83,11 @@ public class DataController {
 			reader.read(file);
 			DataFile dataFile = reader.getDataFiles().get(0);
 			DataReader dataReader = new DataReader();
-			DataTable input = dataReader.readData(dataFile.getDataStream());
-
+			input = dataReader.readData(dataFile.getDataStream());
+			DataModel model = new DataModel();
+			mainUIController.setModel(model);
+			model.add(input);
+			
 			Constraint constraint = new EqualityCheck<>(
 					new RowValueDescriber<>(input.getColumn("time")),
 					new ConstantDescriber<>(new StringValue("0803"))
@@ -103,5 +122,4 @@ public class DataController {
 			}
 		}
 	}
-
 }

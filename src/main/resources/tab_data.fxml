@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
+<?import javafx.scene.layout.AnchorPane?>
 <Tab text="Data" fx:controller="controllers.DataController" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<content>
 		<AnchorPane fx:id="root">
@@ -26,7 +24,7 @@
 					layoutX="476.0"
 					layoutY="60.0"
 					onAction="#handleAnalyseButtonAction"
-					text="Analyze" />
+					text="Read" />
 				<Button
 						styleClass="save-button"
 						layoutX="476.0"
