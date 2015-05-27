@@ -53,18 +53,18 @@ public class TableViewController implements Observer {
 	 * Loads the data from the model and updates the view for the user.
 	 */
 	private void fillTable() {
-		logger.info("update table");
+		currentTable = model.get(0);
+		logger.info("update table: " + currentTable);
 		tableView.getItems().clear();
 		tableView.getColumns().clear();
 		
-		currentTable = model.get(0);
 		List<DataColumn> columns = currentTable.getColumns();
 		Iterator<DataRow> rowIterator = currentTable.iterator();
 		
 		tableView.setPlaceholder(new Label("Loading..."));
 		fillTableHeaders(columns);
 		
-		while(rowIterator.hasNext()) {
+		while (rowIterator.hasNext()) {
 			Row currentRow = rowIterator.next();
 			ObservableList<StringProperty> row = FXCollections.observableArrayList();
 			for (int i = 0; i < columns.size(); i++) {
@@ -82,8 +82,9 @@ public class TableViewController implements Observer {
 	 */
 	private void fillTableHeaders(List<DataColumn> columns) {
 		for (int i = 0; i < columns.size(); i++) {
-			TableColumn<ObservableList<StringProperty>, String> fxColumn = createColumn(i, columns.get(i).getName());
-			fxColumn.setPrefWidth(100);
+			TableColumn<ObservableList<StringProperty>, String> fxColumn 
+				= createColumn(i, columns.get(i).getName());
+			fxColumn.getStyleClass().add("table-column");
 			tableView.getColumns().add(fxColumn);
 		}
 	}
@@ -92,14 +93,20 @@ public class TableViewController implements Observer {
 	 * Creates a new TableColumn based on an observable list with StringProperties.
 	 * @param index The index of the column that will be created
 	 * @param columnTitle The name of the column
-	 * @see <a href="https://docs.oracle.com/javafx/2/api/javafx/scene/control/TableView.html">The TableView Class</a>
+	 * @see <a href="https://docs.oracle.com/javafx/2/api/javafx/scene/control/TableView.html">
+	 * 	The TableView Class</a>
 	 * @return The created TableColumn
 	 */
-	private TableColumn<ObservableList<StringProperty>, String> createColumn(int index, String columnTitle) {
-		TableColumn<ObservableList<StringProperty>, String> column = new TableColumn<>(columnTitle);
-		column.setCellValueFactory(new Callback<CellDataFeatures<ObservableList<StringProperty>, String>, ObservableValue<String>>() {
+	private TableColumn<ObservableList<StringProperty>, String> createColumn(int index, 
+																			String columnTitle) {
+		TableColumn<ObservableList<StringProperty>, String> column 
+									= new TableColumn<>(columnTitle);
+		column.setCellValueFactory(
+				new Callback<CellDataFeatures<ObservableList<StringProperty>, String>, 
+												ObservableValue<String>>() {
 			@Override
-			public ObservableValue<String> call(CellDataFeatures<ObservableList<StringProperty>, String> cellDataFeatures) {
+			public ObservableValue<String> call(
+					CellDataFeatures<ObservableList<StringProperty>, String> cellDataFeatures) {
 				return cellDataFeatures.getValue().get(index);
 			}
 		});
@@ -115,6 +122,12 @@ public class TableViewController implements Observer {
 		model.addObserver(this);
 	}
 	
+	/**
+	 * If the model changes, this method is called. It is mainly checked if the observed 
+	 * DataModel changes. If this happens, the view of the table will be updated.
+	 * @param o The observable object that changes
+	 * @param arg The eventual parameter that is passed by the observable
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		if (o instanceof DataModel) {

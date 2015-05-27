@@ -39,7 +39,6 @@ public class DataController {
 	private Parent root;
 	
 	private MainUIController mainUIController;
-	private DataModel model;
 	
 	private Logger logger = Logger.getLogger("DataController");
 
@@ -55,9 +54,6 @@ public class DataController {
 	
 	public void initialize(MainUIController mainUIController) {
 		this.mainUIController = mainUIController;
-		
-		//for testing purposes!
-		file = new File("/mnt/sda4/SQT_Dev/Health-Informatics-3/res/user_save.xml");
 	}
 	
 	@FXML
@@ -88,7 +84,7 @@ public class DataController {
 			DataFile dataFile = reader.getDataFiles().get(0);
 			DataReader dataReader = new DataReader();
 			input = dataReader.readData(dataFile.getDataStream());
-			model = new DataModel();
+			DataModel model = new DataModel();
 			mainUIController.setModel(model);
 			model.add(input);
 			

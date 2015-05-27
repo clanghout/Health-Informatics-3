@@ -70,7 +70,7 @@
 }
 
 .data-table .table-column {
-	-fx-pref-width: 120px;
+	-fx-pref-width: 100px;
 }
 
 .data-fields-container {

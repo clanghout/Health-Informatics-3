@@ -2,7 +2,6 @@ package model.process.analysis.operations.computations;
 
 import model.data.Row;
 import model.data.describer.DataDescriber;
-import model.process.analysis.operations.Operation;
 import model.data.value.NumberValue;
 
 /**
@@ -10,10 +9,11 @@ import model.data.value.NumberValue;
  *
  * @param <T> The type of the DataDescriber
  */
-public abstract class UnaryComputation<T extends NumberValue> extends Operation<NumberValue> {
+public abstract class UnaryComputation<T extends NumberValue> extends Computation<T> {
 	private final DataDescriber<T> operand;
 
 	public UnaryComputation(DataDescriber<T> operand) {
+		super(operand, null);
 		this.operand = operand;
 	}
 

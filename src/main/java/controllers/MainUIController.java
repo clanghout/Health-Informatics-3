@@ -17,11 +17,15 @@ public class MainUIController {
 	@FXML private DataController dataController;
 	@FXML private AnalysisController analysisController;
 	@FXML private VisualizationController visualizationController;
+
 	
 	private DataModel model;
 	
 	private Logger logger = Logger.getLogger("MainUIController");
 
+	/**
+	 * Initializes other controllers that depend on this controller.
+	 */
 	@FXML public void initialize() {
 		this.dataController.initialize(this);
 	}
@@ -36,6 +40,10 @@ public class MainUIController {
 		System.exit(0);
 	}
 	
+	/**
+	 * Sets the model for the other controllers that need the same DataModel.
+	 * @param model The DataModel
+	 */
 	public void setModel(DataModel model) {
 		this.model = model;
 		tableViewController.setDataModel(model);

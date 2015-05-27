@@ -18,6 +18,69 @@ import java.util.List;
 @SuppressWarnings("ALL")
 class LanguageParser extends BaseParser<Object> {
 
+	/**
+	 * Matches a computation and pushes a NumberOperationNode on the stack.
+	 */
+	Rule Computation() {
+		return Sequence(
+				FirstOf(
+						FloatLiteral(),
+						IntLiteral(),
+						NumberColumn(),
+						Sequence("(", NumberExpression(), ")")),
+				WhiteSpace(),
+				NumberOperator(),
+				WhiteSpace(),
+				FirstOf(
+						FloatLiteral(),
+						IntLiteral(),
+						NumberColumn(),
+						Sequence("(", NumberExpression(), ")")),
+				swap3(),
+				push(new NumberOperationNode((NumberNode) pop(), (String) pop(), (NumberNode) pop()))
+		);
+	}
+
+	Rule Sqrt() {
+		return Sequence(
+				"SQRT(",
+				NumberExpression(),
+				")",
+				push(new NumberOperationNode((NumberNode) pop(), "SQRT", null))
+		);
+	}
+
+	/**
+	 * Matches any expression resulting in a number.
+	 */
+	Rule NumberExpression() {
+		return FirstOf(
+				Sqrt(),
+				Computation(),
+				FloatLiteral(),
+				IntLiteral(),
+				NumberColumn()
+		);
+	}
+
+	/**
+	 * Matches a column and pushes a TableNumberNode on the stack.
+	 */
+	Rule NumberColumn() {
+		return Sequence(
+				ColumnIdentifier(),
+				push(new TableNumberNode((ColumnIdentifier) pop()))
+		);
+	}
+
+	Rule NumberOperator() {
+		return Sequence(
+				FirstOf(
+						"*", "/", "+", "-", "^"
+				),
+				push(match())
+		);
+	}
 
 	Rule Identifier() {
 		return Sequence(
@@ -61,7 +124,7 @@ class LanguageParser extends BaseParser<Object> {
 	Rule IntLiteral() {
 		return Sequence(
 				OneOrMore(Digit()),
-				push(Integer.parseInt(matchOrDefault("0")))
+				push(new NumberConstantNode(Integer.parseInt(matchOrDefault("0"))))
 		);
 	}
 
@@ -72,7 +135,7 @@ class LanguageParser extends BaseParser<Object> {
 						".",
 						OneOrMore(Digit())
 				),
-				push(Float.parseFloat(matchOrDefault("0.0")))
+				push(new NumberConstantNode(Float.parseFloat(matchOrDefault("0.0"))))
 		);
 	}
 
@@ -80,6 +143,9 @@ class LanguageParser extends BaseParser<Object> {
 		return FirstOf(Identifier(), StringLiteral(), FloatLiteral(), IntLiteral());
 	}
 
+	/**
+	 * Matches a set of parameters and returns an ArrayList of them.
+	 */
 	Rule Params() {
 		return Sequence(
 				push(new ArrayList<Object>()),
@@ -111,6 +177,9 @@ class LanguageParser extends BaseParser<Object> {
 		return FirstOf(" ", "\t");
 	}
 
+	/**
+	 * Matches a process and pushes a ProcessInfo on the stack.
+	 */
 	Rule Process() {
 		Var<Identifier> processName = new Var<Identifier>();
 		Var<List<Object>> params = new Var<List<Object>>();
@@ -123,6 +192,9 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
+	/**
+	 * Matches the main process chain.
+	 */
 	Rule Pipe() {
 		return Sequence(
 				Process(),
@@ -140,6 +212,9 @@ class LanguageParser extends BaseParser<Object> {
 		return CharRange('0', '9');
 	}
 
+	/**
+	 * Matches table.column and pushes a ColumnIdentifier on the stack
+	 */
 	Rule ColumnIdentifier() {
 		return Sequence(
 				Identifier(),
@@ -150,10 +225,6 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
-	Rule MacroVariable() {
-		return FirstOf(ColumnIdentifier(), IntLiteral(), FloatLiteral(), StringLiteral());
-	}
-
 	Rule CompareOperator() {
 		return Sequence(
 				FirstOf("<=", ">=", "=", ">", "<"),
@@ -161,13 +232,24 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
+	/**
+	 * Matches any comparison and pushes a CompareNode on the stack.
+	 */
 	Rule Comparison() {
 		return Sequence(
-				MacroVariable(),
+				FirstOf(
+						BooleanLiteral(),
+						NotOperation(),
+						Sequence("(", BooleanExpression(), ")"),
+						NumberExpression()),
 				WhiteSpace(),
 				CompareOperator(),
 				WhiteSpace(),
-				MacroVariable(),
+				FirstOf(
+						BooleanLiteral(),
+						NotOperation(),
+						Sequence("(", BooleanExpression(), ")"),
+						NumberExpression()),
 				swap3(),
 				push(new CompareNode(pop(), (String) pop(), pop()))
 		);
@@ -185,7 +267,7 @@ class LanguageParser extends BaseParser<Object> {
 	Rule BooleanLiteral() {
 		return Sequence(
 				FirstOf("true", "false"),
-				push(new ConstantNode(Boolean.parseBoolean(match())))
+				push(new BoolConstantNode(Boolean.parseBoolean(match())))
 		);
 	}
 
@@ -198,6 +280,9 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
+	/**
+	 * Matches the AND and OR operations and pushes a BooleanOperationNode on the stack.
+	 */
 	Rule BooleanOperation() {
 		return Sequence(
 				FirstOf(
@@ -228,6 +313,9 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
+	/**
+	 * The main entry point for our language.
+	 */
 	Rule Sugar() {
 		return ZeroOrMore(
 				FirstOf(
@@ -238,6 +326,9 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
+	/**
+	 * Matches a macro definition and pushes a MacroInfo on the stack.
+	 */
 	Rule Macro() {
 		return Sequence(
 				"def",

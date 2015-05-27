@@ -51,6 +51,7 @@ public class DataReader {
 	 */
 	public DataTable readData(InputStream stream) throws IOException {
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"))) {
+			skipToContent(reader);
 
 			DataTableBuilder builder = new DataTableBuilder();
 			builder.setName("test");
@@ -73,12 +74,10 @@ public class DataReader {
 
 	private DataTable readRows(BufferedReader reader, DataTableBuilder builder) throws IOException {
 		String line;
-		while (true) {
-			line = reader.readLine();
-			if (line == null)
-				break;
+		while (!(line = reader.readLine()).contains("]")) {
 			String[] sections = line.split(",");
 			Stream<DataValue> values = Arrays.stream(sections).map(StringValue::new);
+
 			builder.createRow(values.toArray(DataValue[]::new));
 		}
 
