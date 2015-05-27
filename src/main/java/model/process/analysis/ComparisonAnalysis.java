@@ -4,7 +4,7 @@ import model.data.Table;
 import model.process.analysis.operations.comparisons.Comparison;
 
 /**
- * Implements comparison analysis
+ * Implements comparison analysis.
  * 
  * @author Louis Gosschalk 26-05-2015
  */
