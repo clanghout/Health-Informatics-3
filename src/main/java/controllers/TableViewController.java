@@ -64,7 +64,7 @@ public class TableViewController implements Observer {
 		tableView.setPlaceholder(new Label("Loading..."));
 		fillTableHeaders(columns);
 		
-		while(rowIterator.hasNext()) {
+		while (rowIterator.hasNext()) {
 			Row currentRow = rowIterator.next();
 			ObservableList<StringProperty> row = FXCollections.observableArrayList();
 			for (int i = 0; i < columns.size(); i++) {
@@ -82,7 +82,8 @@ public class TableViewController implements Observer {
 	 */
 	private void fillTableHeaders(List<DataColumn> columns) {
 		for (int i = 0; i < columns.size(); i++) {
-			TableColumn<ObservableList<StringProperty>, String> fxColumn = createColumn(i, columns.get(i).getName());
+			TableColumn<ObservableList<StringProperty>, String> fxColumn 
+				= createColumn(i, columns.get(i).getName());
 			fxColumn.setPrefWidth(100);
 			tableView.getColumns().add(fxColumn);
 		}
@@ -92,14 +93,20 @@ public class TableViewController implements Observer {
 	 * Creates a new TableColumn based on an observable list with StringProperties.
 	 * @param index The index of the column that will be created
 	 * @param columnTitle The name of the column
-	 * @see <a href="https://docs.oracle.com/javafx/2/api/javafx/scene/control/TableView.html">The TableView Class</a>
+	 * @see <a href="https://docs.oracle.com/javafx/2/api/javafx/scene/control/TableView.html">
+	 * 	The TableView Class</a>
 	 * @return The created TableColumn
 	 */
-	private TableColumn<ObservableList<StringProperty>, String> createColumn(int index, String columnTitle) {
-		TableColumn<ObservableList<StringProperty>, String> column = new TableColumn<>(columnTitle);
-		column.setCellValueFactory(new Callback<CellDataFeatures<ObservableList<StringProperty>, String>, ObservableValue<String>>() {
+	private TableColumn<ObservableList<StringProperty>, String> createColumn(int index, 
+																			String columnTitle) {
+		TableColumn<ObservableList<StringProperty>, String> column 
+									= new TableColumn<>(columnTitle);
+		column.setCellValueFactory(
+				new Callback<CellDataFeatures<ObservableList<StringProperty>, String>, 
+												ObservableValue<String>>() {
 			@Override
-			public ObservableValue<String> call(CellDataFeatures<ObservableList<StringProperty>, String> cellDataFeatures) {
+			public ObservableValue<String> call(
+					CellDataFeatures<ObservableList<StringProperty>, String> cellDataFeatures) {
 				return cellDataFeatures.getValue().get(index);
 			}
 		});
