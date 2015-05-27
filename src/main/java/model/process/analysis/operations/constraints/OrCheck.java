@@ -28,6 +28,6 @@ public final class OrCheck extends BinaryCheck<BoolValue> {
 	public boolean check(Row row) {
 		BoolValue left = getLeftSide().resolve(row);
 		BoolValue right = getRightSide().resolve(row);
-		return left.getValue() | right.getValue();
+		return left.getValue() || right.getValue();
 	}
 }
