@@ -21,7 +21,7 @@ public class XlsxFileTest {
 	
 	@Before
 	public void setUp() {
-		String file = getClass().getResource("/input/xlsxfile.xlsx").getFile();
+		String file = getClass().getResource("/model/input/xlsxfile.xlsx").getFile();
 		xlsxFile = new XlsxFile(file);
 	}
 	

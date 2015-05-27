@@ -17,7 +17,7 @@ public class DataFileTest {
 
 	@Test
 	public void testCreateDataFile() throws IOException {
-		String file = getClass().getResource("/input/statsensor.txt").getFile();
+		String file = getClass().getResource("/model/input/statsensor.txt").getFile();
 
 		DataFile df = DataFile.createDataFile(file, "plaintext");
 		assertTrue(df instanceof PlainTextFile);
@@ -34,18 +34,18 @@ public class DataFileTest {
 	
 	@Test(expected = DataFileNotRecognizedException.class)
 	public void testCreateInvalidDataFile() {
-		DataFile.createDataFile("/input/statsensor.txt", "invalidType");
+		DataFile.createDataFile("/model/input/statsensor.txt", "invalidType");
 	}
 	
 	@Test
 	public void testCreateXlsFile() {
-		DataFile df = DataFile.createDataFile("/input/xlsfile.xls", "xls");
+		DataFile df = DataFile.createDataFile("/model/input/xlsfile.xls", "xls");
 		assertTrue(df instanceof XlsFile);
 	}
 
 	@Test
 	public void testCreateXlsxFile() {
-		DataFile df = DataFile.createDataFile("/input/xlsxfile.xlsx", "xlsx");
+		DataFile df = DataFile.createDataFile("/model/input/xlsxfile.xlsx", "xlsx");
 		assertTrue(df instanceof XlsxFile);
 	}
 }

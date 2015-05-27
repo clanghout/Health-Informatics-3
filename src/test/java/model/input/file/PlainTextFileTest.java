@@ -21,7 +21,7 @@ public class PlainTextFileTest {
 	
 	@Before
 	public void setUp() {
-		String file = getClass().getResource("/input/plaintext.txt").getFile();
+		String file = getClass().getResource("/model/input/plaintext.txt").getFile();
 		textFile = new PlainTextFile(file);
 	}
 	
@@ -88,7 +88,7 @@ public class PlainTextFileTest {
 	
 	@Test(expected = IOException.class)
 	public void testEmptyFile() throws IOException {
-		String emptyFile = getClass().getResource("/input/ADMIRE.txt").getFile();
+		String emptyFile = getClass().getResource("/model/input/ADMIRE.txt").getFile();
 		PlainTextFile failFile = new PlainTextFile(emptyFile);
 		failFile.getDataStream();
 	}

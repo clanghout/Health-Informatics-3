@@ -65,7 +65,7 @@ public class XmlReaderTest {
 				file1.getAttribute("name"));
 		Element pathnode = (Element) file1.getElementsByTagName("path").item(0);
 		String filepath = pathnode.getTextContent();
-		assertEquals("input", filepath);
+		assertEquals("model/input", filepath);
 	}
 	
 	@Test(expected = NullPointerException.class)
@@ -98,6 +98,6 @@ public class XmlReaderTest {
 		);
 		String relativePath = new File(parentDir).toURI().relativize(
 				dataFile.getFile().toURI()).getPath();
-		assertEquals("input/ADMIRE.txt", relativePath);
+		assertEquals("model/input/ADMIRE.txt", relativePath);
 	}
 }
