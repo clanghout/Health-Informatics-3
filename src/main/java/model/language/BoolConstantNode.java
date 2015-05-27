@@ -8,11 +8,11 @@ import model.data.value.BoolValue;
 /**
  * Created by Boudewijn on 26-5-2015.
  */
-class ConstantNode extends BooleanNode {
+class BoolConstantNode extends BooleanNode {
 
 	private DataDescriber<BoolValue> value;
 
-	ConstantNode(boolean value) {
+	BoolConstantNode(boolean value) {
 		super(null, null);
 		this.value = new ConstantDescriber<>(new BoolValue(value));
 	}
