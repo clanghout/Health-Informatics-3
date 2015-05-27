@@ -1,7 +1,9 @@
 package model.process.analysis.operations;
 
 import model.data.Table;
-import model.process.analysis.operations.constraints.Constraint;
+import model.data.describer.DataDescriber;
+import model.data.value.BoolValue;
+import model.process.analysis.ConstraintAnalysis;
 
 /**
  * Here I intend to create a specification for events.
@@ -10,17 +12,16 @@ import model.process.analysis.operations.constraints.Constraint;
 public class Event {
 	
 	private Table table;
-	private Constraint constraint;
+	private DataDescriber<BoolValue> constraint;
 	
-	public Event(Table table, Constraint constraint) {
+	public Event(Table table, DataDescriber<BoolValue> constraint) {
 		this.table = table;
 		this.constraint = constraint;
 	}
 	
 	public Table create() {
-//		ConstraintAnalysis constr = new ConstraintAnalysis(constraint);
-//		Table event = constr.analyse(table);
-//		return event;
-		throw new UnsupportedOperationException("Code not yet implemented");
+		ConstraintAnalysis constr = new ConstraintAnalysis(constraint);
+		Table event = constr.analyse(table);
+		return event;
 	}
 }
