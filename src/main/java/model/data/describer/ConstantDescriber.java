@@ -37,11 +37,13 @@ public final class ConstantDescriber<Type extends DataValue> extends DataDescrib
 
 	public static ConstantDescriber<DataValue> resolveType(Object value) {
 		if (value instanceof Integer) {
-			return new ConstantDescriber<>(new IntValue((int) value));
+			return new ConstantDescriber<>(new IntValue((Integer) value));
 		} else if (value instanceof Float) {
-			return new ConstantDescriber<>(new FloatValue((float) value));
+			return new ConstantDescriber<>(new FloatValue((Float) value));
 		} else if (value instanceof String) {
 			return new ConstantDescriber<>(new StringValue((String) value));
-		} else throw new UnsupportedOperationException("This type has not yet been implemented");
+		} else {
+			throw new UnsupportedOperationException("This type has not yet been implemented");
+		}
 	}
 }

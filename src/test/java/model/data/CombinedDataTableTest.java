@@ -1,9 +1,10 @@
 package model.data;
 
+import model.data.describer.ConstraintDescriber;
 import model.data.describer.RowValueDescriber;
-import model.data.process.analysis.ConstraintAnalysis;
-import model.data.process.analysis.operations.constraints.Constraint;
-import model.data.process.analysis.operations.constraints.EqualityCheck;
+import model.process.analysis.ConstraintAnalysis;
+import model.process.analysis.operations.constraints.Constraint;
+import model.process.analysis.operations.constraints.EqualityCheck;
 import model.data.value.DataValue;
 import model.data.value.IntValue;
 import model.data.value.StringValue;
@@ -55,6 +56,10 @@ public class CombinedDataTableTest {
 		rows.add(builder.createRow(valuesRow2));
 		rows.add(builder.createRow(valuesRow3));
 
+		rows.get(1).addCode("test1");
+		rows.get(1).addCode("test2");
+		rows.get(2).addCode("test2");
+
 		dataTables.add(builder.build());
 
 		builder = new DataTableBuilder();
@@ -77,6 +82,8 @@ public class CombinedDataTableTest {
 
 		rows.add(builder.createRow(valuesRow4));
 		rows.add(builder.createRow(valuesRow5));
+
+		rows.get(1).addCode("test3");
 
 
 		dataTables.add(builder.build());
@@ -218,7 +225,7 @@ public class CombinedDataTableTest {
 				new RowValueDescriber<>(column2)
 		);
 
-		ConstraintAnalysis analysis = new ConstraintAnalysis(columnCheck);
+		ConstraintAnalysis analysis = new ConstraintAnalysis(new ConstraintDescriber(columnCheck));
 
 		assertEquals(table1.getRowCount(), 5);
 		assertEquals(table2.getRowCount(), 5);
@@ -243,13 +250,13 @@ public class CombinedDataTableTest {
 		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
 		CombinedDataTable copy = comb.copy();
 
-		assertEquals(comb,copy);
+		assertTrue(comb.equalsSoft(copy));
 	}
 
 	@Test
 	public void testEquals() throws Exception {
 		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
-		CombinedDataTable copy = comb.copy();
+		CombinedDataTable copy = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
 
 		assertTrue(comb.equals(copy));
 	}
@@ -337,5 +344,30 @@ public class CombinedDataTableTest {
 		assertEquals(copy.getName(), "test");
 	}
 
+	@Test
+	public void testExportCodes() throws Exception {
+
+		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
+		DataTable copy = comb.export("test");
+
+		List<DataRow> rowsCopy = copy.getRows();
+		assertFalse(rowsCopy.get(0).containsCode("test1"));
+		assertFalse(rowsCopy.get(0).containsCode("test2"));
+		assertFalse(rowsCopy.get(0).containsCode("test3"));
+
+		assertTrue(rowsCopy.get(1).containsCode("test1"));
+		assertTrue(rowsCopy.get(1).containsCode("test2"));
+		assertFalse(rowsCopy.get(1).containsCode("test3"));
+
+		assertFalse(rowsCopy.get(2).containsCode("test1"));
+		assertTrue(rowsCopy.get(2).containsCode("test2"));
+		assertFalse(rowsCopy.get(2).containsCode("test3"));
+
+		assertTrue(rowsCopy.get(4).containsCode("test1"));
+		assertTrue(rowsCopy.get(4).containsCode("test2"));
+		assertTrue(rowsCopy.get(4).containsCode("test3"));
+
+
+	}
 
 }

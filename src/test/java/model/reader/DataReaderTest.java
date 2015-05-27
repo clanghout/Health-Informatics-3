@@ -1,13 +1,13 @@
 package model.reader;
 
-//import model.data.DataTable;
-//import org.junit.Test;
-//
-//import java.io.ByteArrayInputStream;
-//import java.io.InputStream;
-//import java.nio.charset.StandardCharsets;
-//
-//import static org.junit.Assert.*;
+import model.data.DataTable;
+import org.junit.Test;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+
+import static org.junit.Assert.*;
 
 /**
  * The tests for the DataReader.
@@ -16,7 +16,7 @@ package model.reader;
  */
 public class DataReaderTest {
 
-/*	@Test
+	@Test
 	public void testReadData() throws Exception {
 		String text = "Nonsense\n" +
 				"Bla bla\n" +
@@ -35,5 +35,4 @@ public class DataReaderTest {
 
 		assertEquals(5, table.getRowCount());
 	}
-	*/
 }

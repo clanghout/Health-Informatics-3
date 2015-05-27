@@ -139,7 +139,7 @@ public class DataTableTest {
 		DataTable copy = table.copy();
 
 		assertFalse(copy == table);
-		assertTrue(table.equals(copy));
+		assertTrue(table.equalsSoft(copy));
 	}
 
 	@Test
@@ -157,12 +157,15 @@ public class DataTableTest {
 	@Test
 	public void testEquals() throws Exception {
 		DataTableBuilder builder = new DataTableBuilder();
+		DataTableBuilder builder2 = new DataTableBuilder();
 		builder.setName("t");
-		builder.createColumn("column1", StringValue.class);
+		builder2.setName("t");
+		builder2.addColumn(builder.createColumn("column1", StringValue.class));
 		builder.createRow(new StringValue("te"));
+		builder2.createRow(new StringValue("te"));
 		DataTable table = builder.build();
 
-		DataTable copy = table.copy();
+		DataTable copy =  builder2.build();
 
 		assertTrue(table.equals(copy));
 	}
@@ -257,5 +260,19 @@ public class DataTableTest {
 		assertEquals(copy.getName(), "t2");
 		assertFalse(table.equals(copy));
 		assertTrue(table.equalsSoft(copy));
+	}
+
+	@Test
+	public void testExportCodes() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("t");
+		builder.createColumn("column1", StringValue.class);
+		DataRow row = builder.createRow(new StringValue("te"));
+		row.addCode("test");
+		DataTable table = builder.build();
+
+		DataTable copy = table.export("t2");
+
+		assertTrue(copy.getRow(0).containsCode("test"));
 	}
 }

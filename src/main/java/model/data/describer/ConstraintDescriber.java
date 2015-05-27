@@ -1,7 +1,7 @@
 package model.data.describer;
 
 import model.data.Row;
-import model.data.process.analysis.operations.constraints.Constraint;
+import model.process.analysis.operations.constraints.Constraint;
 import model.data.value.BoolValue;
 
 /**
