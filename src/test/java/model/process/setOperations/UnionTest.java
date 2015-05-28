@@ -68,6 +68,8 @@ public class UnionTest {
 		DataTable table3 = union.doProcess();
 
 		assertEquals(table3.getRowCount(), 2);
+		assertEquals(table2.getRowCount(), 1);
+		assertEquals(table1.getRowCount(), 1);
 		assertEquals(table3.getRow(0).getValue(table3.getColumn("c1")).getValue(), "test");
 		assertEquals(table3.getRow(1).getValue(table3.getColumn("c1")).getValue(), "test2");
 	}
@@ -121,6 +123,12 @@ public class UnionTest {
 		assertEquals(table3.getRow(0).getValue(table3.getColumn("c1")).getValue(), "test");
 		assertTrue(table3.getRow(0).containsCode("test"));
 		assertTrue(table3.getRow(0).containsCode("test2"));
+
+		assertTrue(table1.getRow(0).containsCode("test"));
+		assertFalse(table1.getRow(0).containsCode("test2"));
+
+		assertFalse(table2.getRow(0).containsCode("test"));
+		assertTrue(table2.getRow(0).containsCode("test2"));
 	}
 
 	@Test
