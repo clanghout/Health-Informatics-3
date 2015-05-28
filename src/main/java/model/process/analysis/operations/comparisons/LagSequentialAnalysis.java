@@ -1,21 +1,92 @@
 package model.process.analysis.operations.comparisons;
 
+import java.util.Iterator;
+import java.util.List;
+
+import model.data.DataRow;
+import model.data.DataTable;
+import model.data.DataTableBuilder;
+import model.data.Row;
+import model.data.Table;
+import model.data.describer.DataDescriber;
+import model.data.value.DateTimeValue;
+import model.exceptions.EmptyEventException;
 import model.process.analysis.operations.Event;
 
 /**
- * This class will determine a relation between events.
- * Relation will be shown by chronologically sorting events.
+ * This class will determine a relation between events. Relation will be shown
+ * by chronologically sorting events.
  * 
  * @author Louis Gosschalk 26-05-2015
  */
 public class LagSequentialAnalysis {
-	
+
+	private Table tableA;
+	private Table tableB;
+	private Table result;
+	private DataTableBuilder tableC;
+	Iterator<? extends Row> a = tableA.iterator();
+	Iterator<? extends Row> b = tableB.iterator();
+	private DateTimeValue compareA;
+	private DateTimeValue compareB;
+
+	private List<String> order;
+
 	/**
-	 * This class will put the events (tables) in one table, sorted chronologically.
+	 * This class will put the events (tables) in one table, sorted
+	 * chronologically.
+	 * 
 	 * @param eventA
+	 *            The first event
+	 * @param dateA
+	 *            The column of the dateValues (first event)
 	 * @param eventB
+	 *            The second event
+	 * @param dateB
+	 *            The column of the dateValues (second event)
+	 * @return 
 	 */
-	public LagSequentialAnalysis(Event eventA, Event eventB) {
+	public LagSequentialAnalysis(
+			Event eventA, DataDescriber<DateTimeValue> dateA, 
+			Event eventB, DataDescriber<DateTimeValue> dateB) {
+		this.tableA = eventA.create();
+		this.tableB = eventB.create();
+		this.tableC = new DataTableBuilder();
+
+		if (a.hasNext() || b.hasNext()) {
+			compareA = dateA.resolve(a.next());
+			compareB = dateB.resolve(b.next());
+			chronoAdd();
+		} else {
+			throw new EmptyEventException("Empty event in the input.");
+		}
+		do {
+			chronoAdd();
+		} while (a.hasNext() || b.hasNext());
+		result = tableC.build();
 	}
 
+	public void chronoAdd() {
+		if (compareA.getValue().before(compareB.getValue())) {
+			order.add("A");
+			tableC.addRow((DataRow) a);
+			getNext(a,b);
+		} else {
+			order.add("B");
+			tableC.addRow((DataRow) b);
+			getNext(b,a);
+		}
+	}
+	public void getNext(Iterator<? extends Row> x, Iterator<? extends Row> y) {
+		if (x.hasNext()) {
+			x.next();
+		} else {
+			do {
+				tableC.addRow((DataRow) y);
+			} while(y.hasNext());
+		}
+	}
+	public Table get() {
+		return result;
+	}
 }
