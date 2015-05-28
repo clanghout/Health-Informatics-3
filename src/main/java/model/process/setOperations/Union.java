@@ -2,7 +2,6 @@ package model.process.setOperations;
 
 import model.data.DataRow;
 import model.data.DataTable;
-import model.data.Table;
 import model.process.DataProcess;
 
 /**

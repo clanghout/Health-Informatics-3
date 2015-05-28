@@ -21,12 +21,14 @@ public class UnionTest {
 		DataTableBuilder builder = new DataTableBuilder();
 		builder.createColumn("c1", StringValue.class);
 		builder.createRow(new StringValue("test"));
+		builder.setName("table1");
 
 		DataTable table1 = builder.build();
 
 		DataTableBuilder builder2 = new DataTableBuilder();
 		builder2.createColumn("c3", StringValue.class);
 		builder2.createRow(new StringValue("test2"));
+		builder2.setName("table2");
 
 		DataTable table2 = builder2.build();
 		Union union = new Union(table1,table2);
@@ -37,12 +39,14 @@ public class UnionTest {
 		DataTableBuilder builder = new DataTableBuilder();
 		builder.createColumn("c1", StringValue.class);
 		builder.createRow(new StringValue("test"));
+		builder.setName("table1");
 
 		DataTable table1 = builder.build();
 
 		DataTableBuilder builder2 = new DataTableBuilder();
 		builder2.createColumn("c1", FloatValue.class);
 		builder2.createRow(new FloatValue(2));
+		builder2.setName("table2");
 
 		DataTable table2 = builder2.build();
 		Union union = new Union(table1,table2);

@@ -2,6 +2,7 @@ package model.data;
 
 
 import model.data.value.DataValue;
+import model.data.value.FloatValue;
 import model.data.value.StringValue;
 import org.junit.Before;
 import org.junit.Test;
@@ -226,6 +227,66 @@ public class DataTableTest {
 		assertFalse(table.equals(copy));
 		assertFalse(table.equalsSoft(copy));
 		assertTrue(table.equalStructure(copy));
+	}
+
+	@Test
+	public void testEqualsStructureFalse() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("t");
+		builder.createColumn("column2", StringValue.class);
+		builder.createRow(new StringValue("te"));
+		DataTable table = builder.build();
+
+		builder = new DataTableBuilder();
+		builder.setName("t2");
+		builder.createColumn("column1", StringValue.class);
+		builder.createRow(new StringValue("tawfe"));
+
+		DataTable copy = builder.build();
+
+		assertFalse(table.equals(copy));
+		assertFalse(table.equalsSoft(copy));
+		assertFalse(table.equalStructure(copy));
+	}
+
+	@Test
+	public void testEqualsStructureFalse2() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("t");
+		builder.createColumn("column1", FloatValue.class);
+		builder.createRow(new FloatValue(1));
+		DataTable table = builder.build();
+
+		builder = new DataTableBuilder();
+		builder.setName("t2");
+		builder.createColumn("column1", StringValue.class);
+		builder.createRow(new StringValue("tawfe"));
+
+		DataTable copy = builder.build();
+
+		assertFalse(table.equals(copy));
+		assertFalse(table.equalsSoft(copy));
+		assertFalse(table.equalStructure(copy));
+	}
+
+	@Test
+	public void testEqualsStructureFalse3() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("t");
+		builder.createColumn("column1", StringValue.class);
+		builder.createColumn("column2", StringValue.class);
+		DataTable table = builder.build();
+
+		builder = new DataTableBuilder();
+		builder.setName("t2");
+		builder.createColumn("column1", StringValue.class);
+		builder.createRow(new StringValue("tawfe"));
+
+		DataTable copy = builder.build();
+
+		assertFalse(table.equals(copy));
+		assertFalse(table.equalsSoft(copy));
+		assertFalse(table.equalStructure(copy));
 	}
 
 	@Test
