@@ -22,6 +22,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class for reading an xml file that was saved by the user.
@@ -80,7 +82,7 @@ public class XmlReader {
 	 */
 	private static final String FIRST_ROW_HEADER_ATTRIBUTE = "firstrowheader";
 	
-
+	private Logger log = Logger.getLogger("XmlReader");
 
 	private Document document;
 	private NodeList filesList;
@@ -164,12 +166,17 @@ public class XmlReader {
 
 		NodeList columns = columnsElement.getElementsByTagName(COLUMN_TAG);
 		if (theDataFile.hasFirstRowAsHeader()) {
+			Class[] types = new Class[columns.getLength()];
+			try {
 			for (int i = 0; i < columns.getLength(); i++) {
 				Element columnElement = (Element) columns.item(i);
 				String typeAttribute = columnElement.getAttribute("type");
-				Class[] types = new Class[columns.getLength()];
+					types[i] = DataFile.getColumnType(typeAttribute);
+				}
+			} catch (ClassNotFoundException e) {
+					log.log(Level.SEVERE, "Specified Class was not found", e);
+				}
 				theDataFile.setColumnTypes(types);
-			}
 		} else {
 			try {
 				for (int i = 0; i < columns.getLength(); i++) {
@@ -179,7 +186,7 @@ public class XmlReader {
 												DataFile.getColumnType(typeAttribute));
 				}
 			}catch (ClassNotFoundException e) {
-				//TODO: Logger exception
+				log.log(Level.SEVERE, "Specified Class was not found", e);
 			}
 		}
 		
