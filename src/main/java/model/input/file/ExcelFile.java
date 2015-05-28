@@ -37,9 +37,9 @@ public abstract class ExcelFile extends DataFile {
 		DataTableBuilder builder = new DataTableBuilder();
 		if(hasFirstRowAsHeader()) {
 			Row headers = rowIterator.next();
-			Iterator<Cell> cellIterator = headers.cellIterator();
-			Cell cell = cellIterator.next();
-			getColumns().put(cell.getStringCellValue(), value);
+			for(int i = 0; i < getColumnTypes().length; i++) {
+				getColumns().put(headers.getCell(i).getStringCellValue(), getColumnTypes()[i]);
+			}
 		} else {			
 			for (String key : getColumns().keySet()) {
 				builder.createColumn(key, getColumns().get(key));
@@ -70,11 +70,6 @@ public abstract class ExcelFile extends DataFile {
 				}
 				values[i] = value;
 			}
-//			System.out.println(getColumns());
-//			System.out.println();
-//			for(DataValue val: values) {
-//				System.out.println(val);
-//			}
 			builder.createRow(values);
 		}
 		return builder.build();

@@ -163,12 +163,23 @@ public class XmlReader {
 			theDataFile.setFirstRowAsHeader(true);
 
 		NodeList columns = columnsElement.getElementsByTagName(COLUMN_TAG);
-		for(int i = 0; i < columns.getLength(); i++) {
-			Element columnElement = (Element) columns.item(i);
-			String typeElement = columnElement.getAttribute("type");
+		if (theDataFile.hasFirstRowAsHeader()) {
+			for (int i = 0; i < columns.getLength(); i++) {
+				Element columnElement = (Element) columns.item(i);
+				String typeAttribute = columnElement.getAttribute("type");
+				Class[] types = new Class[columns.getLength()];
+				theDataFile.setColumnTypes(types);
+			}
+		} else {
 			try {
-				theDataFile.getColumns().put(columnElement.getTextContent(), DataFile.getColumnType(typeElement));
-			} catch (ClassNotFoundException e) {
+				for (int i = 0; i < columns.getLength(); i++) {
+					Element columnElement = (Element) columns.item(i);
+					String typeAttribute = columnElement.getAttribute("type");			
+					theDataFile.getColumns().put(columnElement.getTextContent(), 
+												DataFile.getColumnType(typeAttribute));
+				}
+			}catch (ClassNotFoundException e) {
+				//TODO: Logger exception
 			}
 		}
 		
