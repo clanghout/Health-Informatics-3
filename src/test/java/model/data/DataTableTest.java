@@ -353,7 +353,6 @@ public class DataTableTest {
 		DataTable table = builder.build();
 		table.addRow(row);
 
-		System.out.println(table.getRow(0).getValue(table.getColumn("column1")));
 		assertTrue(table.getRow(0).equalsSoft(row));
 	}
 
@@ -373,7 +372,6 @@ public class DataTableTest {
 		DataTable table = builder.build();
 		table.addRow(row);
 
-		System.out.println(table.getRow(0).getValue(table.getColumn("column1")));
 		assertTrue(table.getRow(0).equalsSoft(row));
 	}
 }
