@@ -22,9 +22,9 @@ public class VisualizationController implements Observer {
 	@FXML
 	private ComboBox<model.data.DataTable> table;
 	@FXML
-	private ComboBox<DataColumn> xAxis;
+	private ComboBox<DataColumn> input1;
 	@FXML
-	private ComboBox<DataColumn> yAxis;
+	private ComboBox<DataColumn> input2;
 
 	private DataModel model;
 	private MainUIController mainUIController;
@@ -49,12 +49,12 @@ public class VisualizationController implements Observer {
 	public void initialize() {
 		visualization.setDisable(true);
 		table.setDisable(true);
-		xAxis.setDisable(true);
-		yAxis.setDisable(true);
+		input1.setDisable(true);
+		input2.setDisable(true);
 		visualization.setMaxWidth(Double.MAX_VALUE);
 		table.setMaxWidth(Double.MAX_VALUE);
-		xAxis.setMaxWidth(Double.MAX_VALUE);
-		yAxis.setMaxWidth(Double.MAX_VALUE);
+		input1.setMaxWidth(Double.MAX_VALUE);
+		input2.setMaxWidth(Double.MAX_VALUE);
 	}
 
 	/**
@@ -63,32 +63,26 @@ public class VisualizationController implements Observer {
 	 */
 	public void initializeVisualisation(MainUIController mainUIController) {
 		this.mainUIController = mainUIController;
-		visualization.setDisable(false);
+//		visualization.setDisable(false);
 		table.setDisable(false);
 
-		System.out.println("visualization = " + visualization);
 		visualization.setItems(FXCollections.observableArrayList(
 				"BarChart", "BoxPlot"));
-		System.out.println("table = " + table);
-		System.out.println("model = " + model);
 		updateTableChoose();
-		table.valueProperty().addListener((observable, oldValue, newValue) -> {
-			setColumnDropDown(xAxis, newValue);
-			setColumnDropDown(yAxis, newValue);
-		});
+
 	}
 
 	/**
 	 * Set the items of a combobox to the columns of the dataTable.
-	 * @param axis the comboBox that specifies the axis of the graph
+	 * @param inputBox the comboBox that specifies the axis of the graph
 	 * @param dataTable the datatable used for the graph
 	 */
-	public void setColumnDropDown(ComboBox<DataColumn> axis, DataTable dataTable) {
-		axis.setDisable(false);
+	public void setColumnDropDown(ComboBox<DataColumn> inputBox, DataTable dataTable) {
+		inputBox.setDisable(false);
 		ObservableList<DataColumn> columns =
 				FXCollections.observableArrayList(dataTable.getColumns());
-		axis.setItems(columns);
-		axis.setConverter(new StringConverter<DataColumn>() {
+		inputBox.setItems(columns);
+		inputBox.setConverter(new StringConverter<DataColumn>() {
 			@Override
 			public String toString(DataColumn object) {
 				return object.getName();
@@ -106,6 +100,10 @@ public class VisualizationController implements Observer {
 	 */
 	private void updateTableChoose() {
 		table.setItems(model.getObservableList());
+		table.valueProperty().addListener((observable, oldValue, newValue) -> {
+			setColumnDropDown(input1, newValue);
+			setColumnDropDown(input1, newValue);
+		});
 	}
 
 	@Override

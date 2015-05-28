@@ -16,10 +16,10 @@
 						<ComboBox fx:id="table" promptText="Table to use"/>
 					</children>
 				</VBox>
-				<VBox styleClass="visualization-extra-dropdown" layoutX="14.0" layoutY="86.0">
+				<VBox styleClass="visualization-input-dropdown" layoutX="14.0" layoutY="86.0">
 					<children>
-						<ComboBox fx:id="xAxis" promptText="x-axis"/>
-						<ComboBox fx:id="yAxis" promptText="y-axis"/>
+						<ComboBox fx:id="input1" promptText="x-axis"/>
+						<ComboBox fx:id="input2" promptText="y-axis"/>
 					</children>
 				</VBox>
                 <VBox styleClass="visualization-graph">
