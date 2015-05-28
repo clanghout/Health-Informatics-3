@@ -89,7 +89,7 @@ public abstract class Table implements Iterable {
 	 * Convert the table in a new DataTable.
 	 * This clones a DataTable, a CombTable will be joined, so it becomes a DataTable
 	 *
-	 * @param name name of the new table
+	 * @param nameTable name of the new table
 	 * @return a DataTable that represents the table
 	 */
 	public DataTable export(String nameTable) {
@@ -135,8 +135,12 @@ public abstract class Table implements Iterable {
 			mappingNewNameToOldColumns.put(nameColumn, column);
 		}
 
-		for (Map.Entry<String, DataColumn> entry: mappingNewNameToOldColumns.entrySet()) {
-			DataColumn newColumn = new DataColumn(entry.getKey(), null, entry.getValue().getType());
+		for (Map.Entry<String, DataColumn> entry : mappingNewNameToOldColumns.entrySet()) {
+			DataColumn newColumn = new DataColumn(
+					entry.getKey(),
+					null,
+					entry.getValue().getType());
+
 			builder.addColumn(newColumn);
 			mappingColumns.put(entry.getValue(), newColumn);
 		}

@@ -97,6 +97,13 @@ public class DataColumn {
 				&& this.name.equals(other.name);
 	}
 
+	public boolean equalsOnTableName(DataColumn other) {
+		return equalsExcludeTable(other)
+				&& ((this.table == other.table)
+				||(this.table.getName() == other.table.getName())
+				|| this.table.getName().equals(other.table.getName()));
+	}
+
 	@Override
 	public int hashCode() {
 		return type.hashCode() + name.hashCode();
