@@ -114,12 +114,14 @@ public class TableViewController implements Observer {
 	}
 	
 	/**
-	 * Sets the model that will be observed.
+	 * Sets the model that will be observed and initializes the first view of the model.
 	 * @param model The model
 	 */
 	public void setDataModel(DataModel model) {
 		this.model = model;
 		model.addObserver(this);
+		updateList();
+		fillTable();
 	}
 	
 	/**

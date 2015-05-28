@@ -82,12 +82,7 @@ public class DataController {
 			DataReader reader = new DataReader(file);
 			DataModel model = reader.createDataModel();
 			mainUIController.setModel(model);
-			Constraint constraint = new EqualityCheck<>(
-					new RowValueDescriber<>(input.getColumn("time")),
-					new ConstantDescriber<>(new StringValue("0803"))
-			);
-			DataAnalysis analysis = new ConstraintAnalysis(new ConstraintDescriber(constraint));
-			out = (DataTable) analysis.analyse(input);
+			
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "Error reading the file", e);
 		}

@@ -181,7 +181,7 @@ public class XmlReader {
 			try {
 				for (int i = 0; i < columns.getLength(); i++) {
 					Element columnElement = (Element) columns.item(i);
-					String typeAttribute = columnElement.getAttribute("type");			
+					String typeAttribute = columnElement.getAttribute("type");
 					theDataFile.getColumns().put(columnElement.getTextContent(), 
 												DataFile.getColumnType(typeAttribute));
 				}
