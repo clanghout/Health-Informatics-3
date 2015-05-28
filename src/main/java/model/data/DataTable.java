@@ -187,11 +187,6 @@ public class DataTable extends Table {
 		return res;
 	}
 
-	@Override
-	public String toString() {
-		return name;
-	}
-
 	/**
 	 * add a row to the table.
 	 * the columns of the rows must have the same type and name as the columns in the table.
