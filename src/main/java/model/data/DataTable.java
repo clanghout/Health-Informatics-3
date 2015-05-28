@@ -185,8 +185,4 @@ public class DataTable extends Table {
 		return res;
 	}
 
-	@Override
-	public String toString() {
-		return name;
-	}
 }
