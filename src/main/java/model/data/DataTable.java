@@ -1,5 +1,7 @@
 package model.data;
 
+import model.data.value.DataValue;
+
 import java.util.*;
 
 /**
@@ -188,5 +190,18 @@ public class DataTable extends Table {
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	public void addRow(DataRow row) {
+		DataColumn[] columns = getColumns().toArray(new DataColumn[this.columns.size()]);
+		DataValue[] values = new DataValue[this.columns.size()];
+
+		int i = 0;
+		for (DataColumn column : columns) {
+			values[i] = row.getValue(column);
+			i++;
+		}
+
+		rows.add(new DataRow(columns, values));
 	}
 }
