@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import model.data.DataRow;
-import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.Row;
 import model.data.Table;
@@ -24,17 +23,19 @@ public class LagSequentialAnalysis {
 	private Table tableA;
 	private Table tableB;
 	private Table result;
-	private DataTableBuilder tableC;
+
 	Iterator<? extends Row> a = tableA.iterator();
 	Iterator<? extends Row> b = tableB.iterator();
+
 	private DateTimeValue compareA;
 	private DateTimeValue compareB;
+
+	private DataTableBuilder tableC;
 
 	private List<String> order;
 
 	/**
-	 * This class will put the events (tables) in one table, sorted
-	 * chronologically.
+	 * This class constructs the LSA.
 	 * 
 	 * @param eventA
 	 *            The first event
@@ -44,7 +45,7 @@ public class LagSequentialAnalysis {
 	 *            The second event
 	 * @param dateB
 	 *            The column of the dateValues (second event)
-	 * @return 
+	 * @return
 	 */
 	public LagSequentialAnalysis(
 			Event eventA, DataDescriber<DateTimeValue> dateA, 
@@ -66,26 +67,46 @@ public class LagSequentialAnalysis {
 		result = tableC.build();
 	}
 
+	/**
+	 * This class will put the events (rows) in one table, sorted
+	 * chronologically.
+	 */
 	public void chronoAdd() {
 		if (compareA.getValue().before(compareB.getValue())) {
 			order.add("A");
 			tableC.addRow((DataRow) a);
-			getNext(a,b);
+			getNext(a, b);
 		} else {
 			order.add("B");
 			tableC.addRow((DataRow) b);
-			getNext(b,a);
+			getNext(b, a);
 		}
 	}
+
+	/**
+	 * This class determines if the iterator has a next. If it doesn't, all
+	 * elements of the other event have to be added to result.
+	 * 
+	 * @param x
+	 *            The event to have a next element
+	 * @param y
+	 *            The event to add if there isn't a next
+	 */
 	public void getNext(Iterator<? extends Row> x, Iterator<? extends Row> y) {
 		if (x.hasNext()) {
 			x.next();
 		} else {
 			do {
 				tableC.addRow((DataRow) y);
-			} while(y.hasNext());
+			} while (y.hasNext());
 		}
 	}
+
+	/**
+	 * This class returns the actual created table.
+	 * 
+	 * @return result the built Table
+	 */
 	public Table get() {
 		return result;
 	}
