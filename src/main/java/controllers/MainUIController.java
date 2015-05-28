@@ -4,8 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import model.data.DataModel;
 
-
-import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -20,8 +18,6 @@ public class MainUIController {
 	@FXML private AnalysisController analysisController;
 	
 	private DataModel model;
-
-	private int num = 1234;
 	
 	private Logger logger = Logger.getLogger("MainUIController");
 
@@ -30,7 +26,6 @@ public class MainUIController {
 	 */
 	@FXML public void initialize() {
 		this.dataController.initialize(this);
-		if(true&(12==12)){}
 	}
 	
 	/**
