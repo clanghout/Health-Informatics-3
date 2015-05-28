@@ -3,8 +3,9 @@ package controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import model.data.DataModel;
-import org.apache.commons.beanutils.*;
 
+
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
