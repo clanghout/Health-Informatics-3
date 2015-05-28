@@ -16,6 +16,8 @@ public class MainUIController {
 	@FXML private TableViewController tableViewController;
 	@FXML private DataController dataController;
 	@FXML private AnalysisController analysisController;
+	@FXML private VisualizationController visualizationController;
+
 	
 	private DataModel model;
 	
@@ -46,6 +48,9 @@ public class MainUIController {
 		this.model = model;
 		tableViewController.setDataModel(model);
 		analysisController.setDataModel(model);
+		visualizationController.setDataModel(model);
+		visualizationController.initializeVisualisation();
+
 	}
 
 }

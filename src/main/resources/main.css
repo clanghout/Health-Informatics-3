@@ -19,6 +19,18 @@
 	-fx-spacing: 10px;
 }
 
+.visualization-default-dropdown {
+	-fx-pref-height: 200px;
+	-fx-pref-width: 150px;
+	-fx-spacing: 10px;
+}
+
+.visualization-input-dropdown {
+	-fx-pref-height: 200px;
+		-fx-pref-width: 150px;
+    -fx-spacing: 10px;
+}
+
 .analysis-text {
 	-fx-pref-height: 290px;
 	-fx-pref-width: 500px;
