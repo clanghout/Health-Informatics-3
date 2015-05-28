@@ -123,6 +123,21 @@ public class CombinedDataTable extends Table {
 		}
 	}
 
+	/**
+	 * return the table with the name tableName.
+	 * @param tableName name of the table that mut be returned
+	 * @return the table with the name tableName
+	 */
+	public DataTable getTable(String tableName) {
+		if (table.getName().equals(tableName)) {
+			return table;
+		} else if (combined != null) {
+			return combined.getTable(tableName);
+		} else {
+			return null;
+		}
+	}
+
 
 	private Iterator<CombinedDataRow> combinedIterator() {
 		return new Iterator<CombinedDataRow>() {

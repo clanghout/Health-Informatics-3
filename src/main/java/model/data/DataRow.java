@@ -136,6 +136,14 @@ public class DataRow extends Row {
 		return myColumns.equals(otherColumns) && this.values.equals(other.values);
 	}
 
+	/**
+	 * return the columns of this row.
+	 * @return a set that contains the columns of this row.
+	 */
+	public List<DataColumn> getColumns() {
+		return values.keySet().stream().map(x -> x.getColumn()).collect(Collectors.toList());
+	}
+
 	@Override
 	public boolean equalsSoft(Object obj) {
 		if (!(obj instanceof DataRow)) {
