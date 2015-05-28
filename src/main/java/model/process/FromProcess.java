@@ -19,6 +19,6 @@ public class FromProcess extends DataProcess {
 
 	@Override
 	protected Table doProcess() {
-		return getDataModel().getByName(identifier.getName());
+		return getDataModel().getByName(identifier.getName()).copy();
 	}
 }
