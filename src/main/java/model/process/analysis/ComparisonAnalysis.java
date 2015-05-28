@@ -11,15 +11,18 @@ import model.process.analysis.operations.comparisons.Comparison;
 public class ComparisonAnalysis extends DataAnalysis {
 	
 	private final Comparison comparison;
-	
+
+	/**
+	 * Constructs a new ComparisonAnalysis.
+	 * @param comparison The comparison for this analysis.
+	 */
 	public ComparisonAnalysis(Comparison comparison) {
 		this.comparison = comparison;
 	}
 
 	@Override
 	public Table analyse(Table input) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("This code is not yet implemented");
 	} 
 	
 }

@@ -28,8 +28,6 @@ public class ComputationAnalysis extends DataAnalysis {
 		}
 		Iterator<? extends Row> rows = input.iterator();
 // TODO: Add code which specifies what analysis should be computed on which data.
-//		for (DataRow row: rows) {
-//		}
 
 		return input;
 	}
