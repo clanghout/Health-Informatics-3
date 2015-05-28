@@ -1,6 +1,7 @@
 package model.process.analysis.operations;
 
 import model.data.CombinedDataTable;
+import model.data.DataRow;
 import model.data.DataTable;
 import model.data.Table;
 import model.process.DataProcess;
@@ -44,13 +45,22 @@ public class EventDefinition {
 				} else {
 					setCode(codeTable, dataTable);
 				}
-			} throw new IllegalArgumentException("event does not contain the table" +
-					"that must get a code");
+			} else {
+				throw new IllegalArgumentException("event does not contain the table" +
+						"that must get a code");
+			}
 		}
 	}
 
 	private void setCode(DataTable codeTable, DataTable filteredTable) {
-
+		for (DataRow filteredRows : filteredTable.getRows()) {
+			for (DataRow codeRow : codeTable.getRows()) {
+				if (filteredRows.equalsSoft(codeRow)) {
+					codeRow.addCode(name);
+					break;
+				}
+			}
+		}
 	}
 
 
