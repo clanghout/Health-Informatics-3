@@ -100,7 +100,7 @@ public class DataColumn {
 	public boolean equalsOnTableName(DataColumn other) {
 		return equalsExcludeTable(other)
 				&& ((this.table == other.table)
-				||(this.table.getName() == other.table.getName())
+				|| (this.table.getName() == other.table.getName())
 				|| this.table.getName().equals(other.table.getName()));
 	}
 
