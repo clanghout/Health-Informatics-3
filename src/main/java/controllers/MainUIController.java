@@ -49,7 +49,7 @@ public class MainUIController {
 		tableViewController.setDataModel(model);
 		analysisController.setDataModel(model);
 		visualizationController.setDataModel(model);
-		visualizationController.initializeVisualisation(this);
+		visualizationController.initializeVisualisation();
 
 	}
 

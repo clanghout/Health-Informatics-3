@@ -25,8 +25,10 @@ public class VisualizationController implements Observer {
 
 	private DataModel model;
 	private DataTable dataTable;
-	private MainUIController mainUIController;
 
+	/**
+	 * Constructor for Visualization controller.
+	 */
 	public VisualizationController() {
 	}
 
@@ -53,12 +55,9 @@ public class VisualizationController implements Observer {
 	}
 
 	/**
-	 * Init method after a model is read.
-	 *
-	 * @param mainUIController the main controller.
+	 * Init method after a model is read
 	 */
-	public void initializeVisualisation(MainUIController mainUIController) {
-		this.mainUIController = mainUIController;
+	public void initializeVisualisation() {
 		visualization.setDisable(false);
 		table.setDisable(false);
 
@@ -69,8 +68,6 @@ public class VisualizationController implements Observer {
 		table.valueProperty().addListener((observable, oldValue, newValue) -> {
 			this.dataTable = newValue;
 			visualization.setDisable(false);
-//			setColumnDropDown(input1, newValue);
-//			setColumnDropDown(input1, newValue);
 		});
 		visualization.valueProperty().addListener((observable, oldValue, newValue) -> {
 			switch (newValue) {
@@ -115,6 +112,14 @@ public class VisualizationController implements Observer {
 
 	}
 
+	/**
+	 * Update the instances in the table selection comboBox.
+	 * Whenever the observer notifies, the update method is called.
+	 *
+	 * @param o Observable dataModel where the tables in it can change on update.
+	 * @param arg an argument passed to the <code>notifyObservers</code>
+	 *                 method.
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		if (o instanceof DataModel) {
