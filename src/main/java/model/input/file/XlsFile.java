@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
 
 /**
  * Class to represent a Microsoft Excel (xls) file.
@@ -29,7 +30,7 @@ public class XlsFile extends ExcelFile {
 		
 		FileInputStream file = new FileInputStream(getFile());
 		try {
-			workbook = new HSSFWorkbook(file);
+			Workbook workbook = new HSSFWorkbook(file);
 			HSSFSheet sheet = (HSSFSheet) workbook.getSheetAt(0);
 			Iterator<Row> rowIterator = sheet.iterator();
 			return createStream(rowIterator);

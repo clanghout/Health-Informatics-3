@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -29,7 +30,7 @@ public class XlsxFile extends ExcelFile {
 
 		FileInputStream file = new FileInputStream(getFile());
 		try {
-			workbook = new XSSFWorkbook(file);
+			Workbook workbook = new XSSFWorkbook(file);
 			XSSFSheet sheet = (XSSFSheet) workbook.getSheetAt(0);
 			Iterator<Row> rowIterator = sheet.iterator();
 			return createStream(rowIterator);

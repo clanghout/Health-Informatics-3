@@ -29,7 +29,7 @@ class NumberOperationNode extends NumberNode {
 			case "SQRT": return new SquareRoot<>(left().resolve(model));
 			default:
 				throw new UnsupportedOperationException(
-						String.format("Operation %c not supported", operation)
+						String.format("Operation %s not supported", operation)
 				);
 		}
 	}

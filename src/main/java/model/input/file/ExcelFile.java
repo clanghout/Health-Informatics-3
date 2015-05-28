@@ -8,7 +8,6 @@ import java.util.Iterator;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Workbook;
 
 /**
  * Class representing a general MS Excel file.
@@ -17,8 +16,6 @@ import org.apache.poi.ss.usermodel.Workbook;
  */
 public abstract class ExcelFile extends DataFile {
 
-	protected Workbook workbook;
-	
 	public ExcelFile(String path) {
 		super(path);
 	}
@@ -51,4 +48,5 @@ public abstract class ExcelFile extends DataFile {
 		);
 		return newStream;
 	}
+
 }
