@@ -107,7 +107,17 @@ public class LagSequentialAnalysis {
 	 * 
 	 * @return result the built Table
 	 */
-	public Table get() {
+	public Table getTable() {
 		return result;
+	}
+
+	/**
+	 * This class returns the order of the created table.Relevant for pattern
+	 * detection.
+	 * 
+	 * @return List<String> containing A's and B's specifying ordering.
+	 */
+	public List<String> getOrder() {
+		return order;
 	}
 }
