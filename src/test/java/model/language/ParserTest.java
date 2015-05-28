@@ -44,7 +44,7 @@ public class ParserTest {
 
 		Table result = parseAndProcess(input);
 
-		assertEquals(test1, result);
+		assertTrue(test1.equalsSoft(result));
 	}
 
 	@Test

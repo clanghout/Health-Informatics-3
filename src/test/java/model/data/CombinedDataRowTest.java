@@ -20,8 +20,9 @@ public class CombinedDataRowTest {
 
 	@Before
 	public void setUp() throws Exception {
-		column1 = new DataColumn("test1", new DataTable(), StringValue.class);
-		column2 = new DataColumn("test2", new DataTable(), StringValue.class);
+		DataTable table = new DataTable("table");
+		column1 = new DataColumn("test1", table, StringValue.class);
+		column2 = new DataColumn("test2", table, StringValue.class);
 
 		row1 = new DataRow();
 		row1.setValue(column1, new StringValue("test"));
@@ -54,7 +55,7 @@ public class CombinedDataRowTest {
 		combRow.addDataRow(row1);
 		combRow.addDataRow(row2);
 
-		DataColumn column3 = new DataColumn("test1", new DataTable(), StringValue.class);
+		DataColumn column3 = new DataColumn("test1", new DataTable("table2"), StringValue.class);
 		DataRow row3 = new DataRow();
 		row3.setValue(column3, new StringValue("test3"));
 
@@ -106,7 +107,7 @@ public class CombinedDataRowTest {
 		combRow.addDataRow(row1);
 		combRow.addDataRow(row2);
 
-		DataColumn column3 = new DataColumn("test1", new DataTable(), StringValue.class);
+		DataColumn column3 = new DataColumn("test1", new DataTable("table2"), StringValue.class);
 		DataRow row3 = new DataRow();
 		row3.setValue(column3, new StringValue("test3"));
 
