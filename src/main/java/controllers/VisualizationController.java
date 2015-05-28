@@ -20,7 +20,7 @@ public class VisualizationController implements Observer {
 	@FXML
 	private ComboBox<String> visualization;
 	@FXML
-	private ComboBox<model.data.DataTable> table;
+	private ComboBox<DataTable> table;
 	@FXML
 	private ComboBox<DataColumn> input1;
 	@FXML
@@ -34,6 +34,7 @@ public class VisualizationController implements Observer {
 
 	/**
 	 * Sets the model that will be observed.
+	 *
 	 * @param model The model
 	 */
 	public void setDataModel(DataModel model) {
@@ -59,6 +60,7 @@ public class VisualizationController implements Observer {
 
 	/**
 	 * Init method after a model is read.
+	 *
 	 * @param mainUIController the main controller.
 	 */
 	public void initializeVisualisation(MainUIController mainUIController) {
@@ -74,7 +76,8 @@ public class VisualizationController implements Observer {
 
 	/**
 	 * Set the items of a combobox to the columns of the dataTable.
-	 * @param inputBox the comboBox that specifies the axis of the graph
+	 *
+	 * @param inputBox  the comboBox that specifies the axis of the graph
 	 * @param dataTable the datatable used for the graph
 	 */
 	public void setColumnDropDown(ComboBox<DataColumn> inputBox, DataTable dataTable) {
@@ -108,7 +111,7 @@ public class VisualizationController implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if(o instanceof DataModel) {
+		if (o instanceof DataModel) {
 			updateTableChoose();
 		}
 	}
