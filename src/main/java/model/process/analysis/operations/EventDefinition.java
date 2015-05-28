@@ -19,17 +19,21 @@ public class EventDefinition {
 	private DataProcess process;
 	private List<DataTable> tables;
 
-
+	/**
+	 * Create a new event.
+	 * @param name the name of the event.
+	 * @param process process that filters the rows that contain the event
+	 * @param tables tables that must get the code for the event
+	 */
 	public EventDefinition(String name, DataProcess process, DataTable... tables) {
 		this.name = name;
 		this.tables = new ArrayList<>(Arrays.asList(tables));
 		this.process = process;
 	}
 
-	public void addTable(DataTable table) {
-		tables.add(table);
-	}
-
+	/**
+	 * set the code on the rows that corresponds to this event.
+	 */
 	public void setCode() {
 		Table table = process.process();
 
@@ -52,6 +56,11 @@ public class EventDefinition {
 		}
 	}
 
+	/**
+	 * set the eventcode on a row in the codeTable if the filteredTable contains that row.
+	 * @param codeTable table that must get the rows
+	 * @param filteredTable table that contains the rows that must get a code
+	 */
 	private void setCode(DataTable codeTable, DataTable filteredTable) {
 		for (DataRow filteredRows : filteredTable.getRows()) {
 			for (DataRow codeRow : codeTable.getRows()) {
