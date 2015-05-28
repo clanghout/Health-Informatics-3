@@ -28,13 +28,24 @@ The xml file will handle a new structure:
 	  <start><start>
 	  <end><end>
 	</data>
+	<columns firstrowheader="false">
+	  <column type="string"></column>
+	  <column type="number"></column>
+	  <column type="date"></column>
+	  <column type=""></column>
+	  ...
+	</columns>
 	<path></path>
 	<type><type>
   </file>
+  ...
 </input>
 
 
 A <file> defines the properties of the file. The name attribute of the <file> is the name of the file including the file extension. The <data> defines at which line of the file the program should start reading data and where to end. If this is not defined then all the lines of the file will be read. The <path> defines the path/to/the/file relative to the program if the file is not inside the folder of the program.
+
+
+The columns are specified in the <columns> tag. Each column's name is specified in a <column> tag. The columns tag has an attribute firstrowheader that specifies if the first row of the table should be treated as a row that contains the names of the columns. The type of the columns however should always be specified in the type attributes.
 
 
 Example of an xml file: 

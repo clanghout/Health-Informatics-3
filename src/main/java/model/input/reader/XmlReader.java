@@ -1,10 +1,14 @@
 package model.input.reader;
 
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import model.data.value.DateTimeValue;
+import model.data.value.NumberValue;
+import model.data.value.StringValue;
 import model.input.file.DataFile;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -60,7 +64,22 @@ public class XmlReader {
 	 * The name of the endtag in the xml file.
 	 */
 	private static final String END_TAG = "end";
-
+	
+	/**
+	 * The name of the column tag in the xml file.
+	 */
+	private static final String COLUMN_TAG = "column";
+	
+	/**
+	 * The name of the columns tag in the xml file.
+	 */
+	private static final String COLUMNS_TAG = "columns";
+	
+	/**
+	 * The name of the firstrowheader tag in the xml file;
+	 */
+	private static final String FIRST_ROW_HEADER_ATTRIBUTE = "firstrowheader";
+	
 
 
 	private Document document;
@@ -131,15 +150,31 @@ public class XmlReader {
 		Element pathElement = (Element) elem.getElementsByTagName(PATH_TAG).item(0);
 		if (pathElement != null) {
 			String path  = elem.getElementsByTagName(PATH_TAG).item(0).getTextContent();
-			completePath = parentDir + File.separator + path + File.separator + fileName;			
+			completePath = parentDir + File.separator + path + File.separator + fileName;
 		} else {
 			completePath = fileName;
 		}
 		DataFile theDataFile = DataFile.createDataFile(completePath, type);
 
+		Element columnsElement = (Element) elem.getElementsByTagName(COLUMNS_TAG).item(0);
 		Element data = (Element) elem.getElementsByTagName(DATA_TAG).item(0);
-		return setStartEndLine(data, theDataFile);
+		theDataFile = setStartEndLine(data, theDataFile);
+		if (columnsElement.getAttribute(FIRST_ROW_HEADER_ATTRIBUTE).equals("true"))
+			theDataFile.setFirstRowAsHeader(true);
+
+		NodeList columns = columnsElement.getElementsByTagName(COLUMN_TAG);
+		for(int i = 0; i < columns.getLength(); i++) {
+			Element columnElement = (Element) columns.item(i);
+			String typeElement = columnElement.getAttribute("type");
+			try {
+				theDataFile.getColumns().put(columnElement.getTextContent(), DataFile.getColumnType(typeElement));
+			} catch (ClassNotFoundException e) {
+			}
+		}
+		
+		return theDataFile;
 	}
+	
 	
 	/**
 	 * Decorates the constructed DataFile with the start and end line.

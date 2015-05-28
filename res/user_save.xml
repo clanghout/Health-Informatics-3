@@ -1,10 +1,12 @@
 <?xml version="1.0"?>
 <input>
-	<file name="res/ADMIRE2.txt">
-        <data>
-            <start>7</start>
-            <end>57</end>
-        </data>
-        <type>plaintext</type>
+	<file name="res/xlsx.xlsx">
+        <type>xlsx</type>
+        <columns firstrowheader="false">
+            <column type="number">ADM nr</column>
+            <column type="number">groep</column>
+            <column type="date">afspraaktijd</column>
+            <column type="string">agendaomschr</column>
+        </columns>
     </file>
 </input>

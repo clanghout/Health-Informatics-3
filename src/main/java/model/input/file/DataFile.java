@@ -1,10 +1,19 @@
 package model.input.file;
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
+import model.data.DataTable;
+import model.data.DataTableBuilder;
+import model.data.value.DateTimeValue;
+import model.data.value.NumberValue;
+import model.data.value.StringValue;
 import model.exceptions.DataFileNotRecognizedException;
 /**
- * Class for a datafile.
+ * Class for a datafile. This class contains all the specification of a datafile such as the 
+ * path to the file, the starting and ending line of the data in the file and the names of the
+ * columns.
  *
  * @author Paul
  */
@@ -13,6 +22,9 @@ public abstract class DataFile {
 	private String path;
 	private int startLine;
 	private int endLine;
+	private LinkedHashMap<String, Class> columns;
+	private boolean firstRowAsHeader;
+	private Class[] columnTypes;
 	
 	/**
 	 * Creates a new type of a DataFile. Sets the default range of lines to read
@@ -23,6 +35,8 @@ public abstract class DataFile {
 		this.path = path;
 		this.setStartLine(1);
 		this.setEndLine(Integer.MAX_VALUE);
+		this.setFirstRowAsHeader(false);
+		this.setColumns(new LinkedHashMap<>());
 	}
 
 	/**
@@ -31,7 +45,7 @@ public abstract class DataFile {
 	 * @return A stream containing the data contents of the file
 	 * @throws IOException When the file is not found or if the file is corrupt
 	 */
-	public abstract InputStream getDataStream() throws IOException;
+	public abstract DataTable createDataTable() throws IOException;
 	
 	/**
 	 * Gets a new File object directing to the dataFile on the system.
@@ -102,6 +116,55 @@ public abstract class DataFile {
 	 */
 	public void setEndLine(int endLine) {
 		this.endLine = endLine;
+	}
+
+	public void setColumnTypes(Class[] types) {
+		this.columnTypes = types;
+	}
+	
+	public Class[] getColumnTypes() {
+		return(this.columnTypes);
+	}
+	
+	public static Class getColumnType(String type) throws ClassNotFoundException {
+		switch (type) {
+		case "number" : return NumberValue.class;
+		case "string" : return StringValue.class;
+		case "date"   : return DateTimeValue.class;
+		default       : throw new ClassNotFoundException();
+		}
+	}
+	
+	/**
+	 * Returns the array with the names of the columns.
+	 * @return The array with the names of the columns
+	 */
+	public LinkedHashMap<String, Class> getColumns() {
+		return columns;
+	}
+
+	/**
+	 * Sets the names of the columns.
+	 * @param columns The columns to set
+	 */
+	public void setColumns(LinkedHashMap<String, Class> columns) {
+		this.columns = columns;
+	}
+
+	/**
+	 * Returns true if the columns' headers are in the first row.
+	 * @return The firstRowAsHeader
+	 */
+	public boolean hasFirstRowAsHeader() {
+		return firstRowAsHeader;
+	}
+
+	/**
+	 * Sets if the first row is the header.
+	 * @param firstRowAsHeader The firstRowAsHeader to set
+	 */
+	public void setFirstRowAsHeader(boolean firstRowAsHeader) {
+		this.firstRowAsHeader = firstRowAsHeader;
 	}
 
 	/**

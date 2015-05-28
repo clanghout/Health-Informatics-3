@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import model.data.DataTable;
+
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -26,14 +28,14 @@ public class XlsxFile extends ExcelFile {
 	}
 
 	@Override
-	public InputStream getDataStream() throws IOException {
+	public DataTable createDataTable() throws IOException {
 
 		FileInputStream file = new FileInputStream(getFile());
 		try {
 			Workbook workbook = new XSSFWorkbook(file);
 			XSSFSheet sheet = (XSSFSheet) workbook.getSheetAt(0);
 			Iterator<Row> rowIterator = sheet.iterator();
-			return createStream(rowIterator);
+			return createTable(rowIterator);
 			
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Error reading xlsx file", e);

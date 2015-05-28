@@ -7,6 +7,9 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
+import model.data.DataTable;
+import model.data.DataTableBuilder;
+
 /**
  * Class to specify a .txt file.
  * @author Paul
@@ -15,7 +18,7 @@ import java.util.Scanner;
 public class PlainTextFile extends DataFile {
 	
 	private Scanner scanner;
-	private StringBuilder builder;
+	private DataTableBuilder builder;
 	private int counter;
 	
 	public PlainTextFile(String path) {
@@ -23,8 +26,8 @@ public class PlainTextFile extends DataFile {
 	}
 	
 	@Override
-	public InputStream getDataStream() throws IOException {
-		builder = new StringBuilder();
+	public DataTable createDataTable() throws IOException {
+		builder = new DataTableBuilder();
 		counter = 1;
 		InputStream stream = new FileInputStream(getFile());
 		scanner = new Scanner(stream, "UTF-8");
@@ -32,12 +35,7 @@ public class PlainTextFile extends DataFile {
 		skipToStartLine();
 		readLines();
 		scanner.close();
-		
-		InputStream newStream = new ByteArrayInputStream(
-				builder.toString().getBytes(StandardCharsets.UTF_8)
-		);
-		
-		return newStream;
+		return builder.build();
 	}
 	
 	private void skipToStartLine() throws IOException {
@@ -54,7 +52,7 @@ public class PlainTextFile extends DataFile {
 	
 	private void readLines() {
 		while (counter <= getEndLine() && scanner.hasNextLine()) {
-			builder.append(scanner.nextLine() + "\n");
+			
 			counter++;
 		}
 	}

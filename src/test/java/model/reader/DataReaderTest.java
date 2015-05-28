@@ -1,6 +1,8 @@
 package model.reader;
 
 import model.data.DataTable;
+import model.input.reader.DataReader;
+
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
