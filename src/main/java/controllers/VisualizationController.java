@@ -1,5 +1,6 @@
 package controllers;
 
+import controllers.Visualizations.BarChartController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,12 +22,9 @@ public class VisualizationController implements Observer {
 	private ComboBox<String> visualization;
 	@FXML
 	private ComboBox<DataTable> table;
-	@FXML
-	private ComboBox<DataColumn> input1;
-	@FXML
-	private ComboBox<DataColumn> input2;
 
 	private DataModel model;
+	private DataTable dataTable;
 	private MainUIController mainUIController;
 
 	public VisualizationController() {
@@ -50,12 +48,8 @@ public class VisualizationController implements Observer {
 	public void initialize() {
 		visualization.setDisable(true);
 		table.setDisable(true);
-		input1.setDisable(true);
-		input2.setDisable(true);
 		visualization.setMaxWidth(Double.MAX_VALUE);
 		table.setMaxWidth(Double.MAX_VALUE);
-		input1.setMaxWidth(Double.MAX_VALUE);
-		input2.setMaxWidth(Double.MAX_VALUE);
 	}
 
 	/**
@@ -65,20 +59,35 @@ public class VisualizationController implements Observer {
 	 */
 	public void initializeVisualisation(MainUIController mainUIController) {
 		this.mainUIController = mainUIController;
-//		visualization.setDisable(false);
+		visualization.setDisable(false);
 		table.setDisable(false);
 
 		visualization.setItems(FXCollections.observableArrayList(
 				"BarChart", "BoxPlot"));
-		updateTableChoose();
 
+		updateTableChoose();
+		table.valueProperty().addListener((observable, oldValue, newValue) -> {
+			this.dataTable = newValue;
+			visualization.setDisable(false);
+//			setColumnDropDown(input1, newValue);
+//			setColumnDropDown(input1, newValue);
+		});
+		visualization.valueProperty().addListener((observable, oldValue, newValue) -> {
+			switch (newValue) {
+				case "BarChart":
+					new BarChartController(dataTable).initialize();
+					break;
+				default:
+					break;
+			}
+		});
 	}
 
 	/**
-	 * Set the items of a combobox to the columns of the dataTable.
+	 * Set the items of a comboBox to the columns of the dataTable.
 	 *
 	 * @param inputBox  the comboBox that specifies the axis of the graph
-	 * @param dataTable the datatable used for the graph
+	 * @param dataTable the dataTable used for the graph
 	 */
 	public void setColumnDropDown(ComboBox<DataColumn> inputBox, DataTable dataTable) {
 		inputBox.setDisable(false);
@@ -103,10 +112,7 @@ public class VisualizationController implements Observer {
 	 */
 	private void updateTableChoose() {
 		table.setItems(model.getObservableList());
-		table.valueProperty().addListener((observable, oldValue, newValue) -> {
-			setColumnDropDown(input1, newValue);
-			setColumnDropDown(input1, newValue);
-		});
+
 	}
 
 	@Override
