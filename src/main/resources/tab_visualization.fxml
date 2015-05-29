@@ -14,10 +14,18 @@
                         <ComboBox fx:id="visualization" promptText="Visualization"/>
                     </children>
                 </VBox>
-                <VBox styleClass="visualization-input-dropdown" layoutX="14.0" layoutY="86.0">
+                <VBox fx:id="visualizationInput" styleClass="visualization-input-dropdown" layoutX="14.0" layoutY="86.0">
 
                 </VBox>
-                <VBox styleClass="visualization-graph">
+
+                    <Button
+                            styleClass="save-button"
+                            layoutX="14.0"
+                            layoutY="158.0"
+                            onAction="#handleGraphCreateButtonAction"
+                            text="Make graph" />
+
+                <VBox fx:id="visualizationGraph" styleClass="visualization-graph" layoutX="164.0" layoutY="14.0">
 
                 </VBox>
             </children>

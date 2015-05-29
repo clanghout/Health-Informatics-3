@@ -3,8 +3,10 @@ package controllers;
 import controllers.Visualizations.BarChartController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 import model.data.DataColumn;
 import model.data.DataModel;
@@ -22,9 +24,14 @@ public class VisualizationController implements Observer {
 	private ComboBox<String> visualization;
 	@FXML
 	private ComboBox<DataTable> table;
+	@FXML
+	private VBox visualizationGraph;
+	@FXML
+	private VBox visualizationInput;
 
 	private DataModel model;
 	private DataTable dataTable;
+	private BarChartController bcc;
 
 	/**
 	 * Constructor for Visualization controller.
@@ -55,7 +62,7 @@ public class VisualizationController implements Observer {
 	}
 
 	/**
-	 * Init method after a model is read
+	 * Init method after a model is read.
 	 */
 	public void initializeVisualisation() {
 		visualization.setDisable(false);
@@ -72,7 +79,8 @@ public class VisualizationController implements Observer {
 		visualization.valueProperty().addListener((observable, oldValue, newValue) -> {
 			switch (newValue) {
 				case "BarChart":
-					new BarChartController(dataTable).initialize();
+					bcc = new BarChartController(dataTable, visualizationInput);
+					bcc.initialize();
 					break;
 				default:
 					break;
@@ -112,13 +120,20 @@ public class VisualizationController implements Observer {
 
 	}
 
+	@FXML
+	protected void handleGraphCreateButtonAction(ActionEvent event) {
+		if(bcc.axesSet()) {
+			visualizationGraph.getChildren().add(bcc.create());
+		}
+	}
+
 	/**
 	 * Update the instances in the table selection comboBox.
 	 * Whenever the observer notifies, the update method is called.
 	 *
-	 * @param o Observable dataModel where the tables in it can change on update.
+	 * @param o   Observable dataModel where the tables in it can change on update.
 	 * @param arg an argument passed to the <code>notifyObservers</code>
-	 *                 method.
+	 *            method.
 	 */
 	@Override
 	public void update(Observable o, Object arg) {
