@@ -1,7 +1,5 @@
 package model.data;
 
-import model.data.value.DataValue;
-
 import java.util.*;
 
 /**
