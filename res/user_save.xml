@@ -8,7 +8,7 @@
         </data>
         <columns firstrowheader="false">
             <column type="string">quantity</column>
-            <column type="string">measurement</column>
+            <column type="int">measurement</column>
             <column type="string">unit</column>
             <column type="string">ignore</column>
             <column type="string">date</column>
