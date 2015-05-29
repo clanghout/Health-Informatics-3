@@ -1,14 +1,10 @@
 package model.input.reader;
 
-import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import model.data.value.DateTimeValue;
-import model.data.value.NumberValue;
-import model.data.value.StringValue;
 import model.input.file.DataFile;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -78,7 +74,7 @@ public class XmlReader {
 	private static final String COLUMNS_TAG = "columns";
 	
 	/**
-	 * The name of the firstrowheader tag in the xml file;
+	 * The name of the firstrowheader tag in the xml file.
 	 */
 	private static final String FIRST_ROW_HEADER_ATTRIBUTE = "firstrowheader";
 	
@@ -161,22 +157,23 @@ public class XmlReader {
 		Element columnsElement = (Element) elem.getElementsByTagName(COLUMNS_TAG).item(0);
 		Element data = (Element) elem.getElementsByTagName(DATA_TAG).item(0);
 		theDataFile = setStartEndLine(data, theDataFile);
-		if (columnsElement.getAttribute(FIRST_ROW_HEADER_ATTRIBUTE).equals("true"))
+		if (columnsElement.getAttribute(FIRST_ROW_HEADER_ATTRIBUTE).equals("true")) {
 			theDataFile.setFirstRowAsHeader(true);
+		}
 
 		NodeList columns = columnsElement.getElementsByTagName(COLUMN_TAG);
 		if (theDataFile.hasFirstRowAsHeader()) {
 			Class[] types = new Class[columns.getLength()];
 			try {
-			for (int i = 0; i < columns.getLength(); i++) {
-				Element columnElement = (Element) columns.item(i);
-				String typeAttribute = columnElement.getAttribute("type");
+				for (int i = 0; i < columns.getLength(); i++) {
+					Element columnElement = (Element) columns.item(i);
+					String typeAttribute = columnElement.getAttribute("type");
 					types[i] = DataFile.getColumnType(typeAttribute);
 				}
 			} catch (ClassNotFoundException e) {
-					log.log(Level.SEVERE, "Specified Class was not found", e);
-				}
-				theDataFile.setColumnTypes(types);
+				log.log(Level.SEVERE, "Specified Class was not found", e);
+			}
+			theDataFile.setColumnTypes(types);
 		} else {
 			try {
 				for (int i = 0; i < columns.getLength(); i++) {
@@ -185,7 +182,7 @@ public class XmlReader {
 					theDataFile.getColumns().put(columnElement.getTextContent(), 
 												DataFile.getColumnType(typeAttribute));
 				}
-			}catch (ClassNotFoundException e) {
+			} catch (ClassNotFoundException e) {
 				log.log(Level.SEVERE, "Specified Class was not found", e);
 			}
 		}
