@@ -29,6 +29,11 @@ public class DataReader {
 
 	private XmlReader xmlReader;
 	
+	/**
+	 * Creates a new DataReader to read datafiles specified in an xml file.
+	 * @param filename The xml file to read
+	 * @throws Exception When the xml file can not be read
+	 */
 	public DataReader(File filename) throws Exception {
 		try {
 			xmlReader = new XmlReader();
@@ -39,6 +44,11 @@ public class DataReader {
 		}
 	}
 
+	/**
+	 * Sets up a new DataModel that contains the read rows.
+	 * @return A new DataModel
+	 * @throws IOException When the file is missing or corrupted
+	 */
 	public DataModel createDataModel() throws IOException {
 		DataModel model = new DataModel();
 		List<DataFile> dataFiles = xmlReader.getDataFiles();

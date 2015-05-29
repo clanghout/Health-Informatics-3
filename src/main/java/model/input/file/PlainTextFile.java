@@ -58,6 +58,11 @@ public class PlainTextFile extends DataFile {
 		return builder.build();
 	}
 
+	/**
+	 * Fast forwards the scanner to the actual content of the data.
+	 * @param scanner The Scanner
+	 * @throws IOException When there is nothing to read
+	 */
 	private void skipToStartLine(Scanner scanner) throws IOException {
 		if (!scanner.hasNextLine()) {
 			scanner.close();
@@ -70,6 +75,10 @@ public class PlainTextFile extends DataFile {
 		}
 	}
 
+	/**
+	 * Reads the lines from a scanner and inserts rows into the table.
+	 * @param scanner The scanner
+	 */
 	private void readLines(Scanner scanner) {
 		while (counter <= getEndLine() && scanner.hasNextLine()) {
 			String line = scanner.nextLine();
@@ -85,6 +94,12 @@ public class PlainTextFile extends DataFile {
 		}
 	}
 
+	/**
+	 * Creates a DataValue from a string.
+	 * @param value The string that will be converted
+	 * @param type The type of the column in which the value will be inserted.
+	 * @return
+	 */
 	private DataValue toDataValue(String value, Class<? extends DataValue> type) {
 		if (type.equals(StringValue.class)) {
 			return new StringValue(value);
@@ -109,10 +124,18 @@ public class PlainTextFile extends DataFile {
 		}
 	}
 
+	/**
+	 * Sets the delimiter that separates the values in the file.
+	 * @param delimiter The delimiter to set
+	 */
 	public void setDelimiter(String delimiter) {
 		this.delimiter = delimiter;
 	}
 
+	/**
+	 * returns the delimiter that separates the values in the file.
+	 * @return The delimiter
+	 */
 	public String getDelimiter() {
 		return delimiter;
 	}
