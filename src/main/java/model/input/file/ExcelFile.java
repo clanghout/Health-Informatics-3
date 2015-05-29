@@ -35,6 +35,7 @@ public abstract class ExcelFile extends DataFile {
 	protected DataTable createTable(Iterator<Row> rowIterator) throws FileNotFoundException {
 
 		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName(this.getFile().getName().replace(".", ""));
 		if(hasFirstRowAsHeader()) {
 			Row headers = rowIterator.next();
 			for(int i = 0; i < getColumnTypes().length; i++) {
@@ -51,7 +52,7 @@ public abstract class ExcelFile extends DataFile {
 			DataValue[] values = new DataValue[getColumns().size()];
 			for (int i = 0; i < getColumns().size(); i++) {
 				DataValue value = null;
-				Cell cell = row.getCell(i, Row.RETURN_NULL_AND_BLANK);
+				Cell cell = row.getCell(i, Row.CREATE_NULL_AS_BLANK);
 				switch (cell.getCellType()) {
 					case Cell.CELL_TYPE_STRING: {
 						value = new StringValue(cell.getStringCellValue());
@@ -64,7 +65,7 @@ public abstract class ExcelFile extends DataFile {
 						break;					
 					}
 					case Cell.CELL_TYPE_BLANK: {
-						value = null;
+						value = new StringValue("");
 						break;
 					}
 					default: throw new UnsupportedOperationException(
