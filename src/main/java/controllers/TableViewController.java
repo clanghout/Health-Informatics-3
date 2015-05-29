@@ -2,6 +2,7 @@ package controllers;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -49,11 +50,24 @@ public class TableViewController implements Observer {
 	public TableViewController() {
 	}
 	
+	public void initialize() {
+		logger.info("initializing listview changelistener");
+		ChangeListener<DataTable> listener = new ChangeListener<DataTable>() {
+            public void changed(ObservableValue<? extends DataTable> ov, 
+            	DataTable oldvalue, DataTable newvalue) {
+            	logger.info("changing content of tableView with content of " 
+            				+ newvalue.getName());
+            	currentTable = newvalue;
+            	fillTable();
+            }
+		};
+		this.inputTables.getSelectionModel().selectedItemProperty().addListener(listener);
+	}
+	
 	/**
 	 * Loads the data from the model and updates the view for the user.
 	 */
 	private void fillTable() {
-		currentTable = model.get(0);
 		logger.info("update table: " + currentTable);
 		tableView.getItems().clear();
 		tableView.getColumns().clear();
@@ -119,6 +133,7 @@ public class TableViewController implements Observer {
 	 */
 	public void setDataModel(DataModel model) {
 		this.model = model;
+		currentTable = model.get(0);
 		model.addObserver(this);
 		updateList();
 		fillTable();
