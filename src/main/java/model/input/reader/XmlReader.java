@@ -161,38 +161,49 @@ public class XmlReader {
 
 		NodeList columns = columnsElement.getElementsByTagName(COLUMN_TAG);
 		if (theDataFile.hasFirstRowAsHeader()) {
-			Class[] types = new Class[columns.getLength()];
-			try {
-				for (int i = 0; i < columns.getLength(); i++) {
-					Element columnElement = (Element) columns.item(i);
-					String typeAttribute = columnElement.getAttribute("type");
-					types[i] = DataFile.getColumnType(typeAttribute);
-				}
-			} catch (ClassNotFoundException e) {
-				log.log(Level.SEVERE, "Specified Class was not found", e);
-			}
-			theDataFile.setColumnTypes(types);
+			theDataFile.setColumnTypes(createTypesArray(columns));
 		} else {
-			try {
-				Map<String, Class<? extends DataValue>> mapping = new LinkedHashMap<>();
-				List<Class<? extends DataValue>> columnTypes = new ArrayList<>();
-				for (int i = 0; i < columns.getLength(); i++) {
-					Element columnElement = (Element) columns.item(i);
-					String typeAttribute = columnElement.getAttribute("type");
-					Class columnType = DataFile.getColumnType(typeAttribute);
-					mapping.put(columnElement.getTextContent(),
-							columnType);
-					columnTypes.add(columnType);
-				}
-				theDataFile.setColumns(mapping, columnTypes);
-			} catch (ClassNotFoundException e) {
-				log.log(Level.SEVERE, "Specified Class was not found", e);
-			}
+			theDataFile = setColumnTypeMapping(columns, theDataFile);
 		}
 		
 		return theDataFile;
 	}
+
+	private DataFile setColumnTypeMapping(NodeList columns, DataFile dataFile) {
+		try {
+			Map<String, Class<? extends DataValue>> mapping = new LinkedHashMap<>();
+			List<Class<? extends DataValue>> columnTypes = new ArrayList<>();
+			for (int i = 0; i < columns.getLength(); i++) {
+				Element columnElement = (Element) columns.item(i);
+				String typeAttribute = columnElement.getAttribute("type");
+				Class columnType = DataFile.getColumnType(typeAttribute);
+				mapping.put(columnElement.getTextContent(),
+						columnType);
+				columnTypes.add(columnType);
+			}
+			dataFile.setColumns(mapping, columnTypes);		
+			return dataFile;
+		} catch (ClassNotFoundException e) {
+			log.log(Level.SEVERE, "Specified Class was not found", e);
+		}
+		return null;
+	}
+		
 	
+	private Class[] createTypesArray(NodeList columns) {
+		try {
+			Class[] types = new Class[columns.getLength()];
+			for (int i = 0; i < columns.getLength(); i++) {
+				Element columnElement = (Element) columns.item(i);
+				String typeAttribute = columnElement.getAttribute("type");
+				types[i] = DataFile.getColumnType(typeAttribute);
+				return types;
+			}
+		} catch (ClassNotFoundException e) {
+			log.log(Level.SEVERE, "Specified Class was not found", e);
+		}
+		return null;
+	}
 	
 	/**
 	 * Decorates the constructed DataFile with the start and end line.
