@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<VBox fx:controller="controllers.MainUIController" styleClass="main-box" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<children>
+    <AnchorPane>
+        <children>
+            <label>Data Files:</label>
+            <TableView/>
+        </children>
+    </AnchorPane>
+</children>
+
+<stylesheets>
+    <URL value="@wizard.css" />
+</stylesheets>
+
+</VBox>
