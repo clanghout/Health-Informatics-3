@@ -1,10 +1,12 @@
 <?xml version="1.0"?>
 <input>
     <file name="ADMIRE2.txt">
+		<path>model/input</path>
         <data>
             <start>7</start>
             <end>57</end>
         </data>
+        <type>plaintext</type>
         <columns firstrowheader="false">
             <column type="string">quantity</column>
             <column type="int">measurement</column>
@@ -13,12 +15,23 @@
             <column type="string">date</column>
             <column type="string">time</column>
         </columns>
-        <type>plaintext</type>
     </file>
 	<file name="ADMIRE.txt">
 	    <columns firstrowheader="false"></columns>
+		<data>
+			<start>7</start>
+			<end>8</end>
+		</data>
         <type>plaintext</type>
         <path>model/input</path>
+		<columns>
+			<column type="string">quantity</column>
+			<column type="int">measurement</column>
+			<column type="string">unit</column>
+			<column type="string">ignore</column>
+			<column type="string">date</column>
+			<column type="string">time</column>
+		</columns>
 	</file>
 	<file name="statsensor.txt">
 	    <columns firstrowheader="false"></columns>
@@ -28,5 +41,13 @@
 	    </data>
 		<type>plaintext</type>
 		<path>model/input</path>
+		<columns>
+			<column type="string">quantity</column>
+			<column type="int">measurement</column>
+			<column type="string">unit</column>
+			<column type="string">ignore</column>
+			<column type="string">date</column>
+			<column type="string">time</column>
+		</columns>
 	</file>
 </input>
