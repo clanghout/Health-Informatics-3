@@ -1,14 +1,13 @@
 package model.input.file;
 
 import java.io.*;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import model.data.DataTable;
-import model.data.DataTableBuilder;
-import model.data.value.DateTimeValue;
-import model.data.value.NumberValue;
-import model.data.value.StringValue;
+import model.data.value.*;
 import model.exceptions.DataFileNotRecognizedException;
 /**
  * Class for a datafile. This class contains all the specification of a datafile such as the 
@@ -22,7 +21,8 @@ public abstract class DataFile {
 	private String path;
 	private int startLine;
 	private int endLine;
-	private LinkedHashMap<String, Class> columns;
+	private Map<String, Class<? extends DataValue>> columns;
+	private List<Class<? extends DataValue>> columnList;
 	private boolean firstRowAsHeader;
 	private Class[] columnTypes;
 	
@@ -36,7 +36,7 @@ public abstract class DataFile {
 		this.setStartLine(1);
 		this.setEndLine(Integer.MAX_VALUE);
 		this.setFirstRowAsHeader(false);
-		this.setColumns(new LinkedHashMap<>());
+		this.setColumns(new LinkedHashMap<>(), new ArrayList<>());
 	}
 
 	/**
@@ -128,10 +128,16 @@ public abstract class DataFile {
 	
 	public static Class getColumnType(String type) throws ClassNotFoundException {
 		switch (type) {
-		case "number" : return NumberValue.class;
-		case "string" : return StringValue.class;
-		case "date"   : return DateTimeValue.class;
-		default       : throw new ClassNotFoundException();
+			case "int":
+				return IntValue.class;
+			case "float":
+				return FloatValue.class;
+			case "string":
+				return StringValue.class;
+			case "date":
+				return DateTimeValue.class;
+			default:
+				throw new ClassNotFoundException();
 		}
 	}
 	
@@ -139,16 +145,23 @@ public abstract class DataFile {
 	 * Returns the array with the names of the columns.
 	 * @return The array with the names of the columns
 	 */
-	public LinkedHashMap<String, Class> getColumns() {
+	public Map<String, Class<? extends DataValue>> getColumns() {
 		return columns;
+	}
+
+	public List<Class<? extends DataValue>> getColumnList() {
+		return columnList;
 	}
 
 	/**
 	 * Sets the names of the columns.
 	 * @param columns The columns to set
 	 */
-	public void setColumns(LinkedHashMap<String, Class> columns) {
+	public void setColumns(
+			Map<String, Class<? extends DataValue>> columns,
+			List<Class<? extends DataValue>> columnList) {
 		this.columns = columns;
+		this.columnList = columnList;
 	}
 
 	/**
