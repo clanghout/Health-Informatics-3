@@ -53,20 +53,23 @@ public abstract class ExcelFile extends DataFile {
 				DataValue value = null;
 				Cell cell = row.getCell(i, Row.RETURN_NULL_AND_BLANK);
 				switch (cell.getCellType()) {
-					case Cell.CELL_TYPE_STRING : {
+					case Cell.CELL_TYPE_STRING: {
 						value = new StringValue(cell.getStringCellValue());
 						break;
 					}
-					case Cell.CELL_TYPE_NUMERIC : {
+					case Cell.CELL_TYPE_NUMERIC: {
 						double cellValue = cell.getNumericCellValue();
 						value = ((cellValue % 1) == 0) ? 
 								new FloatValue((float) cellValue) : new IntValue((int) cellValue);
 						break;					
 					}
-					case Cell.CELL_TYPE_BLANK : {
+					case Cell.CELL_TYPE_BLANK: {
 						value = null;
 						break;
 					}
+					default: throw new UnsupportedOperationException(
+							String.format("Cell type %s not supported", cell.getCellType())
+					);
 				}
 				values[i] = value;
 			}
