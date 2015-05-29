@@ -14,7 +14,7 @@ import model.data.value.DataValue;
 public class DataTableConversionBuilder extends DataTableBuilder {
 
 	/**
-	 * Create a datatableconversion builder. This ises a table to create the columns.
+	 * Create a datatableconversion builder. This uses a table to create the columns.
 	 * @param table table from where the columns should be copied.
 	 * @param name the name of the table.
 	 */
