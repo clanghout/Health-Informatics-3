@@ -14,7 +14,6 @@
             <column type="string">time</column>
         </columns>
         <type>plaintext</type>
-        <path>./</path>
     </file>
 	<file name="ADMIRE.txt">
 	    <columns firstrowheader="false"></columns>

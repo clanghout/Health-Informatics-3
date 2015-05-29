@@ -109,24 +109,6 @@ public class PlainTextFile extends DataFile {
 		}
 	}
 
-	private boolean tryParseInt(String value) {
-		try {
-			Integer.parseInt(value);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
-
-	private boolean tryParseFloat(String value) {
-		try {
-			Float.parseFloat(value);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
-
 	public void setDelimiter(String delimiter) {
 		this.delimiter = delimiter;
 	}
