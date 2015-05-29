@@ -2,6 +2,7 @@ package model.process.setOperations;
 
 import model.data.DataRow;
 import model.data.DataTable;
+import model.data.DataTableConversionBuilder;
 import model.process.DataProcess;
 
 /**
@@ -33,21 +34,22 @@ public class Union extends DataProcess {
 
 	@Override
 	protected DataTable doProcess() {
-		DataTable output = table.copy();
+		DataTableConversionBuilder builder = new DataTableConversionBuilder(table, table.getName());
+		builder.addRowsFromTable(table);
 		for (DataRow row : table2.getRows()) {
 			boolean sameRow = false;
-			for (DataRow outRow : output.getRows()) {
-				if (row.equalsSoft(outRow)) {
-					outRow.addCodes(row.getCodes());
+			for (DataRow rowInBuilder : builder.getRows()) {
+				if (row.equalsSoft(rowInBuilder)) {
+					rowInBuilder.addCodes(row.getCodes());
 					sameRow = true;
 					break;
 				}
 			}
 
 			if (!sameRow) {
-				output.addRow(row);
+				builder.createRow(row);
 			}
 		}
-		return output;
+		return builder.build();
 	}
 }

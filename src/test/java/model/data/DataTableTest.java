@@ -337,41 +337,41 @@ public class DataTableTest {
 		assertTrue(copy.getRow(0).containsCode("test"));
 	}
 
-	@Test
-	public void testAddRow() throws Exception {
-		DataTableBuilder builder = new DataTableBuilder();
-		builder.setName("t");
-		builder.createColumn("column1", StringValue.class);
-		builder.createColumn("column2", StringValue.class);
-
-		DataTableBuilder builder2 = new DataTableBuilder();
-		builder2.setName("t2");
-		builder2.createColumn("column1", StringValue.class);
-		builder2.createColumn("column2", StringValue.class);
-		DataRow row = builder2.createRow(new StringValue("te"), new StringValue("hello"));
-		builder2.build();
-		DataTable table = builder.build();
-		table.addRow(row);
-
-		assertTrue(table.getRow(0).equalsSoft(row));
-	}
-
-	@Test(expected = Exception.class)
-	public void testAddRowException() throws Exception {
-		DataTableBuilder builder = new DataTableBuilder();
-		builder.setName("t");
-		builder.createColumn("column1", StringValue.class);
-		builder.createColumn("column2", StringValue.class);
-
-		DataTableBuilder builder2 = new DataTableBuilder();
-		builder2.setName("t2");
-		builder2.createColumn("column3", StringValue.class);
-		builder2.createColumn("column4", StringValue.class);
-		DataRow row = builder2.createRow(new StringValue("te"), new StringValue("hello"));
-		builder2.build();
-		DataTable table = builder.build();
-		table.addRow(row);
-
-		assertTrue(table.getRow(0).equalsSoft(row));
-	}
+//	@Test
+//	public void testAddRow() throws Exception {
+//		DataTableBuilder builder = new DataTableBuilder();
+//		builder.setName("t");
+//		builder.createColumn("column1", StringValue.class);
+//		builder.createColumn("column2", StringValue.class);
+//
+//		DataTableBuilder builder2 = new DataTableBuilder();
+//		builder2.setName("t2");
+//		builder2.createColumn("column1", StringValue.class);
+//		builder2.createColumn("column2", StringValue.class);
+//		DataRow row = builder2.createRow(new StringValue("te"), new StringValue("hello"));
+//		builder2.build();
+//		DataTable table = builder.build();
+//		table.addRow(row);
+//
+//		assertTrue(table.getRow(0).equalsSoft(row));
+//	}
+//
+//	@Test(expected = Exception.class)
+//	public void testAddRowException() throws Exception {
+//		DataTableBuilder builder = new DataTableBuilder();
+//		builder.setName("t");
+//		builder.createColumn("column1", StringValue.class);
+//		builder.createColumn("column2", StringValue.class);
+//
+//		DataTableBuilder builder2 = new DataTableBuilder();
+//		builder2.setName("t2");
+//		builder2.createColumn("column3", StringValue.class);
+//		builder2.createColumn("column4", StringValue.class);
+//		DataRow row = builder2.createRow(new StringValue("te"), new StringValue("hello"));
+//		builder2.build();
+//		DataTable table = builder.build();
+//		table.addRow(row);
+//
+//		assertTrue(table.getRow(0).equalsSoft(row));
+//	}
 }

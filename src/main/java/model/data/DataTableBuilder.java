@@ -11,8 +11,8 @@ import java.util.List;
  * Builder used to build a DataTable.
  */
 public class DataTableBuilder {
-	private List<DataRow> rows;
-	private List<DataColumn> columns;
+	protected List<DataRow> rows;
+	protected List<DataColumn> columns;
 	private String name;
 
 	/**

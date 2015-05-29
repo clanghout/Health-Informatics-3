@@ -186,36 +186,4 @@ public class DataTable extends Table {
 		}
 		return res;
 	}
-
-	/**
-	 * add a row to the table.
-	 * the columns of the rows must have the same type and name as the columns in the table.
-	 * @param row the row that must be added to the table.
-	 */
-	public void addRow(DataRow row) {
-		DataColumn[] columns = getColumns().toArray(new DataColumn[this.columns.size()]);
-		DataValue[] values = new DataValue[this.columns.size()];
-
-		int i = 0;
-		for (DataColumn column : columns) {
-			for (DataColumn colRow : row.getColumns()) {
-				if (colRow.equalsExcludeTable(column)) {
-					values[i] = row.getValue(colRow);
-					break;
-				}
-			}
-			column.setTable(this);
-			i++;
-		}
-
-		DataColumn[] columns2 = new DataColumn[columns.length];
-		i = 0;
-		for (DataColumn column : columns) {
-			columns2[i] = column.copy();
-			columns2[i].setTable(this);
-			i++;
-		}
-
-		rows.add(new DataRow(columns, values));
-	}
 }
