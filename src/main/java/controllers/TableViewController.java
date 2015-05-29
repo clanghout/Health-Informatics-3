@@ -54,10 +54,12 @@ public class TableViewController implements Observer {
 		ChangeListener<DataTable> listener = new ChangeListener<DataTable>() {
             public void changed(ObservableValue<? extends DataTable> ov, 
             	DataTable oldValue, DataTable newValue) {
-            	logger.info("changing content of tableView with content of " 
-            				+ newValue.getName());
-	            currentTable = newValue;
-            	fillTable(newValue);
+	            if(!(newValue == null)) {
+		            logger.info("changing content of tableView with content of "
+				            + newValue.getName());
+		            currentTable = newValue;
+		            fillTable(newValue);
+	            }
             }
 		};
 		this.inputTables.getSelectionModel().selectedItemProperty().addListener(listener);
