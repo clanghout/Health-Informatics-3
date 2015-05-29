@@ -13,6 +13,11 @@ import model.data.value.DataValue;
  */
 public class DataTableConversionBuilder extends DataTableBuilder {
 
+	/**
+	 * Create a datatableconversion builder. This ises a table to create the columns.
+	 * @param table table from where the columns should be copied.
+	 * @param name the name of the table.
+	 */
 	public DataTableConversionBuilder(DataTable table, String name) {
 		this.setName(name);
 		for (DataColumn column : table.getColumns()) {
@@ -20,6 +25,10 @@ public class DataTableConversionBuilder extends DataTableBuilder {
 		}
 	}
 
+	/**
+	 * Add all the rows from the table to the builder.
+	 * @param table that contains the rows that must be added to the builder.
+	 */
 	public void addRowsFromTable(DataTable table) {
 		for (DataRow row : table.getRows()) {
 			createRow(row);

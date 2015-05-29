@@ -23,6 +23,10 @@ public class DataTableBuilder {
 		columns = new ArrayList<>();
 	}
 
+	/**
+	 * return a list of the rows that will get build by the builder.
+	 * @return a list of rows.
+	 */
 	public List<DataRow> getRows() {
 		return rows;
 	}
