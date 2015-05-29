@@ -160,7 +160,7 @@ public abstract class DataFile {
 	public void setColumns(
 			Map<String, Class<? extends DataValue>> columns,
 			List<Class<? extends DataValue>> columnList) {
-		this.columns = columns;
+		this.columns = new LinkedHashMap<>(columns);
 		this.columnList = columnList;
 	}
 

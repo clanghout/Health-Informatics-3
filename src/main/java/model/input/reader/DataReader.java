@@ -31,7 +31,7 @@ public class DataReader {
 	
 	public DataReader(File filename) throws Exception {
 		try {
-			this.xmlReader = new XmlReader();
+			xmlReader = new XmlReader();
 			xmlReader.read(filename);
 		} catch (ParserConfigurationException | SAXException | IOException e) {
 			log.log(Level.SEVERE, "XML file could not be read", e);

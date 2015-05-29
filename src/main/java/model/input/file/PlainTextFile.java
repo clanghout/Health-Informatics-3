@@ -31,7 +31,7 @@ public class PlainTextFile extends DataFile {
 	@Override
 	public DataTable createDataTable() throws IOException {
 		builder = new DataTableBuilder();
-		builder.setName(this.getFile().getName());
+		builder.setName(this.getFile().getName().replace(".", ""));
 		counter = 1;
 		InputStream stream = new FileInputStream(getFile());
 
@@ -77,7 +77,7 @@ public class PlainTextFile extends DataFile {
 			List<Class<? extends DataValue>> columns = getColumnList();
 			DataValue[] values = new DataValue[getColumns().size()];
 			for (int i = 0; i < getColumns().size(); i++) {
-				values[i] = toDataValue(sections[i], columns.get(i));
+				values[i] = toDataValue(sections[i].trim(), columns.get(i));
 			}
 			builder.createRow(values);
 

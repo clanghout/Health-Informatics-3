@@ -1,5 +1,6 @@
 package model.input.reader;
 
+import model.data.value.DataValue;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -15,9 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -176,12 +175,17 @@ public class XmlReader {
 			theDataFile.setColumnTypes(types);
 		} else {
 			try {
+				Map<String, Class<? extends DataValue>> mapping = new LinkedHashMap<>();
+				List<Class<? extends DataValue>> columnTypes = new ArrayList<>();
 				for (int i = 0; i < columns.getLength(); i++) {
 					Element columnElement = (Element) columns.item(i);
 					String typeAttribute = columnElement.getAttribute("type");
-					theDataFile.getColumns().put(columnElement.getTextContent(), 
-												DataFile.getColumnType(typeAttribute));
+					Class columnType = DataFile.getColumnType(typeAttribute);
+					mapping.put(columnElement.getTextContent(),
+							columnType);
+					columnTypes.add(columnType);
 				}
+				theDataFile.setColumns(mapping, columnTypes);
 			} catch (ClassNotFoundException e) {
 				log.log(Level.SEVERE, "Specified Class was not found", e);
 			}
