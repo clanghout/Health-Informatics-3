@@ -1,10 +1,13 @@
 package model.data;
 
+import model.data.value.DataValue;
 import model.exceptions.ColumnValueMismatchException;
 import model.exceptions.ColumnValueTypeMismatchException;
-import model.data.value.DataValue;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -129,17 +132,8 @@ public class DataRow extends Row {
 		Set<DataColumn> otherColumns = other.values.keySet().stream()
 				.map(SoftColumn::getColumn)
 				.collect(Collectors.toSet());
-		if (!myColumns.equals(otherColumns)) {
-			return false;
-		}
 
-		for (SoftColumn softColumn : values.keySet()) {
-			DataColumn column = softColumn.getColumn();
-			if (!this.values.equals(other.values)) {
-				return false;
-			}
-		}
-		return true;
+		return myColumns.equals(otherColumns) && this.values.equals(other.values);
 	}
 
 	/**
