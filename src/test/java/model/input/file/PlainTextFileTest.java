@@ -6,7 +6,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.*;
 
+import model.data.DataColumn;
+import model.data.DataRow;
+import model.data.DataTable;
+import model.data.value.DataValue;
+import model.data.value.FloatValue;
+import model.data.value.IntValue;
+import model.data.value.StringValue;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,6 +31,36 @@ public class PlainTextFileTest {
 	public void setUp() {
 		String file = getClass().getResource("/model/input/plaintext.txt").getFile();
 		textFile = new PlainTextFile(file);
+		textFile.setDelimiter(" ");
+		LinkedHashMap<String, Class<? extends DataValue>> mapping = new LinkedHashMap<>();
+		mapping.put("test", StringValue.class);
+		mapping.put("int", IntValue.class);
+		mapping.put("float", FloatValue.class);
+		mapping.put("string", StringValue.class);
+		List<Class<? extends DataValue>> list = new ArrayList<>();
+		list.add(StringValue.class);
+		list.add(IntValue.class);
+		list.add(FloatValue.class);
+		list.add(StringValue.class);
+		textFile.setColumns(mapping, list);
+	}
+
+	@Test
+	public void test() throws Exception {
+		DataTable table = textFile.createDataTable();
+		List<DataColumn> columns = table.getColumns();
+
+		assertEquals(StringValue.class, columns.get(0).getType());
+		assertEquals(IntValue.class, columns.get(1).getType());
+		assertEquals(FloatValue.class, columns.get(2).getType());
+		assertEquals(StringValue.class, columns.get(3).getType());
+
+		DataRow row = table.getRow(0);
+
+		assertEquals(new StringValue("test"), row.getValue(table.getColumn("test")));
+		assertEquals(new IntValue(5), row.getValue(table.getColumn("int")));
+		assertEquals(new FloatValue(3.5f), row.getValue(table.getColumn("float")));
+		assertEquals(new StringValue("dingen"), row.getValue(table.getColumn("string")));
 	}
 	
 

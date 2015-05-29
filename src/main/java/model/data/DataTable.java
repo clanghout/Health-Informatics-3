@@ -16,7 +16,7 @@ public class DataTable extends Table {
 	 */
 	public DataTable() {
 		rows = new ArrayList<>();
-		columns = new HashMap<>();
+		columns = new LinkedHashMap<>();
 		flaggedNoDelete = new HashSet<>();
 	}
 
