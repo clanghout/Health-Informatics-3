@@ -1,17 +1,15 @@
 package model.input.reader;
 
 import model.data.value.DataValue;
+import model.input.file.DataFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import model.input.file.DataFile;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -156,7 +154,8 @@ public class XmlReader {
 		Element columnsElement = (Element) elem.getElementsByTagName(COLUMNS_TAG).item(0);
 		Element data = (Element) elem.getElementsByTagName(DATA_TAG).item(0);
 		theDataFile = setStartEndLine(data, theDataFile);
-		if (columnsElement.getAttribute(FIRST_ROW_HEADER_ATTRIBUTE).equals("true")) {
+		String firstRowHeader = columnsElement.getAttribute(FIRST_ROW_HEADER_ATTRIBUTE);
+		if ((firstRowHeader != null) && (firstRowHeader.equals("true"))) {
 			theDataFile.setFirstRowAsHeader(true);
 		}
 
