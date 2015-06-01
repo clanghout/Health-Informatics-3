@@ -35,7 +35,7 @@ public class EventDefinitionTest {
 
 		DataTable table = builder.build();
 
-		ConstraintAnalysis analyse =  new ConstraintAnalysis(
+		ConstraintAnalysis analyse = new ConstraintAnalysis(
 				new ConstraintDescriber(new EqualityCheck<>(
 						new ConstantDescriber(new FloatValue(0)),
 						new RowValueDescriber<>(table.getColumn("c2")))));
@@ -75,18 +75,20 @@ public class EventDefinitionTest {
 
 		DataTable web = builder.build();
 
-		ConstraintAnalysis analyse =  new ConstraintAnalysis(
+		ConstraintAnalysis analyse = new ConstraintAnalysis(
 				new ConstraintDescriber(new AndCheck(
-						new ConstraintDescriber( new EqualityCheck<>(
-							new RowValueDescriber(sensor.getColumn("naam")),
-							new RowValueDescriber(web.getColumn("naam"))
-				)),
-						new ConstraintDescriber(new NotCheck(
-								new ConstraintDescriber(
-										new EqualityCheck<>(
-												new RowValueDescriber(web.getColumn("value")),
-												new RowValueDescriber(sensor.getColumn("value"))))))
-		)));
+						new ConstraintDescriber(
+								new EqualityCheck<>(
+										new RowValueDescriber(sensor.getColumn("naam")),
+										new RowValueDescriber(web.getColumn("naam"))
+								)),
+						new ConstraintDescriber(
+								new NotCheck(
+										new ConstraintDescriber(
+												new EqualityCheck<>(
+														new RowValueDescriber(web.getColumn("value")),
+														new RowValueDescriber(sensor.getColumn("value"))))))
+				)));
 
 		analyse.setInput(new CombinedDataTable(sensor.export(sensor.getName()), web.export(web.getName())));
 		EventDefinition event = new EventDefinition("code", analyse, sensor);
