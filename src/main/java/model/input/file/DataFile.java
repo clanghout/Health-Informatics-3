@@ -123,7 +123,7 @@ public abstract class DataFile {
 	}
 	
 	public Class[] getColumnTypes() {
-		return(this.columnTypes);
+		return this.columnTypes;
 	}
 	
 	public static Class getColumnType(String type) throws ClassNotFoundException {
@@ -135,6 +135,10 @@ public abstract class DataFile {
 			case "string":
 				return StringValue.class;
 			case "date":
+				return DateValue.class;
+			case "time" :
+				return TimeValue.class;
+			case "datetime" :
 				return DateTimeValue.class;
 			default:
 				throw new ClassNotFoundException();

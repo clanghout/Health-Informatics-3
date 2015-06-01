@@ -2,17 +2,12 @@ package model.input.reader;
 
 import model.data.DataModel;
 import model.data.DataTable;
-import model.data.DataTableBuilder;
-import model.data.value.DataValue;
-import model.data.value.StringValue;
 import model.input.file.DataFile;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -52,7 +47,7 @@ public class DataReader {
 	public DataModel createDataModel() throws IOException {
 		DataModel model = new DataModel();
 		List<DataFile> dataFiles = xmlReader.getDataFiles();
-		for(DataFile dataFile : dataFiles) {
+		for (DataFile dataFile : dataFiles) {
 			DataTable table = dataFile.createDataTable();
 			
 			model.add(table);

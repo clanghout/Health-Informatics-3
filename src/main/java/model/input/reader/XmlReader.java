@@ -155,7 +155,7 @@ public class XmlReader {
 		Element data = (Element) elem.getElementsByTagName(DATA_TAG).item(0);
 		theDataFile = setStartEndLine(data, theDataFile);
 		String firstRowHeader = columnsElement.getAttribute(FIRST_ROW_HEADER_ATTRIBUTE);
-		if ((firstRowHeader != null) && (firstRowHeader.equals("true"))) {
+		if (firstRowHeader != null && firstRowHeader.equals("true")) {
 			theDataFile.setFirstRowAsHeader(true);
 		}
 
@@ -191,18 +191,17 @@ public class XmlReader {
 		
 	
 	private Class[] createTypesArray(NodeList columns) {
+		Class[] types = new Class[columns.getLength()];
 		try {
-			Class[] types = new Class[columns.getLength()];
 			for (int i = 0; i < columns.getLength(); i++) {
 				Element columnElement = (Element) columns.item(i);
 				String typeAttribute = columnElement.getAttribute("type");
 				types[i] = DataFile.getColumnType(typeAttribute);
-				return types;
 			}
 		} catch (ClassNotFoundException e) {
 			log.log(Level.SEVERE, "Specified Class was not found", e);
 		}
-		return null;
+		return types;
 	}
 	
 	/**

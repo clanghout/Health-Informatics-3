@@ -36,9 +36,9 @@ public abstract class ExcelFile extends DataFile {
 
 		DataTableBuilder builder = new DataTableBuilder();
 		builder.setName(this.getFile().getName().replace(".", ""));
-		if(hasFirstRowAsHeader()) {
+		if (hasFirstRowAsHeader()) {
 			Row headers = rowIterator.next();
-			for(int i = 0; i < getColumnTypes().length; i++) {
+			for (int i = 0; i < getColumnTypes().length; i++) {
 				getColumns().put(headers.getCell(i).getStringCellValue(), getColumnTypes()[i]);
 			}
 		} else {			
@@ -62,20 +62,17 @@ public abstract class ExcelFile extends DataFile {
 	private DataValue toDataValue(Cell cell) {
 		DataValue value = null;
 		switch (cell.getCellType()) {
-			case Cell.CELL_TYPE_STRING: {
+			case Cell.CELL_TYPE_STRING: 
 				value = new StringValue(cell.getStringCellValue());
-				break;
-			}
-			case Cell.CELL_TYPE_NUMERIC: {
+				break;			
+			case Cell.CELL_TYPE_NUMERIC: 
 				double cellValue = cell.getNumericCellValue();
-				value = ((cellValue % 1) == 0) ? 
-						new FloatValue((float) cellValue) : new IntValue((int) cellValue);
+				value = (cellValue % 1 == 0) 
+						? new FloatValue((float) cellValue) : new IntValue((int) cellValue);
 				break;					
-			}
-			case Cell.CELL_TYPE_BLANK: {
+			case Cell.CELL_TYPE_BLANK: 
 				value = new StringValue("");
 				break;
-			}
 			default: throw new UnsupportedOperationException(
 					String.format("Cell type %s not supported", cell.getCellType())
 			);
