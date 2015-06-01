@@ -38,20 +38,20 @@ public class EventDefinition {
 		Table table = process.process();
 
 		for (DataTable codeTable : tables) {
-			if (table instanceof DataTable &&
-					((DataTable) table).getName().equals(codeTable.getName())) {
+			if (table instanceof DataTable
+					&& ((DataTable) table).getName().equals(codeTable.getName())) {
 				setCode(codeTable, (DataTable) table);
 			} else if (table instanceof CombinedDataTable) {
 				DataTable dataTable = ((CombinedDataTable) table).getTable(codeTable.getName());
 				if (dataTable == null) {
-					throw new IllegalArgumentException("event does not contain the table" +
-							"that must get a code");
+					throw new IllegalArgumentException("event does not contain the table"
+							+ "that must get a code");
 				} else {
 					setCode(codeTable, dataTable);
 				}
 			} else {
-				throw new IllegalArgumentException("event does not contain the table" +
-						"that must get a code");
+				throw new IllegalArgumentException("event does not contain the table"
+						+ "that must get a code");
 			}
 		}
 	}
