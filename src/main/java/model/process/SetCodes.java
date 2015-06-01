@@ -75,7 +75,7 @@ public class SetCodes extends DataProcess {
 					input = (DataTable) union.getOutput();
 				}
 			}
-		} else if(codeTable instanceof DataTable) {
+		} else if (codeTable instanceof DataTable) {
 			DataTable table = (DataTable) codeTable;
 			Union union = new Union(input, table);
 			union.process();
