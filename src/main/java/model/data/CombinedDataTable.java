@@ -124,7 +124,7 @@ public class CombinedDataTable extends Table {
 	}
 
 	/**
-	 * return the table with the name tableName.
+	 * Return the table with the name tableName.
 	 * @param tableName name of the table that mut be returned
 	 * @return the table with the name tableName
 	 */

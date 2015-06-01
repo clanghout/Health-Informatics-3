@@ -32,7 +32,7 @@ public class EventDefinition {
 	}
 
 	/**
-	 * set the code on the rows that corresponds to this event.
+	 * Set the code on the rows that corresponds to this event.
 	 */
 	public void setCode() {
 		Table table = process.process();
@@ -57,7 +57,7 @@ public class EventDefinition {
 	}
 
 	/**
-	 * set the eventcode on a row in the codeTable if the filteredTable contains that row.
+	 * Set the eventcode on a row in the codeTable if the filteredTable contains that row.
 	 * @param codeTable table that must get the rows
 	 * @param filteredTable table that contains the rows that must get a code
 	 */
