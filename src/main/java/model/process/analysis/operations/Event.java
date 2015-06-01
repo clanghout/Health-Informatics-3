@@ -1,5 +1,6 @@
 package model.process.analysis.operations;
 
+import model.data.DataTable;
 import model.data.Table;
 import model.data.describer.DataDescriber;
 import model.data.value.BoolValue;
@@ -19,9 +20,9 @@ public class Event {
 		this.constraint = constraint;
 	}
 	
-	public Table create() {
+	public DataTable create() {
 		ConstraintAnalysis constr = new ConstraintAnalysis(constraint);
-		Table event = constr.analyse(table);
+		DataTable event = (DataTable) constr.analyse(table);
 		return event;
 	}
 }
