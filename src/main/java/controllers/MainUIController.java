@@ -1,5 +1,6 @@
 package controllers;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import model.data.DataModel;
@@ -33,9 +34,8 @@ public class MainUIController {
 	 * @param event the event
 	 */
 	@FXML protected void handleQuitAction(ActionEvent event) {
-		System.out.println(tableViewController);
 		logger.info("Shutting down");
-		System.exit(0);
+		Platform.exit();
 	}
 	
 	/**
