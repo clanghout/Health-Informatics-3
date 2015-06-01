@@ -157,6 +157,20 @@ public class CombinedDataTable extends Table {
 			}
 		};
 	}
+
+	/**
+	 * Return a list that contains all the tables in the combined dataTable.
+	 * @return a list that contains all the tables.
+	 */
+	public List<DataTable> getTables() {
+		List<DataTable> res = new ArrayList<>();
+		if(combined != null) {
+			res = combined.getTables();
+		}
+		res.add(table);
+		return res;
+
+	}
 }
 
 
