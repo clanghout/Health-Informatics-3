@@ -196,6 +196,7 @@ public class DataRow extends Row {
 	 * @param column the column where you want the value from
 	 * @return the value of the column of this row
 	 */
+	@Override
 	public DataValue getValue(DataColumn column) {
 		return values.get(new SoftColumn(column));
 	}
@@ -204,6 +205,7 @@ public class DataRow extends Row {
 	 * Add the code code to the row.
 	 * @param code the code that must be added to the row.
 	 */
+	@Override
 	public void addCode(String code) {
 		codes.add(code);
 	}
