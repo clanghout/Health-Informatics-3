@@ -49,6 +49,10 @@ public class TableViewController implements Observer {
 	public TableViewController() {
 	}
 	
+	/**
+	 * Initializes the table by assigning a changelistener for the listview
+	 * with the tables. If the selection changes, the table will update.
+	 */
 	public void initialize() {
 		logger.info("initializing listview changelistener");
 		ChangeListener<DataTable> listener = new ChangeListener<DataTable>() {
