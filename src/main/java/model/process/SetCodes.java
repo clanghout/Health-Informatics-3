@@ -15,15 +15,23 @@ public class SetCodes extends DataProcess {
 	private String code;
 	private Table codeTable;
 
+	/**
+	 * Set the code on the rows of the input table that also exist in the codeTable.
+	 * @param code code that must be set
+	 * @param codeTable rows on which the code must be set
+	 */
 	public SetCodes(String code, Table codeTable) {
 		this.code = code;
 		this.codeTable = codeTable;
 	}
 
+	/**
+	 * Set the code on all the rows in de codeTable.
+	 * After this the code table can be unified with the input table.
+	 */
 	private void codesOnCodeTable() {
-		Iterator<? extends Row> iterator = codeTable.iterator();
-		while (iterator.hasNext()) {
-			iterator.next().addCode(code);
+		for (Row aCodeTable : (Iterable<Row>) codeTable) {
+			aCodeTable.addCode(code);
 		}
 	}
 
@@ -37,9 +45,7 @@ public class SetCodes extends DataProcess {
 		}
 		if (input instanceof CombinedDataTable) {
 			CombinedDataTable comb = (CombinedDataTable) input;
-			for (DataTable table : comb.getTables()) {
-				setCodes(table);
-			}
+			comb.getTables().forEach(this::setCodes);
 		} else if (input instanceof DataTable) {
 			DataTable inputTable = (DataTable) input;
 			setCodes(inputTable);
