@@ -184,5 +184,4 @@ public class DataTable extends Table {
 		}
 		return res;
 	}
-
 }
