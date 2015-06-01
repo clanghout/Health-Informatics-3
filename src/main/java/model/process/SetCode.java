@@ -59,11 +59,9 @@ public class SetCode extends DataProcess {
 	private Table setCodes(DataTable input, Table codeTable) {
 		if (codeTable instanceof CombinedDataTable) {
 			CombinedDataTable comb = (CombinedDataTable) codeTable;
-			for (DataTable table : comb.getTables()) {
-				if (table.equalStructure(input)) {
-					setCode(input, table);
-				}
-			}
+			comb.getTables().stream()
+					.filter(table -> table.equalStructure(input))
+					.forEach(table -> setCode(input, table));
 		} else if (codeTable instanceof DataTable) {
 			DataTable table = (DataTable) codeTable;
 			setCode(input, table);
@@ -73,8 +71,8 @@ public class SetCode extends DataProcess {
 
 	private void setCode(DataTable input, DataTable codeTable) {
 		for (DataRow row : input.getRows()) {
-			for (DataRow rowInodes : codeTable.getRows()) {
-				if (row.equalsSoft(rowInodes)) {
+			for (DataRow codeRows : codeTable.getRows()) {
+				if (row.equalsSoft(codeRows)) {
 					row.addCode(code);
 					break;
 				}
