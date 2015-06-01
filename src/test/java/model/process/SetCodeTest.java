@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 /**
  * Created by jens on 6/1/15.
  */
-public class SetCodesTest {
+public class SetCodeTest {
 
 	@Test
 	public void testDoProcess() throws Exception {
@@ -38,11 +38,11 @@ public class SetCodesTest {
 		DataTable input = builder.build();
 		DataTable codeTable = builder2.build();
 
-		SetCodes setCodes = new SetCodes("code", codeTable);
-		setCodes.setInput(input);
+		SetCode setCode = new SetCode("code", codeTable);
+		setCode.setInput(input);
 
-		setCodes.process();
-		DataTable output = (DataTable) setCodes.getOutput();
+		setCode.process();
+		DataTable output = (DataTable) setCode.getOutput();
 
 		assertFalse(output.getRow(0).containsCode("code"));
 		assertTrue(output.getRow(1).containsCode("code"));

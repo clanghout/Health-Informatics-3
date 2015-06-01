@@ -12,7 +12,7 @@ import model.process.setOperations.Union;
  *
  * Created by jens on 6/1/15.
  */
-public class SetCodes extends DataProcess {
+public class SetCode extends DataProcess {
 	private String code;
 	private Table codeTable;
 
@@ -21,7 +21,7 @@ public class SetCodes extends DataProcess {
 	 * @param code code that must be set
 	 * @param codeTable rows on which the code must be set
 	 */
-	public SetCodes(String code, Table codeTable) {
+	public SetCode(String code, Table codeTable) {
 		this.code = code;
 		this.codeTable = codeTable;
 	}
@@ -38,7 +38,7 @@ public class SetCodes extends DataProcess {
 	}
 
 	/**
-	 * Set the code to the input table and return the result;
+	 * Set the code to the input table and return the result.
 	 * @return the input code with the codes set.
 	 */
 	@Override
