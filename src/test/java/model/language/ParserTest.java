@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -145,5 +146,9 @@ public class ParserTest {
 
 		DataTable table = (DataTable) result;
 
+		assertTrue(table.getRow(0).getCodes().contains("hallo"));
+		assertTrue(table.getRow(1).getCodes().contains("hallo"));
+		assertFalse(table.getRow(2).getCodes().contains("hallo"));
+		assertFalse(table.getRow(3).getCodes().contains("hallo"));
 	}
 }
