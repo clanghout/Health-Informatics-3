@@ -17,7 +17,7 @@ public class MainUIController {
 	@FXML private DataController dataController;
 	@FXML private AnalysisController analysisController;
 	@FXML private VisualizationController visualizationController;
-	
+
 	private Logger logger = Logger.getLogger("MainUIController");
 
 	/**
