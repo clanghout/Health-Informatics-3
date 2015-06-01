@@ -34,15 +34,11 @@
     </file>
     <file name="xlsfile.xls">
         <columns firstrowheader="false">
-            <column type="string">unit</column>
-            <column type="string">ignore</column>
-            <column type="string">date</column>
-            <column type="string">time</column>
+            <column type="string">1</column>
+            <column type="string">2</column>
+            <column type="string">3</column>
+            <column type="string">thecolumn</column>
         </columns>
-        <data>
-           <start>7</start>
-           <end>8</end>
-        </data>
         <type>xls</type>
         <path>model/input</path>
     </file>

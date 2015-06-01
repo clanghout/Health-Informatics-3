@@ -68,7 +68,7 @@ public abstract class ExcelFile extends DataFile {
 			case Cell.CELL_TYPE_NUMERIC: 
 				double cellValue = cell.getNumericCellValue();
 				value = (cellValue % 1 == 0) 
-						? new FloatValue((float) cellValue) : new IntValue((int) cellValue);
+						? new IntValue((int) cellValue) : new FloatValue((float) cellValue);
 				break;					
 			case Cell.CELL_TYPE_BLANK: 
 				value = new StringValue("");
