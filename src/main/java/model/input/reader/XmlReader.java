@@ -139,7 +139,7 @@ public class XmlReader {
 	 */
 	public DataFile createDataFile(Element elem, String parentDir) {
 		String type = elem.getElementsByTagName(TYPE_TAG).item(0).getTextContent();
-		String completePath = createPath(elem,parentDir);
+		String completePath = createPath(elem, parentDir);
 		DataFile theDataFile = DataFile.createDataFile(completePath, type);
 
 		Element columnsElement = (Element) elem.getElementsByTagName(COLUMNS_TAG).item(0);
