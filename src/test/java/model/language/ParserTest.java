@@ -133,4 +133,17 @@ public class ParserTest {
 		assertEquals(new IntValue(11), row.getValue(test1.getColumn("value")));
 		assertEquals(new IntValue(10), row2.getValue(test1.getColumn("value")));
 	}
+
+	@Test
+	public void testParseSetCodes() throws Exception {
+		String input = "def gtNine() : Constraint = test1.value > 9;\n" +
+				"from(test1)|constraint(gtNine)}is(gtThen)|from(test1)|setCode(\"hallo\", gtThen)";
+
+		Table result = parseAndProcess(input);
+
+		assertTrue(result instanceof DataTable);
+
+		DataTable table = (DataTable) result;
+
+	}
 }
