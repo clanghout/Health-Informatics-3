@@ -26,7 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The controller for the Data tab
+ * The controller for the Data tab.
  * <p />
  * Created by Boudewijn on 6-5-2015.
  */
