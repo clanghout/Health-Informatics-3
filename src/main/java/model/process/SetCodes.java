@@ -20,9 +20,18 @@ public class SetCodes extends DataProcess {
 		this.codeTable = codeTable;
 	}
 
+	private void codesOnCodeTable() {
+		Iterator<? extends Row> iterator = codeTable.iterator();
+		while (iterator.hasNext()) {
+			iterator.next().addCode(code);
+		}
+	}
+
 	@Override
 	public final Table doProcess() {
 		Table input = getInput();
+
+		codesOnCodeTable();
 		if (input == null) {
 			throw new IllegalStateException("Input is not set");
 		}
