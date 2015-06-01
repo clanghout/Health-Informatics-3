@@ -60,7 +60,7 @@ public abstract class EventTest {
 						new ConstantDescriber(new DateTimeValue(19, 1, 1993, 11, 30, 5))
 						));
 		Event event = new Event(table, greater);
-		Table tableResult = Event.create();
+		Table tableResult = event.create();
 		assertEquals(table, tableResult);
 	}
 }

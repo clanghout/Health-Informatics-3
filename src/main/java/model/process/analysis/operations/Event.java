@@ -11,15 +11,15 @@ import model.process.analysis.ConstraintAnalysis;
  */
 public class Event {
 	
-	private static Table table;
-	private static DataDescriber<BoolValue> constraint;
+	private Table table;
+	private DataDescriber<BoolValue> constraint;
 	
 	public Event(Table table, DataDescriber<BoolValue> constraint) {
 		this.table = table;
 		this.constraint = constraint;
 	}
 	
-	public static Table create() {
+	public Table create() {
 		ConstraintAnalysis constr = new ConstraintAnalysis(constraint);
 		Table event = constr.analyse(table);
 		return event;
