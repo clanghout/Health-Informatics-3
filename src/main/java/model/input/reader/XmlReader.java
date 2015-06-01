@@ -120,7 +120,7 @@ public class XmlReader {
 		DocumentBuilder builder = dbf.newDocumentBuilder();
 		document = builder.parse(stream);
 		document.normalize();
-		Element root = (Element) document.getDocumentElement();
+		Element root = document.getDocumentElement();
 		filesList = root.getElementsByTagName(FILE_TAG);
 		
 		for (int i = 0; i < filesList.getLength(); i++) {
