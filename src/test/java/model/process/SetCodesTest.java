@@ -1,9 +1,11 @@
 package model.process;
 
+import model.data.DataModel;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.value.FloatValue;
 import model.data.value.StringValue;
+import model.language.Identifier;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -27,7 +29,7 @@ public class SetCodesTest {
 		builder.createRow(new StringValue("test4"), new FloatValue(0));
 
 		DataTableBuilder builder2 = new DataTableBuilder();
-		builder2.setName("test");
+		builder2.setName("test2");
 
 		builder2.createColumn("c1", StringValue.class);
 		builder2.createColumn("c2", FloatValue.class);
@@ -38,7 +40,12 @@ public class SetCodesTest {
 		DataTable input = builder.build();
 		DataTable codeTable = builder2.build();
 
-		SetCodes setCodes = new SetCodes("code", codeTable);
+		DataModel model = new DataModel();
+		model.add(input);
+		model.add(codeTable);
+
+		SetCodes setCodes = new SetCodes("code", new Identifier<>("test2"));
+		setCodes.setDataModel(model);
 		setCodes.setInput(input);
 
 		setCodes.process();

@@ -43,7 +43,7 @@ class ProcessInfo {
 				return new ConstraintAnalysis((DataDescriber) macros.get(parameters[0]));
 			case "setCode":
 				Identifier tableName = (Identifier) parameters[1];
-				return new SetCodes((String) parameters[0], model.getByName((tableName.getName())));
+				return new SetCodes((String) parameters[0], tableName);
 			default:
 				throw new UnsupportedOperationException("This code has not been implemented yet");
 		}

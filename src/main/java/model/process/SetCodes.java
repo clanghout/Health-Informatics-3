@@ -4,6 +4,7 @@ import model.data.CombinedDataTable;
 import model.data.DataTable;
 import model.data.Row;
 import model.data.Table;
+import model.language.Identifier;
 import model.process.setOperations.Union;
 
 /**
@@ -14,23 +15,23 @@ import model.process.setOperations.Union;
  */
 public class SetCodes extends DataProcess {
 	private String code;
-	private Table codeTable;
+	private Identifier<DataTable> codeTableName;
 
 	/**
 	 * Set the code on the rows of the input table that also exist in the codeTable.
 	 * @param code code that must be set
-	 * @param codeTable rows on which the code must be set
+	 * @param codeTableName rows on which the code must be set
 	 */
-	public SetCodes(String code, Table codeTable) {
+	public SetCodes(String code, Identifier<DataTable> codeTableName) {
 		this.code = code;
-		this.codeTable = codeTable;
+		this.codeTableName = codeTableName;
 	}
 
 	/**
 	 * Set the code on all the rows in de codeTable.
 	 * After this the code table can be unified with the input table.
 	 */
-	private void codesOnCodeTable() {
+	private void codesOnCodeTable(Table codeTable) {
 		for (Row row : (Iterable<Row>) codeTable) {
 			row.clearCode();
 			row.addCode(code);
@@ -38,23 +39,24 @@ public class SetCodes extends DataProcess {
 	}
 
 	/**
-	 * Set the code to the input table and return the result;
+	 * Set the code to the input table and return the result.
 	 * @return the input code with the codes set.
 	 */
 	@Override
 	public final Table doProcess() {
 		Table input = getInput();
 
-		codesOnCodeTable();
+		DataTable codeTable = getDataModel().getByName(codeTableName.getName());
+		codesOnCodeTable(codeTable);
 		if (input == null) {
 			throw new IllegalStateException("Input is not set");
 		}
 		if (input instanceof CombinedDataTable) {
 			CombinedDataTable comb = (CombinedDataTable) input;
-			comb.getTables().forEach(this::setCodes);
+			comb.getTables().forEach(x -> setCodes(x, codeTable));
 		} else if (input instanceof DataTable) {
 			DataTable inputTable = (DataTable) input;
-			input = setCodes(inputTable);
+			input = setCodes(inputTable, codeTable);
 		}
 
 		return input;
@@ -66,7 +68,7 @@ public class SetCodes extends DataProcess {
 	 * @param input table that must get the code
 	 * @return the input table with the set codes
 	 */
-	private Table setCodes(DataTable input) {
+	private Table setCodes(DataTable input, Table codeTable) {
 		if (codeTable instanceof CombinedDataTable) {
 			CombinedDataTable comb = (CombinedDataTable) codeTable;
 			for (DataTable table : comb.getTables()) {
