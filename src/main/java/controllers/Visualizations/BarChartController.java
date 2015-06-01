@@ -1,4 +1,4 @@
-package controllers.Visualizations;
+package controllers.visualizations;
 
 import controllers.VisualizationController;
 import javafx.collections.FXCollections;
@@ -69,13 +69,13 @@ public class BarChartController extends VisualizationController {
 			ySet = true;
 			yCol = newValue;
 			DataDescriber<NumberValue> yColDescriber = new RowValueDescriber<>(yCol);
-//			Double max = (double) new Maximum(table, yColDescriber).calculate().getValue();
-//			Double min = (double) new Minimum(table, yColDescriber).calculate().getValue();
+			float max = (float) new Maximum(table, yColDescriber).calculate().getValue();
+			float min = (float) new Minimum(table, yColDescriber).calculate().getValue();
 			// sep is the nearest power of 10 of max devided by YAXIS_SEPERATOR.
 			// This creates a value that seperates the y-axis in approximately 10 values.
-//			int sep = (int) Math.pow(BASE,
-//					Math.round(Math.log10(max / YAXIS_SEPARATION) - Math.log10(MEAN) + ROUND));
-			yAxis = new NumberAxis(yCol.getName(), 100, 200, 10);
+			int sep = (int) Math.pow(BASE,
+					Math.round(Math.log10(max / YAXIS_SEPARATION) - Math.log10(MEAN) + ROUND));
+			yAxis = new NumberAxis(yCol.getName(), min, max, sep);
 		});
 		vBox.getChildren().addAll(xAxisBox, yAxisBox);
 	}

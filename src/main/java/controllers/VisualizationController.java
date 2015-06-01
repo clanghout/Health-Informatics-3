@@ -1,6 +1,6 @@
 package controllers;
 
-import controllers.Visualizations.BarChartController;
+import controllers.visualizations.BarChartController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -51,8 +51,9 @@ public class VisualizationController implements Observer {
 	}
 
 	/**
-	 * initialization module for the visualisation controller.
-	 * The dropdown menu's are disabled while no DataModel is loaded.
+	 * Initialization module for the visualisation controller.
+	 * This method is automatically called by javaFX on initialization.
+	 * The dropDown menu's are disabled while no DataModel is loaded.
 	 */
 	public void initialize() {
 		visualization.setDisable(true);
@@ -77,6 +78,7 @@ public class VisualizationController implements Observer {
 			visualization.setDisable(false);
 		});
 		visualization.valueProperty().addListener((observable, oldValue, newValue) -> {
+			visualizationInput.getChildren().clear();
 			switch (newValue) {
 				case "BarChart":
 					bcc = new BarChartController(dataTable, visualizationInput);
@@ -122,6 +124,7 @@ public class VisualizationController implements Observer {
 
 	@FXML
 	protected void handleGraphCreateButtonAction(ActionEvent event) {
+		visualizationGraph.getChildren().clear();
 		if(bcc.axesSet()) {
 			visualizationGraph.getChildren().add(bcc.create());
 		}
