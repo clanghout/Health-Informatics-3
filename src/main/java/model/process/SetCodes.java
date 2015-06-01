@@ -30,11 +30,16 @@ public class SetCodes extends DataProcess {
 	 * After this the code table can be unified with the input table.
 	 */
 	private void codesOnCodeTable() {
-		for (Row aCodeTable : (Iterable<Row>) codeTable) {
-			aCodeTable.addCode(code);
+		for (Row row : (Iterable<Row>) codeTable) {
+			row.clearCode();
+			row.addCode(code);
 		}
 	}
 
+	/**
+	 * Set the code to the input table and return the result;
+	 * @return the input code with the codes set.
+	 */
 	@Override
 	public final Table doProcess() {
 		Table input = getInput();
@@ -55,6 +60,11 @@ public class SetCodes extends DataProcess {
 	}
 
 
+	/**
+	 * Set the codes on the input table.
+	 * @param input table that must get the code
+	 * @return the input table with the set codes
+	 */
 	private Table setCodes(DataTable input) {
 		if (codeTable instanceof CombinedDataTable) {
 			CombinedDataTable comb = (CombinedDataTable) codeTable;
@@ -71,8 +81,6 @@ public class SetCodes extends DataProcess {
 			union.process();
 			input = (DataTable) union.getOutput();
 		}
-
 		return input;
-
 	}
 }
