@@ -138,17 +138,8 @@ public class XmlReader {
 	 * @param parentDir The parent of the file
 	 */
 	public DataFile createDataFile(Element elem, String parentDir) {
-		String fileName  = elem.getAttribute(NAME_ATTRIBUTE);
-		String type      = elem.getElementsByTagName(TYPE_TAG).item(0).getTextContent();
-		
-		String completePath;
-		Element pathElement = (Element) elem.getElementsByTagName(PATH_TAG).item(0);
-		if (pathElement != null) {
-			String path  = elem.getElementsByTagName(PATH_TAG).item(0).getTextContent();
-			completePath = parentDir + File.separator + path + File.separator + fileName;
-		} else {
-			completePath = fileName;
-		}
+		String type = elem.getElementsByTagName(TYPE_TAG).item(0).getTextContent();
+		String completePath = createPath(elem,parentDir);
 		DataFile theDataFile = DataFile.createDataFile(completePath, type);
 
 		Element columnsElement = (Element) elem.getElementsByTagName(COLUMNS_TAG).item(0);
@@ -158,15 +149,33 @@ public class XmlReader {
 		if (firstRowHeader != null && firstRowHeader.equals("true")) {
 			theDataFile.setFirstRowAsHeader(true);
 		}
-
+		
 		NodeList columns = columnsElement.getElementsByTagName(COLUMN_TAG);
+		setColumnTypes(theDataFile, columns);
+		
+		return theDataFile;
+	}
+
+	private DataFile setColumnTypes(DataFile theDataFile, NodeList columns) {
 		if (theDataFile.hasFirstRowAsHeader()) {
 			theDataFile.setColumnTypes(createTypesArray(columns));
 		} else {
 			theDataFile = setColumnTypeMapping(columns, theDataFile);
 		}
-		
 		return theDataFile;
+	}
+	
+	private String createPath(Element elem, String parentDir) {
+		String fileName  = elem.getAttribute(NAME_ATTRIBUTE);
+		Element pathElement = (Element) elem.getElementsByTagName(PATH_TAG).item(0);
+		String completePath;
+		if (pathElement != null) {
+			String path  = elem.getElementsByTagName(PATH_TAG).item(0).getTextContent();
+			completePath = parentDir + File.separator + path + File.separator + fileName;
+		} else {
+			completePath = fileName;
+		}
+		return completePath;
 	}
 
 	private DataFile setColumnTypeMapping(NodeList columns, DataFile dataFile) {
