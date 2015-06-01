@@ -27,7 +27,7 @@ public class SetCodeTest {
 		builder.createRow(new StringValue("test4"), new FloatValue(0));
 
 		DataTableBuilder builder2 = new DataTableBuilder();
-		builder2.setName("test");
+		builder2.setName("test2");
 
 		builder2.createColumn("c1", StringValue.class);
 		builder2.createColumn("c2", FloatValue.class);

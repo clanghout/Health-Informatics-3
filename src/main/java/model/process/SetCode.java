@@ -1,9 +1,6 @@
 package model.process;
 
-import model.data.CombinedDataTable;
-import model.data.DataTable;
-import model.data.Row;
-import model.data.Table;
+import model.data.*;
 import model.process.setOperations.Union;
 
 /**
@@ -27,17 +24,6 @@ public class SetCode extends DataProcess {
 	}
 
 	/**
-	 * Set the code on all the rows in de codeTable.
-	 * After this the code table can be unified with the input table.
-	 */
-	private void codesOnCodeTable() {
-		for (Row row : (Iterable<Row>) codeTable) {
-			row.clearCode();
-			row.addCode(code);
-		}
-	}
-
-	/**
 	 * Set the code to the input table and return the result.
 	 * @return the input code with the codes set.
 	 */
@@ -45,7 +31,6 @@ public class SetCode extends DataProcess {
 	public final Table doProcess() {
 		Table input = getInput();
 
-		codesOnCodeTable();
 		if (input == null) {
 			throw new IllegalStateException("Input is not set");
 		}
@@ -71,17 +56,24 @@ public class SetCode extends DataProcess {
 			CombinedDataTable comb = (CombinedDataTable) codeTable;
 			for (DataTable table : comb.getTables()) {
 				if (table.equalStructure(input)) {
-					Union union = new Union(input, table);
-					union.process();
-					input = (DataTable) union.getOutput();
+					setCode(input, table);
 				}
 			}
 		} else if (codeTable instanceof DataTable) {
 			DataTable table = (DataTable) codeTable;
-			Union union = new Union(input, table);
-			union.process();
-			input = (DataTable) union.getOutput();
+			setCode(input, table);
 		}
 		return input;
+	}
+
+	private void setCode(DataTable input, DataTable codeTable) {
+		for (DataRow row : input.getRows()) {
+			for (DataRow rowInodes : codeTable.getRows()) {
+				if (row.equalsSoft(rowInodes)) {
+					row.addCode(code);
+					break;
+				}
+			}
+		}
 	}
 }
