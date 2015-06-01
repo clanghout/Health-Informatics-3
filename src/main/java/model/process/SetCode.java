@@ -1,7 +1,10 @@
 package model.process;
 
 import model.data.*;
-import model.process.setOperations.Union;
+import model.data.CombinedDataTable;
+import model.data.DataTable;
+import model.data.Table;
+import model.language.Identifier;
 
 /**
  * Class that is used to set code on the input table. In needs a string for the code.
@@ -11,17 +14,18 @@ import model.process.setOperations.Union;
  */
 public class SetCode extends DataProcess {
 	private String code;
-	private Table codeTable;
+	private Identifier<DataTable> codeTableName;
 
 	/**
 	 * Set the code on the rows of the input table that also exist in the codeTable.
 	 * @param code code that must be set
-	 * @param codeTable rows on which the code must be set
+	 * @param codeTableName rows on which the code must be set
 	 */
-	public SetCode(String code, Table codeTable) {
+	public SetCode(String code, Identifier<DataTable> codeTableName) {
 		this.code = code;
-		this.codeTable = codeTable;
+		this.codeTableName = codeTableName;
 	}
+
 
 	/**
 	 * Set the code to the input table and return the result.
@@ -31,15 +35,16 @@ public class SetCode extends DataProcess {
 	public final Table doProcess() {
 		Table input = getInput();
 
+		DataTable codeTable = getDataModel().getByName(codeTableName.getName());
 		if (input == null) {
 			throw new IllegalStateException("Input is not set");
 		}
 		if (input instanceof CombinedDataTable) {
 			CombinedDataTable comb = (CombinedDataTable) input;
-			comb.getTables().forEach(this::setCodes);
+			comb.getTables().forEach(x -> setCodes(x, codeTable));
 		} else if (input instanceof DataTable) {
 			DataTable inputTable = (DataTable) input;
-			input = setCodes(inputTable);
+			input = setCodes(inputTable, codeTable);
 		}
 
 		return input;
@@ -51,7 +56,7 @@ public class SetCode extends DataProcess {
 	 * @param input table that must get the code
 	 * @return the input table with the set codes
 	 */
-	private Table setCodes(DataTable input) {
+	private Table setCodes(DataTable input, Table codeTable) {
 		if (codeTable instanceof CombinedDataTable) {
 			CombinedDataTable comb = (CombinedDataTable) codeTable;
 			for (DataTable table : comb.getTables()) {

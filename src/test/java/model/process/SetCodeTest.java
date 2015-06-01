@@ -1,9 +1,11 @@
 package model.process;
 
+import model.data.DataModel;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.value.FloatValue;
 import model.data.value.StringValue;
+import model.language.Identifier;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -38,11 +40,16 @@ public class SetCodeTest {
 		DataTable input = builder.build();
 		DataTable codeTable = builder2.build();
 
-		SetCode setCode = new SetCode("code", codeTable);
-		setCode.setInput(input);
+		DataModel model = new DataModel();
+		model.add(input);
+		model.add(codeTable);
 
-		setCode.process();
-		DataTable output = (DataTable) setCode.getOutput();
+		SetCode setCodes = new SetCode("code", new Identifier<>("test2"));
+		setCodes.setDataModel(model);
+		setCodes.setInput(input);
+
+		setCodes.process();
+		DataTable output = (DataTable) setCodes.getOutput();
 
 		assertFalse(output.getRow(0).containsCode("code"));
 		assertTrue(output.getRow(1).containsCode("code"));
