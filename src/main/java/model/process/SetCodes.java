@@ -6,9 +6,10 @@ import model.data.Row;
 import model.data.Table;
 import model.process.setOperations.Union;
 
-import java.util.Iterator;
-
 /**
+ * Class that is used to set code on the input table. In needs a string for the code.
+ * And in needs a table that contains all the rows that must get a code.
+ *
  * Created by jens on 6/1/15.
  */
 public class SetCodes extends DataProcess {
@@ -53,7 +54,7 @@ public class SetCodes extends DataProcess {
 			comb.getTables().forEach(this::setCodes);
 		} else if (input instanceof DataTable) {
 			DataTable inputTable = (DataTable) input;
-			setCodes(inputTable);
+			input = setCodes(inputTable);
 		}
 
 		return input;
