@@ -1,5 +1,6 @@
 package controllers;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import model.data.DataModel;
@@ -18,9 +19,6 @@ public class MainUIController {
 	@FXML private AnalysisController analysisController;
 	@FXML private VisualizationController visualizationController;
 
-	
-	private DataModel model;
-	
 	private Logger logger = Logger.getLogger("MainUIController");
 
 	/**
@@ -35,9 +33,8 @@ public class MainUIController {
 	 * @param event the event
 	 */
 	@FXML protected void handleQuitAction(ActionEvent event) {
-		System.out.println(tableViewController);
 		logger.info("Shutting down");
-		System.exit(0);
+		Platform.exit();
 	}
 	
 	/**
@@ -45,7 +42,6 @@ public class MainUIController {
 	 * @param model The DataModel
 	 */
 	public void setModel(DataModel model) {
-		this.model = model;
 		tableViewController.setDataModel(model);
 		analysisController.setDataModel(model);
 		visualizationController.setDataModel(model);

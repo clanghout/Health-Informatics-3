@@ -1,8 +1,6 @@
 package controllers;
 
-import model.input.file.DataFile;
 import model.input.reader.DataReader;
-import model.input.reader.XmlReader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -10,14 +8,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import model.data.DataModel;
 import model.data.DataTable;
-import model.data.describer.ConstantDescriber;
-import model.data.describer.ConstraintDescriber;
-import model.data.describer.RowValueDescriber;
-import model.process.analysis.ConstraintAnalysis;
-import model.process.analysis.DataAnalysis;
-import model.process.analysis.operations.constraints.Constraint;
-import model.process.analysis.operations.constraints.EqualityCheck;
-import model.data.value.StringValue;
 import model.output.DataTableWriter;
 
 import java.io.File;
@@ -26,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The controller for the Data tab
+ * The controller for the Data tab.
  * <p />
  * Created by Boudewijn on 6-5-2015.
  */
@@ -44,7 +34,6 @@ public class DataController {
 
 	private File file;
 	private DataTable out;
-	private DataTable input;
 	
 	/**
 	 * Creates a new TableViewController.

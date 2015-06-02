@@ -4,10 +4,7 @@ import model.data.value.DataValue;
 import model.exceptions.ColumnValueMismatchException;
 import model.exceptions.ColumnValueTypeMismatchException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -134,6 +131,14 @@ public class DataRow extends Row {
 				.collect(Collectors.toSet());
 
 		return myColumns.equals(otherColumns) && this.values.equals(other.values);
+	}
+
+	/**
+	 * return the columns of this row.
+	 * @return a set that contains the columns of this row.
+	 */
+	public List<DataColumn> getColumns() {
+		return values.keySet().stream().map(x -> x.getColumn()).collect(Collectors.toList());
 	}
 
 	@Override

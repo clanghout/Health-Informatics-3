@@ -35,9 +35,10 @@ public abstract class ExcelFile extends DataFile {
 	protected DataTable createTable(Iterator<Row> rowIterator) throws FileNotFoundException {
 
 		DataTableBuilder builder = new DataTableBuilder();
-		if(hasFirstRowAsHeader()) {
+		builder.setName(this.getFile().getName().replace(".", ""));
+		if (hasFirstRowAsHeader()) {
 			Row headers = rowIterator.next();
-			for(int i = 0; i < getColumnTypes().length; i++) {
+			for (int i = 0; i < getColumnTypes().length; i++) {
 				getColumns().put(headers.getCell(i).getStringCellValue(), getColumnTypes()[i]);
 			}
 		} else {			
@@ -50,31 +51,32 @@ public abstract class ExcelFile extends DataFile {
 			Row row = rowIterator.next();
 			DataValue[] values = new DataValue[getColumns().size()];
 			for (int i = 0; i < getColumns().size(); i++) {
-				DataValue value = null;
-				Cell cell = row.getCell(i, Row.RETURN_NULL_AND_BLANK);
-				switch (cell.getCellType()) {
-					case Cell.CELL_TYPE_STRING: {
-						value = new StringValue(cell.getStringCellValue());
-						break;
-					}
-					case Cell.CELL_TYPE_NUMERIC: {
-						double cellValue = cell.getNumericCellValue();
-						value = ((cellValue % 1) == 0) ? 
-								new FloatValue((float) cellValue) : new IntValue((int) cellValue);
-						break;					
-					}
-					case Cell.CELL_TYPE_BLANK: {
-						value = null;
-						break;
-					}
-					default: throw new UnsupportedOperationException(
-							String.format("Cell type %s not supported", cell.getCellType())
-					);
-				}
-				values[i] = value;
+				Cell cell = row.getCell(i, Row.CREATE_NULL_AS_BLANK);
+				values[i] = toDataValue(cell);
 			}
 			builder.createRow(values);
 		}
 		return builder.build();
+	}
+	
+	private DataValue toDataValue(Cell cell) {
+		DataValue value = null;
+		switch (cell.getCellType()) {
+			case Cell.CELL_TYPE_STRING: 
+				value = new StringValue(cell.getStringCellValue());
+				break;			
+			case Cell.CELL_TYPE_NUMERIC: 
+				double cellValue = cell.getNumericCellValue();
+				value = (cellValue % 1 == 0) 
+						? new IntValue((int) cellValue) : new FloatValue((float) cellValue);
+				break;					
+			case Cell.CELL_TYPE_BLANK: 
+				value = new StringValue("");
+				break;
+			default: throw new UnsupportedOperationException(
+					String.format("Cell type %s not supported", cell.getCellType())
+			);
+		}
+		return value;
 	}
 }

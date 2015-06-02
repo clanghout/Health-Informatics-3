@@ -61,7 +61,7 @@ public abstract class Table implements Iterable {
 
 		Table table = (Table) obj;
 		List<DataColumn> otherColumns = table.getColumns();
-		List<DataColumn> columns = table.getColumns();
+		List<DataColumn> columns = this.getColumns();
 
 
 		if (otherColumns.size() == columns.size()) {

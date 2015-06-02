@@ -123,7 +123,7 @@ public abstract class DataFile {
 	}
 	
 	public Class[] getColumnTypes() {
-		return(this.columnTypes);
+		return this.columnTypes;
 	}
 	
 	public static Class getColumnType(String type) throws ClassNotFoundException {
@@ -135,6 +135,10 @@ public abstract class DataFile {
 			case "string":
 				return StringValue.class;
 			case "date":
+				return DateValue.class;
+			case "time" :
+				return TimeValue.class;
+			case "datetime" :
 				return DateTimeValue.class;
 			default:
 				throw new ClassNotFoundException();
@@ -164,6 +168,34 @@ public abstract class DataFile {
 		this.columnList = columnList;
 	}
 
+	/**
+	 * Tries to parse an integer.
+	 * @param value The String to parse
+	 * @return True if the value can be parsed as integer
+	 */
+	protected boolean tryParseInt(String value) {
+		try {
+			Integer.parseInt(value);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+	
+	/**
+	 * Tries to parse a float.
+	 * @param value The String to parse
+	 * @return True if the value can be parsed as float
+	 */
+	protected boolean tryParseFloat(String value) {
+		try {
+			Float.parseFloat(value);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+	
 	/**
 	 * Returns true if the columns' headers are in the first row.
 	 * @return The firstRowAsHeader
