@@ -57,7 +57,7 @@ public class ParserTest {
 		Table result = parseAndProcess(input);
 		assertTrue(test1.equalsSoft(result));
 
-		Table test2 = model.getByName("test2");
+		Table test2 = model.getByName("test2").get();
 		assertTrue(test1.equalsSoft(test2));
 	}
 

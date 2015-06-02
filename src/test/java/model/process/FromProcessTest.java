@@ -19,7 +19,7 @@ public class FromProcessTest {
 		FromProcess process = new FromProcess();
 	}
 
-	@Test(expected = NoSuchElementException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testInvalidTableIdentifier() throws Exception {
 		FromProcess process = new FromProcess(new Identifier<DataTable>("hello"));
 

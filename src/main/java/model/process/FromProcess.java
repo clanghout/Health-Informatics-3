@@ -28,11 +28,25 @@ public class FromProcess extends DataProcess {
 
 	@Override
 	protected Table doProcess() {
-		Supplier<Stream<DataTable>> tableStream = () ->
+		Supplier<Stream<Optional<DataTable>>> tableStream = () ->
 				Arrays.stream(identifiers)
-				.map(x -> getDataModel().getByName(x.getName()).copy());
-		Optional<DataTable> first = tableStream.get().findFirst();
-		DataTable[] tables = tableStream.get().skip(1).toArray(DataTable[]::new);
+				.map(x -> getDataModel().getByName(x.getName()));
+		Optional<Optional<DataTable>> containsNull = tableStream.get()
+				.filter(x -> !x.isPresent())
+				.findAny();
+
+		if (containsNull.isPresent()) {
+			throw new IllegalArgumentException(
+					String.format("Not all identifiers refer to tables: %s",
+							Arrays.toString(identifiers))
+			);
+		}
+
+		Supplier<Stream<DataTable>> copied = () -> tableStream.get().map(x -> x.get().copy());
+
+		Optional<DataTable> first = copied.get().findFirst();
+		DataTable[] tables = copied.get().skip(1).toArray(DataTable[]::new);
+
 
 		if (tables.length == 0) {
 			return first.get();

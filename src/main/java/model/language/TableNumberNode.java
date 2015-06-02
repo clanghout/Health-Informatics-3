@@ -22,6 +22,6 @@ class TableNumberNode extends NumberNode {
 		return new RowValueDescriber<>(
 				model.getByName(
 						column.getTable()
-				).getColumn(column.getColumn()));
+				).get().getColumn(column.getColumn()));
 	}
 }
