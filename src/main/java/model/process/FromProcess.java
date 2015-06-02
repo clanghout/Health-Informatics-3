@@ -20,6 +20,9 @@ public class FromProcess extends DataProcess {
 	private Identifier<DataTable>[] identifiers;
 
 	public FromProcess(Identifier<DataTable>... identifiers) {
+		if (identifiers.length == 0) {
+			throw new IllegalArgumentException("identifiers is empty");
+		}
 		this.identifiers = identifiers;
 	}
 
@@ -31,11 +34,6 @@ public class FromProcess extends DataProcess {
 		Optional<DataTable> first = tableStream.get().findFirst();
 		DataTable[] tables = tableStream.get().skip(1).toArray(DataTable[]::new);
 
-		if (!first.isPresent()) {
-			throw new IllegalArgumentException(
-					String.format("Identifier %s didn't refer to a table", identifiers[0])
-			);
-		}
 		if (tables.length == 0) {
 			return first.get();
 		} else {
