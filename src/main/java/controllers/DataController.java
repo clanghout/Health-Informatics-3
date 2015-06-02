@@ -62,11 +62,11 @@ public class DataController {
 			// TODO: Handle no file selected with message.
 		} else {
 			fileNameField.setText(file.getAbsolutePath());
+			read();
 		}
 	}
 
-	@FXML
-	protected void handleAnalyseButtonAction(ActionEvent event) {
+	private void read() {
 		try {
 			DataReader reader = new DataReader(file);
 			DataModel model = reader.createDataModel();
