@@ -27,7 +27,7 @@ public class DataReaderTest {
 		DataModel model = reader.createDataModel();
 		
 		assertEquals(3, model.size());
-		DataTable table = model.getByName("xlsfilexls");
+		DataTable table = model.getByName("xlsfilexls").get();
 		Row theRow = table.getRow(1);
 		assertEquals("bat", (theRow.getValue(table.getColumn("thecolumn"))).getValue());
 	}

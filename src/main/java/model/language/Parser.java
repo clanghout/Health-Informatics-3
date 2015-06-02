@@ -50,7 +50,7 @@ public class Parser {
 		}
 
 		List<DataProcess> processes = processInfos.stream()
-				.map(x -> x.resolve(model, macros))
+				.map(x -> x.resolve(macros))
 				.collect(Collectors.toList());
 
 		Collections.reverse(processes);

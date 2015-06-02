@@ -19,6 +19,9 @@
                     <artifactId>cobertura-maven-plugin</artifactId>
                     <version>2.7</version>
                 </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -110,7 +113,6 @@
                 </configuration>
             </plugin>
         </plugins>
-        </pluginManagement>
     </build>
     <dependencies>
         <dependency>

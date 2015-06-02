@@ -1,13 +1,12 @@
 package model.language;
 
-import model.data.DataModel;
 import model.data.describer.DataDescriber;
 import model.process.DataProcess;
 import model.process.FromProcess;
 import model.process.IsProcess;
-import model.process.SetCode;
 import model.process.analysis.ConstraintAnalysis;
 
+import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -33,17 +32,17 @@ class ProcessInfo {
 		return name;
 	}
 
-	DataProcess resolve(DataModel model, Map<Identifier, DataDescriber> macros) {
+	DataProcess resolve(Map<Identifier, DataDescriber> macros) {
 		switch (name.getName()) {
 			case "from":
-				return new FromProcess((Identifier) parameters[0]);
+				Identifier[] identifiers = Arrays.stream(parameters)
+						.map(x -> (Identifier) x)
+						.toArray(Identifier[]::new);
+				return new FromProcess(identifiers);
 			case "is":
 				return new IsProcess((Identifier) parameters[0]);
 			case "constraint":
-				return new ConstraintAnalysis((DataDescriber) macros.get(parameters[0]));
-			case "setCode":
-				Identifier tableName = (Identifier) parameters[1];
-				return new SetCode((String) parameters[0], tableName);
+				return new ConstraintAnalysis(macros.get(parameters[0]));
 			default:
 				throw new UnsupportedOperationException("This code has not been implemented yet");
 		}

@@ -370,17 +370,4 @@ public class CombinedDataTableTest {
 
 	}
 
-	@Test
-	public void testGetTables() throws Exception {
-
-		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
-		List<DataTable> list = comb.getTables();
-
-		assertEquals(list.get(0), dataTables.get(1));
-		assertEquals(list.get(1), dataTables.get(0));
-		assertEquals(list.get(2), dataTables.get(2));
-
-
-	}
-
 }

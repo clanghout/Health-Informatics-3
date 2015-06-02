@@ -139,12 +139,4 @@ public class CombinedDataRow extends Row {
 		return res;
 	}
 
-	@Override
-	public void addCode(String code) {
-		for (DataRow row : rows) {
-			row.addCode(code);
-		}
-	}
-
-
 }

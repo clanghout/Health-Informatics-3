@@ -69,10 +69,6 @@ public abstract class Row {
 	@Override
 	public abstract int hashCode();
 
-	/**
-	 * Add the code code to the row.
-	 * @param code the code that must be added to the row.
-	 */
-	public abstract void addCode(String code);
+
 
 }

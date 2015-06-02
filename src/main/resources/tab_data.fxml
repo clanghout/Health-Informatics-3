@@ -19,6 +19,18 @@
 						onAction="#handleImportButtonAction"
 						text="Import" />
 				<Label layoutX="14.0" layoutY="7.0" text="Import data" />
+				<Button
+					styleClass="analyse-button"
+					layoutX="476.0"
+					layoutY="60.0"
+					onAction="#handleAnalyseButtonAction"
+					text="Read" />
+				<Button
+						styleClass="save-button"
+						layoutX="476.0"
+						layoutY="93.0"
+						onAction="#handleSaveButtonAction"
+						text="Save" />
 			</children>
 		</AnchorPane>
 	</content>

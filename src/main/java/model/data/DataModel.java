@@ -95,13 +95,11 @@ public class DataModel extends Observable implements Iterable<DataTable> {
 	 * @param name The name of the DataTable you want to get.
 	 * @return The DataTable with the given name or null if none was found.
 	 */
-	public DataTable getByName(String name) {
-		Optional<DataTable> result = tables.stream()
+	public Optional<DataTable> getByName(String name) {
+		return tables.stream()
 				.filter(
 						x -> x.getName().equals(name)
 				).findFirst();
-
-		return result.isPresent() ? result.get() : null;
 	}
 
 	/**
