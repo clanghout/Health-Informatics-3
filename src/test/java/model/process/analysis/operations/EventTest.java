@@ -87,7 +87,9 @@ public class EventTest {
 				new ConstraintDescriber(
 						new GreaterThanCheck<>(
 								new RowValueDescriber<>(table2.getColumn("measurement")),
-								new ConstantDescriber<>(new IntValue(10))));
+								new ConstantDescriber<>(new IntValue(10))
+						)
+				);
 		Event event = new Event(table2, greater);
 		DataTable tableResult = (DataTable) event.create();
 		assertEquals(table.getRow(0).getValue(measurecol), tableResult.getRow(0).getValue(measure2col));
