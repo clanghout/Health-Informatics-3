@@ -41,34 +41,20 @@ public class SetCode extends DataProcess {
 		}
 		if (input instanceof CombinedDataTable) {
 			CombinedDataTable comb = (CombinedDataTable) input;
-			comb.getTables().forEach(x -> setCodes(x, codeTable));
+			comb.getTables().forEach(x -> setCode(x, codeTable));
 		} else if (input instanceof DataTable) {
 			DataTable inputTable = (DataTable) input;
-			input = setCodes(inputTable, codeTable);
+			setCode(inputTable, codeTable);
 		}
 
 		return input;
 	}
-
 
 	/**
-	 * Set the codes on the input table.
-	 * @param input table that must get the code
-	 * @return the input table with the set codes
+	 * Set the code on the rows of the input table, where the row exist in the codeTable.
+	 * @param input the table in which the rows must get the code.
+	 * @param codeTable the table that specifies which rows must get the codo.
 	 */
-	private Table setCodes(DataTable input, Table codeTable) {
-		if (codeTable instanceof CombinedDataTable) {
-			CombinedDataTable comb = (CombinedDataTable) codeTable;
-			comb.getTables().stream()
-					.filter(table -> table.equalStructure(input))
-					.forEach(table -> setCode(input, table));
-		} else if (codeTable instanceof DataTable) {
-			DataTable table = (DataTable) codeTable;
-			setCode(input, table);
-		}
-		return input;
-	}
-
 	private void setCode(DataTable input, DataTable codeTable) {
 		for (DataRow row : input.getRows()) {
 			for (DataRow codeRows : codeTable.getRows()) {

@@ -103,7 +103,7 @@ public class SetCodeTest {
 
 		setCodes.process();
 		CombinedDataTable output = (CombinedDataTable) setCodes.getOutput();
-		
+
 		assertFalse(output.getTables().get(1).getRow(0).containsCode("code"));
 		assertTrue(output.getTables().get(1).getRow(1).containsCode("code"));
 		assertTrue(output.getTables().get(1).getRow(2).containsCode("code"));
