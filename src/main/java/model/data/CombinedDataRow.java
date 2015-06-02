@@ -146,11 +146,5 @@ public class CombinedDataRow extends Row {
 		}
 	}
 
-	@Override
-	public void clearCode() {
-		for (DataRow row : rows) {
-			row.getCodes().clear();
-		}
-	}
 
 }

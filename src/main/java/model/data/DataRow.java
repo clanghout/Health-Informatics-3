@@ -210,11 +210,6 @@ public class DataRow extends Row {
 		codes.add(code);
 	}
 
-	@Override
-	public void clearCode() {
-		codes.clear();
-	}
-
 
 	/**
 	 * Add the codes codes to the row.
