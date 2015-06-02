@@ -1,23 +1,22 @@
 package model.input.reader;
 
+import model.data.value.DataValue;
+import model.input.file.DataFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import model.input.file.DataFile;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class for reading an xml file that was saved by the user.
@@ -60,8 +59,23 @@ public class XmlReader {
 	 * The name of the endtag in the xml file.
 	 */
 	private static final String END_TAG = "end";
-
-
+	
+	/**
+	 * The name of the column tag in the xml file.
+	 */
+	private static final String COLUMN_TAG = "column";
+	
+	/**
+	 * The name of the columns tag in the xml file.
+	 */
+	private static final String COLUMNS_TAG = "columns";
+	
+	/**
+	 * The name of the firstrowheader tag in the xml file.
+	 */
+	private static final String FIRST_ROW_HEADER_ATTRIBUTE = "firstrowheader";
+	
+	private Logger log = Logger.getLogger("XmlReader");
 
 	private Document document;
 	private NodeList filesList;
@@ -106,7 +120,7 @@ public class XmlReader {
 		DocumentBuilder builder = dbf.newDocumentBuilder();
 		document = builder.parse(stream);
 		document.normalize();
-		Element root = (Element) document.getDocumentElement();
+		Element root = document.getDocumentElement();
 		filesList = root.getElementsByTagName(FILE_TAG);
 		
 		for (int i = 0; i < filesList.getLength(); i++) {
@@ -124,21 +138,79 @@ public class XmlReader {
 	 * @param parentDir The parent of the file
 	 */
 	public DataFile createDataFile(Element elem, String parentDir) {
-		String fileName  = elem.getAttribute(NAME_ATTRIBUTE);
-		String type      = elem.getElementsByTagName(TYPE_TAG).item(0).getTextContent();
+		String type = elem.getElementsByTagName(TYPE_TAG).item(0).getTextContent();
+		String completePath = createPath(elem, parentDir);
+		DataFile theDataFile = DataFile.createDataFile(completePath, type);
+
+		Element columnsElement = (Element) elem.getElementsByTagName(COLUMNS_TAG).item(0);
+		Element data = (Element) elem.getElementsByTagName(DATA_TAG).item(0);
+		theDataFile = setStartEndLine(data, theDataFile);
+		String firstRowHeader = columnsElement.getAttribute(FIRST_ROW_HEADER_ATTRIBUTE);
+		if (firstRowHeader != null && firstRowHeader.equals("true")) {
+			theDataFile.setFirstRowAsHeader(true);
+		}
 		
-		String completePath;
+		NodeList columns = columnsElement.getElementsByTagName(COLUMN_TAG);
+		setColumnTypes(theDataFile, columns);
+		
+		return theDataFile;
+	}
+
+	private DataFile setColumnTypes(DataFile theDataFile, NodeList columns) {
+		if (theDataFile.hasFirstRowAsHeader()) {
+			theDataFile.setColumnTypes(createTypesArray(columns));
+		} else {
+			theDataFile = setColumnTypeMapping(columns, theDataFile);
+		}
+		return theDataFile;
+	}
+	
+	private String createPath(Element elem, String parentDir) {
+		String fileName  = elem.getAttribute(NAME_ATTRIBUTE);
 		Element pathElement = (Element) elem.getElementsByTagName(PATH_TAG).item(0);
+		String completePath;
 		if (pathElement != null) {
 			String path  = elem.getElementsByTagName(PATH_TAG).item(0).getTextContent();
-			completePath = parentDir + File.separator + path + File.separator + fileName;			
+			completePath = parentDir + File.separator + path + File.separator + fileName;
 		} else {
 			completePath = fileName;
 		}
-		DataFile theDataFile = DataFile.createDataFile(completePath, type);
+		return completePath;
+	}
 
-		Element data = (Element) elem.getElementsByTagName(DATA_TAG).item(0);
-		return setStartEndLine(data, theDataFile);
+	private DataFile setColumnTypeMapping(NodeList columns, DataFile dataFile) {
+		try {
+			Map<String, Class<? extends DataValue>> mapping = new LinkedHashMap<>();
+			List<Class<? extends DataValue>> columnTypes = new ArrayList<>();
+			for (int i = 0; i < columns.getLength(); i++) {
+				Element columnElement = (Element) columns.item(i);
+				String typeAttribute = columnElement.getAttribute("type");
+				Class columnType = DataFile.getColumnType(typeAttribute);
+				mapping.put(columnElement.getTextContent(),
+						columnType);
+				columnTypes.add(columnType);
+			}
+			dataFile.setColumns(mapping, columnTypes);		
+			return dataFile;
+		} catch (ClassNotFoundException e) {
+			log.log(Level.SEVERE, "Specified Class was not found", e);
+		}
+		return null;
+	}
+		
+	
+	private Class[] createTypesArray(NodeList columns) {
+		Class[] types = new Class[columns.getLength()];
+		try {
+			for (int i = 0; i < columns.getLength(); i++) {
+				Element columnElement = (Element) columns.item(i);
+				String typeAttribute = columnElement.getAttribute("type");
+				types[i] = DataFile.getColumnType(typeAttribute);
+			}
+		} catch (ClassNotFoundException e) {
+			log.log(Level.SEVERE, "Specified Class was not found", e);
+		}
+		return types;
 	}
 	
 	/**

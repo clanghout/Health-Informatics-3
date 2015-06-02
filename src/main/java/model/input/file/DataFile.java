@@ -1,10 +1,18 @@
 package model.input.file;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
+import model.data.DataTable;
+import model.data.value.*;
 import model.exceptions.DataFileNotRecognizedException;
 /**
- * Class for a datafile.
+ * Class for a datafile. This class contains all the specification of a datafile such as the 
+ * path to the file, the starting and ending line of the data in the file and the names of the
+ * columns.
  *
  * @author Paul
  */
@@ -13,6 +21,10 @@ public abstract class DataFile {
 	private String path;
 	private int startLine;
 	private int endLine;
+	private Map<String, Class<? extends DataValue>> columns;
+	private List<Class<? extends DataValue>> columnList;
+	private boolean firstRowAsHeader;
+	private Class[] columnTypes;
 	
 	/**
 	 * Creates a new type of a DataFile. Sets the default range of lines to read
@@ -23,6 +35,8 @@ public abstract class DataFile {
 		this.path = path;
 		this.setStartLine(1);
 		this.setEndLine(Integer.MAX_VALUE);
+		this.setFirstRowAsHeader(false);
+		this.setColumns(new LinkedHashMap<>(), new ArrayList<>());
 	}
 
 	/**
@@ -31,7 +45,7 @@ public abstract class DataFile {
 	 * @return A stream containing the data contents of the file
 	 * @throws IOException When the file is not found or if the file is corrupt
 	 */
-	public abstract InputStream getDataStream() throws IOException;
+	public abstract DataTable createDataTable() throws IOException;
 	
 	/**
 	 * Gets a new File object directing to the dataFile on the system.
@@ -102,6 +116,100 @@ public abstract class DataFile {
 	 */
 	public void setEndLine(int endLine) {
 		this.endLine = endLine;
+	}
+
+	public void setColumnTypes(Class[] types) {
+		this.columnTypes = types;
+	}
+	
+	public Class[] getColumnTypes() {
+		return this.columnTypes;
+	}
+	
+	public static Class getColumnType(String type) throws ClassNotFoundException {
+		switch (type) {
+			case "int":
+				return IntValue.class;
+			case "float":
+				return FloatValue.class;
+			case "string":
+				return StringValue.class;
+			case "date":
+				return DateValue.class;
+			case "time" :
+				return TimeValue.class;
+			case "datetime" :
+				return DateTimeValue.class;
+			default:
+				throw new ClassNotFoundException();
+		}
+	}
+	
+	/**
+	 * Returns the array with the names of the columns.
+	 * @return The array with the names of the columns
+	 */
+	public Map<String, Class<? extends DataValue>> getColumns() {
+		return columns;
+	}
+
+	public List<Class<? extends DataValue>> getColumnList() {
+		return columnList;
+	}
+
+	/**
+	 * Sets the names of the columns.
+	 * @param columns The columns to set
+	 */
+	public void setColumns(
+			Map<String, Class<? extends DataValue>> columns,
+			List<Class<? extends DataValue>> columnList) {
+		this.columns = new LinkedHashMap<>(columns);
+		this.columnList = columnList;
+	}
+
+	/**
+	 * Tries to parse an integer.
+	 * @param value The String to parse
+	 * @return True if the value can be parsed as integer
+	 */
+	protected boolean tryParseInt(String value) {
+		try {
+			Integer.parseInt(value);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+	
+	/**
+	 * Tries to parse a float.
+	 * @param value The String to parse
+	 * @return True if the value can be parsed as float
+	 */
+	protected boolean tryParseFloat(String value) {
+		try {
+			Float.parseFloat(value);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+	
+	/**
+	 * Returns true if the columns' headers are in the first row.
+	 * @return The firstRowAsHeader
+	 */
+	public boolean hasFirstRowAsHeader() {
+		return firstRowAsHeader;
+	}
+
+	/**
+	 * Sets if the first row is the header.
+	 * @param firstRowAsHeader The firstRowAsHeader to set
+	 */
+	public void setFirstRowAsHeader(boolean firstRowAsHeader) {
+		this.firstRowAsHeader = firstRowAsHeader;
 	}
 
 	/**

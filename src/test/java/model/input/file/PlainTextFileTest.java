@@ -6,7 +6,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.*;
 
+import model.data.DataColumn;
+import model.data.DataRow;
+import model.data.DataTable;
+import model.data.value.DataValue;
+import model.data.value.FloatValue;
+import model.data.value.IntValue;
+import model.data.value.StringValue;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,73 +31,37 @@ public class PlainTextFileTest {
 	public void setUp() {
 		String file = getClass().getResource("/model/input/plaintext.txt").getFile();
 		textFile = new PlainTextFile(file);
-	}
-	
-	@Test
-	public void testDataStreamLines() throws IOException {
-		
-		textFile.setStartLine(4);
-		textFile.setEndLine(5);
-		InputStream stream = textFile.getDataStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		assertEquals("foo", reader.readLine());
-		assertEquals("bar", reader.readLine());
-		reader.close();
-	}
-	
-	@Test
-	public void testDataStreamInvertedStartEnd() throws IOException {
-		textFile.setStartLine(6);
-		textFile.setEndLine(3);
-		InputStream stream = textFile.getDataStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		assertTrue(reader.readLine() == null);
-		reader.close();
+		textFile.setDelimiter(" ");
+		LinkedHashMap<String, Class<? extends DataValue>> mapping = new LinkedHashMap<>();
+		mapping.put("test", StringValue.class);
+		mapping.put("int", IntValue.class);
+		mapping.put("float", FloatValue.class);
+		mapping.put("string", StringValue.class);
+		List<Class<? extends DataValue>> list = new ArrayList<>();
+		list.add(StringValue.class);
+		list.add(IntValue.class);
+		list.add(FloatValue.class);
+		list.add(StringValue.class);
+		textFile.setColumns(mapping, list);
 	}
 
 	@Test
-	public void testInvalidLineNumber() throws IOException {
-		textFile.setStartLine(0);
-		textFile.setEndLine(100);
-		InputStream stream = textFile.getDataStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		assertTrue(reader.readLine() == null);
-		reader.close();
-	}
-	
-	@Test
-	public void testNullEndLine() throws IOException {
-		textFile.setStartLine(6);
-		InputStream stream = textFile.getDataStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		assertEquals("line 6",  reader.readLine());
-		assertEquals("",  reader.readLine());
-		assertEquals("footer",  reader.readLine());
-		assertNull(reader.readLine());
-		reader.close();
-	}
+	public void test() throws Exception {
+		DataTable table = textFile.createDataTable();
+		List<DataColumn> columns = table.getColumns();
 
-	@Test
-	public void testNoDataRange() throws IOException {
-		InputStream stream = textFile.getDataStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		
-		assertEquals("This is plain text line one",  reader.readLine());
-		assertEquals("",  reader.readLine());
-		assertEquals("line 3",  reader.readLine());
-		assertEquals("foo",  reader.readLine());
-		assertEquals("bar",  reader.readLine());
-		assertEquals("line 6",  reader.readLine());
-		assertEquals("",  reader.readLine());
-		assertEquals("footer",  reader.readLine());
-		assertNull(reader.readLine());
-		reader.close();
+		assertEquals(StringValue.class, columns.get(0).getType());
+		assertEquals(IntValue.class, columns.get(1).getType());
+		assertEquals(FloatValue.class, columns.get(2).getType());
+		assertEquals(StringValue.class, columns.get(3).getType());
+
+		DataRow row = table.getRow(0);
+
+		assertEquals(new StringValue("test"), row.getValue(table.getColumn("test")));
+		assertEquals(new IntValue(5), row.getValue(table.getColumn("int")));
+		assertEquals(new FloatValue(3.5f), row.getValue(table.getColumn("float")));
+		assertEquals(new StringValue("dingen"), row.getValue(table.getColumn("string")));
 	}
 	
-	@Test(expected = IOException.class)
-	public void testEmptyFile() throws IOException {
-		String emptyFile = getClass().getResource("/model/input/ADMIRE.txt").getFile();
-		PlainTextFile failFile = new PlainTextFile(emptyFile);
-		failFile.getDataStream();
-	}
+
 }

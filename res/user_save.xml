@@ -1,10 +1,18 @@
 <?xml version="1.0"?>
 <input>
 	<file name="res/ADMIRE2.txt">
+        <type>plaintext</type>
         <data>
             <start>7</start>
             <end>57</end>
         </data>
-        <type>plaintext</type>
+        <columns firstrowheader="false">
+            <column type="string">quantity</column>
+            <column type="int">measurement</column>
+            <column type="string">unit</column>
+            <column type="string">ignore</column>
+            <column type="string">date</column>
+            <column type="string">time</column>
+        </columns>
     </file>
 </input>
