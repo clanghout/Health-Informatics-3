@@ -164,7 +164,7 @@ public class CombinedDataTable extends Table {
 	 */
 	public LinkedList<DataTable> getTables() {
 		LinkedList<DataTable> res = new LinkedList<>();
-		if(combined != null) {
+		if (combined != null) {
 			res = combined.getTables();
 		}
 		res.addFirst(table);

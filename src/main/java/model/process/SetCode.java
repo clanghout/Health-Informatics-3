@@ -1,7 +1,7 @@
 package model.process;
 
-import model.data.*;
 import model.data.CombinedDataTable;
+import model.data.DataRow;
 import model.data.DataTable;
 import model.data.Table;
 import model.language.Identifier;
