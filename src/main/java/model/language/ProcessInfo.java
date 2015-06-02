@@ -6,6 +6,7 @@ import model.process.FromProcess;
 import model.process.IsProcess;
 import model.process.analysis.ConstraintAnalysis;
 
+import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -34,11 +35,14 @@ class ProcessInfo {
 	DataProcess resolve(Map<Identifier, DataDescriber> macros) {
 		switch (name.getName()) {
 			case "from":
-				return new FromProcess((Identifier) parameters[0]);
+				Identifier[] identifiers = Arrays.stream(parameters)
+						.map(x -> (Identifier) x)
+						.toArray(Identifier[]::new);
+				return new FromProcess(identifiers);
 			case "is":
 				return new IsProcess((Identifier) parameters[0]);
 			case "constraint":
-				return new ConstraintAnalysis((DataDescriber) macros.get(parameters[0]));
+				return new ConstraintAnalysis(macros.get(parameters[0]));
 			default:
 				throw new UnsupportedOperationException("This code has not been implemented yet");
 		}

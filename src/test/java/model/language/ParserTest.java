@@ -6,7 +6,10 @@ import model.data.value.IntValue;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Iterator;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -132,5 +135,65 @@ public class ParserTest {
 
 		assertEquals(new IntValue(11), row.getValue(test1.getColumn("value")));
 		assertEquals(new IntValue(10), row2.getValue(test1.getColumn("value")));
+	}
+
+	@Test
+	public void testParseFromMultiple() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+
+		builder.setName("test2");
+		builder.createColumn("value", IntValue.class);
+
+		builder.createRow(new IntValue(21));
+		builder.createRow(new IntValue(25));
+
+		DataTable test2 = builder.build();
+		model.add(test2);
+
+		String input = "from(test1, test2)";
+
+		Table result = parseAndProcess(input);
+
+		assertTrue(result instanceof CombinedDataTable);
+
+		CombinedDataTable table = (CombinedDataTable) result;
+		DataColumn test1Column = test1.getColumn("value");
+		DataColumn test2Column = test2.getColumn("value");
+
+		Iterator<? extends Row> rows = table.iterator();
+
+		Row row = rows.next();
+		assertEquals(new IntValue(11), row.getValue(test1Column));
+		assertEquals(new IntValue(21), row.getValue(test2Column));
+
+		row = rows.next();
+		assertEquals(new IntValue(11), row.getValue(test1Column));
+		assertEquals(new IntValue(25), row.getValue(test2Column));
+
+		row = rows.next();
+		assertEquals(new IntValue(10), row.getValue(test1Column));
+		assertEquals(new IntValue(21), row.getValue(test2Column));
+
+		row = rows.next();
+		assertEquals(new IntValue(10), row.getValue(test1Column));
+		assertEquals(new IntValue(25), row.getValue(test2Column));
+
+		row = rows.next();
+		assertEquals(new IntValue(9), row.getValue(test1Column));
+		assertEquals(new IntValue(21), row.getValue(test2Column));
+
+		row = rows.next();
+		assertEquals(new IntValue(9), row.getValue(test1Column));
+		assertEquals(new IntValue(25), row.getValue(test2Column));
+
+		row = rows.next();
+		assertEquals(new IntValue(5), row.getValue(test1Column));
+		assertEquals(new IntValue(21), row.getValue(test2Column));
+
+		row = rows.next();
+		assertEquals(new IntValue(5), row.getValue(test1Column));
+		assertEquals(new IntValue(25), row.getValue(test2Column));
+
+		assertFalse(rows.hasNext());
 	}
 }
