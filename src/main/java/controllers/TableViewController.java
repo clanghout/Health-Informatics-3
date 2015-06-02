@@ -2,6 +2,7 @@ package controllers;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,7 +18,6 @@ import model.data.DataModel;
 import model.data.DataRow;
 import model.data.DataTable;
 import model.data.Row;
-import model.data.value.StringValue;
 
 import java.util.Iterator;
 import java.util.List;
@@ -39,8 +39,8 @@ public class TableViewController implements Observer {
 	@FXML
 	private ListView<DataTable> inputTables;
 	
-	private DataTable currentTable;
 	private DataModel model;
+	private DataTable currentTable;
 
 	
 	/**
@@ -50,16 +50,35 @@ public class TableViewController implements Observer {
 	}
 	
 	/**
+	 * Initializes the table by assigning a changelistener for the listview
+	 * with the tables. If the selection changes, the table will update.
+	 */
+	public void initialize() {
+		logger.info("initializing listview changelistener");
+		ChangeListener<DataTable> listener = new ChangeListener<DataTable>() {
+			public void changed(ObservableValue<? extends DataTable> ov, 
+								DataTable oldValue, DataTable newValue) {
+				if (!(newValue == null)) {
+					logger.info("changing content of tableView with content of " 
+								+ newValue.getName());
+					currentTable = newValue;
+					fillTable(newValue);
+				}
+			}
+		};
+		this.inputTables.getSelectionModel().selectedItemProperty().addListener(listener);
+	}
+	
+	/**
 	 * Loads the data from the model and updates the view for the user.
 	 */
-	private void fillTable() {
-		currentTable = model.get(0);
-		logger.info("update table: " + currentTable);
+	private void fillTable(DataTable table) {
+		logger.info("update table: " + table);
 		tableView.getItems().clear();
 		tableView.getColumns().clear();
 		
-		List<DataColumn> columns = currentTable.getColumns();
-		Iterator<DataRow> rowIterator = currentTable.iterator();
+		List<DataColumn> columns = table.getColumns();
+		Iterator<DataRow> rowIterator = table.iterator();
 		
 		tableView.setPlaceholder(new Label("Loading..."));
 		fillTableHeaders(columns);
@@ -68,8 +87,7 @@ public class TableViewController implements Observer {
 			Row currentRow = rowIterator.next();
 			ObservableList<StringProperty> row = FXCollections.observableArrayList();
 			for (int i = 0; i < columns.size(); i++) {
-				StringValue value = (StringValue) currentRow.getValue(columns.get(i));
-				String val = value.getValue();
+				String val = currentRow.getValue(columns.get(i)).toString();
 				row.add(new SimpleStringProperty(val));
 			}
 			tableView.getItems().add(row);
@@ -114,12 +132,15 @@ public class TableViewController implements Observer {
 	}
 	
 	/**
-	 * Sets the model that will be observed.
+	 * Sets the model that will be observed and initializes the first view of the model.
 	 * @param model The model
 	 */
 	public void setDataModel(DataModel model) {
 		this.model = model;
+		currentTable = model.get(0);
 		model.addObserver(this);
+		updateList();
+		fillTable(currentTable);
 	}
 	
 	/**
@@ -132,11 +153,11 @@ public class TableViewController implements Observer {
 	public void update(Observable o, Object arg) {
 		if (o instanceof DataModel) {
 			updateList();
-			fillTable();
+			fillTable(currentTable);
 		}
 	}
-
 	private void updateList() {
+
 		inputTables.setItems(model.getObservableList());
 	}
 }

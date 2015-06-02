@@ -55,7 +55,7 @@ public class VisualizationController implements Observer {
 	}
 
 	/**
-	 * Init method after a model is read
+	 * Init method after a model is read.
 	 */
 	public void initializeVisualisation() {
 		visualization.setDisable(false);

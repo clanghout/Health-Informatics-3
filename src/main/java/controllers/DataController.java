@@ -1,7 +1,6 @@
 package controllers;
 
-import model.input.file.DataFile;
-import model.input.reader.XmlReader;
+import model.input.reader.DataReader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -9,15 +8,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import model.data.DataModel;
 import model.data.DataTable;
-import model.data.describer.ConstantDescriber;
-import model.data.describer.ConstraintDescriber;
-import model.data.describer.RowValueDescriber;
-import model.process.analysis.ConstraintAnalysis;
-import model.process.analysis.DataAnalysis;
-import model.process.analysis.operations.constraints.Constraint;
-import model.process.analysis.operations.constraints.EqualityCheck;
-import model.data.value.StringValue;
-import model.reader.DataReader;
 import model.output.DataTableWriter;
 
 import java.io.File;
@@ -26,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The controller for the Data tab
+ * The controller for the Data tab.
  * <p />
  * Created by Boudewijn on 6-5-2015.
  */
@@ -44,7 +34,6 @@ public class DataController {
 
 	private File file;
 	private DataTable out;
-	private DataTable input;
 	
 	/**
 	 * Creates a new TableViewController.
@@ -79,23 +68,12 @@ public class DataController {
 	@FXML
 	protected void handleAnalyseButtonAction(ActionEvent event) {
 		try {
-			XmlReader reader = new XmlReader();
-			reader.read(file);
-			DataFile dataFile = reader.getDataFiles().get(0);
-			DataReader dataReader = new DataReader();
-			input = dataReader.readData(dataFile.getDataStream());
-			DataModel model = new DataModel();
+			DataReader reader = new DataReader(file);
+			DataModel model = reader.createDataModel();
 			mainUIController.setModel(model);
-			model.add(input);
 			
-			Constraint constraint = new EqualityCheck<>(
-					new RowValueDescriber<>(input.getColumn("time")),
-					new ConstantDescriber<>(new StringValue("0803"))
-			);
-			DataAnalysis analysis = new ConstraintAnalysis(new ConstraintDescriber(constraint));
-			out = (DataTable) analysis.analyse(input);
 		} catch (Exception e) {
-			logger.log(Level.WARNING, "Error reading XML file", e);
+			logger.log(Level.WARNING, "Error reading the file", e);
 		}
 	}
 

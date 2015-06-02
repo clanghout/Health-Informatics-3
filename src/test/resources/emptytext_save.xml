@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<input>
+    <file name="emptyfile.txt">
+		<path>model/input</path>
+        <data>
+            <start>0</start>
+            <end>10</end>
+        </data>
+        <type>plaintext</type>
+        <columns firstrowheader="false">
+            <column type="string">column</column>
+        </columns>
+    </file>
+</input>

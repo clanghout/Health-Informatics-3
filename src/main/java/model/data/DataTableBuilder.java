@@ -24,6 +24,17 @@ public class DataTableBuilder {
 	}
 
 	/**
+	 * return a list of the rows that will get build by the builder.
+	 * @return a list of rows.
+	 */
+	public List<DataRow> getRows() {
+		return rows;
+	}
+
+	protected List<DataColumn> getColumns() {
+		return columns;
+	}
+	/**
 	 * Set the name of the table.
 	 * @param name name of the table
 	 */

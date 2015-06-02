@@ -4,22 +4,23 @@
 <?import javafx.scene.layout.AnchorPane?>
 <Tab fx:controller="controllers.TableViewController" text="View" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 <content>
-	<AnchorPane>
-		 <children>
-			<Button layoutX="562.0" layoutY="263.0" text="Save" />
-				<ListView styleClass="model-list" fx:id="inputTables" layoutX="14.0" layoutY="18.0" />
-				<SplitPane styleClass="data-container" dividerPositions="0.5" layoutX="147.0" layoutY="18.0">
-					<items>
-						<AnchorPane styleClass="table-container">
-							<children>
-								<TableView styleClass="data-table" 
-								fx:id="tableView"/>
-							</children>
-						</AnchorPane>
-						<AnchorPane styleClass="data-fields-container" fx:id="datafields" />
-					</items>
-				</SplitPane>
-		 </children>
-	</AnchorPane>
+    <AnchorPane>
+         <children>
+            <Button text="Save" />
+                <AnchorPane>
+                    <ListView styleClass="model-list" fx:id="inputTables" AnchorPane.bottomAnchor="50.0"/>
+                </AnchorPane>
+                <SplitPane styleClass="data-container" dividerPositions="0.8" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0">
+                    <items>
+                        <AnchorPane styleClass="table-container">
+                            <children>
+                                <TableView styleClass="data-table" fx:id="tableView" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane styleClass="data-fields-container" fx:id="datafields" />
+                    </items>
+                </SplitPane>
+         </children>
+    </AnchorPane>
 </content>
 </Tab>
