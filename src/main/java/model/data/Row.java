@@ -74,5 +74,5 @@ public abstract class Row {
 	 * @param code the code that must be added to the row.
 	 */
 	public abstract void addCode(String code);
-	
+
 }

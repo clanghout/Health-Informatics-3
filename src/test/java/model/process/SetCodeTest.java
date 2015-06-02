@@ -103,16 +103,14 @@ public class SetCodeTest {
 
 		setCodes.process();
 		CombinedDataTable output = (CombinedDataTable) setCodes.getOutput();
-
-
-		//TODO fix the get table, is swapped
-		assertFalse(output.getTables().get(0).getRow(0).containsCode("code"));
-		assertTrue(output.getTables().get(0).getRow(1).containsCode("code"));
-		assertTrue(output.getTables().get(0).getRow(2).containsCode("code"));
-		assertFalse(output.getTables().get(0).getRow(3).containsCode("code"));
-
+		
 		assertFalse(output.getTables().get(1).getRow(0).containsCode("code"));
-		assertFalse(output.getTables().get(1).getRow(1).containsCode("code"));
+		assertTrue(output.getTables().get(1).getRow(1).containsCode("code"));
+		assertTrue(output.getTables().get(1).getRow(2).containsCode("code"));
+		assertFalse(output.getTables().get(1).getRow(3).containsCode("code"));
+
+		assertFalse(output.getTables().get(0).getRow(0).containsCode("code"));
+		assertFalse(output.getTables().get(0).getRow(1).containsCode("code"));
 	}
 
 }
