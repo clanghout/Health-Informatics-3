@@ -2,10 +2,8 @@ package model.process.analysis.operations;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
 
 import model.data.DataColumn;
-import model.data.DataRow;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.describer.ConstantDescriber;
@@ -91,7 +89,7 @@ public class EventTest {
 								new RowValueDescriber<>(table2.getColumn("measurement")),
 								new ConstantDescriber<>(new IntValue(10))));
 		Event event = new Event(table2, greater);
-		DataTable tableResult = event.create();
+		DataTable tableResult = (DataTable) event.create();
 		assertEquals(table.getRow(0).getValue(measurecol), tableResult.getRow(0).getValue(measure2col));
 		assertEquals(table.getRowCount(), tableResult.getRowCount());
 	}
