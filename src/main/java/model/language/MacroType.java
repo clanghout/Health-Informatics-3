@@ -22,9 +22,9 @@ class MacroType {
 	DataDescriber parse(String body, DataModel model) {
 		LanguageParser parser = Parboiled.createParser(LanguageParser.class);
 		if (type.equals("Constraint")) {
-			BasicParseRunner runner = new BasicParseRunner(parser.BooleanOperation());
+			BasicParseRunner runner = new BasicParseRunner(parser.Comparison());
 			ParsingResult result = runner.run(body);
-			BooleanNode node = (BooleanNode) result.valueStack.pop();
+			CompareNode node = (CompareNode) result.valueStack.pop();
 			return node.resolve(model);
 		} else {
 			throw new UnsupportedOperationException("Code has not yet been implemented");
