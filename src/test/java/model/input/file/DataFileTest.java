@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.*;
 
+import model.data.DataTable;
 import org.junit.Test;
 
 import model.exceptions.DataFileNotRecognizedException;
@@ -16,20 +17,17 @@ import model.exceptions.DataFileNotRecognizedException;
 public class DataFileTest {
 
 	@Test
-	public void testCreateDataFile() throws IOException {
+	public void testCreateDataFile() throws Exception {
 		String file = getClass().getResource("/model/input/statsensor.txt").getFile();
 
-		DataFile df = DataFile.createDataFile(file, "plaintext");
-		assertTrue(df instanceof PlainTextFile);
+		DataFile dataFile = DataFile.createDataFile(file, "plaintext");
+		assertTrue(dataFile instanceof PlainTextFile);
 		
-		df.setStartLine(7);
-		df.setEndLine(8);
-		InputStream st;
-		st = df.getDataStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(st));
-		assertEquals("Crea,	179,umol/L,00,130218,0802", reader.readLine());
-		assertEquals("Crea,	179,umol/L,00,130218,0803", reader.readLine());
-		reader.close();
+		dataFile.setStartLine(7);
+		dataFile.setEndLine(8);
+
+		DataTable dataTable = dataFile.createDataTable();
+
 	}
 	
 	@Test(expected = DataFileNotRecognizedException.class)

@@ -2,10 +2,25 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
-<Tab text="Visualization" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-	<content>
-		<Pane />
-	</content>
+<Tab fx:controller="controllers.VisualizationController" text="Visualization" xmlns="http://javafx.com/javafx/8"
+     xmlns:fx="http://javafx.com/fxml/1">
+    <content>
+        <AnchorPane>
+            <children>
+                <VBox styleClass="visualization-default-dropdown" layoutX="14.0" layoutY="14.0">
+                    <children>
+                        <ComboBox fx:id="table" promptText="Table to use"/>
+                        <ComboBox fx:id="visualization" promptText="Visualization"/>
+                    </children>
+                </VBox>
+                <VBox styleClass="visualization-input-dropdown" layoutX="14.0" layoutY="86.0">
+
+                </VBox>
+                <VBox styleClass="visualization-graph">
+
+                </VBox>
+            </children>
+        </AnchorPane>
+    </content>
 </Tab>

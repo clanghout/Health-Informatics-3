@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<input>
+    <file name="ADMIRE2.txt">
+        <data>
+            <start>7</start>
+            <end>57</end>
+        </data>
+        <columns firstrowheader="false">
+            <column type="string">quantity</column>
+            <column type="int">measurement</column>
+            <column type="string">unit</column>
+            <column type="string">ignore</column>
+            <column type="string">date</column>
+            <column type="string">time</column>
+        </columns>
+        <type>plaintext</type>
+        <path>./</path>
+    </file>
+    <file name="statsensor.txt">
+        <columns firstrowheader="false">
+            <column type="string">quantity</column>
+            <column type="int">measurement</column>
+            <column type="string">unit</column>
+            <column type="string">ignore</column>
+            <column type="string">date</column>
+            <column type="string">time</column>
+        </columns>
+        <data>
+           <start>7</start>
+           <end>8</end>
+        </data>
+        <type>plaintext</type>
+        <path>model/input</path>
+    </file>
+    <file name="xlsfile.xls">
+        <columns firstrowheader="false">
+            <column type="string">1</column>
+            <column type="string">2</column>
+            <column type="string">3</column>
+            <column type="string">thecolumn</column>
+        </columns>
+        <type>xls</type>
+        <path>model/input</path>
+    </file>
+</input>

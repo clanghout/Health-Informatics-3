@@ -1,10 +1,14 @@
 package model.input.file;
 
-import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
+
+import model.data.DataTable;
+import model.data.DataTableBuilder;
+import model.data.value.DataValue;
+import model.data.value.FloatValue;
+import model.data.value.IntValue;
+import model.data.value.StringValue;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -28,25 +32,51 @@ public abstract class ExcelFile extends DataFile {
 	 * @return the new stream of rows
 	 * @throws FileNotFoundException when the file is not found
 	 */
-	public InputStream createStream(Iterator<Row> rowIterator) throws FileNotFoundException {
+	protected DataTable createTable(Iterator<Row> rowIterator) throws FileNotFoundException {
 
-		StringBuilder builder = new StringBuilder();
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName(this.getFile().getName().replace(".", ""));
+		if (hasFirstRowAsHeader()) {
+			Row headers = rowIterator.next();
+			for (int i = 0; i < getColumnTypes().length; i++) {
+				getColumns().put(headers.getCell(i).getStringCellValue(), getColumnTypes()[i]);
+			}
+		} else {			
+			for (String key : getColumns().keySet()) {
+				builder.createColumn(key, getColumns().get(key));
+			}
+		}
 		
 		while (rowIterator.hasNext()) {
 			Row row = rowIterator.next();
-			Iterator<Cell> cellIterator = row.iterator();
-			
-			while (cellIterator.hasNext()) {
-				Cell cell = cellIterator.next();
-				builder.append(cell.getStringCellValue() + "\t");
+			DataValue[] values = new DataValue[getColumns().size()];
+			for (int i = 0; i < getColumns().size(); i++) {
+				Cell cell = row.getCell(i, Row.CREATE_NULL_AS_BLANK);
+				values[i] = toDataValue(cell);
 			}
-			
-			builder.append("\n");
+			builder.createRow(values);
 		}
-		InputStream newStream = new ByteArrayInputStream(
-		        	builder.toString().getBytes(StandardCharsets.UTF_8)
-		);
-		return newStream;
+		return builder.build();
 	}
-
+	
+	private DataValue toDataValue(Cell cell) {
+		DataValue value = null;
+		switch (cell.getCellType()) {
+			case Cell.CELL_TYPE_STRING: 
+				value = new StringValue(cell.getStringCellValue());
+				break;			
+			case Cell.CELL_TYPE_NUMERIC: 
+				double cellValue = cell.getNumericCellValue();
+				value = (cellValue % 1 == 0) 
+						? new IntValue((int) cellValue) : new FloatValue((float) cellValue);
+				break;					
+			case Cell.CELL_TYPE_BLANK: 
+				value = new StringValue("");
+				break;
+			default: throw new UnsupportedOperationException(
+					String.format("Cell type %s not supported", cell.getCellType())
+			);
+		}
+		return value;
+	}
 }
