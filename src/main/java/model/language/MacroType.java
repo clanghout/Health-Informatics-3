@@ -22,7 +22,7 @@ class MacroType {
 	DataDescriber parse(String body, DataModel model) {
 		LanguageParser parser = Parboiled.createParser(LanguageParser.class);
 		if (type.equals("Constraint")) {
-			BasicParseRunner runner = new BasicParseRunner(parser.Comparison());
+			BasicParseRunner runner = new BasicParseRunner(parser.BooleanExpression());
 			ParsingResult result = runner.run(body);
 			CompareNode node = (CompareNode) result.valueStack.pop();
 			return node.resolve(model);
