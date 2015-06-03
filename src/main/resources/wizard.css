@@ -1,0 +1,38 @@
+.main-box {
+	-fx-pref-width: 640px;
+	-fx-spacing: 10px;
+}
+
+.spaced-box {
+    -fx-spacing: 10px;
+    -fx-padding: 0px 0px 10px 10px;
+}
+
+.path-box {
+    -fx-padding: 0px 10px 0px 10px;
+    -fx-spacing: 5px;
+}
+
+.vertical-separator {
+    -fx-padding: 10px 10px 10px 10px;
+}
+
+.import-box {
+    -fx-padding: 0px 10px 0px 10px;
+    -fx-spacing: 5px;
+}
+
+.splitpane {
+    -fx-orientation: horizontal;
+    -fx-box-border: transparent;
+}
+
+.splitpane:horizontal > .split-pane-divider {
+    -fx-pref-width: 1px;
+    -fx-border-color: #CCCCCC;
+    -fx-background-color: transparent;
+}
+
+.colheader-checkbox {
+    -fx-padding: 0px 0px 10px 10px;
+}

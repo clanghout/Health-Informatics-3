@@ -9,15 +9,47 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:controller="controllers.MainUIController" styleClass="main-box" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-<children>
-    <AnchorPane>
+<VBox styleClass="main-box" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainUIController">
         <children>
-            <label>Data Files:</label>
-            <TableView/>
+            <Label>Data Files:</Label>
+            <TableView />
+            <HBox styleClass="path-box">
+                <children>
+                    <Label>Path</Label>
+                    <TextField HBox.hgrow="SOMETIMES" />
+                    <Button text="Browse" />
+                </children>
+            </HBox>
+            <HBox styleClass="import-box">
+                <children>
+                    <Label>Import as: </Label>
+                    <ComboBox />
+                    <Button text="Import"/>
+                </children>
+            </HBox>
+            <SplitPane styleClass="splitpane">
+                <items>
+                    <VBox styleClass="spaced-box">
+                       <children>
+                            <Label>Column specification:</Label>
+                            <TableView />
+                            <Button text="Add column" />
+                       </children>
+                    </VBox>
+                    <HBox styleClass="spaced-box">
+                        <children>
+                            <Label> RESERVED FOR SPECIFYING FILESPECIFIC THINGS </Label>
+                        </children>
+                    </HBox>
+                </items>
+            </SplitPane>
+            <CheckBox text="First row as table header" styleClass="colheader-checkbox"/>
+            <HBox styleClass="spaced-box">
+                <children>
+                    <Button text="Create xml file" />
+                </children>
+            </HBox>
         </children>
-    </AnchorPane>
-</children>
 
 <stylesheets>
     <URL value="@wizard.css" />
