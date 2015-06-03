@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
 <?import java.net.*?>
-<?import java.util.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.text.*?>
 
 <VBox styleClass="main-box" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainUIController">
         <children>
-            <Label>Data Files:</Label>
-            <TableView />
+            <VBox styleClass="datafiles-box">
+                <Label>Data Files:</Label>
+                <TableView styleClass="datafiles"/>
+            </VBox>
             <HBox styleClass="path-box">
                 <children>
                     <Label>Path</Label>
@@ -32,8 +29,9 @@
                     <VBox styleClass="spaced-box">
                        <children>
                             <Label>Column specification:</Label>
-                            <TableView />
-                            <Button text="Add column" />
+                           <TableView />
+                           <Button text="Add column" />
+                           <CheckBox text="First row as table header"/>
                        </children>
                     </VBox>
                     <HBox styleClass="spaced-box">
@@ -43,7 +41,6 @@
                     </HBox>
                 </items>
             </SplitPane>
-            <CheckBox text="First row as table header" styleClass="colheader-checkbox"/>
             <HBox styleClass="spaced-box">
                 <children>
                     <Button text="Create xml file" />

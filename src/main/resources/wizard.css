@@ -3,6 +3,10 @@
 	-fx-spacing: 10px;
 }
 
+.datafiles-box {
+    -fx-padding: 10px 10px 10px 10px;
+}
+
 .spaced-box {
     -fx-spacing: 10px;
     -fx-padding: 0px 0px 10px 10px;
@@ -27,7 +31,7 @@
     -fx-box-border: transparent;
 }
 
-.splitpane:horizontal > .split-pane-divider {
+.splitpane > .split-pane-divider {
     -fx-pref-width: 1px;
     -fx-border-color: #CCCCCC;
     -fx-background-color: transparent;
