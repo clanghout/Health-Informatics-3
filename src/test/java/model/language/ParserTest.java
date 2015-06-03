@@ -1,6 +1,7 @@
 package model.language;
 
 import model.data.*;
+import model.data.value.BoolValue;
 import model.data.value.IntValue;
 import model.process.DataProcess;
 import org.junit.Before;
@@ -209,5 +210,32 @@ public class ParserTest {
 		DataRow row = table.getRow(0);
 
 		assertEquals(new IntValue(11), row.getValue(table.getColumn("value")));
+	}
+
+	@Test
+	public void testBooleanTableValue() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("test2");
+
+		builder.createColumn("value", BoolValue.class);
+
+		builder.createRow(new BoolValue(true));
+		builder.createRow(new BoolValue(false));
+
+		model.add(builder.build());
+
+		String input = "def isTrue() : Constraint = test2.value;" +
+				"from(test2)|constraint(isTrue)|is(result)";
+
+		Table result = parseAndProcess(input);
+
+		assertTrue(result instanceof DataTable);
+		DataTable table = (DataTable) result;
+
+		assertEquals(1, table.getRowCount());
+
+		DataRow row = table.getRow(0);
+
+		assertEquals(new BoolValue(true), row.getValue(table.getColumn("value")));
 	}
 }
