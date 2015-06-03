@@ -16,13 +16,12 @@ import java.util.Map;
 /**
  * Created by jens on 6/3/15.
  */
-public class GroupByAnalysis extends DataAnalysis {
-	private Map<String, ConstraintAnalysis> constraints;
+public abstract class GroupByAnalysis extends DataAnalysis {
+	protected Map<String, ConstraintAnalysis> constraints;
 	private DataTableBuilder builder;
 	private List<Function> functionsList;
 
-	public GroupByAnalysis(String name, List<ConstraintAnalysis> constrainList, List<String> groupNames,
-						   List<Function> functions, List<String> columnNames) {
+	protected void constructConstraintList(List<String> groupNames, List<ConstraintAnalysis> constrainList) {
 		if (constrainList.size() != groupNames.size()) {
 			throw new IllegalArgumentException("number of groups does not correspond "
 					+ "to the number of group names.");
@@ -32,8 +31,6 @@ public class GroupByAnalysis extends DataAnalysis {
 		for(int i = 0; i < constrainList.size(); i++) {
 			constraints.put(groupNames.get(i), constrainList.get(i));
 		}
-
-		constructBuilder(name, functions, columnNames);
 	}
 
 	protected void constructBuilder(String name, List<Function> functions, List<String> columnsNames){
@@ -50,14 +47,18 @@ public class GroupByAnalysis extends DataAnalysis {
 			try {
 				builder.createColumn(columnsNames.get(i), (Class<? extends DataValue>) functions.get(i).getClass().getMethod("calculate").getReturnType());
 			} catch (NoSuchMethodException e) {
-				throw new RuntimeException("function calculate does not exist.")
+				throw new RuntimeException("function calculate does not exist.");
 			}
 		}
 
 	}
 
-	@Override
-	public DataTable analyse(Table input) {
+	/**
+	 * perform the groupby //TODO more comments
+	 * @param input
+	 * @return
+	 */
+	public DataTable groupBy(Table input) {
 		if (input instanceof CombinedDataTable) {
 			throw new IllegalArgumentException("group by work only on datatable");
 		}
@@ -75,11 +76,8 @@ public class GroupByAnalysis extends DataAnalysis {
 			}
 
 			builder.createRow(values);
-
-			return builder.build();
-
 		}
-
+		return builder.build();
 
 	}
 }
