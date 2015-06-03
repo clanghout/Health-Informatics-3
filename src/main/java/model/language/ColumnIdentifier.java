@@ -5,21 +5,21 @@ package model.language;
  *
  * Created by Boudewijn on 21-5-2015.
  */
-class ColumnIdentifier {
+public class ColumnIdentifier {
 
 	private String table;
 	private String column;
 
-	ColumnIdentifier(Identifier table, Identifier column) {
+	public ColumnIdentifier(Identifier table, Identifier column) {
 		this.table = table.getName();
 		this.column = column.getName();
 	}
 
-	String getTable() {
+	public String getTable() {
 		return table;
 	}
 
-	String getColumn() {
+	public String getColumn() {
 		return column;
 	}
 }
