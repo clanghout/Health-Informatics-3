@@ -96,9 +96,12 @@ public class LagSequentialAnalysis {
 		if (x.hasNext()) {
 			x.next();
 		} else {
-			do {
+			// voeg overige rows toe
+			tableC.addRow((DataRow) y);
+			while (y.hasNext()) {
+				y.next();
 				tableC.addRow((DataRow) y);
-			} while (y.hasNext());
+			}
 		}
 	}
 
