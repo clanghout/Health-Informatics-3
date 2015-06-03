@@ -1,5 +1,6 @@
 package model.process.analysis.operations.comparisons;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -56,6 +57,8 @@ public class LagSequentialAnalysis {
 		
 		a = tableA.iterator();
 		b = tableB.iterator();
+		
+		order = new ArrayList<String>();
 
 		if (a.hasNext() || b.hasNext()) {
 			compareA = dateA.resolve(a.next());
