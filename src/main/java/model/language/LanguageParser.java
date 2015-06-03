@@ -59,7 +59,8 @@ class LanguageParser extends BaseParser<Object> {
 				Computation(),
 				FloatLiteral(),
 				IntLiteral(),
-				NumberColumn()
+				NumberColumn(),
+				Sequence("(", NumberExpression(), ")")
 		);
 	}
 
@@ -260,7 +261,8 @@ class LanguageParser extends BaseParser<Object> {
 				NotOperation(),
 				BooleanOperation(),
 				Comparison(),
-				BooleanLiteral()
+				BooleanLiteral(),
+				Sequence("(", BooleanExpression(), ")")
 		);
 	}
 
