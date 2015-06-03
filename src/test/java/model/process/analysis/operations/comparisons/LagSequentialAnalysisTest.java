@@ -27,8 +27,8 @@ public class LagSequentialAnalysisTest {
 
 	private Event event;
 	private Event event2;
-	private DataColumn dateCol;
-	private DataColumn DateCol2;
+	private DataDescriber<DateTimeValue> dateCol;
+	private DataDescriber<DateTimeValue> dateCol2;
 
 	/**
 	 * simulate two events.
@@ -37,9 +37,10 @@ public class LagSequentialAnalysisTest {
 	 */
 	@Before
 	public void setUp() {
+		
 		DataTableBuilder builder = new DataTableBuilder();
 		builder.setName("test");
-		builder.createColumn("date", DateTimeValue.class);
+		DataColumn dat = builder.createColumn("date", DateTimeValue.class);
 		builder.createColumn("string", StringValue.class);
 		builder.createColumn("measurement", IntValue.class);
 
@@ -47,12 +48,24 @@ public class LagSequentialAnalysisTest {
 		StringValue string = new StringValue("One");
 		IntValue inty = new IntValue(12);
 		builder.createRow(date, string, inty);
-
+		
+		dateCol = new RowValueDescriber<DateTimeValue>(dat);
+		
 		DataTable table = builder.build();
 
+		DataDescriber<BoolValue> greater = 
+				new ConstraintDescriber(
+						new GreaterThanCheck<>(
+								new RowValueDescriber<>(table.getColumn("measurement")),
+								new ConstantDescriber<>(new IntValue(0))
+						)
+				);
+		event = new Event(table, greater);
+		
+		
 		DataTableBuilder builder2 = new DataTableBuilder();
 		builder2.setName("test2");
-		builder2.createColumn("date", DateTimeValue.class);
+		dat = builder2.createColumn("date", DateTimeValue.class);
 		builder2.createColumn("string", StringValue.class);
 		builder2.createColumn("measurement", IntValue.class);
 		
@@ -70,17 +83,10 @@ public class LagSequentialAnalysisTest {
 		string = new StringValue("Three");
 		inty = new IntValue(10);
 		builder2.createRow(date, string, inty);
-
-		DataTable table2 = builder2.build();
 		
-		DataDescriber<BoolValue> greater = 
-				new ConstraintDescriber(
-						new GreaterThanCheck<>(
-								new RowValueDescriber<>(table.getColumn("measurement")),
-								new ConstantDescriber<>(new IntValue(0))
-						)
-				);
-		event = new Event(table, greater);
+		dateCol2 = new RowValueDescriber<DateTimeValue>(dat);
+		
+		DataTable table2 = builder2.build();
 		
 		DataDescriber<BoolValue> greater2 = 
 				new ConstraintDescriber(
@@ -94,12 +100,12 @@ public class LagSequentialAnalysisTest {
 	}
 
 	/**
-	 * Initialize an event (all measurements above 10).
+	 * Call LSA on the created events.
 	 * 
 	 * @throws Exception
 	 */
 	@Test
 	public void testEvent() throws Exception {
-		
+		LagSequentialAnalysis lsa = new LagSequentialAnalysis(event, dateCol, event2, dateCol2);
 	}
 }
