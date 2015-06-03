@@ -24,8 +24,8 @@ public class LagSequentialAnalysis {
 	private Table tableB;
 	private Table result;
 
-	Iterator<? extends Row> a = tableA.iterator();
-	Iterator<? extends Row> b = tableB.iterator();
+	Iterator<? extends Row> a;
+	Iterator<? extends Row> b;
 
 	private DateTimeValue compareA;
 	private DateTimeValue compareB;
@@ -53,6 +53,9 @@ public class LagSequentialAnalysis {
 		this.tableA = eventA.create();
 		this.tableB = eventB.create();
 		this.tableC = new DataTableBuilder();
+		
+		a = tableA.iterator();
+		b = tableB.iterator();
 
 		if (a.hasNext() || b.hasNext()) {
 			compareA = dateA.resolve(a.next());
