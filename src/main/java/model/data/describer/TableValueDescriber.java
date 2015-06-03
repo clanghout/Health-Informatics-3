@@ -21,11 +21,21 @@ public final class TableValueDescriber<T extends DataValue> extends DataDescribe
 	private DataModel model;
 	private ColumnIdentifier column;
 
+	/**
+	 * Construct a new TableValueDescriber.
+	 * @param model The model to get the table from.
+	 * @param column The column and table you want to get.
+	 */
 	public TableValueDescriber(DataModel model, ColumnIdentifier column) {
 		this.model = model;
 		this.column = column;
 	}
 
+	/**
+	 * Resolve the value as describes in the model and ColumnIdentifier.
+	 * @param row The row the value should be resolved from.
+	 * @return The value as described.
+	 */
 	@Override
 	public T resolve(Row row) {
 		Optional<DataTable> tableOptional = model.getByName(column.getTable());
