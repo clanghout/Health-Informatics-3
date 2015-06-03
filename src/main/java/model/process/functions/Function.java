@@ -26,6 +26,14 @@ public abstract class Function {
 	}
 
 	/**
+	 * set the table on which the function must perform
+	 * @param table table on which the funtion must perform
+	 */
+	public void setTable(DataTable table) {
+		this.table = table;
+	}
+
+	/**
 	 * This abstract function will execute various arithmetic calculations.
 	 * 
 	 * @return DataValue
