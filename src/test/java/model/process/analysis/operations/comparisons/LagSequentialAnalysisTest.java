@@ -31,7 +31,7 @@ public class LagSequentialAnalysisTest {
 	private DataColumn DateCol2;
 
 	/**
-	 * simulate datamodel with single maximum for each column type.
+	 * simulate two events.
 	 * 
 	 * @throws Exception
 	 */

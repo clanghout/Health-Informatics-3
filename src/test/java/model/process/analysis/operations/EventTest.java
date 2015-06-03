@@ -32,7 +32,7 @@ public class EventTest {
 	private DataColumn measure2col;
 
 	/**
-	 * simulate datamodel with single maximum for each column type.
+	 * simulate two dataTables.
 	 * 
 	 * @throws Exception
 	 */
