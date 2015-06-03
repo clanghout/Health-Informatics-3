@@ -43,6 +43,8 @@ public abstract class GroupByAnalysis extends DataAnalysis {
 
 		this.functionsList = functions;
 
+		builder.createColumn("Chunk", StringValue.class);
+
 		for(int i = 0; i < functions.size(); i++) {
 			try {
 				builder.createColumn(columnsNames.get(i), (Class<? extends DataValue>) functions.get(i).getClass().getMethod("calculate").getReturnType());
@@ -58,7 +60,7 @@ public abstract class GroupByAnalysis extends DataAnalysis {
 	 * @param input
 	 * @return
 	 */
-	public DataTable groupBy(Table input) {
+	protected DataTable groupBy(Table input) {
 		if (input instanceof CombinedDataTable) {
 			throw new IllegalArgumentException("group by work only on datatable");
 		}
