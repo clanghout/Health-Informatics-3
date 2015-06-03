@@ -1,16 +1,14 @@
 package model.language;
 
 import model.data.*;
-import model.process.DataProcess;
 import model.data.value.IntValue;
+import model.process.DataProcess;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Iterator;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * The tests for the Parser.
@@ -74,8 +72,7 @@ public class ParserTest {
 
 		assertEquals(1, table.getRowCount());
 		DataRow row = table.getRow(0);
-		// TODO: make table.getColumn("value") work here as well.
-		assertEquals(new IntValue(10), row.getValue(test1.getColumn("value")));
+		assertEquals(new IntValue(10), row.getValue(table.getColumn("value")));
 	}
 
 	private Table parseAndProcess(String input) {
@@ -195,5 +192,22 @@ public class ParserTest {
 		assertEquals(new IntValue(25), row.getValue(test2Column));
 
 		assertFalse(rows.hasNext());
+	}
+
+	@Test
+	public void testReferFutureTable() throws Exception {
+		String input = "def gtTen() : Constraint = (test2.value > 10);" +
+				"from(test1)|is(test2)|from(test2)|constraint(gtTen)|is(result)";
+
+		Table result = parseAndProcess(input);
+
+		assertTrue(result instanceof DataTable);
+		DataTable table = (DataTable) result;
+
+		assertEquals(1, table.getRowCount());
+
+		DataRow row = table.getRow(0);
+
+		assertEquals(new IntValue(11), row.getValue(table.getColumn("value")));
 	}
 }

@@ -3,22 +3,23 @@ package model.language;
 import model.data.DataModel;
 import model.data.describer.DataDescriber;
 import model.data.describer.TableValueDescriber;
-import model.data.value.NumberValue;
+import model.data.value.BoolValue;
 
 /**
- * Created by Boudewijn on 27-5-2015.
+ * Created by Boudewijn on 3-6-2015.
  */
-class TableNumberNode extends NumberNode {
+class TableBooleanNode extends BooleanNode {
 
 	private final ColumnIdentifier column;
 
-	TableNumberNode(ColumnIdentifier column) {
+	TableBooleanNode(ColumnIdentifier column) {
 		super(null, null);
 
 		this.column = column;
 	}
 
-	DataDescriber<NumberValue> resolve(DataModel model) {
+	@Override
+	DataDescriber<BoolValue> resolve(DataModel model) {
 		return new TableValueDescriber<>(model, column);
 	}
 }
