@@ -1,0 +1,32 @@
+.hbox-button {
+	-fx-spacing: 5px;
+	-fx-padding: 0px 0px 0px 15px;
+}
+
+.hbox {
+
+	-fx-spacing: 5px;
+}
+
+.standardVBox {
+	-fx-spacing: 5px;
+}
+
+.label {
+	-fx-pref-width: 70px;
+}
+
+.popup-box {
+	-fx-padding: 14px;
+	-fx-spacing: 5px;
+	-fx-pref-height: 240px;
+	-fx-pref-width: 240px;
+}
+
+.drop-down-menu {
+	-fx-pref-width: 130px;
+}
+
+.visualization-input-dropdown {
+	-fx-spacing: 5px;
+}

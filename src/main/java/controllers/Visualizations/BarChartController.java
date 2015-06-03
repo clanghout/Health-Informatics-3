@@ -94,7 +94,7 @@ public class BarChartController extends VisualizationController {
 	 */
 	public BarChart create() {
 
-		BarChart res = new BarChart(xAxis, yAxis);
+		BarChart res = new BarChart<>(xAxis, yAxis);
 
 		XYChart.Series<String, Number> series1 = new XYChart.Series<>();
 		series1.setName(yCol.getName());

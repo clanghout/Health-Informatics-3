@@ -1,37 +1,40 @@
 package controllers;
 
-import controllers.visualizations.BarChartController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 import model.data.DataColumn;
 import model.data.DataModel;
 import model.data.DataTable;
+import org.apache.commons.lang.ObjectUtils;
+import view.GraphCreationDialog;
 
-import java.util.Observable;
-import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Control visualisation.
  * Created by Chris on 26-5-2015.
  */
-public class VisualizationController implements Observer {
-	@FXML
-	private ComboBox<String> visualization;
-	@FXML
-	private ComboBox<DataTable> table;
+public class VisualizationController {
 	@FXML
 	private VBox visualizationGraph;
 	@FXML
-	private VBox visualizationInput;
+	private Button makeGraphButton;
+	@FXML
+	private Button clearViewButton;
+	@FXML
+	private Button saveButton;
+	@FXML private PopupVisualizationController popupVisualizationController;
 
 	private DataModel model;
-	private DataTable dataTable;
-	private BarChartController bcc;
+
+	private Logger logger = Logger.getLogger("VisualizationController");
 
 	/**
 	 * Constructor for Visualization controller.
@@ -40,54 +43,31 @@ public class VisualizationController implements Observer {
 	}
 
 	/**
-	 * Sets the model that will be observed.
-	 *
-	 * @param model The model
-	 */
-	public void setDataModel(DataModel model) {
-		this.model = model;
-		model.addObserver(this);
-
-	}
-
-	/**
 	 * Initialization module for the visualisation controller.
 	 * This method is automatically called by javaFX on initialization.
 	 * The dropDown menu's are disabled while no DataModel is loaded.
 	 */
 	public void initialize() {
-		visualization.setDisable(true);
-		table.setDisable(true);
-		visualization.setMaxWidth(Double.MAX_VALUE);
-		table.setMaxWidth(Double.MAX_VALUE);
+		makeGraphButton.setDisable(true);
+		clearViewButton.setDisable(true);
+		saveButton.setDisable(true);
 	}
 
 	/**
 	 * Init method after a model is read.
 	 */
 	public void initializeVisualisation() {
-		visualization.setDisable(false);
-		table.setDisable(false);
+		makeGraphButton.setDisable(false);
+		clearViewButton.setDisable(false);
+	}
 
-		visualization.setItems(FXCollections.observableArrayList(
-				"BarChart", "BoxPlot"));
-
-		updateTableChoose();
-		table.valueProperty().addListener((observable, oldValue, newValue) -> {
-			this.dataTable = newValue;
-			visualization.setDisable(false);
-		});
-		visualization.valueProperty().addListener((observable, oldValue, newValue) -> {
-			visualizationInput.getChildren().clear();
-			switch (newValue) {
-				case "BarChart":
-					bcc = new BarChartController(dataTable, visualizationInput);
-					bcc.initialize();
-					break;
-				default:
-					break;
-			}
-		});
+	/**
+	 * Sets the model that will be observed.
+	 *
+	 * @param model The model
+	 */
+	public void setModel(DataModel model) {
+		this.model = model;
 	}
 
 	/**
@@ -113,35 +93,26 @@ public class VisualizationController implements Observer {
 			}
 		});
 	}
+	@FXML
+	protected void handlePopupButtonAction(ActionEvent event) {
+		visualizationGraph.getChildren().clear();
+		try {
+			new GraphCreationDialog();
+			popupVisualizationController.initializeView(model);
+		} catch (NullPointerException e) {
+			System.out.println("no controller");
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, "FXML file cannot be loaded");
+		}
+	}
 
-	/**
-	 * set items of table to all the tables in the model.
-	 */
-	private void updateTableChoose() {
-		table.setItems(model.getObservableList());
+	@FXML
+	protected void handleSaveButtonAction(ActionEvent event) {
 
 	}
 
 	@FXML
-	protected void handleGraphCreateButtonAction(ActionEvent event) {
+	protected void handleClearButtonAction(ActionEvent event) {
 		visualizationGraph.getChildren().clear();
-		if(bcc.axesSet()) {
-			visualizationGraph.getChildren().add(bcc.create());
-		}
-	}
-
-	/**
-	 * Update the instances in the table selection comboBox.
-	 * Whenever the observer notifies, the update method is called.
-	 *
-	 * @param o   Observable dataModel where the tables in it can change on update.
-	 * @param arg an argument passed to the <code>notifyObservers</code>
-	 *            method.
-	 */
-	@Override
-	public void update(Observable o, Object arg) {
-		if (o instanceof DataModel) {
-			updateTableChoose();
-		}
 	}
 }

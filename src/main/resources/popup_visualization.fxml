@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:controller="controllers.PopupVisualizationController" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <AnchorPane>
+            <children>
+                <VBox styleClass="popup-box">
+                    <children>
+                        <VBox styleClass="standardVBox" AnchorPane.topAnchor="14.0">
+                            <children>
+                                <HBox styleClass="hbox">
+                                    <children>
+                                        <Label styleClass="label">Data table:</Label>
+                                        <ComboBox fx:id="tableComboBox" promptText="Table to use"
+                                                  styleClass="drop-down-menu"/>
+                                    </children>
+                                </HBox>
+                                <HBox styleClass="hbox">
+                                    <children>
+                                        <Label styleClass="label">Visualisation:</Label>
+                                        <ComboBox fx:id="visualizationComboBox" promptText="Visualization"
+                                                  styleClass="drop-down-menu"/>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                        <VBox fx:id="visualizationInputVBox" styleClass="visualization-input-dropdown">
+                        </VBox>
+                    </children>
+                </VBox>
+                <HBox styleClass="hbox-button" AnchorPane.bottomAnchor="14.0">
+                    <children>
+                        <Button onAction="#handleGraphCreateButtonAction" text="Make graph"/>
+                        <Button onAction="#handleCancelButtonAction" text="Cancel"/>
+                    </children>
+                </HBox>
+            </children>
+        </AnchorPane>
+    </children>
+    <stylesheets>
+        <URL value="@popup.css"/>
+    </stylesheets>
+</VBox>
