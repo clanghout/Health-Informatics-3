@@ -1,6 +1,7 @@
 package model.data.value;
 
 /**
+ * Data value for null.
  * Created by Chris on 3-6-2015.
  */
 public class NullValue extends DataValue {
