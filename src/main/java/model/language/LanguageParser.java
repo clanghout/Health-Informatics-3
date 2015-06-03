@@ -241,7 +241,7 @@ class LanguageParser extends BaseParser<Object> {
 		return Sequence(
 				FirstOf(
 						BooleanLiteral(),
-						NotOperation(),
+						UnaryBooleanOperation(),
 						Sequence("(", BooleanExpression(), ")"),
 						NumberExpression()),
 				WhiteSpace(),
@@ -249,7 +249,7 @@ class LanguageParser extends BaseParser<Object> {
 				WhiteSpace(),
 				FirstOf(
 						BooleanLiteral(),
-						NotOperation(),
+						UnaryBooleanOperation(),
 						Sequence("(", BooleanExpression(), ")"),
 						NumberExpression()),
 				swap3(),
@@ -266,9 +266,9 @@ class LanguageParser extends BaseParser<Object> {
 
 	Rule BooleanExpression() {
 		return FirstOf(
-				UnaryBooleanOperation(),
 				BooleanOperation(),
 				Comparison(),
+				UnaryBooleanOperation(),
 				BooleanLiteral(),
 				Sequence("(", BooleanExpression(), ")"),
 				BooleanColumn()
@@ -329,7 +329,7 @@ class LanguageParser extends BaseParser<Object> {
 				FirstOf(
 						BooleanLiteral(),
 						Comparison(),
-						NotOperation(),
+						UnaryBooleanOperation(),
 						Sequence("(", BooleanExpression(), ")")),
 				WhiteSpace(),
 				BooleanOperator(),
@@ -337,7 +337,7 @@ class LanguageParser extends BaseParser<Object> {
 				FirstOf(
 						BooleanLiteral(),
 						Comparison(),
-						NotOperation(),
+						UnaryBooleanOperation(),
 						Sequence("(", BooleanExpression(), ")")),
 				swap3(),
 				push(new BooleanOperationNode(

@@ -238,4 +238,26 @@ public class ParserTest {
 
 		assertEquals(new BoolValue(true), row.getValue(table.getColumn("value")));
 	}
+
+	@Test
+	public void testCodeCheck() throws Exception {
+		test1.getRow(0).addCode("test");
+		test1.getRow(3).addCode("appel");
+
+		String input = "def codeCheck() : Constraint = HAS_CODE(\"test\") OR HAS_CODE(\"appel\");" +
+				"from(test1)|constraint(codeCheck)|is(result)";
+
+		Table result = parseAndProcess(input);
+
+		assertTrue(result instanceof DataTable);
+		DataTable table = (DataTable) result;
+
+		assertEquals(2, table.getRowCount());
+
+		DataRow row1 = table.getRow(0);
+		DataRow row3 = table.getRow(1);
+
+		assertTrue(row1.getCodes().contains("test"));
+		assertTrue(row3.getCodes().contains("appel"));
+	}
 }
