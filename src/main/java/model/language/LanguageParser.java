@@ -256,13 +256,21 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
+	Rule BooleanColumn() {
+		return Sequence(
+				ColumnIdentifier(),
+				push(new TableBooleanNode((ColumnIdentifier) pop()))
+		);
+	}
+
 	Rule BooleanExpression() {
 		return FirstOf(
 				NotOperation(),
 				BooleanOperation(),
 				Comparison(),
 				BooleanLiteral(),
-				Sequence("(", BooleanExpression(), ")")
+				Sequence("(", BooleanExpression(), ")"),
+				BooleanColumn()
 		);
 	}
 

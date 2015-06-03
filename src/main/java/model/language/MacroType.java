@@ -24,7 +24,7 @@ class MacroType {
 		if (type.equals("Constraint")) {
 			BasicParseRunner runner = new BasicParseRunner(parser.BooleanExpression());
 			ParsingResult result = runner.run(body);
-			CompareNode node = (CompareNode) result.valueStack.pop();
+			BooleanNode node = (BooleanNode) result.valueStack.pop();
 			return node.resolve(model);
 		} else {
 			throw new UnsupportedOperationException("Code has not yet been implemented");
