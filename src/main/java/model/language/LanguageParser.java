@@ -103,7 +103,8 @@ class LanguageParser extends BaseParser<Object> {
 				"\"",
 				ZeroOrMore(Character()),
 				push(matchOrDefault("")),
-				"\""
+				"\"",
+				push(new StringConstantNode((String) pop()))
 		);
 	}
 
@@ -265,7 +266,7 @@ class LanguageParser extends BaseParser<Object> {
 
 	Rule BooleanExpression() {
 		return FirstOf(
-				NotOperation(),
+				UnaryBooleanOperation(),
 				BooleanOperation(),
 				Comparison(),
 				BooleanLiteral(),
@@ -278,6 +279,36 @@ class LanguageParser extends BaseParser<Object> {
 		return Sequence(
 				FirstOf("true", "false"),
 				push(new BoolConstantNode(Boolean.parseBoolean(match())))
+		);
+	}
+
+	Rule UnaryBooleanOperation() {
+		return FirstOf(
+				NotOperation(),
+				CodeCheck()
+		);
+	}
+
+	Rule CodeCheck() {
+		return Sequence(
+				"HAS_CODE(",
+				StringExpression(),
+				")",
+				push(new CodeCheckNode((StringNode) pop()))
+		);
+	}
+
+	Rule StringColumn() {
+		return Sequence(
+				ColumnIdentifier(),
+				push(new TableStringNode((ColumnIdentifier) pop()))
+		);
+	}
+
+	Rule StringExpression() {
+		return FirstOf(
+					StringLiteral(),
+					StringColumn()
 		);
 	}
 
