@@ -101,11 +101,12 @@ public class VisualizationController {
 	protected void handlePopupButtonAction() {
 		visualizationGraph.getChildren().clear();
 		try {
-			GraphCreationDialog gcd = new GraphCreationDialog();
-			gcd.show();
+			GraphCreationDialog graphCreationDialog = new GraphCreationDialog();
+			graphCreationDialog.show();
 
-			PopupVisualizationController pvc = gcd.getFxml().getController();
-			pvc.initializeView(model, this, gcd);
+			PopupVisualizationController popupController =
+					graphCreationDialog.getFxml().getController();
+			popupController.initializeView(model, this, graphCreationDialog);
 
 		} catch (NullPointerException e) {
 			logger.log(Level.SEVERE, "No controller present");

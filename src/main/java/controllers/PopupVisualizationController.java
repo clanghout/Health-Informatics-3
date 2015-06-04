@@ -27,7 +27,7 @@ public class PopupVisualizationController {
 	private DataTable table;
 	private BarChartController bcc;
 	private VisualizationController vc;
-	private GraphCreationDialog gcd;
+	private GraphCreationDialog dialog;
 
 	public PopupVisualizationController() {
 
@@ -53,10 +53,10 @@ public class PopupVisualizationController {
 	 */
 	public void initializeView(
 			DataModel model,
-			VisualizationController vc,
-			GraphCreationDialog gcd) {
-		this.vc = vc;
-		this.gcd = gcd;
+			VisualizationController visualisationController,
+			GraphCreationDialog dialog) {
+		this.vc = visualisationController;
+		this.dialog = dialog;
 
 		tableComboBox.setDisable(false);
 		tableComboBox.setItems(model.getObservableList());
@@ -85,11 +85,11 @@ public class PopupVisualizationController {
 	@FXML
 	protected void handleGraphCreateButtonAction(ActionEvent event) {
 		vc.drawGraph(bcc.create());
-		gcd.close();
+		dialog.close();
 	}
 
 	@FXML
 	protected void handleCancelButtonAction(ActionEvent event) {
-		gcd.close();
+		dialog.close();
 	}
 }
