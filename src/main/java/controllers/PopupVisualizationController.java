@@ -2,7 +2,6 @@ package controllers;
 
 import controllers.visualizations.BarChartController;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.VBox;
