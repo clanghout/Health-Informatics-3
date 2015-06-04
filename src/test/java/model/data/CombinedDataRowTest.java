@@ -337,4 +337,13 @@ public class CombinedDataRowTest {
 
 	}
 
+	@Test
+	public void testAddCode() throws Exception {
+		CombinedDataRow comb = new CombinedDataRow();
+		comb.addDataRow(row1);
+		comb.addDataRow(row2);
+		comb.addCode("test");
+		assertTrue(comb.containsCode("test"));
+	}
+
 }

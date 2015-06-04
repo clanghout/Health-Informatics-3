@@ -8,9 +8,7 @@ import org.parboiled.support.ParsingResult;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Contains the more complicated tests for LanguageParser.
@@ -47,7 +45,11 @@ public class LanguageParserTest {
 
 		assertEquals("test2", info.getIdentifier().getName());
 		assertArrayEquals(
-				new Object[]{"aap", new Identifier<>("sjon"), new NumberConstantNode(2.0f) },
+				new Object[]{
+						new StringConstantNode("aap"),
+						new Identifier<>("sjon"),
+						new NumberConstantNode(2.0f)
+				},
 				info.getParameters()
 		);
 
@@ -122,5 +124,27 @@ public class LanguageParserTest {
 		assertTrue(result.matched);
 		NumberNode node = (NumberNode) result.valueStack.pop();
 		assertEquals(12.0f, node.resolve(null).resolve(null).getValue());
+	}
+
+	@Test
+	public void testParenthesizedBooleanExpression() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.BooleanExpression());
+		String input = "((true))";
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+		BooleanNode node = (BooleanNode) result.valueStack.pop();
+		assertTrue(node.resolve(null).resolve(null).getValue());
+	}
+
+	@Test
+	public void testParenthesizedNumberExpression() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.NumberExpression());
+		String input = "((5.0))";
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+		NumberNode node = (NumberNode) result.valueStack.pop();
+		assertEquals(5.0f, node.resolve(null).resolve(null).getValue());
 	}
 }

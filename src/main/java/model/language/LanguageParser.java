@@ -59,7 +59,8 @@ class LanguageParser extends BaseParser<Object> {
 				Computation(),
 				FloatLiteral(),
 				IntLiteral(),
-				NumberColumn()
+				NumberColumn(),
+				Sequence("(", NumberExpression(), ")")
 		);
 	}
 
@@ -102,7 +103,8 @@ class LanguageParser extends BaseParser<Object> {
 				"\"",
 				ZeroOrMore(Character()),
 				push(matchOrDefault("")),
-				"\""
+				"\"",
+				push(new StringConstantNode((String) pop()))
 		);
 	}
 
@@ -239,7 +241,7 @@ class LanguageParser extends BaseParser<Object> {
 		return Sequence(
 				FirstOf(
 						BooleanLiteral(),
-						NotOperation(),
+						UnaryBooleanOperation(),
 						Sequence("(", BooleanExpression(), ")"),
 						NumberExpression()),
 				WhiteSpace(),
@@ -247,7 +249,7 @@ class LanguageParser extends BaseParser<Object> {
 				WhiteSpace(),
 				FirstOf(
 						BooleanLiteral(),
-						NotOperation(),
+						UnaryBooleanOperation(),
 						Sequence("(", BooleanExpression(), ")"),
 						NumberExpression()),
 				swap3(),
@@ -255,12 +257,21 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
+	Rule BooleanColumn() {
+		return Sequence(
+				ColumnIdentifier(),
+				push(new TableBooleanNode((ColumnIdentifier) pop()))
+		);
+	}
+
 	Rule BooleanExpression() {
 		return FirstOf(
-				NotOperation(),
 				BooleanOperation(),
 				Comparison(),
-				BooleanLiteral()
+				UnaryBooleanOperation(),
+				BooleanLiteral(),
+				Sequence("(", BooleanExpression(), ")"),
+				BooleanColumn()
 		);
 	}
 
@@ -268,6 +279,36 @@ class LanguageParser extends BaseParser<Object> {
 		return Sequence(
 				FirstOf("true", "false"),
 				push(new BoolConstantNode(Boolean.parseBoolean(match())))
+		);
+	}
+
+	Rule UnaryBooleanOperation() {
+		return FirstOf(
+				NotOperation(),
+				CodeCheck()
+		);
+	}
+
+	Rule CodeCheck() {
+		return Sequence(
+				"HAS_CODE(",
+				StringExpression(),
+				")",
+				push(new CodeCheckNode((StringNode) pop()))
+		);
+	}
+
+	Rule StringColumn() {
+		return Sequence(
+				ColumnIdentifier(),
+				push(new TableStringNode((ColumnIdentifier) pop()))
+		);
+	}
+
+	Rule StringExpression() {
+		return FirstOf(
+					StringLiteral(),
+					StringColumn()
 		);
 	}
 
@@ -288,7 +329,7 @@ class LanguageParser extends BaseParser<Object> {
 				FirstOf(
 						BooleanLiteral(),
 						Comparison(),
-						NotOperation(),
+						UnaryBooleanOperation(),
 						Sequence("(", BooleanExpression(), ")")),
 				WhiteSpace(),
 				BooleanOperator(),
@@ -296,7 +337,7 @@ class LanguageParser extends BaseParser<Object> {
 				FirstOf(
 						BooleanLiteral(),
 						Comparison(),
-						NotOperation(),
+						UnaryBooleanOperation(),
 						Sequence("(", BooleanExpression(), ")")),
 				swap3(),
 				push(new BooleanOperationNode(
