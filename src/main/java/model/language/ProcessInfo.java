@@ -1,9 +1,12 @@
 package model.language;
 
+import model.data.DataModel;
 import model.data.describer.DataDescriber;
+import model.data.value.StringValue;
 import model.process.DataProcess;
 import model.process.FromProcess;
 import model.process.IsProcess;
+import model.process.SetCode;
 import model.process.analysis.ConstraintAnalysis;
 
 import java.util.Arrays;
@@ -32,7 +35,7 @@ class ProcessInfo {
 		return name;
 	}
 
-	DataProcess resolve(Map<Identifier, DataDescriber> macros) {
+	DataProcess resolve(DataModel model, Map<Identifier, DataDescriber> macros) {
 		switch (name.getName()) {
 			case "from":
 				Identifier[] identifiers = Arrays.stream(parameters)
@@ -43,6 +46,10 @@ class ProcessInfo {
 				return new IsProcess((Identifier) parameters[0]);
 			case "constraint":
 				return new ConstraintAnalysis(macros.get(parameters[0]));
+			case "setCode":
+				DataDescriber<StringValue> code = ((StringNode) parameters[0]).resolve(model);
+				Identifier tableName = (Identifier) parameters[1];
+				return new SetCode(code, tableName);
 			default:
 				throw new UnsupportedOperationException("This code has not been implemented yet");
 		}

@@ -32,6 +32,12 @@ public abstract class Row {
 	public abstract boolean hasColumn(DataColumn column);
 
 	/**
+	 * Add the code code to the row.
+	 * @param code the code that must be added to the row.
+	 */
+	public abstract void addCode(String code);
+
+	/**
 	 * Return a copy of this row.
 	 * @return a copy of this row
 	 */
