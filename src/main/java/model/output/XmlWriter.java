@@ -32,7 +32,7 @@ public class XmlWriter {
 	 */
 	public XmlWriter(List<DataFile> dataFiles) {
 		logger.log(Level.INFO, "Create new XMLWriter");
-		this.dataFiles = dataFiles;
+		this.dataFiles = new ArrayList<>(dataFiles);
 	}
 
 	/**
