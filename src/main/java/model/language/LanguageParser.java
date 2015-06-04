@@ -1,9 +1,6 @@
 package model.language;
 
-import model.data.value.BoolValue;
-import model.data.value.FloatValue;
-import model.data.value.IntValue;
-import model.data.value.StringValue;
+import model.data.value.*;
 import model.language.nodes.*;
 import org.parboiled.BaseParser;
 import org.parboiled.Rule;
@@ -70,12 +67,12 @@ class LanguageParser extends BaseParser<Object> {
 	}
 
 	/**
-	 * Matches a column and pushes a TableNumberNode on the stack.
+	 * Matches a column and pushes a TableValueNode<NumberValue> on the stack.
 	 */
 	Rule NumberColumn() {
 		return Sequence(
 				ColumnIdentifier(),
-				push(new TableNumberNode((ColumnIdentifier) pop()))
+				push(new TableValueNode<NumberValue>((ColumnIdentifier) pop()))
 		);
 	}
 
