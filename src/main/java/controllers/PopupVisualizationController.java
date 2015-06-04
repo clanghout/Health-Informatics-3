@@ -25,6 +25,7 @@ public class PopupVisualizationController {
 	private VBox visualizationInputVBox;
 	private DataTable table;
 	private BarChartController bcc;
+	private VisualizationController vc;
 
 	public PopupVisualizationController() {
 
@@ -48,7 +49,9 @@ public class PopupVisualizationController {
 	 *
 	 * @param model the input model of wich the table can be specified.
 	 */
-	public void initializeView(DataModel model) {
+	public void initializeView(DataModel model, VisualizationController vc) {
+		this.vc = vc;
+
 		tableComboBox.setDisable(false);
 		tableComboBox.setItems(model.getObservableList());
 		tableComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -75,7 +78,7 @@ public class PopupVisualizationController {
 
 	@FXML
 	protected void handleGraphCreateButtonAction(ActionEvent event) {
-
+		vc.drawGraph(bcc.create());
 	}
 
 	@FXML

@@ -15,7 +15,6 @@ public abstract class Dialog {
 	private Stage dialog;
 	private FXMLLoader fxml;
 
-
 	public Dialog(String location, String name) throws IOException {
 		fxml = new FXMLLoader(getClass().getResource(location));
 		Parent root = fxml.load();

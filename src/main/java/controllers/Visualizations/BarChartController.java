@@ -1,6 +1,5 @@
 package controllers.visualizations;
 
-import controllers.VisualizationController;
 import javafx.collections.FXCollections;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
@@ -29,7 +28,7 @@ import java.util.stream.Collectors;
  * <p>
  * Created by Chris on 28-5-2015.
  */
-public class BarChartController extends VisualizationController {
+public class BarChartController extends ChartController {
 	private DataTable table;
 	private CategoryAxis xAxis;
 	private NumberAxis yAxis;
@@ -46,15 +45,16 @@ public class BarChartController extends VisualizationController {
 
 	/**
 	 * Create new BarChartController object.
+	 *
 	 * @param table the table for the graph.
-	 * @param vBox the box for the input comboBoxes.
+	 * @param vBox  the box for the input comboBoxes.
 	 */
-	public BarChartController(DataTable table, VBox vBox) {
+	public BarChartController (DataTable table, VBox vBox) {
 		this.table = table;
 		this.vBox = vBox;
 	}
 
-	public void initialize() {
+	public void initialize () {
 		ComboBox<DataColumn> xAxisBox = new ComboBox<>();
 		Label xAxisErrorLabel = new Label();
 		xAxisErrorLabel.setMaxWidth(Double.MAX_VALUE);
@@ -80,12 +80,11 @@ public class BarChartController extends VisualizationController {
 			ySet = true;
 			yCol = newValue;
 			DataDescriber<NumberValue> yColDescriber = new RowValueDescriber<>(yCol);
-
 			try {
 				float max = (float) new Maximum(table, yColDescriber).calculate().getValue();
 				float min = (float) new Minimum(table, yColDescriber).calculate().getValue();
 				int sep = computeSeperatorValue(max);
-						yAxis = new NumberAxis(yCol.getName(), min, max, sep);
+				yAxis = new NumberAxis(yCol.getName(), min, max, sep);
 				setErrorLabel(yAxisErrorLabel, "");
 			} catch (Exception e) {
 				setErrorLabel(yAxisErrorLabel, "Please select a column with number values.");
@@ -96,32 +95,48 @@ public class BarChartController extends VisualizationController {
 
 	/**
 	 * Compute aproximately a tenth of the maxvalue rouded to the nearest power of 10.
+	 *
 	 * @param max the maximum value of the axis.
 	 * @return the computed seperator value as int.
 	 */
-	public int computeSeperatorValue(float max) {
+	public int computeSeperatorValue (float max) {
 		return (int) Math.pow(BASE,
 				Math.round(Math.log10(max / YAXIS_SEPARATION) - Math.log10(MEAN) + ROUND));
 	}
 
-	public void setErrorLabel(Label label, String message) {
+	public void setErrorLabel (Label label, String message) {
 		label.setTextFill(Color.RED);
 		label.setText(message);
 	}
 
 	/**
+	 * The nearest power of 10 to the (max value devided by YAXIS_SEPERATOR).
+	 * This value is used for splitting the y-axis into approximately 10.
+	 *
+	 * @param max
+	 * @return the nearest power of 10 of max devided by YAXIS_SEPERATOR.
+	 */
+	public int setScale (float max) {
+		return (int) Math.pow(BASE,
+				Math.round(Math.log10(max / YAXIS_SEPARATION) - Math.log10(MEAN) + ROUND));
+
+	}
+
+	/**
 	 * Check if both axes are set.
+	 *
 	 * @return true if both xAxis and yAxis have been initialized.
 	 */
-	public boolean axesSet() {
+	public boolean axesSet () {
 		return xSet && ySet;
 	}
 
 	/**
 	 * Create the BarChart that can be added to the view.
+	 *
 	 * @return BarChart object.
 	 */
-	public BarChart create() {
+	public BarChart create () {
 
 		BarChart res = new BarChart<>(xAxis, yAxis);
 

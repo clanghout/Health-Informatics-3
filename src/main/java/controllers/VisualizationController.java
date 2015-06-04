@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.Chart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.VBox;
@@ -57,6 +58,10 @@ public class VisualizationController {
 		clearViewButton.setDisable(false);
 	}
 
+	public void drawGraph(Chart chart) {
+		visualizationGraph.getChildren().add(chart);
+	}
+
 	/**
 	 * Sets the model that will be observed.
 	 *
@@ -90,7 +95,6 @@ public class VisualizationController {
 		});
 	}
 
-
 	/**
 	 * Create a popupWindow and add the model to the controller.
 	 */
@@ -100,8 +104,10 @@ public class VisualizationController {
 		try {
 			GraphCreationDialog gcd = new GraphCreationDialog();
 			gcd.show();
+
 			PopupVisualizationController popupVisualizationController = gcd.getFxml().getController();
-			popupVisualizationController.initializeView(model);
+			popupVisualizationController.initializeView(model, this);
+
 		} catch (NullPointerException e) {
 			logger.log(Level.SEVERE, "No controller present");
 		} catch (Exception e) {
