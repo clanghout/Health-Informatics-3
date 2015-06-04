@@ -28,8 +28,8 @@ public abstract class GroupByAnalysis extends DataAnalysis {
 			List<ConstraintAnalysis> constrainList) {
 
 		if (constrainList.size() != groupNames.size()) {
-			throw new IllegalArgumentException("number of groups does not correspond "
-					+ "to the number of group names.");
+			throw new IllegalArgumentException(
+					"number of groups does not correspond to the number of group names.");
 		}
 
 		constraints = new LinkedHashMap<>();
@@ -46,8 +46,8 @@ public abstract class GroupByAnalysis extends DataAnalysis {
 		builder = new DataTableBuilder();
 		builder.setName(name);
 		if (functions.size() != columnsNames.size()) {
-			throw new IllegalArgumentException("number of columns does not correspond "
-					+ "to the number of functions.");
+			throw new IllegalArgumentException(
+					"number of columns does not correspond to the number of functions.");
 		}
 
 		this.functionsList = functions;
