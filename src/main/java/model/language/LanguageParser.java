@@ -1,5 +1,7 @@
 package model.language;
 
+import model.data.value.*;
+import model.language.nodes.*;
 import org.parboiled.BaseParser;
 import org.parboiled.Rule;
 import org.parboiled.support.Var;
@@ -37,7 +39,13 @@ class LanguageParser extends BaseParser<Object> {
 						NumberColumn(),
 						Sequence("(", NumberExpression(), ")")),
 				swap3(),
-				push(new NumberOperationNode((NumberNode) pop(), (String) pop(), (NumberNode) pop()))
+				push(
+						new NumberOperationNode(
+							(ValueNode<NumberValue>) pop(),
+							(String) pop(),
+							(ValueNode<NumberValue>) pop()
+						)
+				)
 		);
 	}
 
@@ -46,7 +54,7 @@ class LanguageParser extends BaseParser<Object> {
 				"SQRT(",
 				NumberExpression(),
 				")",
-				push(new NumberOperationNode((NumberNode) pop(), "SQRT", null))
+				push(new NumberOperationNode((ValueNode<NumberValue>) pop(), "SQRT", null))
 		);
 	}
 
@@ -65,12 +73,12 @@ class LanguageParser extends BaseParser<Object> {
 	}
 
 	/**
-	 * Matches a column and pushes a TableNumberNode on the stack.
+	 * Matches a column and pushes a TableValueNode<NumberValue> on the stack.
 	 */
 	Rule NumberColumn() {
 		return Sequence(
 				ColumnIdentifier(),
-				push(new TableNumberNode((ColumnIdentifier) pop()))
+				push(new TableValueNode<NumberValue>((ColumnIdentifier) pop()))
 		);
 	}
 
@@ -104,7 +112,7 @@ class LanguageParser extends BaseParser<Object> {
 				ZeroOrMore(Character()),
 				push(matchOrDefault("")),
 				"\"",
-				push(new StringConstantNode((String) pop()))
+				push(new ConstantNode<StringValue>(new StringValue((String) pop())))
 		);
 	}
 
@@ -126,7 +134,11 @@ class LanguageParser extends BaseParser<Object> {
 	Rule IntLiteral() {
 		return Sequence(
 				OneOrMore(Digit()),
-				push(new NumberConstantNode(Integer.parseInt(matchOrDefault("0"))))
+				push(
+						new ConstantNode<IntValue>(
+								new IntValue(Integer.parseInt(matchOrDefault("0")))
+						)
+				)
 		);
 	}
 
@@ -137,7 +149,10 @@ class LanguageParser extends BaseParser<Object> {
 						".",
 						OneOrMore(Digit())
 				),
-				push(new NumberConstantNode(Float.parseFloat(matchOrDefault("0.0"))))
+				push(new ConstantNode<FloatValue>(
+								new FloatValue(Float.parseFloat(matchOrDefault("0.0")))
+						)
+				)
 		);
 	}
 
@@ -229,7 +244,7 @@ class LanguageParser extends BaseParser<Object> {
 
 	Rule CompareOperator() {
 		return Sequence(
-				FirstOf("<=", ">=", "=", ">", "<"),
+				FirstOf("<=", ">=", ">", "<"),
 				push(match())
 		);
 	}
@@ -239,28 +254,40 @@ class LanguageParser extends BaseParser<Object> {
 	 */
 	Rule Comparison() {
 		return Sequence(
-				FirstOf(
-						BooleanLiteral(),
-						UnaryBooleanOperation(),
-						Sequence("(", BooleanExpression(), ")"),
-						NumberExpression()),
+				NumberExpression(),
 				WhiteSpace(),
 				CompareOperator(),
 				WhiteSpace(),
-				FirstOf(
-						BooleanLiteral(),
-						UnaryBooleanOperation(),
-						Sequence("(", BooleanExpression(), ")"),
-						NumberExpression()),
+				NumberExpression(),
 				swap3(),
-				push(new CompareNode(pop(), (String) pop(), pop()))
+				push(new CompareNode((ValueNode) pop(), (String) pop(), (ValueNode) pop()))
+		);
+	}
+
+	Rule Equality() {
+		return Sequence(
+				NumberExpression(),
+				WhiteSpace(),
+				"=",
+				WhiteSpace(),
+				NumberExpression(),
+				swap(),
+				push(new EqualityNode((ValueNode) pop(), (ValueNode) pop()))
+		);
+	}
+
+	Rule AnyValue() {
+		return FirstOf(
+				StringExpression(),
+				NumberExpression(),
+				BooleanTerm()
 		);
 	}
 
 	Rule BooleanColumn() {
 		return Sequence(
 				ColumnIdentifier(),
-				push(new TableBooleanNode((ColumnIdentifier) pop()))
+				push(new TableValueNode<BoolValue>((ColumnIdentifier) pop()))
 		);
 	}
 
@@ -268,6 +295,7 @@ class LanguageParser extends BaseParser<Object> {
 		return FirstOf(
 				BooleanOperation(),
 				Comparison(),
+				Equality(),
 				UnaryBooleanOperation(),
 				BooleanLiteral(),
 				Sequence("(", BooleanExpression(), ")"),
@@ -278,7 +306,7 @@ class LanguageParser extends BaseParser<Object> {
 	Rule BooleanLiteral() {
 		return Sequence(
 				FirstOf("true", "false"),
-				push(new BoolConstantNode(Boolean.parseBoolean(match())))
+				push(new ConstantNode<BoolValue>(new BoolValue(Boolean.parseBoolean(match()))))
 		);
 	}
 
@@ -294,14 +322,14 @@ class LanguageParser extends BaseParser<Object> {
 				"HAS_CODE(",
 				StringExpression(),
 				")",
-				push(new CodeCheckNode((StringNode) pop()))
+				push(new CodeCheckNode((ValueNode<StringValue>) pop()))
 		);
 	}
 
 	Rule StringColumn() {
 		return Sequence(
 				ColumnIdentifier(),
-				push(new TableStringNode((ColumnIdentifier) pop()))
+				push(new TableValueNode<StringValue>((ColumnIdentifier) pop()))
 		);
 	}
 
@@ -317,34 +345,35 @@ class LanguageParser extends BaseParser<Object> {
 				"NOT(",
 				BooleanExpression(),
 				")",
-				push(new BooleanOperationNode((BooleanNode) pop(), "NOT", null))
+				push(new BooleanOperationNode((ValueNode<BoolValue>) pop(), "NOT", null))
 		);
 	}
 
 	/**
-	 * Matches the AND and OR operations and pushes a BooleanOperationNode on the stack.
+	 * Matches the AND and OR operations and pushes a ValueNode<BoolValue> on the stack.
 	 */
 	Rule BooleanOperation() {
 		return Sequence(
-				FirstOf(
-						BooleanLiteral(),
-						Comparison(),
-						UnaryBooleanOperation(),
-						Sequence("(", BooleanExpression(), ")")),
+				BooleanTerm(),
 				WhiteSpace(),
 				BooleanOperator(),
 				WhiteSpace(),
-				FirstOf(
-						BooleanLiteral(),
-						Comparison(),
-						UnaryBooleanOperation(),
-						Sequence("(", BooleanExpression(), ")")),
+				BooleanTerm(),
 				swap3(),
 				push(new BooleanOperationNode(
-						(BooleanNode) pop(),
+						(ValueNode<BoolValue>) pop(),
 						(String) pop(),
-						(BooleanNode) pop()))
+						(ValueNode<BoolValue>) pop()))
 		);
+	}
+
+	Rule BooleanTerm() {
+		return FirstOf(
+				BooleanLiteral(),
+				Comparison(),
+				Equality(),
+				UnaryBooleanOperation(),
+				Sequence("(", BooleanExpression(), ")"));
 	}
 
 	Rule BooleanOperator() {

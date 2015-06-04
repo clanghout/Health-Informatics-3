@@ -3,6 +3,7 @@ package model.language;
 import model.data.DataModel;
 import model.data.describer.DataDescriber;
 import model.data.value.StringValue;
+import model.language.nodes.ValueNode;
 import model.process.DataProcess;
 import model.process.FromProcess;
 import model.process.IsProcess;
@@ -47,7 +48,8 @@ class ProcessInfo {
 			case "constraint":
 				return new ConstraintAnalysis(macros.get(parameters[0]));
 			case "setCode":
-				DataDescriber<StringValue> code = ((StringNode) parameters[0]).resolve(model);
+				ValueNode<StringValue> stringNode = (ValueNode<StringValue>) parameters[0];
+				DataDescriber<StringValue> code = stringNode.resolve(model);
 				Identifier tableName = (Identifier) parameters[1];
 				return new SetCode(code, tableName);
 			default:

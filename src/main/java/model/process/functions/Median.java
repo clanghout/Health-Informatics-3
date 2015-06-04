@@ -16,13 +16,9 @@ import model.data.value.NumberValue;
  */
 public class Median extends Function {
 
-	private DataTable table;
-	private DataDescriber<NumberValue> argument;
 
 	public Median(DataTable model, DataDescriber<NumberValue> argument) {
 		super(model, argument);
-		this.table = model;
-		this.argument = argument;
 	}
 
 	/**
@@ -30,18 +26,20 @@ public class Median extends Function {
 	 */
 	@Override
 	public FloatValue calculate() {
-		initialize();
+		if (!initialize()) {
+			return new FloatValue(0);
+		}
 		List<Float> list = createList();
 		// Amount of rows is even -> add two middle rows and divide by 2
-		if ((table.getRowCount() & 1) == 0) {
-			int middle = table.getRowCount() / 2;
+		if ((getTable().getRowCount() & 1) == 0) {
+			int middle = getTable().getRowCount() / 2;
 			float median = list.get(middle - 1);
 			float median2 = list.get(middle);
 			median = (median2 + median) / 2;
 			return new FloatValue(median);
 			// Amount of rows is odd -> median is middle row
 		} else {
-			int middle = (int) Math.ceil(table.getRowCount() / 2.0);
+			int middle = (int) Math.ceil(getTable().getRowCount() / 2.0);
 			return new FloatValue(list.get(middle - 1));
 		}
 	}
@@ -53,8 +51,8 @@ public class Median extends Function {
 	 */
 	public List<Float> createList() {
 		List<Float> list = new ArrayList<Float>();
-		for (int i = 0; i < table.getRowCount(); i++) {
-			list.add(intOrFloat(argument, table.getRow(i)));
+		for (int i = 0; i < getTable().getRowCount(); i++) {
+			list.add(intOrFloat(getArgument(), getTable().getRow(i)));
 		}
 		Collections.sort(list);
 		return list;

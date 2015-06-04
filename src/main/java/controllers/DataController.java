@@ -62,6 +62,7 @@ public class DataController {
 			// TODO: Handle no file selected with message.
 		} else {
 			fileNameField.setText(file.getAbsolutePath());
+			read();
 		}
 	}
 
