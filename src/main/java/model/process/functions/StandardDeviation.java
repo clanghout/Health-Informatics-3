@@ -13,13 +13,8 @@ import model.data.value.NumberValue;
  */
 public class StandardDeviation extends Function {
 
-	private DataTable table;
-	private DataDescriber<NumberValue> argument;
-
 	public StandardDeviation(DataTable model, DataDescriber<NumberValue> argument) {
 		super(model, argument);
-		this.table = model;
-		this.argument = argument;
 	}
 
 	/**
@@ -30,7 +25,7 @@ public class StandardDeviation extends Function {
 		if(!initialize()) {
 			return new FloatValue(0);
 		}
-		float average = new Average(table, argument).calculate().getValue();
+		float average = new Average(getTable(), getArgument()).calculate().getValue();
 		float variance = variance(average);
 		float deviation = (float) Math.sqrt((double) variance);
 		FloatValue result = new FloatValue(deviation);
@@ -46,12 +41,12 @@ public class StandardDeviation extends Function {
 	 */
 	public float variance(float av) {
 		float var = 0.0f;
-		for (int i = 0; i < table.getRowCount(); i++) {
-			float val = intOrFloat(argument, table.getRow(i));
+		for (int i = 0; i < getTable().getRowCount(); i++) {
+			float val = intOrFloat(getArgument(), getTable().getRow(i));
 			float dif = val - av;
 			dif = dif * dif;
 			var += dif;
 		}
-		return var / table.getRowCount();
+		return var / getTable().getRowCount();
 	}
 }

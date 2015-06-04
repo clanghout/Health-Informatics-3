@@ -12,9 +12,6 @@ import model.data.value.NumberValue;
  */
 public class Average extends Function {
 
-	private DataTable table;
-	private DataDescriber<NumberValue> argument;
-
 	/**
 	 * Construct a new average.
 	 * 
@@ -25,8 +22,6 @@ public class Average extends Function {
 	 */
 	public Average(DataTable model, DataDescriber<NumberValue> argument) {
 		super(model, argument);
-		this.table = model;
-		this.argument = argument;
 	}
 
 	/**
@@ -37,9 +32,9 @@ public class Average extends Function {
 		if(!initialize()) {
 			return new FloatValue(0);
 		}
-		FloatValue sum = new Sum(table, argument).calculate();
+		FloatValue sum = new Sum(getTable(), getArgument()).calculate();
 		float total = sum.getValue();
-		total = total / table.getRowCount();
+		total = total / getTable().getRowCount();
 		return new FloatValue(total);
 	}
 }

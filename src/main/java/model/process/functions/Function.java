@@ -24,12 +24,20 @@ public abstract class Function {
 		this.argument = argument;
 	}
 
+	public DataTable getTable() {
+		return table;
+	}
+
+	public DataDescriber<NumberValue> getArgument() {
+		return argument;
+	}
+
 	/**
 	 * set the table on which the function must perform
 	 * @param table table on which the funtion must perform
 	 */
 	public void setTable(DataTable table) {
-		this.table = table;
+		this.table = table.copy();
 	}
 
 	/**
