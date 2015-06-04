@@ -88,9 +88,8 @@ public class XmlWriter {
 		}
 
 		Map<String, Class<? extends DataValue>> columns = dataFile.getColumns();
-		for (String column : columns.keySet()) {
-			Class type = columns.get(column);
-			res.appendChild(createColumnElements(column, type));
+		for (Map.Entry<String, Class<? extends DataValue>> entry : columns.entrySet()) {
+			res.appendChild(createColumnElements(entry.getKey(), entry.getValue()));
 		}
 
 		return res;
