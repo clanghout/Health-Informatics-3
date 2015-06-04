@@ -125,7 +125,13 @@ public abstract class DataFile {
 	public Class[] getColumnTypes() {
 		return this.columnTypes;
 	}
-	
+
+	/**
+	 * Returns the type of the class based on a string describing the type.
+	 * @param type The name of the type
+	 * @return The classtype
+	 * @throws ClassNotFoundException When the class is not recognized
+	 */
 	public static Class getColumnType(String type) throws ClassNotFoundException {
 		switch (type) {
 			case "int":
@@ -144,7 +150,31 @@ public abstract class DataFile {
 				throw new ClassNotFoundException();
 		}
 	}
-	
+
+	/**
+	 * Returns a string describing the type of the class.
+	 * @param type The class
+	 * @return The type of class as a string
+	 * @throws ClassNotFoundException
+	 */
+	public static String getStringColumnType(Class type) throws ClassNotFoundException {
+		if (type == IntValue.class) {
+			return "int";
+		} else if (type == FloatValue.class) {
+			return "float";
+		} else if (type == StringValue.class) {
+			return "string";
+		} else if (type == DateValue.class) {
+			return "date";
+		} else if (type == TimeValue.class) {
+			return "time";
+		} else if (type == DateTimeValue.class) {
+			return "datetime";
+		} else {
+			throw new ClassNotFoundException();
+		}
+	}
+
 	/**
 	 * Returns the array with the names of the columns.
 	 * @return The array with the names of the columns
