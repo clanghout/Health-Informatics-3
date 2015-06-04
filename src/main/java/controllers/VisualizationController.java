@@ -84,7 +84,7 @@ public class VisualizationController {
 			popupVisualizationController = gcd.getFxml().getController();
 			popupVisualizationController.initializeView(model, this);
 		} catch (NullPointerException e) {
-			System.out.println("no controller");
+			logger.log(Level.SEVERE, "No controller present");
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "FXML file cannot be loaded");
 		}
