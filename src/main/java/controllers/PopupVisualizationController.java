@@ -8,6 +8,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.VBox;
 import model.data.DataModel;
 import model.data.DataTable;
+import view.GraphCreationDialog;
 
 /**
  * Controller for the popup window that shows when the graph create button is pressed.
@@ -26,6 +27,7 @@ public class PopupVisualizationController {
 	private DataTable table;
 	private BarChartController bcc;
 	private VisualizationController vc;
+	private GraphCreationDialog gcd;
 
 	public PopupVisualizationController() {
 
@@ -49,8 +51,9 @@ public class PopupVisualizationController {
 	 *
 	 * @param model the input model of wich the table can be specified.
 	 */
-	public void initializeView(DataModel model, VisualizationController vc) {
+	public void initializeView(DataModel model, VisualizationController vc, GraphCreationDialog gcd) {
 		this.vc = vc;
+		this.gcd = gcd;
 
 		tableComboBox.setDisable(false);
 		tableComboBox.setItems(model.getObservableList());
@@ -79,10 +82,11 @@ public class PopupVisualizationController {
 	@FXML
 	protected void handleGraphCreateButtonAction(ActionEvent event) {
 		vc.drawGraph(bcc.create());
+		gcd.close();
 	}
 
 	@FXML
 	protected void handleCancelButtonAction(ActionEvent event) {
-
+		gcd.close();
 	}
 }

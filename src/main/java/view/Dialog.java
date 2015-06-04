@@ -15,7 +15,7 @@ public abstract class Dialog {
 	private Stage dialog;
 	private FXMLLoader fxml;
 
-	public Dialog(String location, String name) throws IOException {
+	public Dialog (String location, String name) throws IOException {
 		fxml = new FXMLLoader(getClass().getResource(location));
 		Parent root = fxml.load();
 		dialog = new Stage();
@@ -23,11 +23,15 @@ public abstract class Dialog {
 		dialog.setScene(new Scene(root));
 	}
 
-	public FXMLLoader getFxml() {
+	public FXMLLoader getFxml () {
 		return fxml;
 	}
 
-	public void show() {
+	public void show () {
 		dialog.show();
+	}
+
+	public void close () {
+		dialog.close();
 	}
 }

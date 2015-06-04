@@ -106,7 +106,7 @@ public class VisualizationController {
 			gcd.show();
 
 			PopupVisualizationController popupVisualizationController = gcd.getFxml().getController();
-			popupVisualizationController.initializeView(model, this);
+			popupVisualizationController.initializeView(model, this, gcd);
 
 		} catch (NullPointerException e) {
 			logger.log(Level.SEVERE, "No controller present");
