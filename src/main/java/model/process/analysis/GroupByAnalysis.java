@@ -52,13 +52,12 @@ public abstract class GroupByAnalysis extends DataAnalysis {
 				throw new RuntimeException("function calculate does not exist.");
 			}
 		}
-
 	}
 
 	/**
-	 * perform the groupby //TODO more comments
-	 * @param input
-	 * @return
+	 * Perform the specified functions on the input table/
+	 * @param input the table to perform the groupBy on
+	 * @return a table that contains the results of functions on the chunks.
 	 */
 	protected DataTable groupBy(Table input) {
 		if (input instanceof CombinedDataTable) {

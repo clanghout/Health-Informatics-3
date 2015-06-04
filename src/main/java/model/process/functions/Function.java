@@ -24,10 +24,18 @@ public abstract class Function {
 		this.argument = argument;
 	}
 
+	/**
+	 * Return the table.
+	 * @return the table
+	 */
 	public DataTable getTable() {
 		return table;
 	}
 
+	/**
+	 * Return the DataDescriber for the function.
+	 * @return the DataDescriber for the function
+	 */
 	public DataDescriber<NumberValue> getArgument() {
 		return argument;
 	}
