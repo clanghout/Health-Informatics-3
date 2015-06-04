@@ -38,7 +38,7 @@ public class Difference extends DataProcess {
 		if (!(tableOptional.isPresent() && table2Optional.isPresent())) {
 			throw new IllegalArgumentException(
 					String.format("Not all identifiers refer to tables: %s, %s",
-							tableIdentifier.toString(), table2Identifier.toString())
+							tableIdentifier.getName(), table2Identifier.getName())
 			);
 		}
 

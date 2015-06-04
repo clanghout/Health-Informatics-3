@@ -42,6 +42,32 @@ public class ParserTest {
 	}
 
 	@Test
+	public void testParsDiff() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("test2");
+		builder.createColumn("value", IntValue.class);
+
+		builder.createRow(new IntValue(11));
+		builder.createRow(new IntValue(5));
+
+		DataTable test2 = builder.build();
+		model.add(test2);
+
+		String input = "difference(test1, test2)";
+		Table result = parseAndProcess(input);
+
+		builder = new DataTableBuilder();
+		builder.setName("test1");
+		builder.createColumn("value", IntValue.class);
+
+		builder.createRow(new IntValue(10));
+		builder.createRow(new IntValue(9));
+
+		DataTable expected = builder.build();
+		assertTrue(expected.equalsSoft(result));
+	}
+
+	@Test
 	public void testParseFrom() throws Exception {
 		String input = "from(test1)";
 
