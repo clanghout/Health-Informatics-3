@@ -27,6 +27,9 @@ public class StandardDeviation extends Function {
 	 */
 	@Override
 	public DataValue calculate() {
+		if(!initialize()) {
+			return new FloatValue(0);
+		}
 		float average = new Average(table, argument).calculate().getValue();
 		float variance = variance(average);
 		float deviation = (float) Math.sqrt((double) variance);

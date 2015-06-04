@@ -37,6 +37,9 @@ public abstract class Minmax extends Function {
 	 * @return List<DataRow> a list of DataRows
 	 */
 	public DataValue compare() {
+		if(!initialize()) {
+			return new FloatValue(0);
+		}
 		float current = 0.0f;
 		current = intOrFloat(argument, table.getRow(0));
 		for (int i = 1; i < table.getRowCount(); i++) {

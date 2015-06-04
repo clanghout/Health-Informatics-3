@@ -30,7 +30,9 @@ public class Median extends Function {
 	 */
 	@Override
 	public FloatValue calculate() {
-		initialize();
+		if(!initialize()) {
+			return new FloatValue(0);
+		}
 		List<Float> list = createList();
 		// Amount of rows is even -> add two middle rows and divide by 2
 		if ((table.getRowCount() & 1) == 0) {
