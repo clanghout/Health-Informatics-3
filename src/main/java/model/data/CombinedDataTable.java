@@ -157,6 +157,30 @@ public class CombinedDataTable extends Table {
 			}
 		};
 	}
+
+	/**
+	 * Return a list that contains all the tables in the combined dataTable.
+	 * @return a list that contains all the tables.
+	 */
+	public List<DataTable> getTables() {
+		List<DataTable> list = getReversedTablesList();
+		Collections.reverse(list);
+		return list;
+	}
+
+	/**
+	 * Return a list that contains all the tables in the combined dataTable.
+	 * The table are in reversed order
+	 * @return a list that contains all the tables.
+	 */
+	private List<DataTable> getReversedTablesList() {
+		List<DataTable> res = new ArrayList<>();
+		if (combined != null) {
+			res = combined.getReversedTablesList();
+		}
+		res.add(table);
+		return res;
+	}
 }
 
 

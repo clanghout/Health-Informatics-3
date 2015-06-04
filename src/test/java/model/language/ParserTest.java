@@ -238,4 +238,20 @@ public class ParserTest {
 
 		assertEquals(new BoolValue(true), row.getValue(table.getColumn("value")));
 	}
+
+	@Test
+	public void testParseSetCodes() throws Exception {
+		String input = "def gtNine() : Constraint = test1.value > 9;\n" +
+				"from(test1)|constraint(gtNine)}is(gtThen)|from(test1)|setCode(\"hallo\", gtThen)";
+
+		Table result = parseAndProcess(input);
+		assertTrue(result instanceof DataTable);
+
+		DataTable table = (DataTable) result;
+
+		assertTrue(table.getRow(0).getCodes().contains("hallo"));
+		assertTrue(table.getRow(1).getCodes().contains("hallo"));
+		assertFalse(table.getRow(2).getCodes().contains("hallo"));
+		assertFalse(table.getRow(3).getCodes().contains("hallo"));
+	}
 }

@@ -138,7 +138,7 @@ public class DataRow extends Row {
 	 * @return a set that contains the columns of this row.
 	 */
 	public List<DataColumn> getColumns() {
-		return values.keySet().stream().map(x -> x.getColumn()).collect(Collectors.toList());
+		return values.keySet().stream().map(SoftColumn::getColumn).collect(Collectors.toList());
 	}
 
 	@Override
@@ -196,6 +196,7 @@ public class DataRow extends Row {
 	 * @param column the column where you want the value from
 	 * @return the value of the column of this row
 	 */
+	@Override
 	public DataValue getValue(DataColumn column) {
 		return values.get(new SoftColumn(column));
 	}
@@ -204,6 +205,7 @@ public class DataRow extends Row {
 	 * Add the code code to the row.
 	 * @param code the code that must be added to the row.
 	 */
+	@Override
 	public void addCode(String code) {
 		codes.add(code);
 	}
