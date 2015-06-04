@@ -18,7 +18,6 @@ public class MainUIController {
 	@FXML private DataController dataController;
 	@FXML private AnalysisController analysisController;
 	@FXML private VisualizationController visualizationController;
-
 	private Logger logger = Logger.getLogger("MainUIController");
 
 	/**
@@ -44,7 +43,7 @@ public class MainUIController {
 	public void setModel(DataModel model) {
 		tableViewController.setDataModel(model);
 		analysisController.setDataModel(model);
-		visualizationController.setDataModel(model);
+		visualizationController.setModel(model);
 		visualizationController.initializeVisualisation();
 
 	}
