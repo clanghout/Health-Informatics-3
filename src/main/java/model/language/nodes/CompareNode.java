@@ -18,6 +18,12 @@ public final class CompareNode<T extends NumberValue> extends OperationNode<Bool
 	private ValueNode<T> left;
 	private ValueNode<T> right;
 
+	/**
+	 * Construct a new CompareNode.
+	 * @param left The left side operand of the comparison.
+	 * @param operation The kind of comparison you want to perform.
+	 * @param right The right side operand of the comparison.
+	 */
 	public CompareNode(
 			ValueNode<T> left,
 			String operation,
@@ -27,6 +33,11 @@ public final class CompareNode<T extends NumberValue> extends OperationNode<Bool
 		this.right = right;
 	}
 
+	/**
+	 * Resolves the ComparisonNode to a DataDescriber.
+	 * @param model The model to be used.
+	 * @return A DataDescriber describing the comparison.
+	 */
 	public DataDescriber<BoolValue> resolve(DataModel model) {
 		DataDescriber<T> leftSide = left.resolve(model);
 		DataDescriber<T> rightSide = right.resolve(model);

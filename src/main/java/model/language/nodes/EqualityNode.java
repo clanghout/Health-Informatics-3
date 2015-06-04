@@ -16,6 +16,11 @@ public final class EqualityNode<T extends DataValue> extends OperationNode<BoolV
 	private ValueNode<T> left;
 	private ValueNode<T> right;
 
+	/**
+	 * Construct a new EqualityNode.
+	 * @param left The left side operand of the equality operation.
+	 * @param right The right side operand of the equality operation.
+	 */
 	public EqualityNode(
 			ValueNode<T> left,
             ValueNode<T> right) {
@@ -24,6 +29,11 @@ public final class EqualityNode<T extends DataValue> extends OperationNode<BoolV
 		this.right = right;
 	}
 
+	/**
+	 * Resolves the equality operation to a DataDescriber.
+	 * @param model The model to be used.
+	 * @return A DataDescriber describing the equality check.
+	 */
 	@Override
 	public DataDescriber<BoolValue> resolve(DataModel model) {
 		return new ConstraintDescriber(

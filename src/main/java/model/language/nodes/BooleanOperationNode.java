@@ -8,12 +8,20 @@ import model.process.analysis.operations.constraints.*;
 import model.data.value.BoolValue;
 
 /**
+ * Represents a boolean operation.
+ *
  * Created by Boudewijn on 26-5-2015.
  */
 public class BooleanOperationNode extends ValueNode<BoolValue> {
 
 	private String operation;
 
+	/**
+	 * Construct a new BooleanOperationNode.
+	 * @param left The left side operand of this node.
+	 * @param operation The operation you want to perform.
+	 * @param right The right side operand of this node.
+	 */
 	public BooleanOperationNode(
 			ValueNode<BoolValue> left,
 			String operation,
@@ -35,6 +43,11 @@ public class BooleanOperationNode extends ValueNode<BoolValue> {
 		}
 	}
 
+	/**
+	 * Resolve the operation to a DataDescriber.
+	 * @param model The model to be used.
+	 * @return A DataDescriber describing the operation.
+	 */
 	public DataDescriber<BoolValue> resolve(DataModel model) {
 		return new ConstraintDescriber(resolveCheck(model, operation));
 	}

@@ -7,11 +7,30 @@ import model.data.value.NumberValue;
 import model.process.analysis.operations.computations.*;
 
 /**
+ * Represents an operation between two (or one) numbers.
+ *
+ * The supported operations are:
+ * <ul>
+ *     <li>+</li>
+ *     <li>-</li>
+ *     <li>*</li>
+ *     <li>/</li>
+ *     <li>^</li>
+ *     <li>SQRT</li>
+ * </ul>
+ *
+ * Since SQRT is a unary operation, only the left side operand is used.
  * Created by Boudewijn on 27-5-2015.
  */
 public class NumberOperationNode extends OperationNode<NumberValue> {
 
 
+	/**
+	 * Construct a new NumberOperationNode.
+	 * @param left The left side operand of the operation.
+	 * @param operation The operation you want to perform.
+	 * @param right The right side operand of the operation.
+	 */
 	public NumberOperationNode(
 			ValueNode<NumberValue> left,
 			String operation,
@@ -34,6 +53,11 @@ public class NumberOperationNode extends OperationNode<NumberValue> {
 		}
 	}
 
+	/**
+	 * Resolves the NumberOperation to a DataDescriber.
+	 * @param model The model to be used.
+	 * @return A DataDescriber describing the operation.
+	 */
 	public DataDescriber<NumberValue> resolve(DataModel model) {
 		return new ComputationDescriber<>(resolveComputation(model));
 	}
