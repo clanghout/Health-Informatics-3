@@ -10,6 +10,9 @@ import java.util.Optional;
 
 
 /**
+ * Class used to crate a table that is the difference between the two table.
+ * So it does: Table1-Table2
+ *
  * Created by jens on 6/4/15.
  */
 public class Difference extends DataProcess {
@@ -17,10 +20,10 @@ public class Difference extends DataProcess {
 	private Identifier<DataTable> table2Identifier;
 
 	/**
-	 * Create an union operation.
+	 * Create an Difference operation.
 	 * The tables must have the same structure.
-	 * @param table the first table of the union.
-	 * @param table2 the second table of the union.
+	 * @param table the first table of the Difference.
+	 * @param table2 that contains the rows that must be removed from the other table.
 	 */
 	public Difference(Identifier<DataTable> table, Identifier<DataTable> table2) {
 		this.tableIdentifier = table;
