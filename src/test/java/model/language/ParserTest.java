@@ -284,7 +284,7 @@ public class ParserTest {
 	@Test
 	public void testParseSetCodes() throws Exception {
 		String input = "def gtNine() : Constraint = test1.value > 9;\n" +
-				"from(test1)|constraint(gtNine)}is(gtThen)|from(test1)|setCode(\"hallo\", gtThen)";
+				"from(test1)|constraint(gtNine)|is(gtThen)|from(test1)|setCode(\"hallo\", gtThen)";
 
 		Table result = parseAndProcess(input);
 		assertTrue(result instanceof DataTable);
