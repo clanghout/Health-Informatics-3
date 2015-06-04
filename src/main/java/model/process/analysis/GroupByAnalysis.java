@@ -23,8 +23,10 @@ public abstract class GroupByAnalysis extends DataAnalysis {
 	private DataTableBuilder builder;
 	private List<Function> functionsList;
 
-	protected void constructConstraintList(List<String> groupNames,
-										   List<ConstraintAnalysis> constrainList) {
+	protected void constructConstraintList(
+			List<String> groupNames,
+			List<ConstraintAnalysis> constrainList) {
+
 		if (constrainList.size() != groupNames.size()) {
 			throw new IllegalArgumentException("number of groups does not correspond "
 					+ "to the number of group names.");
@@ -36,8 +38,11 @@ public abstract class GroupByAnalysis extends DataAnalysis {
 		}
 	}
 
-	protected void constructBuilder(String name, List<Function> functions,
-									List<String> columnsNames) {
+	protected void constructBuilder(
+			String name,
+			List<Function> functions,
+			List<String> columnsNames) {
+
 		builder = new DataTableBuilder();
 		builder.setName(name);
 		if (functions.size() != columnsNames.size()) {

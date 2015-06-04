@@ -12,9 +12,12 @@ import java.util.List;
  */
 public class GroupByConstraint extends GroupByAnalysis {
 
-	public GroupByConstraint(String name, List<ConstraintAnalysis> constrainList,
-							 List<String> groupNames, List<Function> functions,
-							 List<String> columnNames) {
+	public GroupByConstraint(
+			String name,
+			List<ConstraintAnalysis> constrainList,
+			List<String> groupNames,
+			List<Function> functions,
+			List<String> columnNames) {
 
 		constructConstraintList(groupNames, constrainList);
 		constructBuilder(name, functions, columnNames);
