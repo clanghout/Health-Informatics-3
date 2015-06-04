@@ -1,6 +1,7 @@
 package model.output;
 
 import model.data.value.*;
+import model.input.file.DataFile;
 import model.input.file.PlainTextFile;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +10,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import static org.junit.Assert.assertEquals;
@@ -27,7 +29,6 @@ public class XmlWriterTest {
 
 	@Before
 	public void setUp() throws Exception {
-		writer = new XmlWriter();
 		textFile = mock(PlainTextFile.class);
 	}
 
@@ -46,8 +47,12 @@ public class XmlWriterTest {
 		map.put("someDateTimes", DateTimeValue.class);
 
 		when(textFile.getColumns()).thenReturn(map);
-		writer.addDataFile(textFile);
+		ArrayList<DataFile> dataFiles = new ArrayList<DataFile>();
+		dataFiles.add(textFile);
+
+		XmlWriter writer = new XmlWriter(dataFiles);
 		Document doc = writer.createDocument();
+
 		assertEquals("1.0", doc.getXmlVersion());
 		Element root = doc.getDocumentElement();
 		assertEquals("input", root.getTagName());
@@ -75,11 +80,6 @@ public class XmlWriterTest {
 				.item(4)).getAttribute("type"));
 		assertEquals("datetime", ((Element)columns.getElementsByTagName("column")
 				.item(5)).getAttribute("type"));
-
-	}
-
-	@Test
-	public void testAddDataFile() throws Exception {
 
 	}
 

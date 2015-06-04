@@ -30,9 +30,9 @@ public class XmlWriter {
 	/**
 	 * Creates a new XmlWriter.
 	 */
-	public XmlWriter() {
+	public XmlWriter(List<DataFile> dataFiles) {
 		logger.log(Level.INFO, "Create new XMLWriter");
-		this.dataFiles = new ArrayList<DataFile>();
+		this.dataFiles = dataFiles;
 	}
 
 	/**
@@ -59,14 +59,6 @@ public class XmlWriter {
 
 		document.normalize();
 		return document;
-	}
-
-	/**
-	 * Adds a new DataFile to the list with data files.
-	 * @param file The file to add.
-	 */
-	public void addDataFile(DataFile file) {
-		dataFiles.add(file);
 	}
 
 	/**
