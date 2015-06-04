@@ -45,7 +45,11 @@ public class LanguageParserTest {
 
 		assertEquals("test2", info.getIdentifier().getName());
 		assertArrayEquals(
-				new Object[]{"aap", new Identifier<>("sjon"), new NumberConstantNode(2.0f) },
+				new Object[]{
+						new StringConstantNode("aap"),
+						new Identifier<>("sjon"),
+						new NumberConstantNode(2.0f)
+				},
 				info.getParameters()
 		);
 
