@@ -25,8 +25,8 @@ public class PopupVisualizationController {
 	@FXML
 	private VBox visualizationInputVBox;
 	private DataTable table;
-	private BarChartController bcc;
-	private VisualizationController vc;
+	private BarChartController barChartController;
+	private VisualizationController visualizationController;
 	private GraphCreationDialog dialog;
 
 	public PopupVisualizationController() {
@@ -55,7 +55,7 @@ public class PopupVisualizationController {
 			DataModel model,
 			VisualizationController visualisationController,
 			GraphCreationDialog dialog) {
-		this.vc = visualisationController;
+		this.visualizationController = visualisationController;
 		this.dialog = dialog;
 
 		tableComboBox.setDisable(false);
@@ -71,25 +71,24 @@ public class PopupVisualizationController {
 					visualizationInputVBox.getChildren().clear();
 					switch (newValue) {
 						case "BarChart":
-							bcc = new BarChartController(table, visualizationInputVBox);
-							bcc.initialize();
+							barChartController =
+									new BarChartController(table, visualizationInputVBox);
+							barChartController.initialize();
 							break;
 						default:
 							break;
 					}
 				});
-
-
 	}
 
 	@FXML
-	protected void handleGraphCreateButtonAction(ActionEvent event) {
-		vc.drawGraph(bcc.create());
+	protected void handleGraphCreateButtonAction() {
+		visualizationController.drawGraph(barChartController.create());
 		dialog.close();
 	}
 
 	@FXML
-	protected void handleCancelButtonAction(ActionEvent event) {
+	protected void handleCancelButtonAction() {
 		dialog.close();
 	}
 }

@@ -1,5 +1,6 @@
 package controllers.visualizations;
 
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
@@ -43,6 +44,7 @@ public class BarChartController extends ChartController {
 	private ComboBox<DataColumn> yAxisBox;
 	private Label xAxisErrorLabel;
 	private Label yAxisErrorLabel;
+	private ChangeListener<DataColumn> dataColumnChangeListener;
 
 
 	/**
@@ -97,12 +99,12 @@ public class BarChartController extends ChartController {
 	 * The NumberAxis is created and the scale is set.
 	 */
 	public void setYAxisEventListener() {
-		yAxisBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+		dataColumnChangeListener = (observable, oldValue, newValue) -> {
 			yCol = newValue;
 			DataDescriber<NumberValue> yColDescriber = new RowValueDescriber<>(yCol);
 			try {
 				float max = new Maximum(table, yColDescriber).calculate().getValue();
-				float min = new Minimum(table, yColDescriber).calculate().getValue();
+				float min = new Minimum(table, yColDescriber).calculate().getValue() - 1;
 				int sep = computeSeparatorValue(max, min);
 				yAxis = new NumberAxis(yCol.getName(), min, max, sep);
 				setErrorLabel(yAxisErrorLabel, "");
@@ -110,7 +112,8 @@ public class BarChartController extends ChartController {
 			} catch (Exception e) {
 				setErrorLabel(yAxisErrorLabel, "Please select a column with number values.");
 			}
-		});
+		};
+		yAxisBox.valueProperty().addListener(dataColumnChangeListener);
 	}
 
 	/**
