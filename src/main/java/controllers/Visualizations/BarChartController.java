@@ -37,10 +37,12 @@ public class BarChartController extends ChartController {
 	private DataColumn yCol;
 	private boolean xSet = false;
 	private boolean ySet = false;
-	public static final int YAXIS_SEPARATION = 10;
-	public static final int BASE = 10;
-	public static final double MEAN = 5.5;
-	public static final double ROUND = 0.5;
+	public static final int YAXIS_SEPARATION = 5;
+
+	private ComboBox<DataColumn> xAxisBox;
+	private ComboBox<DataColumn> yAxisBox;
+	private Label xAxisErrorLabel;
+	private Label yAxisErrorLabel;
 
 
 	/**
@@ -54,17 +56,28 @@ public class BarChartController extends ChartController {
 		this.vBox = vBox;
 	}
 
-	public void initialize() {
-		ComboBox<DataColumn> xAxisBox = new ComboBox<>();
-		Label xAxisErrorLabel = new Label();
+	/**
+	 * Initialize the fxml objects for the barChart.
+	 */
+	public void initializeFields() {
+		xAxisBox = new ComboBox<>();
+		xAxisErrorLabel = new Label();
 		xAxisErrorLabel.setMaxWidth(Double.MAX_VALUE);
-		ComboBox<DataColumn> yAxisBox = new ComboBox<>();
-		Label yAxisErrorLabel = new Label();
+		yAxisBox = new ComboBox<>();
+		yAxisErrorLabel = new Label();
 		yAxisErrorLabel.setMaxWidth(Double.MAX_VALUE);
 		setColumnDropDown(xAxisBox, table);
 		setColumnDropDown(yAxisBox, table);
+	}
+
+	/**
+	 * Sets the Listener for the xAxis ComboBox.
+	 * When the value changes, the data of the selected column will be added to the
+	 * CategoryAxis of the barChart. An error message is shown to the user when the column
+	 * does not contain appropriate values for a CategoryAxis.
+	 */
+	public void setXAxisEventListener() {
 		xAxisBox.valueProperty().addListener((observable1, oldValue1, newValue1) -> {
-			xSet = true;
 			xCol = newValue1;
 			List<String> dataxcol = table.getRows().stream()
 					.map(row -> row.getValue(xCol).toString())
@@ -72,54 +85,63 @@ public class BarChartController extends ChartController {
 			try {
 				xAxis = new CategoryAxis(FXCollections.observableArrayList(dataxcol));
 				setErrorLabel(xAxisErrorLabel, "");
+				xSet = true;
 			} catch (Exception e) {
 				setErrorLabel(xAxisErrorLabel, "Please select a column with distinct values.");
 			}
 		});
+	}
+
+	/**
+	 * Sets the Listener for the yAxis ComboBox.
+	 * The NumberAxis is created and the scale is set.
+	 */
+	public void setYAxisEventListener() {
 		yAxisBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-			ySet = true;
 			yCol = newValue;
 			DataDescriber<NumberValue> yColDescriber = new RowValueDescriber<>(yCol);
 			try {
-				float max = (float) new Maximum(table, yColDescriber).calculate().getValue();
-				float min = (float) new Minimum(table, yColDescriber).calculate().getValue();
-				int sep = computeSeperatorValue(max);
+				float max = new Maximum(table, yColDescriber).calculate().getValue();
+				float min = new Minimum(table, yColDescriber).calculate().getValue();
+				int sep = computeSeparatorValue(max, min);
 				yAxis = new NumberAxis(yCol.getName(), min, max, sep);
 				setErrorLabel(yAxisErrorLabel, "");
+				ySet = true;
 			} catch (Exception e) {
 				setErrorLabel(yAxisErrorLabel, "Please select a column with number values.");
 			}
 		});
+	}
+
+	/**
+	 * Called to initialize the barChartController object.
+	 */
+	public void initialize() {
+		initializeFields();
+		setXAxisEventListener();
+		setYAxisEventListener();
 		vBox.getChildren().addAll(xAxisErrorLabel, xAxisBox, yAxisErrorLabel, yAxisBox);
 	}
 
 	/**
-	 * Compute aproximately a tenth of the maxvalue rouded to the nearest power of 10.
+	 * Compute approximately a tenth of the range of the axis.
 	 *
 	 * @param max the maximum value of the axis.
+	 * @param min the minimum value of the axis.
 	 * @return the computed seperator value as int.
 	 */
-	public int computeSeperatorValue(float max) {
-		return (int) Math.pow(BASE,
-				Math.round(Math.log10(max / YAXIS_SEPARATION) - Math.log10(MEAN) + ROUND));
-	}
-
-	public void setErrorLabel(Label label, String message) {
-		label.setTextFill(Color.RED);
-		label.setText(message);
+	public int computeSeparatorValue(float max, float min) {
+		return (int) (max - min) / YAXIS_SEPARATION;
 	}
 
 	/**
-	 * The nearest power of 10 to the (max value devided by YAXIS_SEPERATOR).
-	 * This value is used for splitting the y-axis into approximately 10.
-	 *
-	 * @param max
-	 * @return the nearest power of 10 of max devided by YAXIS_SEPERATOR.
+	 * Set the message to an error label.
+	 * @param label the label wich will show the error.
+	 * @param message the message for in the label.
 	 */
-	public int setScale(float max) {
-		return (int) Math.pow(BASE,
-				Math.round(Math.log10(max / YAXIS_SEPARATION) - Math.log10(MEAN) + ROUND));
-
+	public void setErrorLabel(Label label, String message) {
+		label.setTextFill(Color.RED);
+		label.setText(message);
 	}
 
 	/**
@@ -137,9 +159,7 @@ public class BarChartController extends ChartController {
 	 * @return BarChart object.
 	 */
 	public BarChart create() {
-
 		BarChart res = new BarChart<>(xAxis, yAxis);
-
 		XYChart.Series<String, Number> series1 = new XYChart.Series<>();
 		series1.setName(yCol.getName());
 		for (DataRow row : table.getRows()) {
