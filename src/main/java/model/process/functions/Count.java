@@ -2,7 +2,6 @@ package model.process.functions;
 
 import model.data.DataTable;
 import model.data.describer.DataDescriber;
-import model.data.value.DataValue;
 import model.data.value.IntValue;
 import model.data.value.NumberValue;
 
@@ -10,7 +9,7 @@ import model.data.value.NumberValue;
  * Function used to count the number of rows in the result.
  * Created by jens on 6/4/15.
  */
-public class Count extends Function{
+public class Count extends Function {
 
 	public Count(DataTable model, DataDescriber<NumberValue> argument) {
 		super(model, argument);
@@ -18,7 +17,7 @@ public class Count extends Function{
 
 	/**
 	 * Return the amount of rows in the table.
-	 * @return
+	 * @return number of rows in this table
 	 */
 	@Override
 	public IntValue calculate() {
