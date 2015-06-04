@@ -1,6 +1,5 @@
 package model.process.analysis;
 
-import model.data.CombinedDataTable;
 import model.data.DataRow;
 import model.data.DataTable;
 import model.data.Table;
@@ -15,6 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
+ * Class that groups a table by a column.
  * Created by jens on 6/3/15.
  */
 public class GroupByColumn extends GroupByAnalysis {

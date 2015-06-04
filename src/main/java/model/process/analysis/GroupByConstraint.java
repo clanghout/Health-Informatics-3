@@ -1,6 +1,5 @@
 package model.process.analysis;
 
-import model.data.CombinedDataTable;
 import model.data.DataTable;
 import model.data.Table;
 import model.process.functions.Function;
