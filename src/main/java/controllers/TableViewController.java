@@ -10,9 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
-import javafx.util.Callback;
 import model.data.DataColumn;
 import model.data.DataModel;
 import model.data.DataRow;
@@ -122,14 +120,7 @@ public class TableViewController implements Observer {
 		TableColumn<ObservableList<StringProperty>, String> column
 				= new TableColumn<>(columnTitle);
 		column.setCellValueFactory(
-				new Callback<CellDataFeatures<ObservableList<StringProperty>, String>,
-						ObservableValue<String>>() {
-					@Override
-					public ObservableValue<String> call(
-							CellDataFeatures<ObservableList<StringProperty>, String> cellDataFeatures) {
-						return cellDataFeatures.getValue().get(index);
-					}
-				});
+				cellDataFeatures -> cellDataFeatures.getValue().get(index));
 		return column;
 	}
 
