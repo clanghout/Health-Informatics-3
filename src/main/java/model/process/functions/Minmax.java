@@ -2,7 +2,6 @@ package model.process.functions;
 
 import model.data.DataTable;
 import model.data.describer.DataDescriber;
-import model.data.value.DataValue;
 import model.data.value.FloatValue;
 import model.data.value.NumberValue;
 
@@ -12,13 +11,9 @@ import model.data.value.NumberValue;
  * @author louisgosschalk 13-05-2015
  */
 public abstract class Minmax extends Function {
-	private DataTable table;
-	private DataDescriber<NumberValue> argument;
 
 	public Minmax(DataTable model, DataDescriber<NumberValue> argument) {
 		super(model, argument);
-		this.table = model;
-		this.argument = argument;
 	}
 
 	/**
@@ -27,7 +22,10 @@ public abstract class Minmax extends Function {
 	 * @return List<DataRow> the rows containing the minimum
 	 */
 	@Override
-	public DataValue calculate() {
+	public FloatValue calculate() {
+		if (!initialize()) {
+			return new FloatValue(0);
+		}
 		return compare();
 	}
 
@@ -36,12 +34,12 @@ public abstract class Minmax extends Function {
 	 * 
 	 * @return List<DataRow> a list of DataRows
 	 */
-	public DataValue compare() {
+	public FloatValue compare() {
 		float current = 0.0f;
-		current = intOrFloat(argument, table.getRow(0));
-		for (int i = 1; i < table.getRowCount(); i++) {
+		current = intOrFloat(getArgument(), getTable().getRow(0));
+		for (int i = 1; i < getTable().getRowCount(); i++) {
 			float compare = 0.0f;
-			compare = intOrFloat(argument, table.getRow(i));
+			compare = intOrFloat(getArgument(), getTable().getRow(i));
 			float comparison = current - compare;
 			if (check(comparison)) {
 				current = compare;
