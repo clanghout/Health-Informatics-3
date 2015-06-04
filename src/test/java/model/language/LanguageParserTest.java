@@ -1,5 +1,6 @@
 package model.language;
 
+import jdk.internal.org.objectweb.asm.tree.analysis.Value;
 import model.data.value.*;
 import model.language.nodes.ConstantNode;
 import model.language.nodes.ValueNode;
@@ -125,7 +126,7 @@ public class LanguageParserTest {
 		ParsingResult result = runner.run(input);
 
 		assertTrue(result.matched);
-		NumberNode node = (NumberNode) result.valueStack.pop();
+		ValueNode<NumberValue> node = (ValueNode<NumberValue>) result.valueStack.pop();
 		assertEquals(12.0f, node.resolve(null).resolve(null).getValue());
 	}
 
@@ -147,7 +148,7 @@ public class LanguageParserTest {
 		ParsingResult result = runner.run(input);
 
 		assertTrue(result.matched);
-		NumberNode node = (NumberNode) result.valueStack.pop();
+		ValueNode<NumberValue> node = (ValueNode<NumberValue>) result.valueStack.pop();
 		assertEquals(5.0f, node.resolve(null).resolve(null).getValue());
 	}
 }

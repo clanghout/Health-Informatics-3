@@ -18,9 +18,8 @@ public final class EqualityNode<T extends DataValue> extends OperationNode<BoolV
 
 	public EqualityNode(
 			ValueNode<T> left,
-            String operation,
             ValueNode<T> right) {
-		super(null, operation, null);
+		super(null, null, null);
 		this.left = left;
 		this.right = right;
 	}

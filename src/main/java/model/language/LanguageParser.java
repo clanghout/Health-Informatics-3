@@ -39,7 +39,13 @@ class LanguageParser extends BaseParser<Object> {
 						NumberColumn(),
 						Sequence("(", NumberExpression(), ")")),
 				swap3(),
-				push(new NumberOperationNode((NumberNode) pop(), (String) pop(), (NumberNode) pop()))
+				push(
+						new NumberOperationNode(
+							(ValueNode<NumberValue>) pop(),
+							(String) pop(),
+							(ValueNode<NumberValue>) pop()
+						)
+				)
 		);
 	}
 
@@ -48,7 +54,7 @@ class LanguageParser extends BaseParser<Object> {
 				"SQRT(",
 				NumberExpression(),
 				")",
-				push(new NumberOperationNode((NumberNode) pop(), "SQRT", null))
+				push(new NumberOperationNode((ValueNode<NumberValue>) pop(), "SQRT", null))
 		);
 	}
 
@@ -144,8 +150,8 @@ class LanguageParser extends BaseParser<Object> {
 						OneOrMore(Digit())
 				),
 				push(new ConstantNode<FloatValue>(
-						new FloatValue(Float.parseFloat(matchOrDefault("0.0")))
-					)
+								new FloatValue(Float.parseFloat(matchOrDefault("0.0")))
+						)
 				)
 		);
 	}
@@ -260,13 +266,13 @@ class LanguageParser extends BaseParser<Object> {
 
 	Rule Equality() {
 		return Sequence(
-				AnyValue(),
+				NumberExpression(),
 				WhiteSpace(),
 				"=",
 				WhiteSpace(),
-				AnyValue(),
-				swap3(),
-				push(new EqualityNode((ValueNode) pop(), (String) pop(), (ValueNode) pop()))
+				NumberExpression(),
+				swap(),
+				push(new EqualityNode((ValueNode) pop(), (ValueNode) pop()))
 		);
 	}
 
@@ -274,7 +280,7 @@ class LanguageParser extends BaseParser<Object> {
 		return FirstOf(
 				StringExpression(),
 				NumberExpression(),
-				BooleanExpression()
+				BooleanTerm()
 		);
 	}
 
@@ -289,6 +295,7 @@ class LanguageParser extends BaseParser<Object> {
 		return FirstOf(
 				BooleanOperation(),
 				Comparison(),
+				Equality(),
 				UnaryBooleanOperation(),
 				BooleanLiteral(),
 				Sequence("(", BooleanExpression(), ")"),
@@ -347,25 +354,26 @@ class LanguageParser extends BaseParser<Object> {
 	 */
 	Rule BooleanOperation() {
 		return Sequence(
-				FirstOf(
-						BooleanLiteral(),
-						Comparison(),
-						UnaryBooleanOperation(),
-						Sequence("(", BooleanExpression(), ")")),
+				BooleanTerm(),
 				WhiteSpace(),
 				BooleanOperator(),
 				WhiteSpace(),
-				FirstOf(
-						BooleanLiteral(),
-						Comparison(),
-						UnaryBooleanOperation(),
-						Sequence("(", BooleanExpression(), ")")),
+				BooleanTerm(),
 				swap3(),
 				push(new BooleanOperationNode(
 						(ValueNode<BoolValue>) pop(),
 						(String) pop(),
 						(ValueNode<BoolValue>) pop()))
 		);
+	}
+
+	Rule BooleanTerm() {
+		return FirstOf(
+				BooleanLiteral(),
+				Comparison(),
+				Equality(),
+				UnaryBooleanOperation(),
+				Sequence("(", BooleanExpression(), ")"));
 	}
 
 	Rule BooleanOperator() {
