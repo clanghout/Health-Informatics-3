@@ -1,11 +1,14 @@
 package model.process.functions;
 
+import model.data.value.FloatValue;
 import model.exceptions.FunctionInputMismatchException;
 import model.data.DataColumn;
 import model.data.DataTable;
 import model.data.describer.RowValueDescriber;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Standard tests which should pass on all types of functions.
@@ -21,33 +24,38 @@ public class EmptyTest {
 		table = new DataTable();
 	}
 
-	@Test(expected = FunctionInputMismatchException.class)
+	@Test
 	public void testEmptyTableAverage() throws Exception {
-		Average f = new Average(table, new RowValueDescriber<>(column));
+		assertEquals(new FloatValue(0),
+				new Average(table, new RowValueDescriber<>(column)).calculate());
 	}
 
-	@Test(expected = FunctionInputMismatchException.class)
+	@Test
 	public void testEmptyTableMaximum() throws Exception {
-		Maximum f = new Maximum(table, new RowValueDescriber<>(column));
+		assertEquals(new FloatValue(0),
+				new Maximum(table, new RowValueDescriber<>(column)).calculate());
 	}
 
-	@Test(expected = FunctionInputMismatchException.class)
+	@Test
 	public void testEmptyTableMinimum() throws Exception {
-		Minimum f = new Minimum(table, new RowValueDescriber<>(column));
+		assertEquals(new FloatValue(0),
+				new Minimum(table, new RowValueDescriber<>(column)).calculate());
 	}
 
-	@Test(expected = FunctionInputMismatchException.class)
+	@Test
 	public void testEmptyTableMedian() throws Exception {
-		Median f = new Median(table, new RowValueDescriber<>(column));
+		assertEquals(new FloatValue(0),
+				new Median(table, new RowValueDescriber<>(column)).calculate());
 	}
 
-	@Test(expected = FunctionInputMismatchException.class)
+	@Test
 	public void testEmptyTableSum() throws Exception {
-		Sum f = new Sum(table, new RowValueDescriber<>(column));
+		assertEquals(new FloatValue(0), new Sum(table, new RowValueDescriber<>(column)).calculate());
 	}
-	
-	@Test(expected = FunctionInputMismatchException.class)
+
+	@Test
 	public void testEmptyTableDeviation() throws Exception {
-		StandardDeviation f = new StandardDeviation(table, new RowValueDescriber<>(column));
+		assertEquals(new FloatValue(0),
+				new StandardDeviation(table, new RowValueDescriber<>(column)).calculate());
 	}
 }
