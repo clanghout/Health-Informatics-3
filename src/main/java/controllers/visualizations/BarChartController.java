@@ -44,7 +44,6 @@ public class BarChartController extends ChartController {
 	private ComboBox<DataColumn> yAxisBox;
 	private Label xAxisErrorLabel;
 	private Label yAxisErrorLabel;
-	private ChangeListener<DataColumn> dataColumnChangeListener;
 
 
 	/**
@@ -99,7 +98,7 @@ public class BarChartController extends ChartController {
 	 * The NumberAxis is created and the scale is set.
 	 */
 	public void setYAxisEventListener() {
-		dataColumnChangeListener = (observable, oldValue, newValue) -> {
+		ChangeListener<DataColumn> dataColumnChangeListener = (observable, oldValue, newValue) -> {
 			yCol = newValue;
 			DataDescriber<NumberValue> yColDescriber = new RowValueDescriber<>(yCol);
 			try {
