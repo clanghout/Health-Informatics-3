@@ -26,7 +26,7 @@ public class StandardDeviation extends Function {
 	 * Calculate average, variance and finally the (standard) deviation.
 	 */
 	@Override
-	public DataValue calculate() {
+	public FloatValue calculate() {
 		if(!initialize()) {
 			return new FloatValue(0);
 		}
