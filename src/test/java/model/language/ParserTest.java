@@ -1,7 +1,9 @@
 package model.language;
 
 import model.data.*;
+import model.data.value.BoolValue;
 import model.data.value.IntValue;
+import model.data.value.StringValue;
 import model.process.DataProcess;
 import org.junit.Before;
 import org.junit.Test;
@@ -209,5 +211,73 @@ public class ParserTest {
 		DataRow row = table.getRow(0);
 
 		assertEquals(new IntValue(11), row.getValue(table.getColumn("value")));
+	}
+
+	@Test
+	public void testBooleanTableValue() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("test2");
+
+		builder.createColumn("value", BoolValue.class);
+
+		builder.createRow(new BoolValue(true));
+		builder.createRow(new BoolValue(false));
+
+		model.add(builder.build());
+
+		String input = "def isTrue() : Constraint = test2.value;" +
+				"from(test2)|constraint(isTrue)|is(result)";
+
+		Table result = parseAndProcess(input);
+
+		assertTrue(result instanceof DataTable);
+		DataTable table = (DataTable) result;
+
+		assertEquals(1, table.getRowCount());
+
+		DataRow row = table.getRow(0);
+
+		assertEquals(new BoolValue(true), row.getValue(table.getColumn("value")));
+	}
+
+	@Test
+	public void testCodeCheck() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("test2");
+
+		builder.createColumn("value", IntValue.class);
+		builder.createColumn("code", StringValue.class);
+
+		builder.createRow(new IntValue(11), new StringValue("appel"));
+		builder.createRow(new IntValue(9), new StringValue("test"));
+		builder.createRow(new IntValue(8), new StringValue("somethingelse"));
+		builder.createRow(new IntValue(7), new StringValue("sjon"));
+
+		DataTable test2 = builder.build();
+
+		test2.getRow(0).addCode("appel");
+		test2.getRow(2).addCode("test");
+
+		model.add(test2);
+
+		String input =
+				"def codeCheck() : Constraint = HAS_CODE(\"test\") OR HAS_CODE(test2.code);" +
+				"from(test2)|constraint(codeCheck)|is(result)";
+
+		Table result = parseAndProcess(input);
+
+		assertTrue(result instanceof DataTable);
+		DataTable table = (DataTable) result;
+
+		assertEquals(2, table.getRowCount());
+
+		DataRow row1 = table.getRow(0);
+		DataRow row3 = table.getRow(1);
+
+		assertTrue(row1.getCodes().contains("appel"));
+		assertEquals(new IntValue(11), row1.getValue(table.getColumn("value")));
+
+		assertTrue(row3.getCodes().contains("test"));
+		assertEquals(new IntValue(8), row3.getValue(table.getColumn("value")));
 	}
 }
