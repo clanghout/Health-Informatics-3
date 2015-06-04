@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * <p>
  * Created by Chris on 28-5-2015.
  */
-public class BarChartController extends VisualizationController {
+public class BarChartController extends ChartController {
 	private DataTable table;
 	private CategoryAxis xAxis;
 	private NumberAxis yAxis;

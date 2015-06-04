@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.Chart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.VBox;
@@ -61,6 +62,10 @@ public class VisualizationController {
 		clearViewButton.setDisable(false);
 	}
 
+	public void drawGraph(Chart chart) {
+		visualizationGraph.getChildren().add(chart);
+	}
+
 	/**
 	 * Sets the model that will be observed.
 	 *
@@ -70,30 +75,6 @@ public class VisualizationController {
 		this.model = model;
 	}
 
-	/**
-	 * Set the items of a comboBox to the columns of the dataTable.
-	 *
-	 * @param inputBox  the comboBox that specifies the axis of the graph
-	 * @param dataTable the dataTable used for the graph
-	 */
-	public void setColumnDropDown(ComboBox<DataColumn> inputBox, DataTable dataTable) {
-		inputBox.setDisable(false);
-		ObservableList<DataColumn> columns =
-				FXCollections.observableArrayList(dataTable.getColumns());
-		inputBox.setItems(columns);
-		inputBox.setConverter(new StringConverter<DataColumn>() {
-			@Override
-			public String toString(DataColumn object) {
-				return object.getName();
-			}
-
-			@Override
-			public DataColumn fromString(String string) {
-				return dataTable.getColumn(string);
-			}
-		});
-	}
-
 	@FXML
 	protected void handlePopupButtonAction(ActionEvent event) {
 		visualizationGraph.getChildren().clear();
@@ -101,7 +82,7 @@ public class VisualizationController {
 			GraphCreationDialog gcd = new GraphCreationDialog();
 			gcd.show();
 			popupVisualizationController = gcd.getFxml().getController();
-			popupVisualizationController.initializeView(model);
+			popupVisualizationController.initializeView(model, this);
 		} catch (NullPointerException e) {
 			System.out.println("no controller");
 		} catch (Exception e) {

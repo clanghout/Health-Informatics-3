@@ -23,6 +23,7 @@ public class PopupVisualizationController {
 	@FXML
 	private VBox visualizationInputVBox;
 	private BarChartController bcc;
+	private VisualizationController vc;
 
 	public PopupVisualizationController() {
 
@@ -38,7 +39,8 @@ public class PopupVisualizationController {
 		visualizationComboBox.setDisable(true);
 	}
 
-	public void initializeView(DataModel model) {
+	public void initializeView(DataModel model, VisualizationController vc) {
+		this.vc = vc;
 		this.model = model;
 		tableComboBox.setDisable(false);
 		tableComboBox.setItems(model.getObservableList());
@@ -66,7 +68,7 @@ public class PopupVisualizationController {
 
 	@FXML
 	protected void handleGraphCreateButtonAction(ActionEvent event) {
-
+		vc.drawGraph(bcc.create());
 	}
 
 	@FXML
