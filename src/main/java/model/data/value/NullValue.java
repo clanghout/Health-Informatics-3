@@ -6,6 +6,9 @@ package model.data.value;
  */
 public class NullValue extends DataValue {
 
+	/**
+	 * Create a new NullValue.
+	 */
 	public NullValue() {
 	}
 
@@ -30,7 +33,7 @@ public class NullValue extends DataValue {
 	}
 
 	@Override
-	public DataValue copy() {
+	public NullValue copy() {
 		return new NullValue();
 	}
 }
