@@ -65,8 +65,7 @@ public class DataController {
 		}
 	}
 
-	@FXML
-	protected void handleAnalyseButtonAction(ActionEvent event) {
+	private void read() {
 		try {
 			DataReader reader = new DataReader(file);
 			DataModel model = reader.createDataModel();
