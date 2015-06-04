@@ -10,6 +10,7 @@ import model.data.value.StringValue;
 import model.process.functions.Function;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ import java.util.Map;
  * Created by jens on 6/3/15.
  */
 public abstract class GroupByAnalysis extends DataAnalysis {
-	protected Map<String, ConstraintAnalysis> constraints;
+	protected LinkedHashMap<String, ConstraintAnalysis> constraints;
 	private DataTableBuilder builder;
 	private List<Function> functionsList;
 
@@ -27,7 +28,7 @@ public abstract class GroupByAnalysis extends DataAnalysis {
 					+ "to the number of group names.");
 		}
 
-		constraints = new HashMap<>();
+		constraints = new LinkedHashMap<>();
 		for(int i = 0; i < constrainList.size(); i++) {
 			constraints.put(groupNames.get(i), constrainList.get(i));
 		}
@@ -74,6 +75,7 @@ public abstract class GroupByAnalysis extends DataAnalysis {
 			for(Function function : functionsList) {
 				function.setTable(chunk);
 				values[i] = function.calculate();
+				i++;
 			}
 
 			builder.createRow(values);

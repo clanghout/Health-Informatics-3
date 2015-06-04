@@ -13,6 +13,7 @@ import model.data.value.StringValue;
 import model.process.analysis.operations.constraints.EqualityCheck;
 import model.process.functions.Function;
 import model.process.functions.Maximum;
+import model.process.functions.Minimum;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,7 +44,7 @@ public class GroupByConstraintTest {
 		builder.createRow(new StringValue("test"), new FloatValue(5));
 
 		builder.createRow(new StringValue("test"), new FloatValue(2));
-		builder.createRow(new StringValue("henk"), new FloatValue(2));
+		builder.createRow(new StringValue("henk"), new FloatValue(-1));
 		builder.createRow(new StringValue("test"), new FloatValue(3));
 		builder.createRow(new StringValue("henk"), new FloatValue(5));
 
@@ -98,7 +99,7 @@ public class GroupByConstraintTest {
 		List<String> name = new ArrayList<>();
 
 		functions.add(new Maximum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
-		name.add("mac");
+		name.add("max");
 		GroupByConstraint groupBy = new GroupByConstraint("test2", constraints, groupNames,
 				functions, name);
 
@@ -109,5 +110,90 @@ public class GroupByConstraintTest {
 		assertEquals("test", out.getRow(0).getValue(out.getColumn("Chunk")).getValue());
 		assertEquals("bob", out.getRow(1).getValue(out.getColumn("Chunk")).getValue());
 		assertEquals("henk", out.getRow(2).getValue(out.getColumn("Chunk")).getValue());
+
+		assertEquals(new FloatValue(5), out.getRow(0).getValue(out.getColumn("max")));
+		assertEquals(new FloatValue(3), out.getRow(1).getValue(out.getColumn("max")));
+		assertEquals(new FloatValue(5), out.getRow(2).getValue(out.getColumn("max")));
+
+	}
+
+	@Test
+	public void testAnalyseMultipleFunction() throws Exception {
+		List<Function> functions = new ArrayList<>();
+		List<String> name = new ArrayList<>();
+
+		functions.add(new Maximum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		name.add("max");
+		functions.add(new Minimum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		name.add("min");
+		GroupByConstraint groupBy = new GroupByConstraint("test2", constraints, groupNames,
+				functions, name);
+
+		DataTable out = (DataTable) groupBy.analyse(table);
+
+		assertEquals(out.getRows().size(), 3);
+		assertEquals(out.getName(), "test2");
+		assertEquals("test", out.getRow(0).getValue(out.getColumn("Chunk")).getValue());
+		assertEquals("bob", out.getRow(1).getValue(out.getColumn("Chunk")).getValue());
+		assertEquals("henk", out.getRow(2).getValue(out.getColumn("Chunk")).getValue());
+
+		assertEquals(new FloatValue(5), out.getRow(0).getValue(out.getColumn("max")));
+		assertEquals(new FloatValue(3), out.getRow(1).getValue(out.getColumn("max")));
+		assertEquals(new FloatValue(5), out.getRow(2).getValue(out.getColumn("max")));
+
+		assertEquals(new FloatValue(2), out.getRow(0).getValue(out.getColumn("min")));
+		assertEquals(new FloatValue(3), out.getRow(1).getValue(out.getColumn("min")));
+		assertEquals(new FloatValue(-1), out.getRow(2).getValue(out.getColumn("min")));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testUnbalancedArguments() throws Exception {
+		List<Function> functions = new ArrayList<>();
+		List<String> name = new ArrayList<>();
+
+		functions.add(new Maximum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		name.add("max");
+		functions.add(new Minimum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		GroupByConstraint groupBy = new GroupByConstraint("test2", constraints, groupNames,
+				functions, name);
+
+		DataTable out = (DataTable) groupBy.analyse(table);
+
+	}
+
+	@Test
+	public void testAnalyseFunctionNoRowsInConstraint() throws Exception {
+		List<Function> functions = new ArrayList<>();
+		List<String> name = new ArrayList<>();
+
+		constraints.add(new ConstraintAnalysis(
+				new ConstraintDescriber(
+						new EqualityCheck<StringValue>(
+								new RowValueDescriber<StringValue>(c1),
+								new ConstantDescriber<StringValue>(
+										new StringValue("geen"))))));
+		groupNames.add("geen");
+
+		functions.add(new Maximum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		name.add("max");
+		GroupByConstraint groupBy = new GroupByConstraint("test2", constraints, groupNames,
+				functions, name);
+
+		DataTable out = (DataTable) groupBy.analyse(table);
+
+		assertEquals(out.getRows().size(), 4);
+		assertEquals(out.getName(), "test2");
+		assertEquals("test", out.getRow(0).getValue(out.getColumn("Chunk")).getValue());
+		assertEquals("bob", out.getRow(1).getValue(out.getColumn("Chunk")).getValue());
+		assertEquals("henk", out.getRow(2).getValue(out.getColumn("Chunk")).getValue());
+		assertEquals("geen", out.getRow(3).getValue(out.getColumn("Chunk")).getValue());
+
+
+
+		assertEquals(new FloatValue(5), out.getRow(0).getValue(out.getColumn("max")));
+		assertEquals(new FloatValue(3), out.getRow(1).getValue(out.getColumn("max")));
+		assertEquals(new FloatValue(5), out.getRow(2).getValue(out.getColumn("max")));
+		assertEquals(new FloatValue(0), out.getRow(3).getValue(out.getColumn("max")));
+
 	}
 }
