@@ -1,6 +1,5 @@
 package controllers.visualizations;
 
-import controllers.VisualizationController;
 import javafx.collections.FXCollections;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
@@ -71,13 +70,23 @@ public class BarChartController extends ChartController {
 			DataDescriber<NumberValue> yColDescriber = new RowValueDescriber<>(yCol);
 			float max = (float) new Maximum(table, yColDescriber).calculate().getValue();
 			float min = (float) new Minimum(table, yColDescriber).calculate().getValue();
-			// sep is the nearest power of 10 of max devided by YAXIS_SEPERATOR.
-			// This creates a value that seperates the y-axis in approximately 10 values.
-			int sep = (int) Math.pow(BASE,
-					Math.round(Math.log10(max / YAXIS_SEPARATION) - Math.log10(MEAN) + ROUND));
+			int sep = setScale(max);
 			yAxis = new NumberAxis(yCol.getName(), min, max, sep);
 		});
 		vBox.getChildren().addAll(xAxisBox, yAxisBox);
+	}
+
+	/**
+	 * The nearest power of 10 to the (max value devided by YAXIS_SEPERATOR).
+	 * This value is used for splitting the y-axis into approximately 10.
+	 *
+	 * @param max
+	 * @return the nearest power of 10 of max devided by YAXIS_SEPERATOR.
+	 */
+	public int setScale(float max) {
+		return (int) Math.pow(BASE,
+				Math.round(Math.log10(max / YAXIS_SEPARATION) - Math.log10(MEAN) + ROUND));
+
 	}
 
 	/**
