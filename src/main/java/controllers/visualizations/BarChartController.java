@@ -133,12 +133,13 @@ public class BarChartController extends ChartController {
 	 * @return the computed seperator value as int.
 	 */
 	public int computeSeparatorValue(float max, float min) {
-		return (int) (max - min) / YAXIS_SEPARATION;
+		return Math.round((max - min) / YAXIS_SEPARATION);
 	}
 
 	/**
 	 * Set the message to an error label.
-	 * @param label the label wich will show the error.
+	 *
+	 * @param label   the label wich will show the error.
 	 * @param message the message for in the label.
 	 */
 	public void setErrorLabel(Label label, String message) {
