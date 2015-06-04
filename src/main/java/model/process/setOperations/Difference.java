@@ -26,7 +26,7 @@ public class Difference extends DataProcess {
 	 */
 	public Difference(Identifier<DataTable> table, Identifier<DataTable> table2) {
 		this.tableIdentifier = table;
-		this.tableIdentifier = table2;
+		this.table2Identifier = table2;
 	}
 
 	//TODO define a common parent for set-operations

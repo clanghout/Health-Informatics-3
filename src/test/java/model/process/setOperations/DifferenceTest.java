@@ -68,6 +68,8 @@ public class DifferenceTest {
 
 		diff.setDataModel(model);
 
+		diff.doProcess();
+
 	}
 
 	@Test(expected = Exception.class)
