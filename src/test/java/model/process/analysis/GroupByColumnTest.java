@@ -25,12 +25,10 @@ import static org.junit.Assert.*;
 /**
  * Created by jens on 6/3/15.
  */
-public class GroupByConstraintTest {
+public class GroupByColumnTest {
 	DataTable table;
 	DataColumn c1;
 	DataColumn c2;
-	List<String> groupNames;
-	List<ConstraintAnalysis> constraints;
 
 	@Before
 	public void setup() {
@@ -49,39 +47,12 @@ public class GroupByConstraintTest {
 		builder.createRow(new StringValue("henk"), new FloatValue(5));
 
 		table = builder.build();
-
-		constraints = new ArrayList<>();
-		groupNames = new ArrayList<>();
-		constraints.add(new ConstraintAnalysis(
-				new ConstraintDescriber(
-						new EqualityCheck<StringValue>(
-								new RowValueDescriber<StringValue>(c1),
-								new ConstantDescriber<StringValue>(
-										new StringValue("test"))))));
-		groupNames.add("test");
-
-
-		constraints.add(new ConstraintAnalysis(
-				new ConstraintDescriber(
-						new EqualityCheck<StringValue>(
-								new RowValueDescriber<StringValue>(c1),
-								new ConstantDescriber<StringValue>(
-										new StringValue("bob"))))));
-		groupNames.add("bob");
-
-		constraints.add(new ConstraintAnalysis(
-				new ConstraintDescriber(
-						new EqualityCheck<StringValue>(
-								new RowValueDescriber<StringValue>(c1),
-								new ConstantDescriber<StringValue>(
-										new StringValue("henk"))))));
-		groupNames.add("henk");
 	}
 
 
 	@Test
 	public void testAnalyseNoFuncions() throws Exception {
-		GroupByConstraint groupBy = new GroupByConstraint("test2", constraints, groupNames,
+		GroupByColumn groupBy = new GroupByColumn("test2", new RowValueDescriber<>(c1),
 				new ArrayList<Function>(), new ArrayList<String>());
 
 		DataTable out = (DataTable) groupBy.analyse(table);
@@ -100,7 +71,7 @@ public class GroupByConstraintTest {
 
 		functions.add(new Maximum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
 		name.add("max");
-		GroupByConstraint groupBy = new GroupByConstraint("test2", constraints, groupNames,
+		GroupByColumn groupBy = new GroupByColumn("test2", new RowValueDescriber<>(c1),
 				functions, name);
 
 		DataTable out = (DataTable) groupBy.analyse(table);
@@ -126,7 +97,7 @@ public class GroupByConstraintTest {
 		name.add("max");
 		functions.add(new Minimum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
 		name.add("min");
-		GroupByConstraint groupBy = new GroupByConstraint("test2", constraints, groupNames,
+		GroupByColumn groupBy = new GroupByColumn("test2", new RowValueDescriber<>(c1),
 				functions, name);
 
 		DataTable out = (DataTable) groupBy.analyse(table);
@@ -154,46 +125,10 @@ public class GroupByConstraintTest {
 		functions.add(new Maximum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
 		name.add("max");
 		functions.add(new Minimum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
-		GroupByConstraint groupBy = new GroupByConstraint("test2", constraints, groupNames,
+		GroupByColumn groupBy = new GroupByColumn("test2", new RowValueDescriber<>(c1),
 				functions, name);
 
 		DataTable out = (DataTable) groupBy.analyse(table);
-
-	}
-
-	@Test
-	public void testAnalyseFunctionNoRowsInConstraint() throws Exception {
-		List<Function> functions = new ArrayList<>();
-		List<String> name = new ArrayList<>();
-
-		constraints.add(new ConstraintAnalysis(
-				new ConstraintDescriber(
-						new EqualityCheck<StringValue>(
-								new RowValueDescriber<StringValue>(c1),
-								new ConstantDescriber<StringValue>(
-										new StringValue("geen"))))));
-		groupNames.add("geen");
-
-		functions.add(new Maximum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
-		name.add("max");
-		GroupByConstraint groupBy = new GroupByConstraint("test2", constraints, groupNames,
-				functions, name);
-
-		DataTable out = (DataTable) groupBy.analyse(table);
-
-		assertEquals(out.getRows().size(), 4);
-		assertEquals(out.getName(), "test2");
-		assertEquals("test", out.getRow(0).getValue(out.getColumn("Chunk")).getValue());
-		assertEquals("bob", out.getRow(1).getValue(out.getColumn("Chunk")).getValue());
-		assertEquals("henk", out.getRow(2).getValue(out.getColumn("Chunk")).getValue());
-		assertEquals("geen", out.getRow(3).getValue(out.getColumn("Chunk")).getValue());
-
-
-
-		assertEquals(new FloatValue(5), out.getRow(0).getValue(out.getColumn("max")));
-		assertEquals(new FloatValue(3), out.getRow(1).getValue(out.getColumn("max")));
-		assertEquals(new FloatValue(5), out.getRow(2).getValue(out.getColumn("max")));
-		assertEquals(new FloatValue(0), out.getRow(3).getValue(out.getColumn("max")));
 
 	}
 
@@ -221,4 +156,5 @@ public class GroupByConstraintTest {
 		assertEquals(0, out.getRowCount());
 
 	}
+
 }

@@ -1,10 +1,8 @@
 package model.process.analysis;
 
 
-import model.data.CombinedDataTable;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
-import model.data.Table;
 import model.data.value.DataValue;
 import model.data.value.StringValue;
 import model.process.functions.Function;
@@ -23,26 +21,25 @@ public abstract class GroupByAnalysis extends DataAnalysis {
 	private DataTableBuilder builder;
 	private List<Function> functionsList;
 
-	protected void constructConstraintList(
-			List<String> groupNames,
-			List<ConstraintAnalysis> constrainList) {
-
-		if (constrainList.size() != groupNames.size()) {
-			throw new IllegalArgumentException(
-					"number of groups does not correspond to the number of group names.");
-		}
-
-		constraints = new LinkedHashMap<>();
-		for (int i = 0; i < constrainList.size(); i++) {
-			constraints.put(groupNames.get(i), constrainList.get(i));
-		}
+	/**
+	 * Set the constraints for the chunks.
+	 * @param constraints a linkedHashMap that contains all the constraints for the chunks.
+	 */
+	public void setConstraints(LinkedHashMap<String, ConstraintAnalysis> constraints) {
+		this.constraints = constraints;
 	}
 
+	/**
+	 * Create a DataTable builder for the return table.
+	 * @param name name of the new table
+	 * @param functions functions used for the columns
+	 * @param columnsNames names for the columns
+	 */
 	protected void constructBuilder(
 			String name,
 			List<Function> functions,
 			List<String> columnsNames) {
-
+		
 		builder = new DataTableBuilder();
 		builder.setName(name);
 		if (functions.size() != columnsNames.size()) {
@@ -71,12 +68,9 @@ public abstract class GroupByAnalysis extends DataAnalysis {
 	 * @param input the table to perform the groupBy on
 	 * @return a table that contains, for each chunk, the results of the functions.
 	 */
-	protected DataTable groupBy(Table input) {
-		if (input instanceof CombinedDataTable) {
-			throw new IllegalArgumentException("group by works only on datatable");
-		}
+	protected DataTable groupBy(DataTable input) {
 		for (Map.Entry<String, ConstraintAnalysis> entry : constraints.entrySet()) {
-			DataTable chunk = (DataTable) input.copy();
+			DataTable chunk = input.copy();
 			chunk = (DataTable) entry.getValue().analyse(chunk);
 
 			DataValue[] values = new DataValue[functionsList.size() + 1];
