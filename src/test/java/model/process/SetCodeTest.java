@@ -4,6 +4,7 @@ import model.data.CombinedDataTable;
 import model.data.DataModel;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
+import model.data.describer.ConstantDescriber;
 import model.data.value.FloatValue;
 import model.data.value.StringValue;
 import model.language.Identifier;
@@ -63,7 +64,10 @@ public class SetCodeTest {
 		model.add(input);
 		model.add(codeTable);
 
-		SetCode setCodes = new SetCode("code", new Identifier<>("test2"));
+		SetCode setCodes = new SetCode(
+				new ConstantDescriber<>(new StringValue("code")),
+				new Identifier<>("test2")
+		);
 		setCodes.setDataModel(model);
 		setCodes.setInput(input);
 
@@ -82,7 +86,10 @@ public class SetCodeTest {
 		model.add(input);
 		model.add(codeTable);
 
-		SetCode setCodes = new SetCode("code", new Identifier<>("test2"));
+		SetCode setCodes = new SetCode(
+				new ConstantDescriber<>(new StringValue("code")),
+				new Identifier<>("test2")
+		);
 		setCodes.setDataModel(model);
 
 		setCodes.process();
@@ -97,7 +104,10 @@ public class SetCodeTest {
 
 		CombinedDataTable comb = new CombinedDataTable(table3, input);
 
-		SetCode setCodes = new SetCode("code", new Identifier<>("test2"));
+		SetCode setCodes = new SetCode(
+				new ConstantDescriber<>(new StringValue("code")),
+				new Identifier<>("test2")
+		);
 		setCodes.setDataModel(model);
 		setCodes.setInput(comb);
 

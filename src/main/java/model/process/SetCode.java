@@ -4,6 +4,8 @@ import model.data.CombinedDataTable;
 import model.data.DataRow;
 import model.data.DataTable;
 import model.data.Table;
+import model.data.describer.DataDescriber;
+import model.data.value.StringValue;
 import model.language.Identifier;
 
 /**
@@ -13,7 +15,7 @@ import model.language.Identifier;
  * Created by jens on 6/1/15.
  */
 public class SetCode extends DataProcess {
-	private String code;
+	private DataDescriber<StringValue> code;
 	private Identifier<DataTable> codeTableName;
 
 	/**
@@ -21,7 +23,7 @@ public class SetCode extends DataProcess {
 	 * @param code code that must be set
 	 * @param codeTableName rows on which the code must be set
 	 */
-	public SetCode(String code, Identifier<DataTable> codeTableName) {
+	public SetCode(DataDescriber<StringValue> code, Identifier<DataTable> codeTableName) {
 		this.code = code;
 		this.codeTableName = codeTableName;
 	}
@@ -53,13 +55,13 @@ public class SetCode extends DataProcess {
 	/**
 	 * Set the code on the rows of the input table, where the row exist in the codeTable.
 	 * @param input the table in which the rows must get the code.
-	 * @param codeTable the table that specifies which rows must get the codo.
+	 * @param codeTable the table that specifies which rows must get the code.
 	 */
 	private void setCode(DataTable input, DataTable codeTable) {
 		for (DataRow row : input.getRows()) {
 			for (DataRow codeRows : codeTable.getRows()) {
 				if (row.equalsSoft(codeRows)) {
-					row.addCode(code);
+					row.addCode(code.resolve(row).getValue());
 					break;
 				}
 			}
