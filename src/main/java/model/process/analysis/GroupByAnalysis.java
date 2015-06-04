@@ -67,13 +67,13 @@ public abstract class GroupByAnalysis extends DataAnalysis {
 	}
 
 	/**
-	 * Perform the specified functions on the input table.
+	 * Perform the specified functions on the chunks in the input table.
 	 * @param input the table to perform the groupBy on
-	 * @return a table that contains the results of functions on the chunks.
+	 * @return a table that contains, for each chunk, the results of the functions.
 	 */
 	protected DataTable groupBy(Table input) {
 		if (input instanceof CombinedDataTable) {
-			throw new IllegalArgumentException("group by work only on datatable");
+			throw new IllegalArgumentException("group by works only on datatable");
 		}
 		for (Map.Entry<String, ConstraintAnalysis> entry : constraints.entrySet()) {
 			DataTable chunk = (DataTable) input.copy();
