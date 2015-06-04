@@ -1,7 +1,6 @@
 package model.language;
 
-import model.data.value.BoolValue;
-import model.data.value.StringValue;
+import model.data.value.*;
 import model.language.nodes.ConstantNode;
 import model.language.nodes.ValueNode;
 import org.junit.Before;
@@ -35,8 +34,8 @@ public class LanguageParserTest {
 		ProcessInfo info = (ProcessInfo) result.valueStack.pop();
 
 		assertEquals("test", info.getIdentifier().getName());
-		Object[] expected = Arrays.stream(new Number[]{3, 4, 5})
-				.map(NumberConstantNode::new)
+		Object[] expected = Arrays.stream(new Integer[]{3, 4, 5})
+				.map(x -> new ConstantNode<IntValue>(new IntValue(x)))
 				.toArray(Object[]::new);
 		assertArrayEquals(expected, info.getParameters());
 	}
@@ -50,9 +49,9 @@ public class LanguageParserTest {
 		assertEquals("test2", info.getIdentifier().getName());
 		assertArrayEquals(
 				new Object[]{
-						new ConstantNode<StringValue>(new StringValue("aap")),
+						new ConstantNode<>(new StringValue("aap")),
 						new Identifier<>("sjon"),
-						new NumberConstantNode(2.0f)
+						new ConstantNode<>(new FloatValue(2.0f))
 				},
 				info.getParameters()
 		);

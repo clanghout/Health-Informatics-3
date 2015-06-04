@@ -33,4 +33,24 @@ public class ConstantNode<T extends DataValue> extends ValueNode<T> {
 	public DataDescriber<T> resolve(DataModel model) {
 		return new ConstantDescriber<>(constant);
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+
+		ConstantNode<?> that = (ConstantNode<?>) o;
+
+		return constant.equals(that.constant);
+
+	}
+
+	@Override
+	public int hashCode() {
+		return constant.hashCode();
+	}
 }
