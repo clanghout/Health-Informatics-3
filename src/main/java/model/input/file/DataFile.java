@@ -160,23 +160,19 @@ public abstract class DataFile {
 	public static String getStringColumnType(Class type) throws ClassNotFoundException {
 		if (type == IntValue.class) {
 			return "int";
-		}
-		if (type == FloatValue.class) {
+		} else if (type == FloatValue.class) {
 			return "float";
-		}
-		if (type == StringValue.class) {
+		} else if (type == StringValue.class) {
 			return "string";
-		}
-		if (type == DateValue.class) {
+		} else if (type == DateValue.class) {
 			return "date";
-		}
-		if (type == TimeValue.class) {
+		} else if (type == TimeValue.class) {
 			return "time";
-		}
-		if (type == DateTimeValue.class) {
+		} else if (type == DateTimeValue.class) {
 			return "datetime";
+		} else {
+			throw new ClassNotFoundException();
 		}
-		throw new ClassNotFoundException();
 	}
 
 	/**
