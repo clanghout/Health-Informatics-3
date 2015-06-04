@@ -29,8 +29,6 @@ public class VisualizationController {
 	private Button clearViewButton;
 	@FXML
 	private Button saveButton;
-	@FXML
-	private PopupVisualizationController popupVisualizationController;
 
 	private DataModel model;
 
@@ -100,7 +98,7 @@ public class VisualizationController {
 		try {
 			GraphCreationDialog gcd = new GraphCreationDialog();
 			gcd.show();
-			popupVisualizationController = gcd.getFxml().getController();
+			PopupVisualizationController popupVisualizationController = gcd.getFxml().getController();
 			popupVisualizationController.initializeView(model);
 		} catch (NullPointerException e) {
 			logger.log(Level.SEVERE, "No controller present");
