@@ -9,6 +9,8 @@ import javafx.stage.FileChooser;
 import model.data.DataModel;
 import model.data.DataTable;
 import model.output.DataTableWriter;
+import view.Dialog;
+import view.XMLCreationDialog;
 
 import java.io.File;
 import java.io.IOException;
@@ -98,6 +100,17 @@ public class DataController {
 				logger.log(Level.SEVERE, "Error saving", e);
 				// TODO: Show the error to the user.
 			}
+		}
+	}
+
+	@FXML
+	protected void startWizard(ActionEvent actionEvent) {
+		try {
+			Dialog wizardDialog = new XMLCreationDialog();
+			wizardDialog.setSize(460, 640);
+			wizardDialog.show();
+		} catch (IOException e) {
+			logger.log(Level.SEVERE, "Error creating XML file: " + e.getMessage());
 		}
 	}
 }

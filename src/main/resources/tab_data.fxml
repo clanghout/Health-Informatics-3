@@ -19,6 +19,8 @@
 						onAction="#handleImportButtonAction"
 						text="Import" />
 				<Label layoutX="14.0" layoutY="7.0" text="Import data" />
+
+				<Button onAction="#startWizard" text="XML Creation Wizard"/>
 			</children>
 		</AnchorPane>
 	</content>

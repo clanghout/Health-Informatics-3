@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox styleClass="main-box" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainUIController">
+<VBox styleClass="main-box" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.wizard.XmlWizardController">
         <children>
             <VBox styleClass="datafiles-box">
                 <Label>Data Files:</Label>
@@ -44,6 +44,7 @@
             <HBox styleClass="spaced-box">
                 <children>
                     <Button text="Create xml file" />
+                    <Button text="Cancel"/>
                 </children>
             </HBox>
         </children>
