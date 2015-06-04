@@ -21,7 +21,8 @@ public class Sum extends Function {
 	 */
 	@Override
 	public FloatValue calculate() {
-		if(!initialize()) {
+		//TODO decide if this must become default and move to parrent.
+		if (!initialize()) {
 			return new FloatValue(0);
 		}
 		float total = 0f;

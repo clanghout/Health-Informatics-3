@@ -2,7 +2,6 @@ package model.process.functions;
 
 import model.data.DataTable;
 import model.data.describer.DataDescriber;
-import model.data.value.DataValue;
 import model.data.value.FloatValue;
 import model.data.value.NumberValue;
 
@@ -24,7 +23,7 @@ public abstract class Minmax extends Function {
 	 */
 	@Override
 	public FloatValue calculate() {
-		if(!initialize()) {
+		if (!initialize()) {
 			return new FloatValue(0);
 		}
 		return compare();

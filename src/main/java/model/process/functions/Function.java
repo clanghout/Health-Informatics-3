@@ -41,7 +41,7 @@ public abstract class Function {
 	}
 
 	/**
-	 * set the table on which the function must perform
+	 * Set the table on which the function must perform.
 	 * @param table table on which the funtion must perform
 	 */
 	public void setTable(DataTable table) {
@@ -56,7 +56,7 @@ public abstract class Function {
 	public abstract DataValue calculate();
 
 	/**
-	 * initialize class checks if specified column is eligible.
+	 * Initialize class checks if specified column is eligible.
 	 */
 	protected boolean initialize() {
 

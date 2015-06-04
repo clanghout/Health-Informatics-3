@@ -26,7 +26,7 @@ public class Median extends Function {
 	 */
 	@Override
 	public FloatValue calculate() {
-		if(!initialize()) {
+		if (!initialize()) {
 			return new FloatValue(0);
 		}
 		List<Float> list = createList();
