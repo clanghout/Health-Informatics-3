@@ -39,8 +39,10 @@ public class GroupByConstraint extends GroupByAnalysis {
 	 * @param groupNames name of the chunks
 	 * @param constrainList constraints that specifies the chunks
 	 */
-	private void constructConstraintList(List<String> groupNames,
-										   List<ConstraintAnalysis> constrainList) {
+	private void constructConstraintList(
+			List<String> groupNames,
+			List<ConstraintAnalysis> constrainList) {
+
 		if (constrainList.size() != groupNames.size()) {
 			throw new IllegalArgumentException(
 					"number of groups does not correspond to the number of group names.");
@@ -55,7 +57,7 @@ public class GroupByConstraint extends GroupByAnalysis {
 
 	@Override
 	public Table analyse(Table input) {
-		if (input instanceof CombinedDataTable) {
+		if (!(input instanceof DataTable)) {
 			throw new IllegalArgumentException("group by work only on datatable");
 		}
 		return groupBy((DataTable) input);

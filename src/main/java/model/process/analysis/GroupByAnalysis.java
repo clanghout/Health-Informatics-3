@@ -35,8 +35,11 @@ public abstract class GroupByAnalysis extends DataAnalysis {
 	 * @param functions functions used for the columns
 	 * @param columnsNames names for the columns
 	 */
-	protected void constructBuilder(String name, List<Function> functions,
-									List<String> columnsNames) {
+	protected void constructBuilder(
+			String name,
+			List<Function> functions,
+			List<String> columnsNames) {
+		
 		builder = new DataTableBuilder();
 		builder.setName(name);
 		if (functions.size() != columnsNames.size()) {

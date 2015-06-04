@@ -29,8 +29,12 @@ public class GroupByColumn extends GroupByAnalysis {
 	 * @param functions functions for the columns
 	 * @param columnNames name for the columns
 	 */
-	public GroupByColumn(String name, RowValueDescriber column, List<Function> functions,
-						 List<String> columnNames) {
+	public GroupByColumn(
+			String name,
+			RowValueDescriber column,
+			List<Function> functions,
+			List<String> columnNames) {
+
 		this.column = column;
 		constructBuilder(name, functions, columnNames);
 
@@ -38,7 +42,7 @@ public class GroupByColumn extends GroupByAnalysis {
 
 	@Override
 	public Table analyse(Table input) {
-		if (input instanceof CombinedDataTable) {
+		if (!(input instanceof DataTable)) {
 			throw new IllegalArgumentException("group by work only on datatable");
 		}
 		DataTable table = (DataTable) input;
