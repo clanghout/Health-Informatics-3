@@ -23,9 +23,12 @@ public class GroupByConstraint extends GroupByAnalysis {
 	 * @param functions functions for the columns
 	 * @param columnNames name for the columns
 	 */
-	public GroupByConstraint(String name, List<ConstraintAnalysis> constrainList,
-							 List<String> groupNames, List<Function> functions,
-							 List<String> columnNames) {
+	public GroupByConstraint(
+			String name,
+			List<ConstraintAnalysis> constrainList,
+			List<String> groupNames,
+			List<Function> functions,
+			List<String> columnNames) {
 
 		constructConstraintList(groupNames, constrainList);
 		constructBuilder(name, functions, columnNames);
@@ -39,8 +42,8 @@ public class GroupByConstraint extends GroupByAnalysis {
 	private void constructConstraintList(List<String> groupNames,
 										   List<ConstraintAnalysis> constrainList) {
 		if (constrainList.size() != groupNames.size()) {
-			throw new IllegalArgumentException("number of groups does not correspond "
-					+ "to the number of group names.");
+			throw new IllegalArgumentException(
+					"number of groups does not correspond to the number of group names.");
 		}
 
 		LinkedHashMap<String, ConstraintAnalysis> constraints = new LinkedHashMap<>();

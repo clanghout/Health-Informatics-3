@@ -53,6 +53,7 @@ public class EmptyTest {
 		assertEquals(new FloatValue(0), new Sum(table, new RowValueDescriber<>(column)).calculate());
 	}
 
+	@Test
 	public void testEmptyTableDeviation() throws Exception {
 		assertEquals(new FloatValue(0),
 				new StandardDeviation(table, new RowValueDescriber<>(column)).calculate());

@@ -40,8 +40,8 @@ public abstract class GroupByAnalysis extends DataAnalysis {
 		builder = new DataTableBuilder();
 		builder.setName(name);
 		if (functions.size() != columnsNames.size()) {
-			throw new IllegalArgumentException("number of columns does not correspond "
-					+ "to the number of functions.");
+			throw new IllegalArgumentException(
+					"number of columns does not correspond to the number of functions.");
 		}
 
 		this.functionsList = functions;
@@ -61,9 +61,9 @@ public abstract class GroupByAnalysis extends DataAnalysis {
 	}
 
 	/**
-	 * Perform the specified functions on the input table.
+	 * Perform the specified functions on the chunks in the input table.
 	 * @param input the table to perform the groupBy on
-	 * @return a table that contains the results of functions on the chunks.
+	 * @return a table that contains, for each chunk, the results of the functions.
 	 */
 	protected DataTable groupBy(DataTable input) {
 		for (Map.Entry<String, ConstraintAnalysis> entry : constraints.entrySet()) {
