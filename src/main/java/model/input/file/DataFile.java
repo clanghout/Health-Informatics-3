@@ -140,6 +140,8 @@ public abstract class DataFile {
 				return TimeValue.class;
 			case "datetime" :
 				return DateTimeValue.class;
+			case "file" :
+				return DataFile.class;
 			default:
 				throw new ClassNotFoundException();
 		}
