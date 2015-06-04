@@ -13,7 +13,7 @@ import model.data.DataTable;
  * abc.
  * Created by Chris on 2-6-2015.
  */
-public class PopupVisualizationController   {
+public class PopupVisualizationController {
 	private DataModel model;
 	private DataTable table;
 	@FXML
@@ -48,17 +48,18 @@ public class PopupVisualizationController   {
 		});
 		visualizationComboBox.setItems(FXCollections.observableArrayList(
 				"BarChart", "temp"));
-				visualizationComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-			visualizationInputVBox.getChildren().clear();
-			switch (newValue) {
-				case "BarChart":
-					bcc = new BarChartController(table, visualizationInputVBox);
-					bcc.initialize();
-					break;
-				default:
-					break;
-			}
-		});
+		visualizationComboBox.valueProperty()
+				.addListener((observable, oldValue, newValue) -> {
+					visualizationInputVBox.getChildren().clear();
+					switch (newValue) {
+						case "BarChart":
+							bcc = new BarChartController(table, visualizationInputVBox);
+							bcc.initialize();
+							break;
+						default:
+							break;
+					}
+				});
 
 
 	}

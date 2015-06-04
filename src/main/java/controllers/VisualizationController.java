@@ -29,7 +29,8 @@ public class VisualizationController {
 	private Button clearViewButton;
 	@FXML
 	private Button saveButton;
-	@FXML private PopupVisualizationController popupVisualizationController;
+	@FXML
+	private PopupVisualizationController popupVisualizationController;
 
 	private DataModel model;
 
@@ -92,6 +93,7 @@ public class VisualizationController {
 			}
 		});
 	}
+
 	@FXML
 	protected void handlePopupButtonAction(ActionEvent event) {
 		visualizationGraph.getChildren().clear();

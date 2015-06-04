@@ -11,7 +11,7 @@ import java.io.IOException;
  * Create a dialog.
  * Created by Chris on 2-6-2015.
  */
-public abstract class Dialog{
+public abstract class Dialog {
 	private Stage dialog;
 	private FXMLLoader fxml;
 
