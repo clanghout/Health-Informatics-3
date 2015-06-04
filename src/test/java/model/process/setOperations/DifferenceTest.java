@@ -1,10 +1,12 @@
 package model.process.setOperations;
 
+import model.data.DataModel;
 import model.data.DataRow;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.value.FloatValue;
 import model.data.value.StringValue;
+import model.language.Identifier;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -29,7 +31,43 @@ public class DifferenceTest {
 		builder2.setName("table2");
 
 		DataTable table2 = builder2.build();
-		Difference diff = new Difference(table1,table2);
+
+		DataModel model = new DataModel();
+
+		model.add(table1);
+		model.add(table2);
+		Difference diff = new Difference(new Identifier<>("table1"), new Identifier<>("table2"));
+
+		diff.setDataModel(model);
+
+		diff.doProcess();
+
+	}
+
+	@Test(expected = Exception.class)
+	public void testUnknownTable() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.createColumn("c1", StringValue.class);
+		builder.createRow(new StringValue("test"));
+		builder.setName("table1");
+
+		DataTable table1 = builder.build();
+
+		DataTableBuilder builder2 = new DataTableBuilder();
+		builder2.createColumn("c3", StringValue.class);
+		builder2.createRow(new StringValue("test2"));
+		builder2.setName("table2");
+
+		DataTable table2 = builder2.build();
+
+		DataModel model = new DataModel();
+
+		model.add(table1);
+		model.add(table2);
+		Difference diff = new Difference(new Identifier<>("seg"), new Identifier<>("seg"));
+
+		diff.setDataModel(model);
+
 	}
 
 	@Test(expected = Exception.class)
@@ -47,7 +85,15 @@ public class DifferenceTest {
 		builder2.setName("table2");
 
 		DataTable table2 = builder2.build();
-		Difference diff = new Difference(table1,table2);
+		DataModel model = new DataModel();
+
+		model.add(table1);
+		model.add(table2);
+		Difference diff = new Difference(new Identifier<>("table1"), new Identifier<>("table2"));
+
+		diff.setDataModel(model);
+
+		diff.doProcess();
 	}
 
 	@Test
@@ -65,7 +111,13 @@ public class DifferenceTest {
 		builder2.createRow(new StringValue("test2"));
 
 		DataTable table2 = builder2.build();
-		Difference diff = new Difference(table1,table2);
+		DataModel model = new DataModel();
+
+		model.add(table1);
+		model.add(table2);
+		Difference diff = new Difference(new Identifier<>("table1"), new Identifier<>("table2"));
+
+		diff.setDataModel(model);
 
 		DataTable table3 = diff.doProcess();
 
@@ -90,7 +142,13 @@ public class DifferenceTest {
 		builder2.createRow(new StringValue("test"));
 
 		DataTable table2 = builder2.build();
-		Difference diff = new Difference(table1,table2);
+		DataModel model = new DataModel();
+
+		model.add(table1);
+		model.add(table2);
+		Difference diff = new Difference(new Identifier<>("table1"), new Identifier<>("table2"));
+
+		diff.setDataModel(model);
 
 		DataTable table3 = diff.doProcess();
 
@@ -113,7 +171,13 @@ public class DifferenceTest {
 
 		DataTable table2 = builder2.build();
 
-		Difference diff = new Difference(table1,table2);
+		DataModel model = new DataModel();
+
+		model.add(table1);
+		model.add(table2);
+		Difference diff = new Difference(new Identifier<>("table1"), new Identifier<>("table2"));
+
+		diff.setDataModel(model);
 
 		DataTable table3 = diff.doProcess();
 
@@ -138,7 +202,13 @@ public class DifferenceTest {
 
 		DataTable table2 = builder2.build();
 
-		Difference diff = new Difference(table2, table1);
+		DataModel model = new DataModel();
+
+		model.add(table1);
+		model.add(table2);
+		Difference diff = new Difference(new Identifier<>("table2"), new Identifier<>("table1"));
+
+		diff.setDataModel(model);
 
 		DataTable table3 = diff.doProcess();
 
@@ -170,7 +240,13 @@ public class DifferenceTest {
 
 		DataTable table2 = builder2.build();
 
-		Difference diff = new Difference(table1, table2);
+		DataModel model = new DataModel();
+
+		model.add(table1);
+		model.add(table2);
+		Difference diff = new Difference(new Identifier<>("table1"), new Identifier<>("table2"));
+
+		diff.setDataModel(model);
 
 		DataTable table3 = diff.doProcess();
 

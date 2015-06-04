@@ -9,6 +9,7 @@ import model.process.FromProcess;
 import model.process.IsProcess;
 import model.process.SetCode;
 import model.process.analysis.ConstraintAnalysis;
+import model.process.setOperations.Difference;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -52,6 +53,8 @@ class ProcessInfo {
 				DataDescriber<StringValue> code = stringNode.resolve(model);
 				Identifier tableName = (Identifier) parameters[1];
 				return new SetCode(code, tableName);
+//			case "difference":
+//				return new Difference((Identifier) parameters[0], (Identifier) parameters[1] );
 			default:
 				throw new UnsupportedOperationException("This code has not been implemented yet");
 		}
