@@ -7,7 +7,9 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import model.data.DataColumn;
 import model.data.DataRow;
 import model.data.DataTable;
@@ -54,7 +56,11 @@ public class BarChartController extends VisualizationController {
 
 	public void initialize() {
 		ComboBox<DataColumn> xAxisBox = new ComboBox<>();
+		Label xAxisErrorLabel = new Label();
+		xAxisErrorLabel.setMaxWidth(Double.MAX_VALUE);
 		ComboBox<DataColumn> yAxisBox = new ComboBox<>();
+		Label yAxisErrorLabel = new Label();
+		yAxisErrorLabel.setMaxWidth(Double.MAX_VALUE);
 		setColumnDropDown(xAxisBox, table);
 		setColumnDropDown(yAxisBox, table);
 		xAxisBox.valueProperty().addListener((observable1, oldValue1, newValue1) -> {
@@ -63,21 +69,44 @@ public class BarChartController extends VisualizationController {
 			List<String> dataxcol = table.getRows().stream()
 					.map(row -> row.getValue(xCol).toString())
 					.collect(Collectors.toList());
-			xAxis = new CategoryAxis(FXCollections.observableArrayList(dataxcol));
+			try {
+				xAxis = new CategoryAxis(FXCollections.observableArrayList(dataxcol));
+				setErrorLabel(xAxisErrorLabel, "");
+			} catch (Exception e) {
+				setErrorLabel(xAxisErrorLabel, "Please select a column with distinct values.");
+			}
 		});
 		yAxisBox.valueProperty().addListener((observable, oldValue, newValue) -> {
 			ySet = true;
 			yCol = newValue;
 			DataDescriber<NumberValue> yColDescriber = new RowValueDescriber<>(yCol);
-			float max = (float) new Maximum(table, yColDescriber).calculate().getValue();
-			float min = (float) new Minimum(table, yColDescriber).calculate().getValue();
-			// sep is the nearest power of 10 of max devided by YAXIS_SEPERATOR.
-			// This creates a value that seperates the y-axis in approximately 10 values.
-			int sep = (int) Math.pow(BASE,
-					Math.round(Math.log10(max / YAXIS_SEPARATION) - Math.log10(MEAN) + ROUND));
-			yAxis = new NumberAxis(yCol.getName(), min, max, sep);
+
+			try {
+				float max = (float) new Maximum(table, yColDescriber).calculate().getValue();
+				float min = (float) new Minimum(table, yColDescriber).calculate().getValue();
+				int sep = computeSeperatorValue(max);
+						yAxis = new NumberAxis(yCol.getName(), min, max, sep);
+				setErrorLabel(yAxisErrorLabel, "");
+			} catch (Exception e) {
+				setErrorLabel(yAxisErrorLabel, "Please select a column with number values.");
+			}
 		});
-		vBox.getChildren().addAll(xAxisBox, yAxisBox);
+		vBox.getChildren().addAll(xAxisErrorLabel, xAxisBox, yAxisErrorLabel, yAxisBox);
+	}
+
+	/**
+	 * Compute aproximately a tenth of the maxvalue rouded to the nearest power of 10.
+	 * @param max the maximum value of the axis.
+	 * @return the computed seperator value as int.
+	 */
+	public int computeSeperatorValue(float max) {
+		return (int) Math.pow(BASE,
+				Math.round(Math.log10(max / YAXIS_SEPARATION) - Math.log10(MEAN) + ROUND));
+	}
+
+	public void setErrorLabel(Label label, String message) {
+		label.setTextFill(Color.RED);
+		label.setText(message);
 	}
 
 	/**
