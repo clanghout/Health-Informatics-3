@@ -11,7 +11,6 @@ import javafx.util.StringConverter;
 import model.data.DataColumn;
 import model.data.DataModel;
 import model.data.DataTable;
-import org.apache.commons.lang.ObjectUtils;
 import view.GraphCreationDialog;
 
 import java.util.logging.Level;
@@ -97,7 +96,9 @@ public class VisualizationController {
 	protected void handlePopupButtonAction(ActionEvent event) {
 		visualizationGraph.getChildren().clear();
 		try {
-			new GraphCreationDialog();
+			GraphCreationDialog gcd = new GraphCreationDialog();
+			gcd.show();
+			popupVisualizationController = gcd.getFxml().getController();
 			popupVisualizationController.initializeView(model);
 		} catch (NullPointerException e) {
 			System.out.println("no controller");
