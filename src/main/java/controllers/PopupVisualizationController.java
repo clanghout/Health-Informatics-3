@@ -51,7 +51,10 @@ public class PopupVisualizationController {
 	 *
 	 * @param model the input model of wich the table can be specified.
 	 */
-	public void initializeView(DataModel model, VisualizationController vc, GraphCreationDialog gcd) {
+	public void initializeView(
+			DataModel model,
+			VisualizationController vc,
+			GraphCreationDialog gcd) {
 		this.vc = vc;
 		this.gcd = gcd;
 

@@ -2,7 +2,6 @@ package controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.Chart;
 import javafx.scene.control.Button;
@@ -36,7 +35,7 @@ public class VisualizationController {
 	/**
 	 * Constructor for Visualization controller.
 	 */
-	public VisualizationController () {
+	public VisualizationController() {
 	}
 
 	/**
@@ -44,7 +43,7 @@ public class VisualizationController {
 	 * This method is automatically called by javaFX on initialization.
 	 * The dropDown menu's are disabled while no DataModel is loaded.
 	 */
-	public void initialize () {
+	public void initialize() {
 		makeGraphButton.setDisable(true);
 		clearViewButton.setDisable(true);
 		saveButton.setDisable(true);
@@ -53,7 +52,7 @@ public class VisualizationController {
 	/**
 	 * Init method after a model is read.
 	 */
-	public void initializeVisualisation () {
+	public void initializeVisualisation() {
 		makeGraphButton.setDisable(false);
 		clearViewButton.setDisable(false);
 	}
@@ -67,7 +66,7 @@ public class VisualizationController {
 	 *
 	 * @param model The model
 	 */
-	public void setModel (DataModel model) {
+	public void setModel(DataModel model) {
 		this.model = model;
 	}
 
@@ -77,19 +76,19 @@ public class VisualizationController {
 	 * @param inputBox  the comboBox that specifies the axis of the graph
 	 * @param dataTable the dataTable used for the graph
 	 */
-	public void setColumnDropDown (ComboBox<DataColumn> inputBox, DataTable dataTable) {
+	public void setColumnDropDown(ComboBox<DataColumn> inputBox, DataTable dataTable) {
 		inputBox.setDisable(false);
 		ObservableList<DataColumn> columns =
 				FXCollections.observableArrayList(dataTable.getColumns());
 		inputBox.setItems(columns);
 		inputBox.setConverter(new StringConverter<DataColumn>() {
 			@Override
-			public String toString (DataColumn object) {
+			public String toString(DataColumn object) {
 				return object.getName();
 			}
 
 			@Override
-			public DataColumn fromString (String string) {
+			public DataColumn fromString(String string) {
 				return dataTable.getColumn(string);
 			}
 		});
@@ -99,14 +98,14 @@ public class VisualizationController {
 	 * Create a popupWindow and add the model to the controller.
 	 */
 	@FXML
-	protected void handlePopupButtonAction () {
+	protected void handlePopupButtonAction() {
 		visualizationGraph.getChildren().clear();
 		try {
 			GraphCreationDialog gcd = new GraphCreationDialog();
 			gcd.show();
 
-			PopupVisualizationController popupVisualizationController = gcd.getFxml().getController();
-			popupVisualizationController.initializeView(model, this, gcd);
+			PopupVisualizationController pvc = gcd.getFxml().getController();
+			pvc.initializeView(model, this, gcd);
 
 		} catch (NullPointerException e) {
 			logger.log(Level.SEVERE, "No controller present");
@@ -119,7 +118,7 @@ public class VisualizationController {
 	 * Save the graph as image.
 	 */
 	@FXML
-	protected void handleSaveButtonAction () {
+	protected void handleSaveButtonAction() {
 		//button is disabled at the moment
 		//should save to pdf as told by Bacchelli
 	}
@@ -128,7 +127,7 @@ public class VisualizationController {
 	 * Clear the graph.
 	 */
 	@FXML
-	protected void handleClearButtonAction () {
+	protected void handleClearButtonAction() {
 		visualizationGraph.getChildren().clear();
 	}
 }
