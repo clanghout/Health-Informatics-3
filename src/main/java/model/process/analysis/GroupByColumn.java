@@ -7,9 +7,7 @@ import model.data.Table;
 import model.data.describer.ConstantDescriber;
 import model.data.describer.ConstraintDescriber;
 import model.data.describer.RowValueDescriber;
-import model.data.value.BoolValue;
 import model.data.value.DataValue;
-import model.data.value.StringValue;
 import model.process.analysis.operations.constraints.EqualityCheck;
 import model.process.functions.Function;
 
@@ -21,7 +19,7 @@ import java.util.List;
  */
 public class GroupByColumn extends GroupByAnalysis {
 
-	RowValueDescriber column;
+	private RowValueDescriber column;
 
 	/**
 	 * Create a group by. The chunks are specified by distinct values in the column column.

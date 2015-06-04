@@ -1,10 +1,8 @@
 package model.process.analysis;
 
 
-import model.data.CombinedDataTable;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
-import model.data.Table;
 import model.data.value.DataValue;
 import model.data.value.StringValue;
 import model.process.functions.Function;

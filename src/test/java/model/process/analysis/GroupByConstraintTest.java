@@ -196,4 +196,29 @@ public class GroupByConstraintTest {
 		assertEquals(new FloatValue(0), out.getRow(3).getValue(out.getColumn("max")));
 
 	}
+
+	@Test
+	public void testEmptyTable() throws Exception {
+		List<Function> functions = new ArrayList<>();
+		List<String> name = new ArrayList<>();
+
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("test");
+		c1 = builder.createColumn("c1", StringValue.class);
+		c2 = builder.createColumn("c2", FloatValue.class);
+
+		DataTable table = builder.build();
+
+		functions.add(new Maximum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		name.add("max");
+		functions.add(new Minimum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		name.add("min");
+		GroupByColumn groupBy = new GroupByColumn("test2", new RowValueDescriber<>(c1),
+				functions, name);
+
+		DataTable out = (DataTable) groupBy.analyse(table);
+
+		assertEquals(0, out.getRowCount());
+
+	}
 }

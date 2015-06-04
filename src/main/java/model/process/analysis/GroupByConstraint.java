@@ -55,6 +55,6 @@ public class GroupByConstraint extends GroupByAnalysis {
 		if (input instanceof CombinedDataTable) {
 			throw new IllegalArgumentException("group by work only on datatable");
 		}
-		return groupBy((DataTable)input);
+		return groupBy((DataTable) input);
 	}
 }
