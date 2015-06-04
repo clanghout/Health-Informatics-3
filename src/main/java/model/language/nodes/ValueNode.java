@@ -12,7 +12,7 @@ import org.parboiled.trees.ImmutableBinaryTreeNode;
  * @param <T> The type of value contained in this tree
  */
 public abstract class ValueNode<T extends DataValue> extends
-		ImmutableBinaryTreeNode<ValueNode<? extends DataValue>> {
+		ImmutableBinaryTreeNode<ValueNode<T>> {
 
 	/**
 	 * Construct a new ValueNode.

@@ -1,4 +1,4 @@
-package model.language;
+package model.language.nodes;
 
 
 import model.data.DataModel;
@@ -10,11 +10,14 @@ import model.data.value.BoolValue;
 /**
  * Created by Boudewijn on 26-5-2015.
  */
-class BooleanOperationNode extends BooleanNode {
+public class BooleanOperationNode extends ValueNode<BoolValue> {
 
 	private String operation;
 
-	BooleanOperationNode(BooleanNode left, String operation, BooleanNode right) {
+	public BooleanOperationNode(
+			ValueNode<BoolValue> left,
+			String operation,
+			ValueNode<BoolValue> right) {
 		super(left, right);
 		this.operation = operation;
 	}
@@ -32,7 +35,7 @@ class BooleanOperationNode extends BooleanNode {
 		}
 	}
 
-	DataDescriber<BoolValue> resolve(DataModel model) {
+	public DataDescriber<BoolValue> resolve(DataModel model) {
 		return new ConstraintDescriber(resolveCheck(model, operation));
 	}
 }

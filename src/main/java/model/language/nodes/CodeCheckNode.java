@@ -1,25 +1,26 @@
-package model.language;
+package model.language.nodes;
 
 import model.data.DataModel;
 import model.data.describer.ConstraintDescriber;
 import model.data.describer.DataDescriber;
 import model.data.value.BoolValue;
+import model.data.value.StringValue;
 import model.process.analysis.operations.constraints.CodeCheck;
 
 /**
  * Created by Boudewijn on 3-6-2015.
  */
-class CodeCheckNode extends BooleanNode {
+public class CodeCheckNode extends ValueNode<BoolValue> {
 
-	private final StringNode code;
+	private final ValueNode<StringValue> code;
 
-	CodeCheckNode(StringNode code) {
+	public CodeCheckNode(ValueNode<StringValue> code) {
 		super(null, null);
 		this.code = code;
 	}
 
 	@Override
-	DataDescriber<BoolValue> resolve(DataModel model) {
+	public DataDescriber<BoolValue> resolve(DataModel model) {
 		return new ConstraintDescriber(new CodeCheck(code.resolve(model)));
 	}
 }

@@ -2,6 +2,8 @@ package model.language;
 
 import model.data.DataModel;
 import model.data.describer.DataDescriber;
+import model.data.value.BoolValue;
+import model.language.nodes.ValueNode;
 import org.parboiled.Parboiled;
 import org.parboiled.parserunners.BasicParseRunner;
 import org.parboiled.support.ParsingResult;
@@ -24,7 +26,7 @@ class MacroType {
 		if (type.equals("Constraint")) {
 			BasicParseRunner runner = new BasicParseRunner(parser.BooleanExpression());
 			ParsingResult result = runner.run(body);
-			BooleanNode node = (BooleanNode) result.valueStack.pop();
+			ValueNode<BoolValue> node = (ValueNode<BoolValue>) result.valueStack.pop();
 			return node.resolve(model);
 		} else {
 			throw new UnsupportedOperationException("Code has not yet been implemented");

@@ -1,5 +1,9 @@
 package model.language;
 
+import model.data.value.BoolValue;
+import model.data.value.StringValue;
+import model.language.nodes.ConstantNode;
+import model.language.nodes.ValueNode;
 import org.junit.Before;
 import org.junit.Test;
 import org.parboiled.Parboiled;
@@ -46,7 +50,7 @@ public class LanguageParserTest {
 		assertEquals("test2", info.getIdentifier().getName());
 		assertArrayEquals(
 				new Object[]{
-						new StringConstantNode("aap"),
+						new ConstantNode<StringValue>(new StringValue("aap")),
 						new Identifier<>("sjon"),
 						new NumberConstantNode(2.0f)
 				},
@@ -78,7 +82,7 @@ public class LanguageParserTest {
 		ParsingResult result = runner.run("true");
 
 		assertTrue(result.matched);
-		BooleanNode node = (BooleanNode) result.valueStack.pop();
+		ValueNode<BoolValue> node = (ValueNode<BoolValue>) result.valueStack.pop();
 		assertTrue(node.resolve(null).resolve(null).getValue());
 	}
 
@@ -88,7 +92,7 @@ public class LanguageParserTest {
 		ParsingResult result = runner.run("false OR true");
 
 		assertTrue(result.matched);
-		BooleanNode node = (BooleanNode) result.valueStack.pop();
+		ValueNode<BoolValue> node = (ValueNode<BoolValue>) result.valueStack.pop();
 		assertTrue(node.resolve(null).resolve(null).getValue());
 	}
 
@@ -100,7 +104,7 @@ public class LanguageParserTest {
 		ParsingResult result = runner.run(input);
 
 		assertTrue(result.matched);
-		BooleanNode node = (BooleanNode) result.valueStack.pop();
+		ValueNode<BoolValue> node = (ValueNode<BoolValue>) result.valueStack.pop();
 		assertTrue(node.resolve(null).resolve(null).getValue());
 	}
 
@@ -111,7 +115,7 @@ public class LanguageParserTest {
 		ParsingResult result = runner.run(input);
 
 		assertTrue(result.matched);
-		BooleanNode node = (BooleanNode) result.valueStack.pop();
+		ValueNode<BoolValue> node = (ValueNode<BoolValue>) result.valueStack.pop();
 		assertTrue(node.resolve(null).resolve(null).getValue());
 	}
 
@@ -133,7 +137,7 @@ public class LanguageParserTest {
 		ParsingResult result = runner.run(input);
 
 		assertTrue(result.matched);
-		BooleanNode node = (BooleanNode) result.valueStack.pop();
+		ValueNode<BoolValue> node = (ValueNode<BoolValue>) result.valueStack.pop();
 		assertTrue(node.resolve(null).resolve(null).getValue());
 	}
 

@@ -8,7 +8,7 @@ import model.data.value.DataValue;
  * Created by Boudewijn on 4-6-2015.
  * @param <T> The type of DataValue this operation is applied to.
  */
-public abstract class OperationNode<T extends DataValue> extends ValueNode {
+public abstract class OperationNode<T extends DataValue> extends ValueNode<T> {
 
 	private final String operation;
 
