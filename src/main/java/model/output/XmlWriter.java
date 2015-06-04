@@ -48,12 +48,15 @@ public class XmlWriter {
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document document = builder.newDocument();
 		this.document = document;
+
 		document.setXmlVersion("1.0");
 		Element root = document.createElement("input");
 		document.appendChild(root);
+
 		for (DataFile file : this.dataFiles) {
 			root.appendChild(createFileElement(file));
 		}
+
 		document.normalize();
 		return document;
 	}
@@ -78,22 +81,26 @@ public class XmlWriter {
 		Element res = document.createElement("file");
 		res.setAttribute("name", dataFile.getFile().getName());
 		res.appendChild(createColumnsElement(dataFile));
+
 		return res;
 	}
 
 	private Element createColumnsElement(DataFile dataFile)
 			throws ClassNotFoundException {
 		Element res = document.createElement("columns");
+
 		if (dataFile.hasFirstRowAsHeader()) {
 			res.setAttribute("firstrowheader", "true");
 		} else {
 			res.setAttribute("firstrowheader", "false");
 		}
+
 		Map<String, Class<? extends DataValue>> columns = dataFile.getColumns();
 		for (String column : columns.keySet()) {
 			Class type = columns.get(column);
 			res.appendChild(createColumnElements(column, type));
 		}
+
 		return res;
 	}
 
@@ -103,6 +110,7 @@ public class XmlWriter {
 		res.setAttribute("type", DataFile.getStringColumnType(type));
 		Element name = document.createElement(columnName);
 		res.appendChild(name);
+
 		return res;
 	}
 }
