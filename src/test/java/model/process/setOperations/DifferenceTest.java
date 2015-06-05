@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  */
 public class DifferenceTest {
 
-	@Test(expected = Exception.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalDifference() throws Exception {
 		DataTableBuilder builder = new DataTableBuilder();
 		builder.createColumn("c1", StringValue.class);
