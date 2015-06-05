@@ -92,8 +92,6 @@ As mentioned before our program consists of modules that work together. In figur
 The input module is able to read the data from provided files that are specified in an xml file. With that data a dataModel can be constructed.
 \item[Model]
 The model module contains and manages the data that was read and/or analyzed by the user. This data will also be provided to the controller and analysis modules. The data is stored in tables. 
-\item[Analysis Specification]
-The Analysis Specification module processes the SUGAR script that defines how the data should be analyzed. The user provides this script. In this module the script is parsed in operations that can be performed by the Analysis Module.
 \item[Analysis]
 The Analysis Module performs the analyses over the dataModel. It contains all the operations (the 8 C's) to make the exploratory sequential data analysis possible. The output of this module is the result of the analysis, this is a table that will be added to the model.
 \item[Controller]
