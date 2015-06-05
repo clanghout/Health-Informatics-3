@@ -107,7 +107,7 @@ public class DataController {
 	protected void startWizard(ActionEvent actionEvent) {
 		try {
 			Dialog wizardDialog = new XMLCreationDialog();
-			wizardDialog.setSize(460, 640);
+			wizardDialog.setSize(1000, 640);
 			wizardDialog.show();
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Error creating XML file: " + e.getMessage());

@@ -4,33 +4,49 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox styleClass="main-box" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.wizard.XmlWizardController">
+<VBox fx:id="root" styleClass="main-box" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.wizard.XmlWizardController">
         <children>
             <VBox styleClass="datafiles-box">
                 <Label>Data Files:</Label>
-                <TableView styleClass="datafiles"/>
+                <TableView
+                        fx:id="datafiles"
+                        styleClass="datafiles"/>
             </VBox>
             <HBox styleClass="path-box">
                 <children>
                     <Label>Path</Label>
-                    <TextField HBox.hgrow="SOMETIMES" />
-                    <Button text="Browse" />
+                    <TextField
+                            fx:id="fileselectfield"
+                            disable="true"
+                            HBox.hgrow="SOMETIMES" />
+                    <Button text="Browse"
+                            onAction="#selectFile"/>
                 </children>
             </HBox>
             <HBox styleClass="import-box">
                 <children>
                     <Label>Import as: </Label>
-                    <ComboBox />
-                    <Button text="Import"/>
+                    <ComboBox
+                            fx:id="importAs"/>
+                    <Button text="Import"
+                            onAction="#handleImportButton"/>
                 </children>
             </HBox>
             <SplitPane styleClass="splitpane">
                 <items>
                     <VBox styleClass="spaced-box">
                        <children>
-                            <Label>Column specification:</Label>
-                           <TableView />
-                           <Button text="Add column" />
+                           <Label>Column specification:</Label>
+                           <TableView fx:id="datacolumns"
+                                   editable="true"/>
+                           <HBox styleClass="import-box">
+                               <TextField
+                                       fx:id="columnName"/>
+                               <ComboBox
+                                       fx:id="columntype"/>
+                               <Button text="Add column"
+                                       onAction="#addColumnRow"/>
+                           </HBox>
                            <CheckBox text="First row as table header"/>
                        </children>
                     </VBox>
@@ -43,7 +59,8 @@
             </SplitPane>
             <HBox styleClass="spaced-box">
                 <children>
-                    <Button text="Create xml file" />
+                    <Button text="Create xml file"
+                            onAction="#createXml"/>
                     <Button text="Cancel"/>
                 </children>
             </HBox>
