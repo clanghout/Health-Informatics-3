@@ -102,8 +102,6 @@ The controller module is responsible for the program's front-end behaviour. It i
 The Visualization module creates a certain visual representation of a dataModel. For example it can create a box-plot of the creatine levels. The visualization is kept up to date by the controller if the data changes.
 \item[View]
 The view module is responsible for the appearance of the user interface. Determining by the controller, the view can change accordingly. The user may change the view after which the controller gets notified. The controller can then perform actions on the model.
-\item[Language]
-The language module is responsible for parsing the analysis the user gives us into an executable chain of code. The parser is two fold: one is for the process-chain, the other is for the macros. The process chain is turned into various ProcessInfos and hte macros are turned into MacroInfos, which can be parsed into various kinds of ValueNodes. The ValueNodes make up the tree in which the constraints, computations, codes and all other operations are contained.
 
 \end{description}
 \subsection{State diagram}
