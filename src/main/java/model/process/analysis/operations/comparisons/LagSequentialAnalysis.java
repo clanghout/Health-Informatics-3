@@ -5,12 +5,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import model.data.DataRow;
+import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.Row;
 import model.data.Table;
 import model.data.describer.DataDescriber;
 import model.data.value.DateTimeValue;
 import model.exceptions.EmptyEventException;
+import model.exceptions.InputMismatchException;
 import model.process.analysis.operations.Event;
 
 /**
@@ -21,12 +23,15 @@ import model.process.analysis.operations.Event;
  */
 public class LagSequentialAnalysis {
 
-	private Table tableA;
-	private Table tableB;
-	private Table result;
+	private DataTable tableA;
+	private DataTable tableB;
+	private DataTable result;
 
-	Iterator<? extends Row> a;
-	Iterator<? extends Row> b;
+	private DataDescriber<DateTimeValue> dateA;
+	private DataDescriber<DateTimeValue> dateB;
+
+	private int positionA;
+	private int positionB;
 
 	private DateTimeValue compareA;
 	private DateTimeValue compareB;
@@ -48,28 +53,31 @@ public class LagSequentialAnalysis {
 	 *            The column of the dateValues (second event)
 	 * @return
 	 */
-	public LagSequentialAnalysis(
-			Event eventA, DataDescriber<DateTimeValue> dateA, 
-			Event eventB, DataDescriber<DateTimeValue> dateB) {
-		this.tableA = eventA.create();
-		this.tableB = eventB.create();
+	public LagSequentialAnalysis(Event eventA,
+			DataDescriber<DateTimeValue> dateA, Event eventB,
+			DataDescriber<DateTimeValue> dateB) {
+		Table tabA = eventA.create();
+		Table tabB = eventB.create();
+		this.dateA = dateA;
+		this.dateB = dateB;
 		this.tableC = new DataTableBuilder();
-		
-		a = tableA.iterator();
-		b = tableB.iterator();
-		
+
+		positionA = 0;
+		positionB = 0;
+
+		tableA = checkTable(tabA);
+		tableB = checkTable(tabB);
+
 		order = new ArrayList<String>();
 
-		if (a.hasNext() || b.hasNext()) {
-			compareA = dateA.resolve(a.next());
-			compareB = dateB.resolve(b.next());
-			chronoAdd();
-		} else {
+		if (tableA.getRow(0) == null || tableB.getRow(0) == null) {
 			throw new EmptyEventException("Empty event in the input.");
+		} else {
+			compareA = dateA.resolve(tableA.getRow(positionA));
+			compareB = dateB.resolve(tableB.getRow(positionB));
 		}
-		do {
-			chronoAdd();
-		} while (a.hasNext() || b.hasNext());
+		chronoAdd();
+		tableC.setName("result");
 		result = tableC.build();
 	}
 
@@ -78,36 +86,133 @@ public class LagSequentialAnalysis {
 	 * chronologically.
 	 */
 	public void chronoAdd() {
-		if (compareA.getValue().before(compareB.getValue())) {
-			order.add("A");
-			tableC.addRow((DataRow) a);
-			getNext(a, b);
+		while (positionA < tableA.getRowCount()
+				&& positionB < tableB.getRowCount()) {
+			System.out.println("compareA "
+					+ compareA.getValue().getTime().toString() + " compareB "
+					+ compareB.getValue().getTime().toString());
+			if (compareA.getValue().compareTo(compareB.getValue()) < 0) {
+				order.add("A");
+				System.out.println("chrono A " + order.toString());
+				tableC.addRow(tableA.getRow(positionA));
+//				next2(tableA, positionA, compareA, dateA);
+				next("a");
+			} else {
+				order.add("B");
+				System.out.println("chrono B " + order.toString());
+				tableC.addRow(tableB.getRow(positionB));
+//				 next2(tableB, positionB, compareB, dateB);
+				next("b");
+			}
+		}
+		System.out.println("DONE " + order.toString());
+
+	}
+
+	/**
+	 * 
+	 * ZORG DAT DE TWEE TABELLEN EERST BEIDEN CHRONOLOGISCH GESORTEERD ZIJN!!
+	 * 
+	 * 
+	 */
+
+	public void next(String s) {
+		int position = 0;
+		DataTable table = null;
+		DateTimeValue compare = null;
+		DataDescriber<DateTimeValue> date = null;
+		int position2 = 0;
+		DataTable table2 = null;
+		if (s.equals("a")) {
+			position = positionA;
+			table = tableA;
+			compare = compareA;
+			date = dateA;
+			position2 = positionB;
+			table2 = tableB;
 		} else {
-			order.add("B");
-			tableC.addRow((DataRow) b);
-			getNext(b, a);
+			position = positionB;
+			table = tableB;
+			compare = compareB;
+			date = dateB;
+			position2 = positionA;
+			table2 = tableA;
+		}
+		if (position < table.getRowCount() - 1) {
+			position++;
+			compare = date.resolve(table.getRow(position));
+			if (s.equals("a")) {
+				positionA = position;
+				compareA = compare;
+			} else {
+				positionB = position;
+				compareB = compare;
+			}
+		} else {
+			while (position2 < table2.getRowCount()) {
+				tableC.addRow(table2.getRow(position2));
+				position2++;
+				if (s.equals("b")) {
+					positionA = position2;
+					order.add("A");
+				} else {
+					positionB = position2;
+					order.add("B");
+				}
+			}
+		}
+	}
+
+	public void next2(DataTable table, int position, DateTimeValue compare,
+			DataDescriber<DateTimeValue> date) {
+		DataTable table2 = null;
+		int position2 = 0;
+		boolean tableone = false;
+		if (table == tableA) {
+			table2 = tableB;
+			position2 = positionB;
+		} else {
+			table2 = tableA;
+			position2 = positionA;
+			tableone = true;
+		}
+		if (position < table.getRowCount() - 1) {
+			position++;
+			compare = date.resolve(table.getRow(position));
+			if (tableone) {
+				positionA = position;
+				compareA = compare;
+			} else {
+				positionB = position;
+				compareB = compare;
+			}
+		} else {
+			while (position2 < table2.getRowCount()) {
+				tableC.addRow(table2.getRow(position2));
+				position2++;
+				if (tableone) {
+					positionB = position2;
+					order.add("B");
+				} else {
+					positionA = position2;
+					order.add("A");
+				}
+			}
 		}
 	}
 
 	/**
-	 * This class determines if the iterator has a next. If it doesn't, all
-	 * elements of the other event have to be added to result.
+	 * Make sure input is a datatable.
 	 * 
-	 * @param x
-	 *            The event to have a next element
-	 * @param y
-	 *            The event to add if there isn't a next
+	 * @param table
+	 * @return the datatable
 	 */
-	public void getNext(Iterator<? extends Row> x, Iterator<? extends Row> y) {
-		if (x.hasNext()) {
-			x.next();
+	public DataTable checkTable(Table table) {
+		if (table instanceof DataTable) {
+			return (DataTable) table;
 		} else {
-			// voeg overige rows toe
-			tableC.addRow((DataRow) y);
-			while (y.hasNext()) {
-				y.next();
-				tableC.addRow((DataRow) y);
-			}
+			throw new InputMismatchException(
+					"Table should be instance of DataTable");
 		}
 	}
 
