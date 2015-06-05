@@ -131,6 +131,13 @@ public class CombinedDataRow extends Row {
 	}
 
 	@Override
+	public void addCode(String code) {
+		for (DataRow row : rows) {
+			row.addCode(code);
+		}
+	}
+
+	@Override
 	public int hashCode() {
 		int res = 0;
 		for (DataRow row : rows) {
