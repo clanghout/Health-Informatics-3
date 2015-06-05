@@ -44,7 +44,7 @@ public class DifferenceTest {
 
 	}
 
-	@Test(expected = Exception.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testUnknownTable() throws Exception {
 		DataTableBuilder builder = new DataTableBuilder();
 		builder.createColumn("c1", StringValue.class);
@@ -72,7 +72,7 @@ public class DifferenceTest {
 
 	}
 
-	@Test(expected = Exception.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalDifference2() throws Exception {
 		DataTableBuilder builder = new DataTableBuilder();
 		builder.createColumn("c1", StringValue.class);
