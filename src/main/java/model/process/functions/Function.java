@@ -61,11 +61,7 @@ public abstract class Function {
 	protected boolean initialize() {
 
 		if (table.getRowCount() == 0) {
-<<<<<<< HEAD
-			throw new InputMismatchException("Calculation of nothing does not exist");
-=======
 			return false;
->>>>>>> master
 		}
 		row = table.getRow(0);
 		DataValue value = argument.resolve(row);
