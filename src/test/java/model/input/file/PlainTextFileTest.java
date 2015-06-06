@@ -8,10 +8,7 @@ import java.util.*;
 import model.data.DataColumn;
 import model.data.DataRow;
 import model.data.DataTable;
-import model.data.value.DataValue;
-import model.data.value.FloatValue;
-import model.data.value.IntValue;
-import model.data.value.StringValue;
+import model.data.value.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -58,6 +55,7 @@ public class PlainTextFileTest {
 		assertEquals(new IntValue(5), row.getValue(table.getColumn("int")));
 		assertEquals(new FloatValue(3.5f), row.getValue(table.getColumn("float")));
 		assertEquals(new StringValue("dingen"), row.getValue(table.getColumn("string")));
+		assertEquals(new FileValue(textFile), row.getValue(table.getColumn(DataFile.METADATA_COLUMNNAME)));
 	}
 	
 

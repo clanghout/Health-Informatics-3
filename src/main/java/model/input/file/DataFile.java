@@ -6,7 +6,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import model.data.DataColumn;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.value.*;
@@ -19,6 +18,8 @@ import model.exceptions.DataFileNotRecognizedException;
  * @author Paul
  */
 public abstract class DataFile {
+
+	public static final String METADATA_COLUMNNAME = "FileName";
 
 	private String path;
 	private int startLine;
@@ -262,7 +263,7 @@ public abstract class DataFile {
 	 * Adds a column containing the name of the file from which the column comes.
 	 */
 	public void addMetaDataFileColumn() {
-		builder.createColumn("FileName", FileValue.class);
+		builder.createColumn(METADATA_COLUMNNAME, FileValue.class);
 	}
 
 	/**
