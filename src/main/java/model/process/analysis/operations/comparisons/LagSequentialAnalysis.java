@@ -142,14 +142,17 @@ public class LagSequentialAnalysis {
 				position2++;
 				if (tableone) {
 					positionB = position2;
-					order.add("B");
 					System.out.println("add B");
 				} else {
 					positionA = position2;
-					order.add("A");
 					System.out.println("add A");
+				} 
+				if (tableone && position2 != table2.getRowCount()) {
+					order.add("B");
+				} else if (position2 != table2.getRowCount()) {
+					order.add("A");
 				}
-			}
+			} 
 		}
 	}
 
