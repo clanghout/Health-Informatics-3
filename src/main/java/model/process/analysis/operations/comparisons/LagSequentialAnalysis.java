@@ -137,6 +137,9 @@ public class LagSequentialAnalysis {
 		}
 	}
 
+	/**
+	 * Class to make it easier to call next.
+	 */
 	public void next(DataTable table) {
 		if (table.getName().equals(tableA.getName())) {
 			next(tableA, positionA, compareA, dateA, tableB, positionB);
