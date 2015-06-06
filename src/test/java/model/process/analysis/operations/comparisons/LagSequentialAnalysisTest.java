@@ -84,7 +84,7 @@ public class LagSequentialAnalysisTest {
 		builder2.createColumn("string", StringValue.class);
 		builder2.createColumn("measurement", IntValue.class);
 		
-		date = new DateTimeValue(2014, 1, 19, 11, 30, 5);
+		date = new DateTimeValue(2015, 1, 19, 11, 30, 5);
 		string = new StringValue("One");
 		inty = new IntValue(12);
 		builder2.createRow(date, string, inty);
