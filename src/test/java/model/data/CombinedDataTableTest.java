@@ -383,4 +383,19 @@ public class CombinedDataTableTest {
 		assertEquals(dataTables.get(2), list.get(2));
 	}
 
+	@Test
+	public void testGetTable() throws Exception {
+		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
+		assertEquals(dataTables.get(0), comb.getTable("test1"));
+		assertEquals(dataTables.get(1), comb.getTable("test2"));
+		assertEquals(dataTables.get(2), comb.getTable("test3"));
+	}
+
+
+	@Test(expected = NoSuchElementException.class)
+	public void testGetTableException() throws Exception {
+		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
+		comb.getTable("no");
+	}
+
 }

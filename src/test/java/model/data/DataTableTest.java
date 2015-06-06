@@ -337,4 +337,27 @@ public class DataTableTest {
 		assertTrue(copy.getRow(0).containsCode("test"));
 	}
 
+	@Test
+	public void testGetTable() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("t");
+		builder.createColumn("column1", StringValue.class);
+		builder.createRow(new StringValue("te"));
+		DataTable table = builder.build();
+
+		assertEquals(table, table.getTable("t"));
+	}
+
+
+	@Test(expected = NoSuchElementException.class)
+	public void testGetTableException() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("t");
+		builder.createColumn("column1", StringValue.class);
+		builder.createRow(new StringValue("te"));
+		DataTable table = builder.build();
+
+		table.getTable("no");
+	}
+
 }
