@@ -85,11 +85,11 @@ public class DataTableTest {
 	public void testIterator() throws Exception {
 		Iterator<DataRow> iterator = dataTable.iterator();
 		assertTrue(iterator.hasNext());
-		assertEquals(iterator.next(), rows.get(0));
+		assertEquals(rows.get(0), iterator.next());
 		assertTrue(iterator.hasNext());
-		assertEquals(iterator.next(), rows.get(1));
+		assertEquals(rows.get(1), iterator.next());
 		assertTrue(iterator.hasNext());
-		assertEquals(iterator.next(), rows.get(2));
+		assertEquals(rows.get(2), iterator.next());
 		assertFalse(iterator.hasNext());
 	}
 
@@ -97,16 +97,16 @@ public class DataTableTest {
 	@Test
 	public void testFlaggedDelete() throws Exception {
 		dataTable.flagNotDelete(rows.get(1));
-		assertEquals(dataTable.getRow(1), rows.get(1));
-		assertEquals(dataTable.getRow(2), rows.get(2));
+		assertEquals(rows.get(1), dataTable.getRow(1));
+		assertEquals( rows.get(2), dataTable.getRow(2));
 	}
 
 	@Test
 	public void testDelete() throws Exception {
 		dataTable.flagNotDelete(rows.get(1));
 		dataTable.deleteNotFlagged();
-		assertEquals(dataTable.getRow(0), rows.get(1));
-		assertEquals(dataTable.getRowCount(), 1, 0.1);
+		assertEquals(rows.get(1), dataTable.getRow(0));
+		assertEquals(1, dataTable.getRowCount(), 0.1);
 	}
 
 	@Test
@@ -114,19 +114,19 @@ public class DataTableTest {
 		dataTable.flagNotDelete(rows.get(0));
 		dataTable.flagNotDelete(rows.get(2));
 		dataTable.deleteNotFlagged();
-		assertEquals(dataTable.getRowCount(), 2, 0.1);
+		assertEquals(2, dataTable.getRowCount(), 0.1);
 		assertTrue(dataTable.getRows().contains(rows.get(0)));
 		assertTrue(dataTable.getRows().contains(rows.get(2)));
 	}
 
 	@Test
 	public void testGetName() throws Exception {
-		assertEquals(dataTable.getName(), "test");
+		assertEquals("test", dataTable.getName());
 	}
 
 	@Test
 	public void testGetColumnName() throws Exception {
-		assertEquals(dataTable.getColumn("column1"), columns[0]);
+		assertEquals(columns[0], dataTable.getColumn("column1"));
 	}
 
 	@Test
@@ -318,7 +318,7 @@ public class DataTableTest {
 		DataTable copy = table.export("t2");
 
 		assertFalse(copy == table);
-		assertEquals(copy.getName(), "t2");
+		assertEquals("t2", copy.getName());
 		assertFalse(table.equals(copy));
 		assertTrue(table.equalsSoft(copy));
 	}
