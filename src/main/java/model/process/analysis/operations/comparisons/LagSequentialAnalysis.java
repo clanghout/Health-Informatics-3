@@ -77,7 +77,7 @@ public class LagSequentialAnalysis {
 		compareB = dateB.resolve(tableB.getRow(positionB));
 
 		chronoAdd();
-		tableC.setName("result");
+		tableC.setName("LSA");
 		result = tableC.build();
 	}
 
