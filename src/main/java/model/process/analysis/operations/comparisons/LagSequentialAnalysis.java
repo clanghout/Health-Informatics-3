@@ -95,14 +95,12 @@ public class LagSequentialAnalysis {
 				order.add("A");
 				System.out.println("chrono A " + order.toString());
 				tableC.addRow(tableA.getRow(positionA));
-//				next2(tableA, positionA, compareA, dateA);
-				next("a");
+				next(tableA);
 			} else {
 				order.add("B");
 				System.out.println("chrono B " + order.toString());
 				tableC.addRow(tableB.getRow(positionB));
-//				 next2(tableB, positionB, compareB, dateB);
-				next("b");
+				next(tableB);
 			}
 		}
 		System.out.println("DONE " + order.toString());
@@ -116,67 +114,19 @@ public class LagSequentialAnalysis {
 	 * 
 	 */
 
-	public void next(String s) {
-		int position = 0;
-		DataTable table = null;
-		DateTimeValue compare = null;
-		DataDescriber<DateTimeValue> date = null;
-		int position2 = 0;
-		DataTable table2 = null;
-		if (s.equals("a")) {
-			position = positionA;
-			table = tableA;
-			compare = compareA;
-			date = dateA;
-			position2 = positionB;
-			table2 = tableB;
+	public void next(DataTable table) {
+		if (table.getName().equals(tableA.getName())) {
+			next(tableA, positionA, compareA, dateA, tableB, positionB);
 		} else {
-			position = positionB;
-			table = tableB;
-			compare = compareB;
-			date = dateB;
-			position2 = positionA;
-			table2 = tableA;
-		}
-		if (position < table.getRowCount() - 1) {
-			position++;
-			compare = date.resolve(table.getRow(position));
-			if (s.equals("a")) {
-				positionA = position;
-				compareA = compare;
-			} else {
-				positionB = position;
-				compareB = compare;
-			}
-		} else {
-			while (position2 < table2.getRowCount()) {
-				tableC.addRow(table2.getRow(position2));
-				position2++;
-				if (s.equals("b")) {
-					positionA = position2;
-					order.add("A");
-				} else {
-					positionB = position2;
-					order.add("B");
-				}
-			}
+			next(tableB, positionB, compareB, dateB, tableA, positionB);
 		}
 	}
 
-	public void next2(DataTable table, int position, DateTimeValue compare,
-			DataDescriber<DateTimeValue> date) {
-		DataTable table2 = null;
-		int position2 = 0;
-		boolean tableone = false;
-		if (table == tableA) {
-			table2 = tableB;
-			position2 = positionB;
-		} else {
-			table2 = tableA;
-			position2 = positionA;
-			tableone = true;
-		}
+	public void next(DataTable table, int position, DateTimeValue compare,
+			DataDescriber<DateTimeValue> date, DataTable table2, int position2) {
+		boolean tableone = table.getName().equals(tableA.getName());
 		if (position < table.getRowCount() - 1) {
+			System.out.println("here");
 			position++;
 			compare = date.resolve(table.getRow(position));
 			if (tableone) {
@@ -193,9 +143,11 @@ public class LagSequentialAnalysis {
 				if (tableone) {
 					positionB = position2;
 					order.add("B");
+					System.out.println("add B");
 				} else {
 					positionA = position2;
 					order.add("A");
+					System.out.println("add A");
 				}
 			}
 		}
