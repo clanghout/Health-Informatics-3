@@ -22,27 +22,21 @@ public class DataFileTest {
 
 		DataFile dataFile = DataFile.createDataFile(file, "plaintext");
 		assertTrue(dataFile instanceof PlainTextFile);
-		
-		dataFile.setStartLine(7);
-		dataFile.setEndLine(8);
-
-		DataTable dataTable = dataFile.createDataTable();
-
 	}
 	
 	@Test(expected = DataFileNotRecognizedException.class)
-	public void testCreateInvalidDataFile() {
+	public void testCreateInvalidDataFile() throws Exception {
 		DataFile.createDataFile("/model/input/statsensor.txt", "invalidType");
 	}
 	
 	@Test
-	public void testCreateXlsFile() {
+	public void testCreateXlsFile() throws Exception {
 		DataFile df = DataFile.createDataFile("/model/input/xlsfile.xls", "xls");
 		assertTrue(df instanceof XlsFile);
 	}
 
 	@Test
-	public void testCreateXlsxFile() {
+	public void testCreateXlsxFile() throws Exception {
 		DataFile df = DataFile.createDataFile("/model/input/xlsxfile.xlsx", "xlsx");
 		assertTrue(df instanceof XlsxFile);
 	}

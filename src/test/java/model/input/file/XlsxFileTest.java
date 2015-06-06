@@ -2,10 +2,7 @@ package model.input.file;
 
 import static org.junit.Assert.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -13,10 +10,7 @@ import java.util.List;
 import model.data.DataColumn;
 import model.data.DataRow;
 import model.data.DataTable;
-import model.data.value.DataValue;
-import model.data.value.FloatValue;
-import model.data.value.IntValue;
-import model.data.value.StringValue;
+import model.data.value.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +25,7 @@ public class XlsxFileTest {
 	private XlsxFile xlsxFile;
 	
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 		String file = getClass().getResource("/model/input/xlsx1.xlsx").getFile();
 		xlsxFile = new XlsxFile(file);
 		
@@ -59,7 +53,8 @@ public class XlsxFileTest {
 
 		assertEquals(new StringValue("string"), row.getValue(table.getColumn("string")));
 		assertEquals(new FloatValue(0.666f), row.getValue(table.getColumn("float")));
-		assertEquals(new IntValue(666), row.getValue(table.getColumn("int")));	
+		assertEquals(new IntValue(666), row.getValue(table.getColumn("int")));
+		assertEquals(new FileValue(xlsxFile), row.getValue(table.getColumn(DataFile.METADATA_COLUMNNAME)));
 	}
 	
 }

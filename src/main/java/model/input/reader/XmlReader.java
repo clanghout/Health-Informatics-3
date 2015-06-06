@@ -10,10 +10,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -136,8 +133,9 @@ public class XmlReader {
 	 * @return a new DataFile
 	 * @param elem The file element read from the xml file
 	 * @param parentDir The parent of the file
+	 * @throws FileNotFoundException When the file can not be found
 	 */
-	public DataFile createDataFile(Element elem, String parentDir) {
+	public DataFile createDataFile(Element elem, String parentDir) throws FileNotFoundException {
 		String type = elem.getElementsByTagName(TYPE_TAG).item(0).getTextContent();
 		String completePath = createPath(elem, parentDir);
 		DataFile theDataFile = DataFile.createDataFile(completePath, type);
