@@ -25,36 +25,36 @@ public class EmptyTest {
 		table = new DataTable();
 	}
 
-	@Test(expected = InputMismatchException.class)
+	@Test
 	public void testEmptyTableAverage() throws Exception {
 		assertEquals(new FloatValue(0),
 				new Average(table, new RowValueDescriber<>(column)).calculate());
 	}
 
-	@Test(expected = InputMismatchException.class)
+	@Test
 	public void testEmptyTableMaximum() throws Exception {
 		assertEquals(new FloatValue(0),
 				new Maximum(table, new RowValueDescriber<>(column)).calculate());
 	}
 
-	@Test(expected = InputMismatchException.class)
+	@Test
 	public void testEmptyTableMinimum() throws Exception {
 		assertEquals(new FloatValue(0),
 				new Minimum(table, new RowValueDescriber<>(column)).calculate());
 	}
 
-	@Test(expected = InputMismatchException.class)
+	@Test
 	public void testEmptyTableMedian() throws Exception {
 		assertEquals(new FloatValue(0),
 				new Median(table, new RowValueDescriber<>(column)).calculate());
 	}
 
-	@Test(expected = InputMismatchException.class)
+	@Test
 	public void testEmptyTableSum() throws Exception {
 		assertEquals(new FloatValue(0), new Sum(table, new RowValueDescriber<>(column)).calculate());
 	}
 	
-	@Test(expected = InputMismatchException.class)
+	@Test
 	public void testEmptyTableDeviation() throws Exception {
 		assertEquals(new FloatValue(0),
 				new StandardDeviation(table, new RowValueDescriber<>(column)).calculate());
