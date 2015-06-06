@@ -4,10 +4,7 @@ import model.data.DataModel;
 import model.data.describer.DataDescriber;
 import model.data.value.StringValue;
 import model.language.nodes.ValueNode;
-import model.process.DataProcess;
-import model.process.FromProcess;
-import model.process.IsProcess;
-import model.process.SetCode;
+import model.process.*;
 import model.process.analysis.ConstraintAnalysis;
 import model.process.setOperations.Difference;
 
@@ -45,7 +42,11 @@ class ProcessInfo {
 						.toArray(Identifier[]::new);
 				return new FromProcess(identifiers);
 			case "is":
-				return new IsProcess((Identifier) parameters[0]);
+				if (parameters.length == 1) {
+					return new IsProcess((Identifier) parameters[0]);
+				} else if(parameters.length == 2) {
+					return new DataTableIsProcess((Identifier) parameters[0], (Identifier) parameters[1]);
+				}
 			case "constraint":
 				return new ConstraintAnalysis(macros.get(parameters[0]));
 			case "setCode":
