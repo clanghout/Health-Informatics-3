@@ -217,7 +217,7 @@ public class LagSequentialAnalysis {
 	 * 
 	 * @return result the built Table
 	 */
-	public Table getTable() {
+	public DataTable getTable() {
 		return result;
 	}
 
