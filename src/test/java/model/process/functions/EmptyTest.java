@@ -1,14 +1,11 @@
 package model.process.functions;
 
-<<<<<<< HEAD
 import model.exceptions.InputMismatchException;
-=======
-import model.data.value.FloatValue;
-import model.exceptions.FunctionInputMismatchException;
->>>>>>> master
 import model.data.DataColumn;
 import model.data.DataTable;
 import model.data.describer.RowValueDescriber;
+import model.data.value.FloatValue;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,61 +25,36 @@ public class EmptyTest {
 		table = new DataTable();
 	}
 
-<<<<<<< HEAD
 	@Test(expected = InputMismatchException.class)
-=======
-	@Test
->>>>>>> master
 	public void testEmptyTableAverage() throws Exception {
 		assertEquals(new FloatValue(0),
 				new Average(table, new RowValueDescriber<>(column)).calculate());
 	}
 
-<<<<<<< HEAD
 	@Test(expected = InputMismatchException.class)
-=======
-	@Test
->>>>>>> master
 	public void testEmptyTableMaximum() throws Exception {
 		assertEquals(new FloatValue(0),
 				new Maximum(table, new RowValueDescriber<>(column)).calculate());
 	}
 
-<<<<<<< HEAD
 	@Test(expected = InputMismatchException.class)
-=======
-	@Test
->>>>>>> master
 	public void testEmptyTableMinimum() throws Exception {
 		assertEquals(new FloatValue(0),
 				new Minimum(table, new RowValueDescriber<>(column)).calculate());
 	}
 
-<<<<<<< HEAD
 	@Test(expected = InputMismatchException.class)
-=======
-	@Test
->>>>>>> master
 	public void testEmptyTableMedian() throws Exception {
 		assertEquals(new FloatValue(0),
 				new Median(table, new RowValueDescriber<>(column)).calculate());
 	}
 
-<<<<<<< HEAD
 	@Test(expected = InputMismatchException.class)
-=======
-	@Test
->>>>>>> master
 	public void testEmptyTableSum() throws Exception {
 		assertEquals(new FloatValue(0), new Sum(table, new RowValueDescriber<>(column)).calculate());
 	}
-<<<<<<< HEAD
 	
 	@Test(expected = InputMismatchException.class)
-=======
-
-	@Test
->>>>>>> master
 	public void testEmptyTableDeviation() throws Exception {
 		assertEquals(new FloatValue(0),
 				new StandardDeviation(table, new RowValueDescriber<>(column)).calculate());
