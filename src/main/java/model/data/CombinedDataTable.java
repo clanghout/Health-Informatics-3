@@ -181,7 +181,6 @@ public class CombinedDataTable extends Table {
 		res.add(table);
 		return res;
 	}
-
 }
 
 

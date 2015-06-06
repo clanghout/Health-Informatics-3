@@ -32,9 +32,15 @@ public class EventTest {
 	private DataColumn measure2col;
 
 	/**
+<<<<<<< HEAD
 	 * simulate two dataTables.
 	 * 
 	 * @throws Exception
+=======
+	 * simulate datamodel with single maximum for each column type.
+	 *
+	 *
+>>>>>>> master
 	 */
 	@Before
 	public void setUp() {
@@ -56,12 +62,12 @@ public class EventTest {
 		builder2.createColumn("date", DateTimeValue.class);
 		builder2.createColumn("string", StringValue.class);
 		measure2col = builder2.createColumn("measurement", IntValue.class);
-		
+
 		date = new DateTimeValue(19, 1, 1994, 11, 30, 5);
 		string = new StringValue("One");
 		inty = new IntValue(12);
 		builder2.createRow(date, string, inty);
-		
+
 		date = new DateTimeValue(10, 1, 1997, 15, 20, 5);
 		string = new StringValue("Two");
 		inty = new IntValue(9);
@@ -77,13 +83,13 @@ public class EventTest {
 
 	/**
 	 * Initialize an event (all measurements above 10).
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Test
 	public void testEvent() throws Exception {
 		assertFalse(table.equals(table2));
-		DataDescriber<BoolValue> greater = 
+		DataDescriber<BoolValue> greater =
 				new ConstraintDescriber(
 						new GreaterThanCheck<>(
 								new RowValueDescriber<>(table2.getColumn("measurement")),

@@ -344,7 +344,6 @@ public class CombinedDataRowTest {
 		comb.addDataRow(row2);
 		comb.addCode("test");
 		assertTrue(comb.containsCode("test"));
-
 	}
 
 }

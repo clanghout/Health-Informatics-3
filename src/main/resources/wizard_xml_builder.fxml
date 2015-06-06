@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox styleClass="main-box" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainUIController">
+        <children>
+            <VBox styleClass="datafiles-box">
+                <Label>Data Files:</Label>
+                <TableView styleClass="datafiles"/>
+            </VBox>
+            <HBox styleClass="path-box">
+                <children>
+                    <Label>Path</Label>
+                    <TextField HBox.hgrow="SOMETIMES" />
+                    <Button text="Browse" />
+                </children>
+            </HBox>
+            <HBox styleClass="import-box">
+                <children>
+                    <Label>Import as: </Label>
+                    <ComboBox />
+                    <Button text="Import"/>
+                </children>
+            </HBox>
+            <SplitPane styleClass="splitpane">
+                <items>
+                    <VBox styleClass="spaced-box">
+                       <children>
+                            <Label>Column specification:</Label>
+                           <TableView />
+                           <Button text="Add column" />
+                           <CheckBox text="First row as table header"/>
+                       </children>
+                    </VBox>
+                    <HBox styleClass="spaced-box">
+                        <children>
+                            <Label> RESERVED FOR SPECIFYING FILESPECIFIC THINGS </Label>
+                        </children>
+                    </HBox>
+                </items>
+            </SplitPane>
+            <HBox styleClass="spaced-box">
+                <children>
+                    <Button text="Create xml file" />
+                </children>
+            </HBox>
+        </children>
+
+<stylesheets>
+    <URL value="@wizard.css" />
+</stylesheets>
+
+</VBox>

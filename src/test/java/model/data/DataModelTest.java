@@ -119,7 +119,7 @@ public class DataModelTest {
 		model.add(firstTable);
 		model.add(secondTable);
 
-		assertEquals(firstTable, model.getByName(firstTable.getName()));
-		assertEquals(secondTable, model.getByName(secondTable.getName()));
+		assertEquals(firstTable, model.getByName(firstTable.getName()).get());
+		assertEquals(secondTable, model.getByName(secondTable.getName()).get());
 	}
 }

@@ -27,7 +27,7 @@ public class CombinedDataTableTest {
 	public void setUp() throws Exception {
 		DataTableBuilder builder = new DataTableBuilder();
 		builder.setName("test1");
-		rows = new ArrayList<DataRow>();
+		rows = new ArrayList<>();
 		dataTables = new ArrayList<>();
 		columns[0] = new DataColumn[]{
 				builder.createColumn("column1", StringValue.class),
@@ -64,7 +64,7 @@ public class CombinedDataTableTest {
 
 		builder = new DataTableBuilder();
 		builder.setName("test2");
-		rows = new ArrayList<DataRow>();
+		rows = new ArrayList<>();
 		columns[1] = new DataColumn[]{
 				builder.createColumn("column1", StringValue.class),
 				builder.createColumn("column2", StringValue.class)
@@ -88,9 +88,9 @@ public class CombinedDataTableTest {
 
 		dataTables.add(builder.build());
 		builder = new DataTableBuilder();
-		builder.setName("test3")
-		;
-		rows = new ArrayList<DataRow>();
+		builder.setName("test3");
+
+		rows = new ArrayList<>();
 		columns[2] = new DataColumn[]{
 				builder.createColumn("column1", StringValue.class)
 		};
@@ -372,15 +372,15 @@ public class CombinedDataTableTest {
 
 	@Test
 	public void testGetTables() throws Exception {
-
-		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
+		CombinedDataTable comb = new CombinedDataTable(
+				dataTables.get(1),
+				dataTables.get(0),
+				dataTables.get(2));
 		List<DataTable> list = comb.getTables();
 
 		assertEquals(list.get(0), dataTables.get(1));
 		assertEquals(list.get(1), dataTables.get(0));
 		assertEquals(list.get(2), dataTables.get(2));
-
-
 	}
 
 }

@@ -12,13 +12,8 @@ import model.data.value.NumberValue;
  */
 public class Sum extends Function {
 
-	private DataTable table;
-	private DataDescriber<NumberValue> argument;
-
 	public Sum(DataTable model, DataDescriber<NumberValue> argument) {
 		super(model, argument);
-		this.table = model;
-		this.argument = argument;
 	}
 
 	/**
@@ -26,10 +21,14 @@ public class Sum extends Function {
 	 */
 	@Override
 	public FloatValue calculate() {
+		//TODO decide if this must become default and move to parrent.
+		if (!initialize()) {
+			return new FloatValue(0);
+		}
 		float total = 0f;
 		float value = 0f;
-		for (int i = 0; i < table.getRowCount(); i++) {
-			value = intOrFloat(argument, table.getRow(i));
+		for (int i = 0; i < getTable().getRowCount(); i++) {
+			value = intOrFloat(getArgument(), getTable().getRow(i));
 			total += value;
 		}
 		return new FloatValue(total);

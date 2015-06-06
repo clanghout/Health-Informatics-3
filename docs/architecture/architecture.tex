@@ -92,8 +92,6 @@ As mentioned before our program consists of modules that work together. In figur
 The input module is able to read the data from provided files that are specified in an xml file. With that data a dataModel can be constructed.
 \item[Model]
 The model module contains and manages the data that was read and/or analyzed by the user. This data will also be provided to the controller and analysis modules. The data is stored in tables. 
-\item[Analysis Specification]
-The Analysis Specification module processes the SUGAR script that defines how the data should be analyzed. The user provides this script. In this module the script is parsed in operations that can be performed by the Analysis Module.
 \item[Analysis]
 The Analysis Module performs the analyses over the dataModel. It contains all the operations (the 8 C's) to make the exploratory sequential data analysis possible. The output of this module is the result of the analysis, this is a table that will be added to the model.
 \item[Controller]
@@ -102,6 +100,8 @@ The controller module is responsible for the program's front-end behaviour. It i
 The Visualization module creates a certain visual representation of a dataModel. For example it can create a box-plot of the creatine levels. The visualization is kept up to date by the controller if the data changes.
 \item[View]
 The view module is responsible for the appearance of the user interface. Determining by the controller, the view can change accordingly. The user may change the view after which the controller gets notified. The controller can then perform actions on the model.
+\item[Language]
+The language module is responsible for parsing the analysis the user gives us into an executable chain of code. The parser is two fold: one is for the process-chain, the other is for the macros. The process chain is turned into various ProcessInfos and hte macros are turned into MacroInfos, which can be parsed into various kinds of ValueNodes. The ValueNodes make up the tree in which the constraints, computations, codes and all other operations are contained.
 
 \end{description}
 \subsection{State diagram}

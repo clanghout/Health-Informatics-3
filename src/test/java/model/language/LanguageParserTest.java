@@ -1,5 +1,8 @@
 package model.language;
 
+import model.data.value.*;
+import model.language.nodes.ConstantNode;
+import model.language.nodes.ValueNode;
 import org.junit.Before;
 import org.junit.Test;
 import org.parboiled.Parboiled;
@@ -8,9 +11,7 @@ import org.parboiled.support.ParsingResult;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Contains the more complicated tests for LanguageParser.
@@ -33,8 +34,8 @@ public class LanguageParserTest {
 		ProcessInfo info = (ProcessInfo) result.valueStack.pop();
 
 		assertEquals("test", info.getIdentifier().getName());
-		Object[] expected = Arrays.stream(new Number[]{3, 4, 5})
-				.map(NumberConstantNode::new)
+		Object[] expected = Arrays.stream(new Integer[]{3, 4, 5})
+				.map(x -> new ConstantNode<IntValue>(new IntValue(x)))
 				.toArray(Object[]::new);
 		assertArrayEquals(expected, info.getParameters());
 	}
@@ -47,7 +48,11 @@ public class LanguageParserTest {
 
 		assertEquals("test2", info.getIdentifier().getName());
 		assertArrayEquals(
-				new Object[]{"aap", new Identifier<>("sjon"), new NumberConstantNode(2.0f) },
+				new Object[]{
+						new ConstantNode<>(new StringValue("aap")),
+						new Identifier<>("sjon"),
+						new ConstantNode<>(new FloatValue(2.0f))
+				},
 				info.getParameters()
 		);
 
@@ -76,7 +81,7 @@ public class LanguageParserTest {
 		ParsingResult result = runner.run("true");
 
 		assertTrue(result.matched);
-		BooleanNode node = (BooleanNode) result.valueStack.pop();
+		ValueNode<BoolValue> node = (ValueNode<BoolValue>) result.valueStack.pop();
 		assertTrue(node.resolve(null).resolve(null).getValue());
 	}
 
@@ -86,7 +91,7 @@ public class LanguageParserTest {
 		ParsingResult result = runner.run("false OR true");
 
 		assertTrue(result.matched);
-		BooleanNode node = (BooleanNode) result.valueStack.pop();
+		ValueNode<BoolValue> node = (ValueNode<BoolValue>) result.valueStack.pop();
 		assertTrue(node.resolve(null).resolve(null).getValue());
 	}
 
@@ -98,7 +103,7 @@ public class LanguageParserTest {
 		ParsingResult result = runner.run(input);
 
 		assertTrue(result.matched);
-		BooleanNode node = (BooleanNode) result.valueStack.pop();
+		ValueNode<BoolValue> node = (ValueNode<BoolValue>) result.valueStack.pop();
 		assertTrue(node.resolve(null).resolve(null).getValue());
 	}
 
@@ -109,7 +114,7 @@ public class LanguageParserTest {
 		ParsingResult result = runner.run(input);
 
 		assertTrue(result.matched);
-		BooleanNode node = (BooleanNode) result.valueStack.pop();
+		ValueNode<BoolValue> node = (ValueNode<BoolValue>) result.valueStack.pop();
 		assertTrue(node.resolve(null).resolve(null).getValue());
 	}
 
@@ -120,7 +125,29 @@ public class LanguageParserTest {
 		ParsingResult result = runner.run(input);
 
 		assertTrue(result.matched);
-		NumberNode node = (NumberNode) result.valueStack.pop();
+		ValueNode<NumberValue> node = (ValueNode<NumberValue>) result.valueStack.pop();
 		assertEquals(12.0f, node.resolve(null).resolve(null).getValue());
+	}
+
+	@Test
+	public void testParenthesizedBooleanExpression() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.BooleanExpression());
+		String input = "((true))";
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+		ValueNode<BoolValue> node = (ValueNode<BoolValue>) result.valueStack.pop();
+		assertTrue(node.resolve(null).resolve(null).getValue());
+	}
+
+	@Test
+	public void testParenthesizedNumberExpression() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.NumberExpression());
+		String input = "((5.0))";
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+		ValueNode<NumberValue> node = (ValueNode<NumberValue>) result.valueStack.pop();
+		assertEquals(5.0f, node.resolve(null).resolve(null).getValue());
 	}
 }

@@ -46,7 +46,7 @@ public class LanguageParserMatchTest {
 				{ parser.FloatLiteral(), "312.412", true },
 				{ parser.FloatLiteral(), "2", false },
 				{ parser.FloatLiteral(), "s", false },
-				{ parser.IntLiteral(), "4", true },
+				{ parser.IntLiteral(), "4", true }, // 10
 				{ parser.IntLiteral(), "415", true },
 				{ parser.Params(), "()", true },
 				{ parser.Params(), "(test)", true },
@@ -56,17 +56,18 @@ public class LanguageParserMatchTest {
 				{ parser.Process(), "test()", true },
 				{ parser.Pipe(), "test()|test2()", true },
 				{ parser.ColumnIdentifier(), "test.dignen", true },
-				{ parser.ColumnIdentifier(), "test", false },
+				{ parser.ColumnIdentifier(), "test", false }, // 20
 				{ parser.Macro(), "def test() : Constraint = test;", true},
-				{ parser.CompareOperator(), "=", true},
-				{ parser.Comparison(), "test.dingen = 10", true},
+				{ parser.CompareOperator(), ">=", true},
+				{ parser.Comparison(), "test.dingen >= 10", true},
 				{ parser.BooleanExpression(), "true", true},
 				{ parser.BooleanExpression(), "false", true},
 				{ parser.BooleanExpression(), "5 = 5", true},
 				{ parser.BooleanExpression(), "5 = 5 AND true", true},
 				{ parser.BooleanExpression(), "NOT(false)", true},
 				{ parser.NumberExpression(), "5 * 5", true},
-				{ parser.NumberExpression(), "(5 * 5) + 3", true}
+				{ parser.NumberExpression(), "(5 * 5) + 3", true},
+				{ parser.BooleanExpression(), "HAS_CODE(\"test\")", true}
 		};
 
 		return Arrays.asList(testData);

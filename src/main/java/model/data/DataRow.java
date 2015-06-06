@@ -138,7 +138,7 @@ public class DataRow extends Row {
 	 * @return a set that contains the columns of this row.
 	 */
 	public List<DataColumn> getColumns() {
-		return values.keySet().stream().map(x -> x.getColumn()).collect(Collectors.toList());
+		return values.keySet().stream().map(SoftColumn::getColumn).collect(Collectors.toList());
 	}
 
 	@Override

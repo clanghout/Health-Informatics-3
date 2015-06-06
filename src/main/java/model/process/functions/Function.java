@@ -22,7 +22,30 @@ public abstract class Function {
 	public Function(DataTable model, DataDescriber<NumberValue> argument) {
 		this.table = model;
 		this.argument = argument;
-		initialize();
+	}
+
+	/**
+	 * Return the table.
+	 * @return the table
+	 */
+	public DataTable getTable() {
+		return table;
+	}
+
+	/**
+	 * Return the DataDescriber for the function.
+	 * @return the DataDescriber for the function
+	 */
+	public DataDescriber<NumberValue> getArgument() {
+		return argument;
+	}
+
+	/**
+	 * Set the table on which the function must perform.
+	 * @param table table on which the funtion must perform
+	 */
+	public void setTable(DataTable table) {
+		this.table = table.copy();
 	}
 
 	/**
@@ -33,12 +56,16 @@ public abstract class Function {
 	public abstract DataValue calculate();
 
 	/**
-	 * initialize class checks if specified column is eligible.
+	 * Initialize class checks if specified column is eligible.
 	 */
-	public void initialize() {
+	protected boolean initialize() {
 
 		if (table.getRowCount() == 0) {
+<<<<<<< HEAD
 			throw new InputMismatchException("Calculation of nothing does not exist");
+=======
+			return false;
+>>>>>>> master
 		}
 		row = table.getRow(0);
 		DataValue value = argument.resolve(row);
@@ -46,6 +73,7 @@ public abstract class Function {
 		if (!(value instanceof FloatValue) && !(value instanceof IntValue)) {
 			throw new InputMismatchException("Specified column is neither float nor int");
 		}
+		return true;
 	}
 
 	/**
