@@ -1,9 +1,6 @@
 package model.process.analysis.operations.comparisons;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import model.data.DataRow;
 import model.data.DataTable;
@@ -11,6 +8,7 @@ import model.data.DataTableBuilder;
 import model.data.Table;
 import model.data.describer.DataDescriber;
 import model.data.value.DateTimeValue;
+import model.data.value.DateValue;
 import model.exceptions.InputMismatchException;
 import model.process.analysis.operations.Event;
 
@@ -26,14 +24,8 @@ public class LagSequentialAnalysis {
 	private DataTable tableB;
 	private DataTable result;
 
-	private DataDescriber<DateTimeValue> dateA;
-	private DataDescriber<DateTimeValue> dateB;
-
-	private int positionA;
-	private int positionB;
-
-	private DateTimeValue compareA;
-	private DateTimeValue compareB;
+	private DataDescriber<DateTimeValue> colA;
+	private DataDescriber<DateTimeValue> colB;
 
 	private DataTableBuilder tableC;
 
@@ -57,8 +49,8 @@ public class LagSequentialAnalysis {
 			DataDescriber<DateTimeValue> dateB) {
 		tableA = checkTable(eventA.create());
 		tableB = checkTable(eventB.create());
-		this.dateA = dateA;
-		this.dateB = dateB;
+		this.colA = dateA;
+		this.colB = dateB;
 		this.tableC = new DataTableBuilder();
 
 		if (tableA.getRowCount() == 0 || tableB.getRowCount() == 0) {
@@ -68,13 +60,9 @@ public class LagSequentialAnalysis {
 		tableA = sortTable(tableA);
 		tableB = sortTable(tableB);
 
-		positionA = 0;
-		positionB = 0;
+
 
 		order = new ArrayList<String>();
-
-		compareA = dateA.resolve(tableA.getRow(positionA));
-		compareB = dateB.resolve(tableB.getRow(positionB));
 
 		chronoAdd();
 		tableC.setName("LSA");
@@ -94,9 +82,9 @@ public class LagSequentialAnalysis {
 
 		DataDescriber<DateTimeValue> date = null;
 		if (table.getName().equals(tableA.getName())) {
-			date = dateA;
+			date = colA;
 		} else {
-			date = dateB;
+			date = colB;
 		}
 
 		List<Calendar> cal = new ArrayList<Calendar>();
@@ -123,79 +111,59 @@ public class LagSequentialAnalysis {
 	 * chronologically.
 	 */
 	public void chronoAdd() {
-		while (positionA < tableA.getRowCount()
-				&& positionB < tableB.getRowCount()) {
-			if (compareA.getValue().compareTo(compareB.getValue()) < 0) {
+		Iterator<DataRow> tableAIt = tableA.iterator();
+		Iterator<DataRow> tableBIt = tableB.iterator();
+
+		DataRow rowA = tableAIt.next();
+		DataRow rowB = tableBIt.next();
+		DateTimeValue dataA = colA.resolve(rowA);
+		DateTimeValue dataB = colB.resolve(rowB);
+
+		boolean nextA = true;
+		boolean nextB = true;
+
+		while (nextA && nextB) {
+			if (dataA.getValue().compareTo(dataB.getValue()) < 0) {
 				order.add("A");
-				tableC.addRow(tableA.getRow(positionA));
-				next(tableA);
+				tableC.addRow(rowA);
+				if (tableAIt.hasNext()) {
+					rowA = tableAIt.next();
+					dataA = colA.resolve(rowA);
+				} else {
+					order.add("B");
+					tableC.addRow(rowB);
+					break;
+				}
 			} else {
 				order.add("B");
-				tableC.addRow(tableB.getRow(positionB));
-				next(tableB);
-			}
-		}
-	}
-
-	/**
-	 * Class to make it easier to call next.
-	 */
-	public void next(DataTable table) {
-		if (table.getName().equals(tableA.getName())) {
-			next(tableA, positionA, compareA, dateA, tableB, positionB);
-		} else {
-			next(tableB, positionB, compareB, dateB, tableA, positionB);
-		}
-	}
-
-	/**
-	 * Get the next date from the table, this requires a function in case it's
-	 * the end of the table. If it's the end of the table, the rest of the other
-	 * table must be added in order not to lose data.
-	 * 
-	 * @param table
-	 *            Table to get the next row from
-	 * @param position
-	 *            Position of the current row
-	 * @param compare
-	 *            Date of the current row
-	 * @param date
-	 *            Column of the current row containing the date
-	 * @param table2
-	 *            Table to add if table is at its end
-	 * @param position2
-	 *            Position in table2 of its current row
-	 */
-	public void next(DataTable table, int position, DateTimeValue compare,
-			DataDescriber<DateTimeValue> date, DataTable table2, int position2) {
-		boolean tableone = table.getName().equals(tableA.getName());
-		if (position < table.getRowCount() - 1) {
-			position++;
-			compare = date.resolve(table.getRow(position));
-			if (tableone) {
-				positionA = position;
-				compareA = compare;
-			} else {
-				positionB = position;
-				compareB = compare;
-			}
-		} else {
-			while (position2 < table2.getRowCount()) {
-				tableC.addRow(table2.getRow(position2));
-				position2++;
-				if (tableone) {
-					positionB = position2;
+				tableC.addRow(rowB);
+				if (tableBIt.hasNext()) {
+					rowB = tableBIt.next();
+					dataB = colB.resolve(rowB);
 				} else {
-					positionA = position2;
-				}
-				if (tableone && position2 != table2.getRowCount()) {
-					order.add("B");
-				} else if (position2 != table2.getRowCount()) {
 					order.add("A");
+					tableC.addRow(rowA);
+					break;
 				}
+
 			}
 		}
+		while (tableAIt.hasNext()) {
+
+				order.add("A");
+				tableC.addRow(rowA);
+				rowA = tableAIt.next();
+
+		}
+		while (tableBIt.hasNext()) {
+
+				order.add("B");
+				tableC.addRow(rowB);
+				rowB = tableBIt.next();
+
+		}
 	}
+
 
 	/**
 	 * Make sure input is a datatable.
