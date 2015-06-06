@@ -1,17 +1,12 @@
 package model.input.file;
 
-import java.io.FileNotFoundException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
-
 import model.data.DataTable;
-import model.data.DataTableBuilder;
 import model.data.value.*;
-
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
+
+import java.io.FileNotFoundException;
+import java.util.Iterator;
 
 /**
  * Class representing a general MS Excel file.

@@ -9,7 +9,6 @@ import java.util.*;
 import model.data.value.*;
 
 import model.data.DataTable;
-import model.data.DataTableBuilder;
 
 /**
  * Class to specify a .txt file.
