@@ -123,6 +123,17 @@ public class CombinedDataTable extends Table {
 		}
 	}
 
+	@Override
+	public DataTable getTable(String name) {
+		if (table.getName().equals(name)) {
+			return table;
+		} else if (combined != null) {
+			return combined.getTable(name);
+		} else {
+			throw new NoSuchElementException("table " + name + " not found");
+		}
+	}
+
 
 	private Iterator<CombinedDataRow> combinedIterator() {
 		return new Iterator<CombinedDataRow>() {
