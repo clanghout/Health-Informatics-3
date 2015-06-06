@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Controller class for the wizard to make the user able to create a datafile specifying xml.
+ *
  * @author Paul.
  */
 public class XmlWizardController {
@@ -41,7 +43,9 @@ public class XmlWizardController {
 	@FXML private Parent root;
 	@FXML private TextField fileselectfield;
 
-
+	/**
+	 * Initializes the controller by filling the static content of elements in the view.
+	 */
 	public void initialize() {
 		datafiles.getColumns().add(createColumn(0, "Filename"));
 		datafiles.getColumns().add(createColumn(1, "Type"));
