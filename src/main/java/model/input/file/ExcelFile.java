@@ -48,7 +48,7 @@ public abstract class ExcelFile extends DataFile {
 			Row row = rowIterator.next();
 			DataValue[] values = new DataValue[getColumns().size() + 1];
 			for (int i = 0; i < getColumns().size(); i++) {
-				Cell cell = row.getCell(i, Row.RETURN_NULL_AND_BLANK);
+				Cell cell = row.getCell(i, Row.CREATE_NULL_AS_BLANK);
 				values[i] = toDataValue(cell);
 			}
 			values[values.length - 1] = new FileValue(this);
