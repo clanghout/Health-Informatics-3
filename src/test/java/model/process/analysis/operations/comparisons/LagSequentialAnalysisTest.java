@@ -12,8 +12,10 @@ import model.data.value.BoolValue;
 import model.data.value.DateTimeValue;
 import model.data.value.IntValue;
 import model.data.value.StringValue;
+import model.exceptions.InputMismatchException;
 import model.process.analysis.operations.Event;
 import model.process.analysis.operations.constraints.GreaterThanCheck;
+import model.process.functions.StandardDeviation;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,6 +29,7 @@ public class LagSequentialAnalysisTest {
 
 	private Event event;
 	private Event event2;
+	private Event event3;
 	private DataDescriber<DateTimeValue> dateCol;
 	private DataDescriber<DateTimeValue> dateCol2;
 
@@ -112,6 +115,23 @@ public class LagSequentialAnalysisTest {
 				);
 		event2 = new Event(table2, greater2);
 		
+		DataTableBuilder builder3 = new DataTableBuilder();
+		builder3.setName("EMPTYTABLETEST");
+		dat = builder3.createColumn("date", DateTimeValue.class);
+		builder3.createColumn("string", StringValue.class);
+		builder3.createColumn("measurement", IntValue.class);
+		
+		DataTable table3 = builder3.build();
+		
+		DataDescriber<BoolValue> greater3 = 
+				new ConstraintDescriber(
+						new GreaterThanCheck<>(
+								new RowValueDescriber<>(table3.getColumn("measurement")),
+								new ConstantDescriber<>(new IntValue(0))
+						)
+				);
+		event3 = new Event(table3, greater3);
+		
 	}
 
 	/**
@@ -122,5 +142,10 @@ public class LagSequentialAnalysisTest {
 	@Test
 	public void testEvent() throws Exception {
 		LagSequentialAnalysis lsa = new LagSequentialAnalysis(event, dateCol, event2, dateCol2);
+	}
+	
+	@Test(expected = InputMismatchException.class)
+	public void testEmptyTable() throws Exception {
+		LagSequentialAnalysis lsa = new LagSequentialAnalysis(event3, dateCol, event2, dateCol2);
 	}
 }

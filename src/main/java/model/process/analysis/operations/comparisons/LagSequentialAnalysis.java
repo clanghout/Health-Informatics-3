@@ -60,36 +60,38 @@ public class LagSequentialAnalysis {
 		this.dateA = dateA;
 		this.dateB = dateB;
 		this.tableC = new DataTableBuilder();
-		
+
 		if (tableA.getRowCount() == 0 || tableB.getRowCount() == 0) {
 			throw new InputMismatchException("Empty event input.");
 		}
-		
+
 		tableA = sortTable(tableA);
 		tableB = sortTable(tableB);
-		
+
 		positionA = 0;
 		positionB = 0;
-		
+
 		order = new ArrayList<String>();
 
 		compareA = dateA.resolve(tableA.getRow(positionA));
 		compareB = dateB.resolve(tableB.getRow(positionB));
-		
+
 		chronoAdd();
 		tableC.setName("result");
 		result = tableC.build();
 	}
-	
+
 	public DataTable sortTable(DataTable table) {
 		DataTableBuilder res = new DataTableBuilder();
 		res.setName(table.getName());
-		
+
 		DataDescriber<DateTimeValue> date = null;
 		if (table.getName().equals(tableA.getName())) {
 			date = dateA;
-		} else { date = dateB; }
-		
+		} else {
+			date = dateB;
+		}
+
 		List<Calendar> cal = new ArrayList<Calendar>();
 		DataRow row = null;
 		for (int i = 0; i < table.getRowCount(); i++) {
@@ -97,12 +99,12 @@ public class LagSequentialAnalysis {
 			cal.add(date.resolve(row).getValue());
 		}
 		Collections.sort(cal);
-		
+
 		for (Calendar x : cal) {
 			for (int i = 0; i < table.getRowCount(); i++) {
 				row = table.getRow(i);
-				System.out.println("comparing "+date.resolve(row).getValue());
-				System.out.println("with "+x);
+				System.out.println("comparing " + date.resolve(row).getValue());
+				System.out.println("with " + x);
 				if (date.resolve(row).getValue().equals(x)) {
 					res.addRow(row);
 					System.out.println("added row!");
@@ -145,7 +147,16 @@ public class LagSequentialAnalysis {
 			next(tableB, positionB, compareB, dateB, tableA, positionB);
 		}
 	}
-
+	
+	/**
+	 * It's important 
+	 * @param table
+	 * @param position
+	 * @param compare
+	 * @param date
+	 * @param table2
+	 * @param position2
+	 */
 	public void next(DataTable table, int position, DateTimeValue compare,
 			DataDescriber<DateTimeValue> date, DataTable table2, int position2) {
 		boolean tableone = table.getName().equals(tableA.getName());
