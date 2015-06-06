@@ -1,6 +1,6 @@
 package model.process.functions;
 
-import model.exceptions.FunctionInputMismatchException;
+import model.exceptions.InputMismatchException;
 import model.data.describer.RowValueDescriber;
 import model.data.value.DataValue;
 import model.data.value.FloatValue;
@@ -20,7 +20,7 @@ public class MedianTest extends FunctionTest {
 	 * 
 	 * @throws Exception
 	 */
-	@Test(expected = FunctionInputMismatchException.class)
+	@Test(expected = InputMismatchException.class)
 	public void TestStringMedian() throws Exception {
 		DataValue med = new Median(table, new RowValueDescriber<>(stringColumn)).calculate();
 	}

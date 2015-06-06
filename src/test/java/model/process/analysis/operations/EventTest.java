@@ -32,9 +32,15 @@ public class EventTest {
 	private DataColumn measure2col;
 
 	/**
+<<<<<<< HEAD
+	 * simulate two dataTables.
+	 * 
+	 * @throws Exception
+=======
 	 * simulate datamodel with single maximum for each column type.
 	 *
 	 *
+>>>>>>> master
 	 */
 	@Before
 	public void setUp() {
