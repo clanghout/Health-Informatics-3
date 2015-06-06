@@ -81,6 +81,13 @@ public class LagSequentialAnalysis {
 		result = tableC.build();
 	}
 
+	/**
+	 * Sort the table chronologically.
+	 * 
+	 * @param table
+	 *            the table to sort
+	 * @return a new table, sorted with the very same content
+	 */
 	public DataTable sortTable(DataTable table) {
 		DataTableBuilder res = new DataTableBuilder();
 		res.setName(table.getName());
@@ -103,11 +110,8 @@ public class LagSequentialAnalysis {
 		for (Calendar x : cal) {
 			for (int i = 0; i < table.getRowCount(); i++) {
 				row = table.getRow(i);
-				System.out.println("comparing " + date.resolve(row).getValue());
-				System.out.println("with " + x);
 				if (date.resolve(row).getValue().equals(x)) {
 					res.addRow(row);
-					System.out.println("added row!");
 				}
 			}
 		}
@@ -121,23 +125,16 @@ public class LagSequentialAnalysis {
 	public void chronoAdd() {
 		while (positionA < tableA.getRowCount()
 				&& positionB < tableB.getRowCount()) {
-			System.out.println("compareA "
-					+ compareA.getValue().getTime().toString() + " compareB "
-					+ compareB.getValue().getTime().toString());
 			if (compareA.getValue().compareTo(compareB.getValue()) < 0) {
 				order.add("A");
-				System.out.println("chrono A " + order.toString());
 				tableC.addRow(tableA.getRow(positionA));
 				next(tableA);
 			} else {
 				order.add("B");
-				System.out.println("chrono B " + order.toString());
 				tableC.addRow(tableB.getRow(positionB));
 				next(tableB);
 			}
 		}
-		System.out.println("DONE " + order.toString());
-
 	}
 
 	public void next(DataTable table) {
@@ -147,21 +144,29 @@ public class LagSequentialAnalysis {
 			next(tableB, positionB, compareB, dateB, tableA, positionB);
 		}
 	}
-	
+
 	/**
-	 * It's important 
+	 * Get the next date from the table, this requires a function in case it's
+	 * the end of the table. If it's the end of the table, the rest of the other
+	 * table must be added in order not to lose data.
+	 * 
 	 * @param table
+	 *            Table to get the next row from
 	 * @param position
+	 *            Position of the current row
 	 * @param compare
+	 *            Date of the current row
 	 * @param date
+	 *            Column of the current row containing the date
 	 * @param table2
+	 *            Table to add if table is at its end
 	 * @param position2
+	 *            Position in table2 of its current row
 	 */
 	public void next(DataTable table, int position, DateTimeValue compare,
 			DataDescriber<DateTimeValue> date, DataTable table2, int position2) {
 		boolean tableone = table.getName().equals(tableA.getName());
 		if (position < table.getRowCount() - 1) {
-			System.out.println("here");
 			position++;
 			compare = date.resolve(table.getRow(position));
 			if (tableone) {
@@ -177,10 +182,8 @@ public class LagSequentialAnalysis {
 				position2++;
 				if (tableone) {
 					positionB = position2;
-					System.out.println("add B");
 				} else {
 					positionA = position2;
-					System.out.println("add A");
 				}
 				if (tableone && position2 != table2.getRowCount()) {
 					order.add("B");
