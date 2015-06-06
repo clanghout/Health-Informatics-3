@@ -49,6 +49,21 @@ public class LagSequentialAnalysisTest {
 		IntValue inty = new IntValue(12);
 		builder.createRow(date, string, inty);
 		
+		date = new DateTimeValue(2014, 1, 19, 11, 30, 9);
+		string = new StringValue("One");
+		inty = new IntValue(12);
+		builder.createRow(date, string, inty);
+		
+		date = new DateTimeValue(1994, 1, 19, 11, 30, 9);
+		string = new StringValue("One");
+		inty = new IntValue(12);
+		builder.createRow(date, string, inty);
+		
+		date = new DateTimeValue(2016, 1, 19, 11, 30, 9);
+		string = new StringValue("One");
+		inty = new IntValue(12);
+		builder.createRow(date, string, inty);
+		
 		dateCol = new RowValueDescriber<DateTimeValue>(dat);
 		
 		DataTable table = builder.build();
