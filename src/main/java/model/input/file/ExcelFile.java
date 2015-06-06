@@ -63,36 +63,23 @@ public abstract class ExcelFile extends DataFile {
 	}
 
 	private DataValue toDataValue(Cell cell) {
-		DataValue value;
+		DataValue value = null;
 		switch (cell.getCellType()) {
 			case Cell.CELL_TYPE_STRING:
 				value = new StringValue(cell.getStringCellValue());
 				break;
-			case Cell.CELL_TYPE_NUMERIC: {
-				if (DateUtil.isCellDateFormatted(cell)) {
-					Date date = cell.getDateCellValue();
-
-					value = new DateTimeValue(
-							date.getYear(),
-							date.getMonth(),
-							date.getDay(),
-							date.getHours(),
-							date.getMinutes(),
-							date.getSeconds());
-				} else {
-					double cellValue = cell.getNumericCellValue();
-					value = (cellValue % 1 == 0)
-							? new IntValue((int) cellValue) : new FloatValue((float) cellValue);
-				}
+			case Cell.CELL_TYPE_NUMERIC:
+				double cellValue = cell.getNumericCellValue();
+				value = (cellValue % 1 == 0)
+						? new IntValue((int) cellValue) : new FloatValue((float) cellValue);
 				break;
-			}
 			case Cell.CELL_TYPE_BLANK:
-				value = new NullValue();
+				value = new StringValue("");
 				break;
-			default:
-				throw new UnsupportedOperationException(
-						String.format("Cell type %s not supported", cell.getCellType()));
-			}
+			default: throw new UnsupportedOperationException(
+					String.format("Cell type %s not supported", cell.getCellType())
+			);
+		}
 		return value;
 	}
 }
