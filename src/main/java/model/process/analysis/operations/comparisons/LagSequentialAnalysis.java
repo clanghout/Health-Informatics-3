@@ -1,17 +1,16 @@
 package model.process.analysis.operations.comparisons;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import model.data.DataRow;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
-import model.data.Row;
 import model.data.Table;
 import model.data.describer.DataDescriber;
 import model.data.value.DateTimeValue;
-import model.exceptions.EmptyEventException;
 import model.exceptions.InputMismatchException;
 import model.process.analysis.operations.Event;
 
@@ -56,29 +55,61 @@ public class LagSequentialAnalysis {
 	public LagSequentialAnalysis(Event eventA,
 			DataDescriber<DateTimeValue> dateA, Event eventB,
 			DataDescriber<DateTimeValue> dateB) {
-		Table tabA = eventA.create();
-		Table tabB = eventB.create();
+		tableA = checkTable(eventA.create());
+		tableB = checkTable(eventB.create());
 		this.dateA = dateA;
 		this.dateB = dateB;
 		this.tableC = new DataTableBuilder();
-
+		
+		if (tableA.getRowCount() == 0 || tableB.getRowCount() == 0) {
+			throw new InputMismatchException("Empty event input.");
+		}
+		
+		tableA = sortTable(tableA);
+		tableB = sortTable(tableB);
+		
 		positionA = 0;
 		positionB = 0;
-
-		tableA = checkTable(tabA);
-		tableB = checkTable(tabB);
-
+		
 		order = new ArrayList<String>();
 
-		if (tableA.getRow(0) == null || tableB.getRow(0) == null) {
-			throw new EmptyEventException("Empty event in the input.");
-		} else {
-			compareA = dateA.resolve(tableA.getRow(positionA));
-			compareB = dateB.resolve(tableB.getRow(positionB));
-		}
+		compareA = dateA.resolve(tableA.getRow(positionA));
+		compareB = dateB.resolve(tableB.getRow(positionB));
+		
 		chronoAdd();
 		tableC.setName("result");
 		result = tableC.build();
+	}
+	
+	public DataTable sortTable(DataTable table) {
+		DataTableBuilder res = new DataTableBuilder();
+		res.setName(table.getName());
+		
+		DataDescriber<DateTimeValue> date = null;
+		if (table.getName().equals(tableA.getName())) {
+			date = dateA;
+		} else { date = dateB; }
+		
+		List<Calendar> cal = new ArrayList<Calendar>();
+		DataRow row = null;
+		for (int i = 0; i < table.getRowCount(); i++) {
+			row = table.getRow(i);
+			cal.add(date.resolve(row).getValue());
+		}
+		Collections.sort(cal);
+		
+		for (Calendar x : cal) {
+			for (int i = 0; i < table.getRowCount(); i++) {
+				row = table.getRow(i);
+				System.out.println("comparing "+date.resolve(row).getValue());
+				System.out.println("with "+x);
+				if (date.resolve(row).getValue().equals(x)) {
+					res.addRow(row);
+					System.out.println("added row!");
+				}
+			}
+		}
+		return res.build();
 	}
 
 	/**
@@ -106,13 +137,6 @@ public class LagSequentialAnalysis {
 		System.out.println("DONE " + order.toString());
 
 	}
-
-	/**
-	 * 
-	 * ZORG DAT DE TWEE TABELLEN EERST BEIDEN CHRONOLOGISCH GESORTEERD ZIJN!!
-	 * 
-	 * 
-	 */
 
 	public void next(DataTable table) {
 		if (table.getName().equals(tableA.getName())) {
@@ -146,13 +170,13 @@ public class LagSequentialAnalysis {
 				} else {
 					positionA = position2;
 					System.out.println("add A");
-				} 
+				}
 				if (tableone && position2 != table2.getRowCount()) {
 					order.add("B");
 				} else if (position2 != table2.getRowCount()) {
 					order.add("A");
 				}
-			} 
+			}
 		}
 	}
 
