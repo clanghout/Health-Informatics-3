@@ -1,6 +1,7 @@
 package model.input.file;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -21,8 +22,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class XlsxFile extends ExcelFile {
 
 	private Logger logger = Logger.getLogger("XlsxFile");
-	
-	public XlsxFile(String path) {
+
+	/**
+	 * Creates a new XlsxFile.
+	 * @param path The path to the xlsx file
+	 * @throws FileNotFoundException When the file can not be found
+	 */
+	public XlsxFile(String path) throws FileNotFoundException {
 		super(path);
 	}
 

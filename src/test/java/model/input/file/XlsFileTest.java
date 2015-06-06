@@ -2,10 +2,7 @@ package model.input.file;
 
 import static org.junit.Assert.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -33,7 +30,7 @@ public class XlsFileTest {
 	private XlsFile xlsFile;
 	
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 		String file = getClass().getResource("/model/input/xls1.xls").getFile();
 		xlsFile = new XlsFile(file);
 		

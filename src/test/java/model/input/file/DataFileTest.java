@@ -31,18 +31,18 @@ public class DataFileTest {
 	}
 	
 	@Test(expected = DataFileNotRecognizedException.class)
-	public void testCreateInvalidDataFile() {
+	public void testCreateInvalidDataFile() throws Exception {
 		DataFile.createDataFile("/model/input/statsensor.txt", "invalidType");
 	}
 	
 	@Test
-	public void testCreateXlsFile() {
+	public void testCreateXlsFile() throws Exception {
 		DataFile df = DataFile.createDataFile("/model/input/xlsfile.xls", "xls");
 		assertTrue(df instanceof XlsFile);
 	}
 
 	@Test
-	public void testCreateXlsxFile() {
+	public void testCreateXlsxFile() throws Exception {
 		DataFile df = DataFile.createDataFile("/model/input/xlsxfile.xlsx", "xlsx");
 		assertTrue(df instanceof XlsxFile);
 	}

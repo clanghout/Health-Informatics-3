@@ -1,16 +1,16 @@
 package model.input.file;
 
 import java.io.FileNotFoundException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 
 import model.data.DataTable;
 import model.data.DataTableBuilder;
-import model.data.value.DataValue;
-import model.data.value.FloatValue;
-import model.data.value.IntValue;
-import model.data.value.StringValue;
+import model.data.value.*;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 
 /**
@@ -20,22 +20,23 @@ import org.apache.poi.ss.usermodel.Row;
  */
 public abstract class ExcelFile extends DataFile {
 
-	public ExcelFile(String path) {
+	/**
+	 * Creates a new ExcelFile.
+	 * @param path The path to the Excel file
+	 * @throws FileNotFoundException when the file can not be found
+	 */
+	public ExcelFile(String path) throws FileNotFoundException {
 		super(path);
 	}
-	
+
 	/**
-	 * Creates an InputStream formed by an Iterator that iterates over the rows of either an
-	 * xls file or an xlsx file. Returns a stream with rows as lines in which the columns are
-	 * delimited with tab characters.
+	 * Creates a new DataTable from the excel file.
 	 * @param rowIterator The Iterator over the rows
-	 * @return the new stream of rows
+	 * @return A new DataTable
 	 * @throws FileNotFoundException when the file is not found
 	 */
 	protected DataTable createTable(Iterator<Row> rowIterator) throws FileNotFoundException {
 
-		DataTableBuilder builder = new DataTableBuilder();
-		builder.setName(this.getFile().getName().replace(".", ""));
 		if (hasFirstRowAsHeader()) {
 			Row headers = rowIterator.next();
 			for (int i = 0; i < getColumnTypes().length; i++) {
@@ -43,40 +44,55 @@ public abstract class ExcelFile extends DataFile {
 			}
 		} else {			
 			for (String key : getColumns().keySet()) {
-				builder.createColumn(key, getColumns().get(key));
+				getBuilder().createColumn(key, getColumns().get(key));
 			}
 		}
-		
+		addMetaDataFileColumn();
+
 		while (rowIterator.hasNext()) {
 			Row row = rowIterator.next();
-			DataValue[] values = new DataValue[getColumns().size()];
+			DataValue[] values = new DataValue[getColumns().size() + 1];
 			for (int i = 0; i < getColumns().size(); i++) {
-				Cell cell = row.getCell(i, Row.CREATE_NULL_AS_BLANK);
+				Cell cell = row.getCell(i, Row.RETURN_NULL_AND_BLANK);
 				values[i] = toDataValue(cell);
 			}
-			builder.createRow(values);
+			values[values.length - 1] = new FileValue(this);
+			getBuilder().createRow(values);
 		}
-		return builder.build();
+		return getBuilder().build();
 	}
-	
+
 	private DataValue toDataValue(Cell cell) {
-		DataValue value = null;
+		DataValue value;
 		switch (cell.getCellType()) {
-			case Cell.CELL_TYPE_STRING: 
+			case Cell.CELL_TYPE_STRING:
 				value = new StringValue(cell.getStringCellValue());
-				break;			
-			case Cell.CELL_TYPE_NUMERIC: 
-				double cellValue = cell.getNumericCellValue();
-				value = (cellValue % 1 == 0) 
-						? new IntValue((int) cellValue) : new FloatValue((float) cellValue);
-				break;					
-			case Cell.CELL_TYPE_BLANK: 
-				value = new StringValue("");
 				break;
-			default: throw new UnsupportedOperationException(
-					String.format("Cell type %s not supported", cell.getCellType())
-			);
-		}
+			case Cell.CELL_TYPE_NUMERIC: {
+				if (DateUtil.isCellDateFormatted(cell)) {
+					Date date = cell.getDateCellValue();
+
+					value = new DateTimeValue(
+							date.getYear(),
+							date.getMonth(),
+							date.getDay(),
+							date.getHours(),
+							date.getMinutes(),
+							date.getSeconds());
+				} else {
+					double cellValue = cell.getNumericCellValue();
+					value = (cellValue % 1 == 0)
+							? new IntValue((int) cellValue) : new FloatValue((float) cellValue);
+				}
+				break;
+			}
+			case Cell.CELL_TYPE_BLANK:
+				value = new NullValue();
+				break;
+			default:
+				throw new UnsupportedOperationException(
+						String.format("Cell type %s not supported", cell.getCellType()));
+			}
 		return value;
 	}
 }

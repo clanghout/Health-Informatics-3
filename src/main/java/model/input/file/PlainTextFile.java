@@ -1,17 +1,15 @@
 package model.input.file;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
-import model.data.value.FloatValue;
-import model.data.value.IntValue;
+import model.data.value.*;
 
 import model.data.DataTable;
 import model.data.DataTableBuilder;
-import model.data.value.DataValue;
-import model.data.value.StringValue;
 
 /**
  * Class to specify a .txt file.
@@ -20,18 +18,20 @@ import model.data.value.StringValue;
  */
 public class PlainTextFile extends DataFile {
 
-	private DataTableBuilder builder;
 	private int counter;
 	private String delimiter = ",";
 
-	public PlainTextFile(String path) {
+	/**
+	 * Creates a new PlainTextFile.
+	 * @param path The path to the plain text file
+	 * @throws FileNotFoundException when the file can not be found
+	 */
+	public PlainTextFile(String path) throws FileNotFoundException {
 		super(path);
 	}
 
 	@Override
 	public DataTable createDataTable() throws IOException {
-		builder = new DataTableBuilder();
-		builder.setName(this.getFile().getName().replace(".", ""));
 		counter = 1;
 		InputStream stream = new FileInputStream(getFile());
 
@@ -49,13 +49,14 @@ public class PlainTextFile extends DataFile {
 						String,
 						Class<? extends DataValue>
 						> entry : getColumns().entrySet()) {
-					builder.createColumn(entry.getKey(), entry.getValue());
+					getBuilder().createColumn(entry.getKey(), entry.getValue());
 				}
 			}
+			addMetaDataFileColumn();
 			readLines(scanner);
 		}
 
-		return builder.build();
+		return getBuilder().build();
 	}
 
 	/**
@@ -84,11 +85,12 @@ public class PlainTextFile extends DataFile {
 			String line = scanner.nextLine();
 			String[] sections = line.split(delimiter);
 			List<Class<? extends DataValue>> columns = getColumnList();
-			DataValue[] values = new DataValue[getColumns().size()];
+			DataValue[] values = new DataValue[getColumns().size() + 1];
 			for (int i = 0; i < getColumns().size(); i++) {
 				values[i] = toDataValue(sections[i].trim(), columns.get(i));
 			}
-			builder.createRow(values);
+			values[values.length - 1] = new FileValue(this);
+			getBuilder().createRow(values);
 
 			counter++;
 		}
@@ -98,7 +100,7 @@ public class PlainTextFile extends DataFile {
 	 * Creates a DataValue from a string.
 	 * @param value The string that will be converted
 	 * @param type The type of the column in which the value will be inserted.
-	 * @return
+	 * @return The DataValue
 	 */
 	private DataValue toDataValue(String value, Class<? extends DataValue> type) {
 		if (type.equals(StringValue.class)) {

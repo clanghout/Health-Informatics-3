@@ -1,6 +1,7 @@
 package model.input.file;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -21,8 +22,13 @@ import org.apache.poi.ss.usermodel.Workbook;
 public class XlsFile extends ExcelFile {
 
 	private Logger logger = Logger.getLogger("XlsFile");
-	
-	public XlsFile(String path) {
+
+	/**
+	 * Creates a new XlsFile.
+	 * @param path The path to the XlsFile
+	 * @throws FileNotFoundException When the file can not be found
+	 */
+	public XlsFile(String path) throws FileNotFoundException {
 		super(path);
 	}
 

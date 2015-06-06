@@ -6,7 +6,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import model.data.DataColumn;
 import model.data.DataTable;
+import model.data.DataTableBuilder;
 import model.data.value.*;
 import model.exceptions.DataFileNotRecognizedException;
 /**
@@ -25,18 +27,21 @@ public abstract class DataFile {
 	private List<Class<? extends DataValue>> columnList;
 	private boolean firstRowAsHeader;
 	private Class[] columnTypes;
-	
+	private DataTableBuilder builder = new DataTableBuilder();
+
 	/**
 	 * Creates a new type of a DataFile. Sets the default range of lines to read
 	 * from 1 to integer maxvalue.
 	 * @param path The path to the DataFile
+	 * @throws FileNotFoundException When the file can not be found
 	 */
-	public DataFile(String path) {
+	public DataFile(String path) throws FileNotFoundException {
 		this.path = path;
 		this.setStartLine(1);
 		this.setEndLine(Integer.MAX_VALUE);
 		this.setFirstRowAsHeader(false);
 		this.setColumns(new LinkedHashMap<>(), new ArrayList<>());
+		this.builder.setName(getFile().getName().replace(".", ""));
 	}
 
 	/**
@@ -69,10 +74,11 @@ public abstract class DataFile {
 	* @param path The path of the DataFile
 	* @param type The type specifying what type of DataFile should be created
 	* @return A new DataFile
-	* @throws DataFileNotRecognizedException
+	* @throws DataFileNotRecognizedException When the datafile is not recognized
+	* @throws FileNotFoundException When the file is not found
 	*/
-	public static DataFile createDataFile(String path, String type) 
-			throws DataFileNotRecognizedException {
+	public static DataFile createDataFile(String path, String type)
+			throws DataFileNotRecognizedException, FileNotFoundException {
 		switch (type) {
 			case "plaintext": return new PlainTextFile(path);
 			case "xls": return new XlsFile(path);
@@ -178,6 +184,14 @@ public abstract class DataFile {
 	}
 
 	/**
+	 * Returns the TableBuilder that creates the table from the file.
+	 * @return The TableBuilder
+	 */
+	protected DataTableBuilder getBuilder() {
+		return this.builder;
+	}
+
+	/**
 	 * Returns the array with the names of the columns.
 	 * @return The array with the names of the columns
 	 */
@@ -242,6 +256,13 @@ public abstract class DataFile {
 	 */
 	public void setFirstRowAsHeader(boolean firstRowAsHeader) {
 		this.firstRowAsHeader = firstRowAsHeader;
+	}
+
+	/**
+	 * Adds a column containing the name of the file from which the column comes.
+	 */
+	public void addMetaDataFileColumn() {
+		builder.createColumn("FileName", FileValue.class);
 	}
 
 	/**
