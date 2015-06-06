@@ -45,7 +45,9 @@ class ProcessInfo {
 				if (parameters.length == 1) {
 					return new IsProcess((Identifier) parameters[0]);
 				} else if(parameters.length == 2) {
-					return new DataTableIsProcess((Identifier) parameters[0], (Identifier) parameters[1]);
+					return new DataTableIsProcess(
+							(Identifier) parameters[0],
+							(Identifier) parameters[1]);
 				}
 			case "constraint":
 				return new ConstraintAnalysis(macros.get(parameters[0]));
