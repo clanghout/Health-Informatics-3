@@ -38,10 +38,10 @@ public class LagSequentialAnalysisTest {
 	private Event event4;
 	private Event event5;
 	private DataTable tablecheck;
-	private DataDescriber<DateTimeValue> dateCol;
-	private DataDescriber<DateTimeValue> dateCol2;
-	private DataDescriber<DateTimeValue> dateCol4;
-	private DataDescriber<DateTimeValue> dateCol5;
+	private RowValueDescriber<DateTimeValue> dateCol;
+	private RowValueDescriber<DateTimeValue> dateCol2;
+	private RowValueDescriber<DateTimeValue> dateCol4;
+	private RowValueDescriber<DateTimeValue> dateCol5;
 
 	/**
 	 * simulate two events.
