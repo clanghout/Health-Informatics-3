@@ -7,8 +7,8 @@ import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.Table;
 import model.data.describer.DataDescriber;
+import model.data.describer.RowValueDescriber;
 import model.data.value.DateTimeValue;
-import model.data.value.DateValue;
 import model.exceptions.InputMismatchException;
 import model.process.analysis.operations.Event;
 
@@ -45,8 +45,8 @@ public class LagSequentialAnalysis {
 	 * @return
 	 */
 	public LagSequentialAnalysis(Event eventA,
-			DataDescriber<DateTimeValue> dateA, Event eventB,
-			DataDescriber<DateTimeValue> dateB) {
+			RowValueDescriber<DateTimeValue> dateA, Event eventB,
+			RowValueDescriber<DateTimeValue> dateB) {
 		tableA = checkTable(eventA.create());
 		tableB = checkTable(eventB.create());
 		this.colA = dateA;
@@ -57,10 +57,12 @@ public class LagSequentialAnalysis {
 			throw new InputMismatchException("Empty event input.");
 		}
 
+		/**
+		 * TODO replace sorting function for tables with global sorting function of
+		 * DataTable
+		 */
 		tableA = sortTable(tableA);
 		tableB = sortTable(tableB);
-
-
 
 		order = new ArrayList<String>();
 
@@ -76,7 +78,7 @@ public class LagSequentialAnalysis {
 	 *            the table to sort
 	 * @return a new table, sorted with the very same content
 	 */
-	public DataTable sortTable(DataTable table) {
+	private DataTable sortTable(DataTable table) {
 		DataTableBuilder res = new DataTableBuilder();
 		res.setName(table.getName());
 
@@ -110,7 +112,7 @@ public class LagSequentialAnalysis {
 	 * This class will put the events (rows) in one table, sorted
 	 * chronologically.
 	 */
-	public void chronoAdd() {
+	private void chronoAdd() {
 		Iterator<DataRow> tableAIt = tableA.iterator();
 		Iterator<DataRow> tableBIt = tableB.iterator();
 
@@ -150,20 +152,19 @@ public class LagSequentialAnalysis {
 		}
 		while (tableAIt.hasNext()) {
 
-				order.add("A");
-				tableC.addRow(rowA);
-				rowA = tableAIt.next();
+			order.add("A");
+			tableC.addRow(rowA);
+			rowA = tableAIt.next();
 
 		}
 		while (tableBIt.hasNext()) {
 
-				order.add("B");
-				tableC.addRow(rowB);
-				rowB = tableBIt.next();
+			order.add("B");
+			tableC.addRow(rowB);
+			rowB = tableBIt.next();
 
 		}
 	}
-
 
 	/**
 	 * Make sure input is a datatable.
@@ -171,7 +172,7 @@ public class LagSequentialAnalysis {
 	 * @param table
 	 * @return the datatable
 	 */
-	public DataTable checkTable(Table table) {
+	private DataTable checkTable(Table table) {
 		if (table instanceof DataTable) {
 			return (DataTable) table;
 		} else {
