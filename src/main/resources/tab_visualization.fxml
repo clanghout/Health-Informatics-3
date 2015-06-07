@@ -8,16 +8,29 @@
     <content>
         <AnchorPane>
             <children>
-                <VBox styleClass="visualization-default-dropdown" layoutX="14.0" layoutY="14.0">
-                    <children>
-                        <ComboBox fx:id="table" promptText="Table to use"/>
-                        <ComboBox fx:id="visualization" promptText="Visualization"/>
-                    </children>
-                </VBox>
-                <VBox styleClass="visualization-input-dropdown" layoutX="14.0" layoutY="86.0">
+                <Button
+                        fx:id="makeGraphButton"
+                        styleClass="button"
+                        layoutX="14.0"
+                        layoutY="14.0"
+                        onAction="#handlePopupButtonAction"
+                        text="Make graph"/>
+                <Button
+                        fx:id="clearViewButton"
+                        styleClass="button"
+                        layoutX="94.0"
+                        layoutY="14.0"
+                        onAction="#handleClearButtonAction"
+                        text="Clear graph"/>
+                <Button
+                        fx:id="saveButton"
+                        styleClass="button"
+                        layoutX="174.0"
+                        layoutY="14.0"
+                        onAction="#handleSaveButtonAction"
+                        text="Save graph"/>
 
-                </VBox>
-                <VBox styleClass="visualization-graph">
+                <VBox fx:id="visualizationGraph" styleClass="visualization-graph" layoutX="14.0" layoutY="42.0">
 
                 </VBox>
             </children>
