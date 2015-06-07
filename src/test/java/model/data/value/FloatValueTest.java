@@ -42,13 +42,4 @@ public class FloatValueTest {
 		DataValue samevalue = new FloatValue(val);
 		assertEquals(samevalue.hashCode(),value.hashCode());
 	}
-
-	@Test
-	public void testcopy() throws Exception {
-		Float val = 2335f;
-		DataValue value = new FloatValue(val);
-		DataValue copy = value;
-		assertEquals(copy.getValue(),value.getValue());
-		assertEquals(copy.getClass(),value.getClass());
-	}
 }

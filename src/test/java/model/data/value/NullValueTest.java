@@ -38,11 +38,4 @@ public class NullValueTest {
 	public void testHashCode() throws Exception {
 		assertEquals(0, value.hashCode());
 	}
-
-	@Test
-	public void testCopy() throws Exception {
-		NullValue copy = value;
-		assertTrue(copy.equals(value));
-		assertEquals(copy.hashCode(),value.hashCode());
-	}
 }

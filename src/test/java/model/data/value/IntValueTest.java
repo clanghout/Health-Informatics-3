@@ -42,12 +42,4 @@ public class IntValueTest {
 		DataValue value = new IntValue(24897);
 		assertEquals(24897,value.hashCode());
 	}
-
-	@Test
-	public void testcopy() throws Exception {
-		DataValue value = new IntValue(24897);
-		DataValue copy = value;
-		assertEquals(copy.getValue(),value.getValue());
-		assertEquals(copy.getClass(),value.getClass());
-	}
 }
