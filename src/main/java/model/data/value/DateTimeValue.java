@@ -43,11 +43,6 @@ public class DateTimeValue extends TemporalValue<LocalDateTime> {
 	}
 
 	@Override
-	public DataValue copy() {
-		return this;
-	}
-
-	@Override
 	public String toString() {
 		return getFormatter().format(dateTime);
 	}

@@ -32,11 +32,6 @@ public class TimeValue extends TemporalValue<LocalTime> {
 	}
 
 	@Override
-	public DataValue copy() {
-		return this;
-	}
-
-	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
 			return true;

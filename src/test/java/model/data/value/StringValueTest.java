@@ -47,7 +47,7 @@ public class StringValueTest {
 	public void testcopy() throws Exception {
 		String val = "testen";
 		DataValue value = new StringValue(val);
-		DataValue copy = value.copy();
+		DataValue copy = value;
 		assertEquals(copy.getValue(),value.getValue());
 		assertEquals(copy.getClass(),value.getClass());
 	}

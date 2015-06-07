@@ -41,7 +41,7 @@ public class NullValueTest {
 
 	@Test
 	public void testCopy() throws Exception {
-		NullValue copy = value.copy();
+		NullValue copy = value;
 		assertTrue(copy.equals(value));
 		assertEquals(copy.hashCode(),value.hashCode());
 	}

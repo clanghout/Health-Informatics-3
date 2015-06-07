@@ -57,9 +57,4 @@ public class DateValue extends TemporalValue<LocalDate> {
 	public String toString() {
 		return getFormatter().format(date);
 	}
-
-	@Override
-	public DataValue<LocalDate> copy() {
-		return new DateValue(date);
-	}
 }
