@@ -2,17 +2,27 @@ package controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.chart.Chart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 import model.data.DataColumn;
 import model.data.DataModel;
 import model.data.DataTable;
 import view.GraphCreationDialog;
 
+import javax.imageio.ImageIO;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,6 +31,8 @@ import java.util.logging.Logger;
  * Created by Chris on 26-5-2015.
  */
 public class VisualizationController {
+	@FXML
+	private Parent root;
 	@FXML
 	private VBox visualizationGraph;
 	@FXML
@@ -31,6 +43,8 @@ public class VisualizationController {
 	private Button saveButton;
 	private DataModel model;
 	private Logger logger = Logger.getLogger("VisualizationController");
+	private PopupVisualizationController popupController;
+	private WritableImage image;
 
 	/**
 	 * Constructor for Visualization controller.
@@ -59,6 +73,15 @@ public class VisualizationController {
 
 	public void drawGraph(Chart chart) {
 		visualizationGraph.getChildren().add(chart);
+	}
+
+	public void drawImage(WritableImage image) {
+		this.image = image;
+		Node node = new ImageView(image);
+		node.maxWidth(Double.MAX_VALUE);
+		node.maxHeight(Double.MAX_VALUE);
+		visualizationGraph.getChildren().add(node);
+		saveButton.setDisable(false);
 	}
 
 	/**
@@ -100,11 +123,12 @@ public class VisualizationController {
 	@FXML
 	protected void handlePopupButtonAction() {
 		visualizationGraph.getChildren().clear();
+		saveButton.setDisable(true);
 		try {
 			GraphCreationDialog graphCreationDialog = new GraphCreationDialog();
 			graphCreationDialog.show();
 
-			PopupVisualizationController popupController =
+			popupController =
 					graphCreationDialog.getFxml().getController();
 			popupController.initializeView(model, this, graphCreationDialog);
 
@@ -120,8 +144,22 @@ public class VisualizationController {
 	 */
 	@FXML
 	protected void handleSaveButtonAction() {
-		//button is disabled at the moment
-		//should save to pdf as told by Bacchelli
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Save Image");
+		fileChooser.getExtensionFilters()
+				.add(new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png"));
+		File file = fileChooser.showSaveDialog(root.getScene().getWindow());
+		if (file != null) {
+			if (!file.getAbsolutePath().endsWith(".png")) {
+				file = new File(file.getAbsolutePath() + ".png");
+			}
+			RenderedImage renderedImage = SwingFXUtils.fromFXImage(image, null);
+			try {
+				ImageIO.write(renderedImage, "png", file);
+			} catch (IOException ex) {
+				System.out.println(ex.getMessage());
+			}
+		}
 	}
 
 	/**
@@ -129,6 +167,7 @@ public class VisualizationController {
 	 */
 	@FXML
 	protected void handleClearButtonAction() {
+		saveButton.setDisable(true);
 		visualizationGraph.getChildren().clear();
 	}
 }

@@ -2,11 +2,9 @@ package controllers.visualizations;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.Chart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.StringConverter;
@@ -19,8 +17,6 @@ import model.data.DataTable;
  */
 public abstract class ChartController {
 	protected DataTable table;
-	protected CategoryAxis xAxis;
-	protected NumberAxis yAxis;
 	protected VBox vBox;
 	protected DataColumn xCol;
 	protected DataColumn yCol;
@@ -30,6 +26,9 @@ public abstract class ChartController {
 	protected ComboBox<DataColumn> yAxisBox;
 	protected Label xAxisErrorLabel;
 	protected Label yAxisErrorLabel;
+
+	public static final int YAXIS_SEPARATION = 5;
+	public static final int SIZE = 420;
 
 	public ChartController(DataTable table, VBox vBox) {
 		this.table = table;
@@ -51,10 +50,9 @@ public abstract class ChartController {
 	}
 
 	/**
-	 * Create the actual javaFX element
-	 * @return JavaFX chart with valid data.
+	 * Create WritableImage to draw.
 	 */
-	public abstract javafx.scene.chart.Chart create();
+	public abstract WritableImage createImage();
 
 	/**
 	 * Set the items of a comboBox to the columns of the dataTable.
@@ -92,20 +90,13 @@ public abstract class ChartController {
 	}
 
 	/**
-	 * Initialize the fxml objects for ChartController.
+	 * Compute approximately a tenth of the range of the axis.
+	 *
+	 * @param max the maximum value of the axis.
+	 * @param min the minimum value of the axis.
+	 * @return the computed seperator value as int.
 	 */
-	public void initializeFields() {
-		xAxisBox = new ComboBox<>();
-		xAxisBox.setPromptText("x-Axis");
-		xAxisErrorLabel = new Label();
-		xAxisErrorLabel.setMaxWidth(Double.MAX_VALUE);
-		yAxisBox = new ComboBox<>();
-		yAxisBox.setPromptText("y-Axis");
-		yAxisErrorLabel = new Label();
-		yAxisErrorLabel.setMaxWidth(Double.MAX_VALUE);
-		setColumnDropDown(xAxisBox, table);
-		setColumnDropDown(yAxisBox, table);
+	public int computeSeparatorValue(float max, float min) {
+		return Math.round((max - min) / YAXIS_SEPARATION);
 	}
-
-
 }
