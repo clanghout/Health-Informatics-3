@@ -18,6 +18,12 @@ public abstract class Dialog {
 	private FXMLLoader fxml;
 	private Logger logger = Logger.getLogger("VisualizationController");
 
+	/**
+	 * Make a custom Dialog.
+	 * @param location the location of the fxml file describing the dialog.
+	 * @param name the name of the dialog window.
+	 * @throws IOException
+	 */
 	public Dialog(String location, String name) throws IOException {
 		try {
 			fxml = new FXMLLoader(getClass().getResource(location));
@@ -30,14 +36,24 @@ public abstract class Dialog {
 		dialog.setScene(new Scene(root));
 	}
 
+	/**
+	 * return the fxml file to retrieve the controller used.
+	 * @return the fxmlLoader for the dialog.
+	 */
 	public FXMLLoader getFxml() {
 		return fxml;
 	}
 
+	/**
+	 * Pop up the dialog.
+	 */
 	public void show() {
 		dialog.show();
 	}
 
+	/**
+	 * Close the dialog.
+	 */
 	public void close() {
 		dialog.close();
 	}
