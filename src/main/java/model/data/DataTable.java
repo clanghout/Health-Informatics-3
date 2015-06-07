@@ -76,6 +76,14 @@ public class DataTable extends Table {
 		return new ArrayList<>(columns.values());
 	}
 
+	@Override
+	public DataTable getTable(String name) {
+		if (this.name.equals(name)) {
+			return this;
+		}
+		throw new NoSuchElementException("table " + name + " not found");
+	}
+
 	/**
 	 * get the column with the name columnName.
 	 * @param columnName the name of the column

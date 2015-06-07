@@ -5,6 +5,7 @@ import model.data.value.BoolValue;
 import model.data.value.IntValue;
 import model.data.value.StringValue;
 import model.process.DataProcess;
+import model.process.DataTableIsProcess;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,6 +40,26 @@ public class ParserTest {
 		test1 = builder.build();
 		model.add(test1);
 
+	}
+
+	@Test
+	public void testParIsDataTable() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("test2");
+		builder.createColumn("value", IntValue.class);
+
+		builder.createRow(new IntValue(11));
+		builder.createRow(new IntValue(5));
+
+		DataTable test2 = builder.build();
+		model.add(test2);
+
+		String input = "from(test1, test2)|is(test2, res)";
+		DataTable result = (DataTable) parseAndProcess(input);
+		assertEquals("test2", test2.getName());
+		assertEquals("res", result.getName());
+
+		assertTrue(test2.equalsSoft(result));
 	}
 
 	@Test
