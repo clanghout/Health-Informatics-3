@@ -128,15 +128,27 @@ public class XmlWizardController {
 
 	@FXML
 	public void createXml(ActionEvent actionEvent) {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML", "*.xml"));
+		fileChooser.setTitle("Save as");
+		fileChooser.setInitialDirectory(
+				new File(System.getProperty("user.home"))
+		);
+		File file = fileChooser.showSaveDialog(root.getScene().getWindow());
+		writeXmlToFile(file);
+	}
+
+	private void writeXmlToFile(File file) {
 		XmlWriter writer = new XmlWriter(createDataFiles());
 		try {
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(writer.createDocument());
-//			StreamResult result = new StreamResult(new File("/res/goodsaved.xml"));
+
+			StreamResult result = new StreamResult(file);
 
 			//Debug: print xml to console
-			StreamResult result = new StreamResult(System.out);
+//			StreamResult result = new StreamResult(System.out);
 			transformer.transform(source, result);
 
 		} catch (ParserConfigurationException
