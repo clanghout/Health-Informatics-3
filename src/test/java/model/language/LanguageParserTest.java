@@ -9,6 +9,7 @@ import org.parboiled.Parboiled;
 import org.parboiled.parserunners.BasicParseRunner;
 import org.parboiled.support.ParsingResult;
 
+import java.time.Period;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
@@ -149,5 +150,17 @@ public class LanguageParserTest {
 		assertTrue(result.matched);
 		ValueNode<NumberValue> node = (ValueNode<NumberValue>) result.valueStack.pop();
 		assertEquals(5.0f, node.resolve(null).resolve(null).getValue());
+	}
+
+	@Test
+	public void testPeriodLiteral() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.PeriodLiteral());
+		String input = "#5 DAYS#";
+
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+		ValueNode<PeriodValue> node = (ValueNode<PeriodValue>) result.valueStack.pop();
+		assertEquals(Period.of(0, 0, 5), node.resolve(null).resolve(null).getValue());
 	}
 }
