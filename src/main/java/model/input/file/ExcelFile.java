@@ -1,17 +1,16 @@
 package model.input.file;
 
-import java.io.FileNotFoundException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
-
 import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.value.*;
-
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
+
+import java.io.FileNotFoundException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Iterator;
 
 /**
  * Class representing a general MS Excel file.
@@ -40,7 +39,8 @@ public abstract class ExcelFile extends DataFile {
 			Row headers = rowIterator.next();
 			for (int i = 0; i < getColumnTypes().length; i++) {
 				getColumns().put(headers.getCell(i).getStringCellValue(), getColumnTypes()[i]);
-				builder.createColumn(headers.getCell(i).getStringCellValue(), getColumnTypes()[i]);
+				builder.createColumn(
+						headers.getCell(i).getStringCellValue(), getColumnTypes()[i]);
 			}
 		} else {
 			for (String key : getColumns().keySet()) {
@@ -77,7 +77,7 @@ public abstract class ExcelFile extends DataFile {
 			}
 			case Cell.CELL_TYPE_BLANK:
 				value = new NullValue();
-				break;
+ 				break;
 			default:
 				throw new UnsupportedOperationException(
 						String.format("Cell type %s not supported", cell.getCellType()));
@@ -88,15 +88,16 @@ public abstract class ExcelFile extends DataFile {
 	private DataValue determineNumValue(Cell cell) {
 		DataValue value;
 		if (DateUtil.isCellDateFormatted(cell)) {
-			Date date = cell.getDateCellValue();
-			Calendar calendar = DateUtil.getJavaCalendar(cell.getNumericCellValue(), true);
+			GregorianCalendar calendar = (GregorianCalendar) DateUtil.getJavaCalendar(
+					cell.getNumericCellValue(), true);
+
 			value = new DateTimeValue(
-					date.getYear(),
-					date.getMonth(),
-					date.getDay(),
-					date.getHours(),
-					date.getMinutes(),
-					date.getSeconds());
+					calendar.get(Calendar.YEAR),
+					calendar.get(Calendar.MONTH),
+					calendar.get(Calendar.DAY_OF_MONTH),
+					calendar.get(Calendar.HOUR_OF_DAY),
+					calendar.get(Calendar.MINUTE),
+					calendar.get(Calendar.SECOND));
 		} else {
 			double cellValue = cell.getNumericCellValue();
 			value = (cellValue % 1 == 0)
