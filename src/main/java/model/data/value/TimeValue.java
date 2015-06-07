@@ -1,20 +1,56 @@
 package model.data.value;
 
+import java.time.LocalTime;
+
 /**
  * Data Class containing a value with type Time.
  */
-public class TimeValue extends DateTimeValue {
+public class TimeValue extends TemporalValue<LocalTime> {
+
+	private LocalTime time;
+
 	/**
-	 * Create Calendar with zero values for date elements and set DateFormat time only.
-	 * The super call has month value 1 because the super constructor loweres the month value by 1
-	 * while creating the calendar.
+	 * Construct a new TimeValue.
 	 *
 	 * @param hour   the hour as int
 	 * @param minute the minute as int
 	 * @param second the second as int
 	 */
 	public TimeValue(int hour, int minute, int second) {
-		super(0, 1, 0, hour, minute, second);
-		setSimpleDateFormat("HH:mm:ss");
+		super("HH:mm:ss");
+		time = LocalTime.of(hour, minute, second);
+	}
+
+	@Override
+	public String toString() {
+		return getFormatter().format(time);
+	}
+
+	@Override
+	public LocalTime getValue() {
+		return time;
+	}
+
+	@Override
+	public DataValue copy() {
+		return this;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+
+		TimeValue timeValue = (TimeValue) o;
+		return time.equals(timeValue.time);
+	}
+
+	@Override
+	public int hashCode() {
+		return time.hashCode();
 	}
 }
