@@ -2,18 +2,18 @@ package controllers.wizard;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.stage.FileChooser;
 import javafx.util.converter.DefaultStringConverter;
+import model.data.DataTable;
 import model.exceptions.DataFileNotRecognizedException;
 import model.input.file.DataFile;
 import model.output.XmlWriter;
@@ -27,6 +27,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -39,17 +40,24 @@ public class XmlWizardController {
 	@FXML private ComboBox columntype;
 	@FXML private TextField columnName;
 	@FXML private TableView datacolumns;
-	@FXML private TableView<ObservableList<StringProperty>> datafiles;
+	@FXML private ListView<DataFile> datafiles;
 	@FXML private Parent root;
 	@FXML private TextField fileselectfield;
+
+	private HashMap<DataFile, ObservableList<StringProperty>> fileColumns = new HashMap<>();
+	private DataFile selectedFile;
 
 	/**
 	 * Initializes the controller by filling the static content of elements in the view.
 	 */
 	public void initialize() {
-		datafiles.getColumns().add(createColumn(0, "Filename"));
-		datafiles.getColumns().add(createColumn(1, "Type"));
-
+		ChangeListener<DataFile> listener = (ov, oldValue, newValue) -> {
+			if (!(newValue == null)) {
+				selectedFile = newValue;
+				datacolumns.setItems(fileColumns.get(newValue));
+			}
+		};
+		this.datafiles.getSelectionModel().selectedItemProperty().addListener(listener);
 		datacolumns.getColumns().add(createColumn(0, "Column name"));
 		datacolumns.getColumns().add(createColumn(1, "Type"));
 
@@ -103,10 +111,9 @@ public class XmlWizardController {
 	}
 
 	private void addDataFile(String path, String type) {
-		ObservableList<StringProperty> row = FXCollections.observableArrayList();
-		row.add(new SimpleStringProperty(path));
-		row.add(new SimpleStringProperty(type));
-		datafiles.getItems().add(row);
+		DataFile file = DataFile.createDataFile(path, type);
+		datafiles.getItems().add(file);
+		fileColumns.put(file,FXCollections.observableArrayList());
 	}
 
 	@FXML
@@ -119,8 +126,7 @@ public class XmlWizardController {
 
 	private List<DataFile> createDataFiles() {
 		List res = new ArrayList();
-		for (ObservableList<StringProperty> val : datafiles.getItems()) {
-			DataFile file = DataFile.createDataFile(val.get(0).getValue(), val.get(1).getValue());
+		for (DataFile file : datafiles.getItems()) {
 			res.add(file);
 		}
 		return res;
@@ -145,10 +151,8 @@ public class XmlWizardController {
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(writer.createDocument());
 
-			StreamResult result = new StreamResult(file);
-
-			//Debug: print xml to console
-//			StreamResult result = new StreamResult(System.out);
+//			StreamResult result = new StreamResult(file);
+			StreamResult result = new StreamResult(System.out);
 			transformer.transform(source, result);
 
 		} catch (ParserConfigurationException

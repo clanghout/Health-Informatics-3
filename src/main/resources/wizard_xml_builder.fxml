@@ -8,7 +8,7 @@
         <children>
             <VBox styleClass="datafiles-box">
                 <Label>Data Files:</Label>
-                <TableView
+                <ListView
                         fx:id="datafiles"
                         styleClass="datafiles"/>
             </VBox>
