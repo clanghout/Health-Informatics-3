@@ -16,6 +16,10 @@ abstract class TemporalValue<T> extends DataValue<T> {
 		this.format = format;
 	}
 
+	/**
+	 * Get the format of this TemporalValue.
+	 * @return The pattern used to format the time in this value.
+	 */
 	public String getFormat() {
 		return format;
 	}
