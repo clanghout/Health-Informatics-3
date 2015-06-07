@@ -3,7 +3,7 @@ package model.data.value;
 import java.time.LocalDate;
 
 /**
- * Data Class containing a value with type Date.
+ * Represent a value containg a date.
  */
 public class DateValue extends TemporalValue<LocalDate> {
 
@@ -14,7 +14,7 @@ public class DateValue extends TemporalValue<LocalDate> {
 	}
 
 	/**
-	 * Create calendar with zero values for time elements.
+	 * Construct a new DateValue.
 	 *
 	 * @param year  the year as int
 	 * @param month the month as int

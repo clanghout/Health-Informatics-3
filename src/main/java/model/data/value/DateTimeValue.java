@@ -3,7 +3,7 @@ package model.data.value;
 import java.time.LocalDateTime;
 
 /**
- * This class provides a basis for classes dealing with Date or Time values.
+ * Represents a DateTime value.
  */
 public class DateTimeValue extends TemporalValue<LocalDateTime> {
 
