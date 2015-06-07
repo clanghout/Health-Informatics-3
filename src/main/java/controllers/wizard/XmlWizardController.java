@@ -74,13 +74,13 @@ public class XmlWizardController {
 		);
 
 		File file = fileChooser.showOpenDialog(root.getScene().getWindow());
-		String type = getTypeByExtention(
+		String type = getTypeByExtension(
 				fileChooser.getSelectedExtensionFilter().getExtensions().get(0));
 		addDataFile(file.getPath(), type);
 		fileselectfield.setText(file.getPath());
 	}
 
-	private String getTypeByExtention(String extension) {
+	private String getTypeByExtension(String extension) {
 		switch (extension) {
 			case "*.txt":
 				return "plaintext";
