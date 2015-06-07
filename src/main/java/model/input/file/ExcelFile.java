@@ -1,16 +1,16 @@
 package model.input.file;
 
 import java.io.FileNotFoundException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 
 import model.data.DataTable;
 import model.data.DataTableBuilder;
-import model.data.value.DataValue;
-import model.data.value.FloatValue;
-import model.data.value.IntValue;
-import model.data.value.StringValue;
+import model.data.value.*;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 
 /**
@@ -41,41 +41,65 @@ public abstract class ExcelFile extends DataFile {
 			for (int i = 0; i < getColumnTypes().length; i++) {
 				getColumns().put(headers.getCell(i).getStringCellValue(), getColumnTypes()[i]);
 			}
-		} else {			
+		} else {
 			for (String key : getColumns().keySet()) {
 				builder.createColumn(key, getColumns().get(key));
 			}
 		}
-		
+
 		while (rowIterator.hasNext()) {
 			Row row = rowIterator.next();
 			DataValue[] values = new DataValue[getColumns().size()];
+			int nullCount = 0;
 			for (int i = 0; i < getColumns().size(); i++) {
 				Cell cell = row.getCell(i, Row.CREATE_NULL_AS_BLANK);
 				values[i] = toDataValue(cell);
+				if (values[i] instanceof NullValue) {
+					nullCount++;
+				}
 			}
+			if (nullCount == getColumns().size()) { break; }
 			builder.createRow(values);
 		}
 		return builder.build();
 	}
-	
+
 	private DataValue toDataValue(Cell cell) {
-		DataValue value = null;
+		DataValue value;
 		switch (cell.getCellType()) {
-			case Cell.CELL_TYPE_STRING: 
+			case Cell.CELL_TYPE_STRING:
 				value = new StringValue(cell.getStringCellValue());
-				break;			
-			case Cell.CELL_TYPE_NUMERIC: 
-				double cellValue = cell.getNumericCellValue();
-				value = (cellValue % 1 == 0) 
-						? new IntValue((int) cellValue) : new FloatValue((float) cellValue);
-				break;					
-			case Cell.CELL_TYPE_BLANK: 
-				value = new StringValue("");
 				break;
-			default: throw new UnsupportedOperationException(
-					String.format("Cell type %s not supported", cell.getCellType())
-			);
+			case Cell.CELL_TYPE_NUMERIC: {
+				value = determineNumValue(cell);
+				break;
+			}
+			case Cell.CELL_TYPE_BLANK:
+				value = new NullValue();
+				break;
+			default:
+				throw new UnsupportedOperationException(
+						String.format("Cell type %s not supported", cell.getCellType()));
+		}
+		return value;
+	}
+
+	private DataValue determineNumValue(Cell cell) {
+		DataValue value;
+		if (DateUtil.isCellDateFormatted(cell)) {
+			Date date = cell.getDateCellValue();
+			Calendar calendar = DateUtil.getJavaCalendar(cell.getNumericCellValue(), true);
+			value = new DateTimeValue(
+					date.getYear(),
+					date.getMonth(),
+					date.getDay(),
+					date.getHours(),
+					date.getMinutes(),
+					date.getSeconds());
+		} else {
+			double cellValue = cell.getNumericCellValue();
+			value = (cellValue % 1 == 0)
+					? new IntValue((int) cellValue) : new FloatValue((float) cellValue);
 		}
 		return value;
 	}
