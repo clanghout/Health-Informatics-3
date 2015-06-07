@@ -26,6 +26,7 @@
                                                   styleClass="drop-down-menu"/>
                                     </children>
                                 </HBox>
+								<Label fx:id="createError" styleClass="label" />
                             </children>
                         </VBox>
                         <VBox fx:id="visualizationInputVBox" styleClass="visualization-input-dropdown">

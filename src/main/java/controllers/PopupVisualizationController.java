@@ -4,7 +4,9 @@ import controllers.visualizations.BarChartController;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import model.data.DataModel;
 import model.data.DataTable;
 import view.GraphCreationDialog;
@@ -23,6 +25,8 @@ public class PopupVisualizationController {
 	private ComboBox<String> visualizationComboBox;
 	@FXML
 	private VBox visualizationInputVBox;
+	@FXML
+	private Label createError;
 	private DataTable table;
 	private BarChartController barChartController;
 	private VisualizationController visualizationController;
@@ -43,6 +47,7 @@ public class PopupVisualizationController {
 		visualizationComboBox.setMaxWidth(Double.MAX_VALUE);
 		tableComboBox.setDisable(true);
 		visualizationComboBox.setDisable(true);
+		createError.setMaxWidth(Double.MAX_VALUE);
 	}
 
 	/**
@@ -82,8 +87,15 @@ public class PopupVisualizationController {
 
 	@FXML
 	protected void handleGraphCreateButtonAction() {
-		visualizationController.drawGraph(barChartController.create());
-		dialog.close();
+		if(barChartController.axesSet()) {
+			visualizationController.drawGraph(barChartController.create());
+			dialog.close();
+		} else {
+			createError.setTextFill(Color.RED);
+			createError.setText("Could not create graph; axes not fully set.");
+			// show notification axis not set.
+		}
+
 	}
 
 	@FXML

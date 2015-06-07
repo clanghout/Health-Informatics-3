@@ -62,9 +62,11 @@ public class BarChartController extends ChartController {
 	 */
 	public void initializeFields() {
 		xAxisBox = new ComboBox<>();
+		xAxisBox.setPromptText("x-Axis");
 		xAxisErrorLabel = new Label();
 		xAxisErrorLabel.setMaxWidth(Double.MAX_VALUE);
 		yAxisBox = new ComboBox<>();
+		yAxisBox.setPromptText("y-Axis");
 		yAxisErrorLabel = new Label();
 		yAxisErrorLabel.setMaxWidth(Double.MAX_VALUE);
 		setColumnDropDown(xAxisBox, table);
@@ -79,6 +81,7 @@ public class BarChartController extends ChartController {
 	 */
 	public void setXAxisEventListener() {
 		xAxisBox.valueProperty().addListener((observable1, oldValue1, newValue1) -> {
+			xSet = false;
 			xCol = newValue1;
 			List<String> dataxcol = table.getRows().stream()
 					.map(row -> row.getValue(xCol).toString())
@@ -99,6 +102,7 @@ public class BarChartController extends ChartController {
 	 */
 	public void setYAxisEventListener() {
 		ChangeListener<DataColumn> dataColumnChangeListener = (observable, oldValue, newValue) -> {
+			ySet = false;
 			yCol = newValue;
 			DataDescriber<NumberValue> yColDescriber = new RowValueDescriber<>(yCol);
 			try {
