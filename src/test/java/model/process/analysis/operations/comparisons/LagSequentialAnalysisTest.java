@@ -90,23 +90,19 @@ public class LagSequentialAnalysisTest {
 		DataTableBuilder builder2 = new DataTableBuilder();
 		builder2.setName("test2");
 		dat = builder2.createColumn("date", DateTimeValue.class);
-		builder2.createColumn("string", StringValue.class);
 		builder2.createColumn("measurement", IntValue.class);
 
 		date = new DateTimeValue(2015, 1, 19, 11, 30, 5);
-		string = new StringValue("One");
 		inty = new IntValue(12);
-		builder2.createRow(date, string, inty);
+		builder2.createRow(date, inty);
 
 		date = new DateTimeValue(2014, 1, 20, 15, 20, 5);
-		string = new StringValue("Two");
 		inty = new IntValue(9);
-		builder2.createRow(date, string, inty);
+		builder2.createRow(date, inty);
 
 		date = new DateTimeValue(2015, 11, 9, 14, 46, 28);
-		string = new StringValue("Three");
 		inty = new IntValue(10);
-		builder2.createRow(date, string, inty);
+		builder2.createRow(date, inty);
 
 		dateCol2 = new RowValueDescriber<DateTimeValue>(dat);
 
