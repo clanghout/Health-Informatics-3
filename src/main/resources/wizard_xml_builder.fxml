@@ -23,15 +23,6 @@
                             onAction="#selectFile"/>
                 </children>
             </HBox>
-            <HBox styleClass="import-box">
-                <children>
-                    <Label>Import as: </Label>
-                    <ComboBox
-                            fx:id="importAs"/>
-                    <Button text="Import"
-                            onAction="#handleImportButton"/>
-                </children>
-            </HBox>
             <SplitPane styleClass="splitpane">
                 <items>
                     <VBox styleClass="spaced-box">

@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.stage.FileChooser;
 import javafx.util.converter.DefaultStringConverter;
+import model.exceptions.DataFileNotRecognizedException;
 import model.input.file.DataFile;
 import model.output.XmlWriter;
 
@@ -38,7 +39,6 @@ public class XmlWizardController {
 	@FXML private ComboBox columntype;
 	@FXML private TextField columnName;
 	@FXML private TableView datacolumns;
-	@FXML private ComboBox importAs;
 	@FXML private TableView<ObservableList<StringProperty>> datafiles;
 	@FXML private Parent root;
 	@FXML private TextField fileselectfield;
@@ -53,11 +53,6 @@ public class XmlWizardController {
 		datacolumns.getColumns().add(createColumn(0, "Column name"));
 		datacolumns.getColumns().add(createColumn(1, "Type"));
 
-		importAs.setItems(
-				FXCollections.observableArrayList(
-						"xls", "xlsx", "plaintext"
-				)
-		);
 		columntype.setItems(
 				FXCollections.observableArrayList(
 						"string", "int", "float", "datetime", "date", "time"
@@ -68,14 +63,34 @@ public class XmlWizardController {
 	@FXML
 	public void selectFile(ActionEvent actionEvent) {
 		FileChooser fileChooser = new FileChooser();
-
+		fileChooser.getExtensionFilters().addAll(
+				new FileChooser.ExtensionFilter("Plain text file", "*.txt"),
+				new FileChooser.ExtensionFilter("MS Excel xls file", "*.xls"),
+				new FileChooser.ExtensionFilter("MS Excel xlsx file", "*.xlsx")
+		);
 		fileChooser.setTitle("Select Data File");
 		fileChooser.setInitialDirectory(
 				new File(System.getProperty("user.home"))
 		);
 
 		File file = fileChooser.showOpenDialog(root.getScene().getWindow());
+		String type = getTypeByExtention(
+				fileChooser.getSelectedExtensionFilter().getExtensions().get(0));
+		addDataFile(file.getPath(), type);
 		fileselectfield.setText(file.getPath());
+	}
+
+	private String getTypeByExtention(String extension) {
+		switch (extension) {
+			case "*.txt":
+				return "plaintext";
+			case "*.xls":
+				return "xls";
+			case "*.xlsx":
+				return "xlsx";
+			default: throw new DataFileNotRecognizedException(
+					"The selected extension is not recognized");
+		}
 	}
 
 	private TableColumn<ObservableList<StringProperty>, String> createColumn(int index,
@@ -87,11 +102,10 @@ public class XmlWizardController {
 		return column;
 	}
 
-	@FXML
-	public void handleImportButton(ActionEvent actionEvent) {
+	private void addDataFile(String path, String type) {
 		ObservableList<StringProperty> row = FXCollections.observableArrayList();
-		row.add(new SimpleStringProperty(fileselectfield.getText()));
-		row.add(new SimpleStringProperty((String) importAs.getValue()));
+		row.add(new SimpleStringProperty(path));
+		row.add(new SimpleStringProperty(type));
 		datafiles.getItems().add(row);
 	}
 
