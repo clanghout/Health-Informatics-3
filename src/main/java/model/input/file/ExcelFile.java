@@ -40,6 +40,7 @@ public abstract class ExcelFile extends DataFile {
 			Row headers = rowIterator.next();
 			for (int i = 0; i < getColumnTypes().length; i++) {
 				getColumns().put(headers.getCell(i).getStringCellValue(), getColumnTypes()[i]);
+				builder.createColumn(headers.getCell(i).getStringCellValue(), getColumnTypes()[i]);
 			}
 		} else {
 			for (String key : getColumns().keySet()) {
