@@ -118,19 +118,19 @@ public class LagSequentialAnalysis {
 
 		DataRow rowA = tableAIt.next();
 		DataRow rowB = tableBIt.next();
-		DateTimeValue dataA = colA.resolve(rowA);
-		DateTimeValue dataB = colB.resolve(rowB);
+		Calendar dataA = colA.resolve(rowA).getValue();
+		Calendar dataB = colB.resolve(rowB).getValue();
 
 		boolean nextA = true;
 		boolean nextB = true;
 
 		while (nextA && nextB) {
-			if (dataA.getValue().compareTo(dataB.getValue()) < 0) {
+			if (dataA.compareTo(dataB) < 0) {
 				order.add("A");
 				tableC.addRow(rowA);
 				if (tableAIt.hasNext()) {
 					rowA = tableAIt.next();
-					dataA = colA.resolve(rowA);
+					dataA = colA.resolve(rowA).getValue();
 				} else {
 					order.add("B");
 					tableC.addRow(rowB);
@@ -141,7 +141,7 @@ public class LagSequentialAnalysis {
 				tableC.addRow(rowB);
 				if (tableBIt.hasNext()) {
 					rowB = tableBIt.next();
-					dataB = colB.resolve(rowB);
+					dataB = colB.resolve(rowB).getValue();
 				} else {
 					order.add("A");
 					tableC.addRow(rowA);
