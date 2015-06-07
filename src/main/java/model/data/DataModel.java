@@ -39,9 +39,20 @@ public class DataModel extends Observable implements Iterable<DataTable> {
 	 * @param table The table you want to add
 	 */
 	public void add(DataTable table) {
-		tables.add(table);
+		insert(table);
 		setChanged();
 		notifyObservers();
+	}
+
+	private void insert(DataTable table) {
+		Optional<DataTable> result = tables.stream()
+				.filter(x -> x.getName().equals(table.getName()))
+				.findFirst();
+		if (result.isPresent()) {
+			tables.set(tables.indexOf(result.get()), table);
+		} else {
+			tables.add(table);
+		}
 	}
 
 	/**
@@ -49,7 +60,7 @@ public class DataModel extends Observable implements Iterable<DataTable> {
 	 * @param tables The tables you want to add
 	 */
 	public void addAll(Collection<DataTable> tables) {
-		this.tables.addAll(tables);
+		tables.forEach(this::insert);
 		setChanged();
 		notifyObservers();
 	}
