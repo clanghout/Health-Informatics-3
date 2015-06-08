@@ -58,8 +58,8 @@ public class LagSequentialAnalysis {
 		}
 
 		/**
-		 * TODO replace sorting function for tables with global sorting function of
-		 * DataTable
+		 * TODO replace sorting function for tables with global sorting function
+		 * of DataTable
 		 */
 		tableA = sortTable(tableA);
 		tableB = sortTable(tableB);
@@ -121,10 +121,7 @@ public class LagSequentialAnalysis {
 		Calendar dataA = colA.resolve(rowA).getValue();
 		Calendar dataB = colB.resolve(rowB).getValue();
 
-		boolean nextA = true;
-		boolean nextB = true;
-
-		while (nextA && nextB) {
+		while (true) {
 			if (dataA.compareTo(dataB) < 0) {
 				order.add("A");
 				tableC.addRow(rowA);
@@ -150,19 +147,21 @@ public class LagSequentialAnalysis {
 
 			}
 		}
-		while (tableAIt.hasNext()) {
 
+		addRemaining(tableAIt, rowA, tableBIt, rowB);
+	}
+
+	private void addRemaining(Iterator<DataRow> a, DataRow rowA,
+			Iterator<DataRow> b, DataRow rowB) {
+		while (a.hasNext()) {
 			order.add("A");
 			tableC.addRow(rowA);
-			rowA = tableAIt.next();
-
+			rowA = a.next();
 		}
-		while (tableBIt.hasNext()) {
-
+		while (b.hasNext()) {
 			order.add("B");
 			tableC.addRow(rowB);
-			rowB = tableBIt.next();
-
+			rowB = b.next();
 		}
 	}
 
