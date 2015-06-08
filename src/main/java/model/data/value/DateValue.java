@@ -22,12 +22,10 @@ public class DateValue extends TemporalValue<LocalDate> {
 	 */
 	public DateValue(Integer year, Integer month, Integer day) {
 		this();
-		if (year == null) {
+		if(year == null) {
 			year = 0;
-		} if (month == null) {
-			month = 0;
-		} if (day == null) {
-			day = 0;
+			month = 1;
+			day = 1;
 		}
 		date = LocalDate.of(year, month, day);
 	}

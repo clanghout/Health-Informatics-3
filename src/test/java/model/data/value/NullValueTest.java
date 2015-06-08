@@ -20,14 +20,20 @@ public class NullValueTest {
 	@Test
 	public void testGetValueDateTime() throws Exception {
 		value = new DateTimeValue(null, null, null, null, null, null);
-		DataValue compare = new DateTimeValue(0,0,0,0,0,0);
+		DataValue compare = new DateTimeValue(0,1,1,0,0,0);
 		assertEquals(compare.getValue(), value.getValue());
 	}
 	
 	@Test
 	public void testGetValueDate() throws Exception {
+		value = new DateValue(null);
+		assertEquals(null, value.getValue());
+	}
+	
+	@Test
+	public void testGetValueDate2() throws Exception {
 		value = new DateValue(null,null,null);
-		DataValue compare = new DateValue(0,0,0);
+		DataValue compare = new DateValue(0,1,1);
 		assertEquals(compare.getValue(), value.getValue());
 	}
 	

@@ -16,15 +16,10 @@ public class DateTimeValue extends TemporalValue<LocalDateTime> {
 		super("dd-MM-yyyy HH:mm:ss");
 		if (year == null) {
 			year = 0;
-		} if (month == null) {
-			month = 0;
-		} if (day == null) {
-			day = 0;
-		} if (hour == null) {
+			month = 1;
+			day = 1;
 			hour = 0;
-		} if (minute == null) {
 			minute = 0;
-		} if (second == null) {
 			second = 0;
 		}
 		dateTime = LocalDateTime.of(year, month, day, hour, minute, second);
