@@ -51,6 +51,9 @@ public class PlainTextFile extends DataFile {
 					getBuilder().createColumn(entry.getKey(), entry.getValue());
 				}
 			}
+			if (hasMetaData()) {
+				getBuilder().createColumn(getMetaDataColumnName(),getMetaDataType());
+			}
 			readLines(scanner);
 		}
 

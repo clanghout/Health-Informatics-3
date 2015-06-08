@@ -282,19 +282,19 @@ public abstract class DataFile {
 	}
 
 	/**
+	 * Sets if the datafile has metadata
+	 * @param hasMetaData True if the datafile contains metadata
+	 */
+	public void setHasMetaData(boolean hasMetaData) {
+		this.hasMetaData = hasMetaData;
+	}
+
+	/**
 	 * Sets the class for the metadata column.
 	 * @param metaDataType The class for the metadata
 	 */
 	public void setMetaDataType(Class metaDataType) {
 		this.metaDataType = metaDataType;
-	}
-
-	/**
-	 * Sets the name that the metadatacolumn will get.
-	 * @param name The name of the metadatacolumn
-	 */
-	public void setMetaDataColumnName(String name) {
-		this.metaDataColumnName = name;
 	}
 
 	/**
@@ -326,16 +326,10 @@ public abstract class DataFile {
 					res = new FloatValue(Float.parseFloat(metavalue));
 				case "string":
 					res = new StringValue(metavalue);
-//				case "date":
-//					res = new DateValue();
-//				case "time" :
-//					res = new TimeValue();
-//				case "datetime" :
-//					res = new DateTimeValue();
 			}
 			this.metaDataValue = res;
-			builder.createColumn(name, getColumnType(type));
-			hasMetaData = true;
+			this.setMetaDataType(getColumnType(type));
+			this.setMetaDataColumnName(name);
 		} catch (FileNotFoundException e) {
 			log.log(Level.SEVERE, "The file could not be found", e);
 		}
@@ -347,5 +341,29 @@ public abstract class DataFile {
 	 */
 	public boolean hasMetaData() {
 		return hasMetaData;
+	}
+
+	/**
+	 * Sets the name of the metadata column.
+	 * @param metaDataColumnName The name to set
+	 */
+	public void setMetaDataColumnName(String metaDataColumnName) {
+		this.metaDataColumnName = metaDataColumnName;
+	}
+
+	/**
+	 * Returns the name of the metadata column.
+	 * @return The name of the metadata column.
+	 */
+	public String getMetaDataColumnName() {
+		return metaDataColumnName;
+	}
+
+	/**
+	 * Returns the type of class of the metadata column.
+	 * @return The type of class of the metadata column
+	 */
+	public Class getMetaDataType() {
+		return metaDataType;
 	}
 }

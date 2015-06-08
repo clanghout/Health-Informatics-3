@@ -17,7 +17,7 @@ import org.junit.Test;
 
 /**
  * JUnit test for the XlsFile class.
- * @author paul
+ * @author Paul
  *
  */
 public class XlsxFileTest {
@@ -38,7 +38,6 @@ public class XlsxFileTest {
 		list.add(FloatValue.class);
 		list.add(IntValue.class);
 		xlsxFile.setColumns(mapping, list);
-		xlsxFile.createMetaDataValue("metadata", "string");
 	}
 	
 	@Test
@@ -55,8 +54,6 @@ public class XlsxFileTest {
 		assertEquals(new StringValue("string"), row.getValue(table.getColumn("string")));
 		assertEquals(new FloatValue(0.666f), row.getValue(table.getColumn("float")));
 		assertEquals(new IntValue(666), row.getValue(table.getColumn("int")));
-		assertEquals(new StringValue("xlsxfile"), row.getValue(
-				table.getColumn("metadata")));
 	}
 	
 }

@@ -145,8 +145,6 @@ public class XmlReader {
 		String completePath = createPath(elem, parentDir);
 		DataFile theDataFile = DataFile.createDataFile(completePath, type);
 
-		NodeList metaData = elem.getElementsByTagName(METADATA_TAG);
-		theDataFile = setMetaData(theDataFile, metaData);
 		Element columnsElement = (Element) elem.getElementsByTagName(COLUMNS_TAG).item(0);
 		Element data = (Element) elem.getElementsByTagName(DATA_TAG).item(0);
 		theDataFile = setStartEndLine(data, theDataFile);
@@ -157,7 +155,9 @@ public class XmlReader {
 		
 		NodeList columns = columnsElement.getElementsByTagName(COLUMN_TAG);
 		setColumnTypes(theDataFile, columns);
-		
+		NodeList metaData = elem.getElementsByTagName(METADATA_TAG);
+		theDataFile = setMetaData(theDataFile, metaData);
+
 		return theDataFile;
 	}
 
@@ -171,6 +171,7 @@ public class XmlReader {
 			String name = metaDataElem.getAttribute("name");
 			try {
 				theDataFile.createMetaDataValue(name, type);
+				theDataFile.setHasMetaData(true);
 			} catch (ClassNotFoundException e) {
 				log.log(Level.SEVERE, "Specified Class was not found", e);
 			}

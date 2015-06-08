@@ -1,13 +1,15 @@
 package model.input.file;
 
 import model.data.DataTable;
-import model.data.value.*;
+import model.data.value.DataValue;
+import model.data.value.FloatValue;
+import model.data.value.IntValue;
+import model.data.value.StringValue;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
 import java.io.FileNotFoundException;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Class representing a general MS Excel file.
@@ -42,6 +44,9 @@ public abstract class ExcelFile extends DataFile {
 			for (String key : getColumns().keySet()) {
 				getBuilder().createColumn(key, getColumns().get(key));
 			}
+		}
+		if (hasMetaData()) {
+			getBuilder().createColumn(getMetaDataColumnName(),getMetaDataType());
 		}
 		addRows(rowIterator);
 		return getBuilder().build();

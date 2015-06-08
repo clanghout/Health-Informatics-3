@@ -40,7 +40,6 @@ public class XlsFileTest {
 		list.add(FloatValue.class);
 		list.add(IntValue.class);
 		xlsFile.setColumns(mapping, list);
-		xlsFile.createMetaDataValue("metadata", "string");
 	}
 	
 	@Test
@@ -57,7 +56,5 @@ public class XlsFileTest {
 		assertEquals(new StringValue("string"), row.getValue(table.getColumn("string")));
 		assertEquals(new FloatValue(0.666f), row.getValue(table.getColumn("float")));
 		assertEquals(new IntValue(666), row.getValue(table.getColumn("int")));
-		assertEquals(new StringValue("xlsFile"),
-				row.getValue(table.getColumn("metadata")));
 	}
 }
