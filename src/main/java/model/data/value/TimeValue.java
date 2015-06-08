@@ -22,11 +22,6 @@ public class TimeValue extends TemporalValue<LocalTime> {
 	}
 
 	@Override
-	public String toString() {
-		return getFormatter().format(time);
-	}
-
-	@Override
 	public LocalTime getValue() {
 		return time;
 	}
@@ -34,23 +29,5 @@ public class TimeValue extends TemporalValue<LocalTime> {
 	@Override
 	public DataValue copy() {
 		return this;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-
-		TimeValue timeValue = (TimeValue) o;
-		return time.equals(timeValue.time);
-	}
-
-	@Override
-	public int hashCode() {
-		return time.hashCode();
 	}
 }

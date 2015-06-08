@@ -23,32 +23,7 @@ public class DateTimeValue extends TemporalValue<LocalDateTime> {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-
-		DateTimeValue that = (DateTimeValue) o;
-
-		return dateTime.equals(that.dateTime);
-
-	}
-
-	@Override
-	public int hashCode() {
-		return dateTime.hashCode();
-	}
-
-	@Override
 	public DataValue copy() {
 		return this;
-	}
-
-	@Override
-	public String toString() {
-		return getFormatter().format(dateTime);
 	}
 }

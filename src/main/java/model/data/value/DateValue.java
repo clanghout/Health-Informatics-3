@@ -36,29 +36,6 @@ public class DateValue extends TemporalValue<LocalDate> {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-
-		DateValue dateValue = (DateValue) o;
-		return date.equals(dateValue.date);
-	}
-
-	@Override
-	public int hashCode() {
-		return date.hashCode();
-	}
-
-	@Override
-	public String toString() {
-		return getFormatter().format(date);
-	}
-
-	@Override
 	public DataValue<LocalDate> copy() {
 		return new DateValue(date);
 	}
