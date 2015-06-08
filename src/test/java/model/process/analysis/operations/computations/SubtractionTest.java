@@ -35,7 +35,7 @@ public class SubtractionTest {
 
 	@Test
 	public void testSubtractionFloatConstants() throws Exception {
-		Subtraction check = new Subtraction<>(new ConstantDescriber<>(new FloatValue(1f)), new ConstantDescriber<>(new FloatValue(0.125f)));
+		Subtraction check = new Subtraction<>(new ConstantDescriber<>(new FloatValue(1)), new ConstantDescriber<>(new FloatValue(0.125f)));
 		assertEquals(new FloatValue(0.875f), check.compute(null));
 	}
 
@@ -47,7 +47,7 @@ public class SubtractionTest {
 
 	@Test(expected = UnsupportedOperationException.class)
 	public void testFloatIntFail() throws Exception {
-		Subtraction check = new Subtraction<>(new ConstantDescriber<>(new FloatValue(123f)), new ConstantDescriber<>(new IntValue(456)));
+		Subtraction check = new Subtraction<>(new ConstantDescriber<>(new FloatValue(123)), new ConstantDescriber<>(new IntValue(456)));
 		check.compute(null);
 	}
 }

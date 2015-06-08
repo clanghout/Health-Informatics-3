@@ -33,7 +33,7 @@ public class DivisionTest {
 
 	@Test
 	public void testDivisionFloatConstants() throws Exception {
-		Division check = new Division<>(new ConstantDescriber<>(new FloatValue(12.5f)), new ConstantDescriber<>(new FloatValue(4f)));
+		Division check = new Division<>(new ConstantDescriber<>(new FloatValue(12.5f)), new ConstantDescriber<>(new FloatValue(4)));
 		assertEquals(new FloatValue(3.125f), check.compute(null));
 	}
 
@@ -45,7 +45,7 @@ public class DivisionTest {
 
 	@Test(expected = ArithmeticException.class)
 	public void testDivideZeroFloat() throws Exception {
-		Division check = new Division<>(new ConstantDescriber<>(new FloatValue(123f)), new ConstantDescriber<>(new FloatValue(0f)));
+		Division check = new Division<>(new ConstantDescriber<>(new FloatValue(123f)), new ConstantDescriber<>(new FloatValue(0)));
 		check.compute(null);
 	}
 
@@ -57,7 +57,7 @@ public class DivisionTest {
 
 	@Test(expected = UnsupportedOperationException.class)
 	public void testFloatIntFail() throws Exception {
-		Division check = new Division<>(new ConstantDescriber<>(new FloatValue(123f)), new ConstantDescriber<>(new IntValue(456)));
+		Division check = new Division<>(new ConstantDescriber<>(new FloatValue(123)), new ConstantDescriber<>(new IntValue(456)));
 		check.compute(null);
 	}
 }

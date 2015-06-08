@@ -254,7 +254,7 @@ public class DataTableTest {
 		DataTableBuilder builder = new DataTableBuilder();
 		builder.setName("t");
 		builder.createColumn("column1", FloatValue.class);
-		builder.createRow(new FloatValue(1f));
+		builder.createRow(new FloatValue(1));
 		DataTable table = builder.build();
 
 		builder = new DataTableBuilder();

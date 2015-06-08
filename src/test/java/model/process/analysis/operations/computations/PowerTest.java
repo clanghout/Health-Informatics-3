@@ -27,14 +27,14 @@ public class PowerTest {
 
 	@Test
 	public void testPowerFloatConstantsZero() throws Exception {
-		Power check = new Power<>(new ConstantDescriber<>(new FloatValue(0f)), new ConstantDescriber<>(new FloatValue(0f)));
-		assertEquals(new FloatValue(1f), check.compute(null));
+		Power check = new Power<>(new ConstantDescriber<>(new FloatValue(0)), new ConstantDescriber<>(new FloatValue(0f)));
+		assertEquals(new FloatValue(1), check.compute(null));
 	}
 
 	@Test
 	public void testPowerFloatConstants() throws Exception {
 		Power check = new Power<>(new ConstantDescriber<>(new FloatValue(25f)), new ConstantDescriber<>(new FloatValue(2.5f)));
-		assertEquals(new FloatValue(3125f), check.compute(null));
+		assertEquals(new FloatValue(3125), check.compute(null));
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
@@ -45,7 +45,7 @@ public class PowerTest {
 
 	@Test(expected = UnsupportedOperationException.class)
 	public void testFloatIntFail() throws Exception {
-		Power check = new Power<>(new ConstantDescriber<>(new FloatValue(123f)), new ConstantDescriber<>(new IntValue(456)));
+		Power check = new Power<>(new ConstantDescriber<>(new FloatValue(123)), new ConstantDescriber<>(new IntValue(456)));
 		check.compute(null);
 	}
 }

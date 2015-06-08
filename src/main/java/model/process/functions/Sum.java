@@ -23,7 +23,7 @@ public class Sum extends Function {
 	public FloatValue calculate() {
 		//TODO decide if this must become default and move to parrent.
 		if (!initialize()) {
-			return new FloatValue(0f);
+			return new FloatValue(0);
 		}
 		float total = 0f;
 		float value = 0f;

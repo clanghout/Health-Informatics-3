@@ -24,7 +24,7 @@ public abstract class Minmax extends Function {
 	@Override
 	public FloatValue calculate() {
 		if (!initialize()) {
-			return new FloatValue(0f);
+			return new FloatValue(0);
 		}
 		return compare();
 	}
