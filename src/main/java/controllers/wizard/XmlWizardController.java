@@ -37,6 +37,8 @@ import java.util.List;
  */
 public class XmlWizardController {
 
+	@FXML private ComboBox metacolumntype;
+	@FXML private TextField metacolumnName;
 	@FXML private ComboBox columntype;
 	@FXML private TextField columnName;
 	@FXML private TableView datacolumns;
@@ -44,6 +46,9 @@ public class XmlWizardController {
 	@FXML private Parent root;
 	@FXML private TextField fileselectfield;
 
+	private final ObservableList typesSelect = FXCollections.observableArrayList(
+			"string", "int", "float", "datetime", "date", "time"
+	);
 	private HashMap<DataFile, ObservableList<StringProperty>> fileColumns = new HashMap<>();
 	private DataFile selectedFile;
 
@@ -61,11 +66,8 @@ public class XmlWizardController {
 		datacolumns.getColumns().add(createColumn(0, "Column name"));
 		datacolumns.getColumns().add(createColumn(1, "Type"));
 
-		columntype.setItems(
-				FXCollections.observableArrayList(
-						"string", "int", "float", "datetime", "date", "time"
-				)
-		);
+		metacolumntype.setItems(typesSelect);
+		columntype.setItems(typesSelect);
 	}
 
 	@FXML

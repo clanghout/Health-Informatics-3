@@ -41,11 +41,30 @@
                            <CheckBox text="First row as table header"/>
                        </children>
                     </VBox>
-                    <HBox styleClass="spaced-box">
+                    <VBox styleClass="spaced-box">
                         <children>
-                            <Label> RESERVED FOR SPECIFYING FILESPECIFIC THINGS </Label>
+                            <Label>
+                                Plain textfile
+                            </Label>
+                            <HBox>
+                                <Label> Starting line: </Label>
+                                <TextField/>
+                            </HBox>
+                            <HBox>
+                                <Label> Remove from end: </Label>
+                                <TextField/>
+                            </HBox>
+                            <VBox>
+                                <Label>Add metadata column: </Label>
+                                <HBox styleClass="import-box">
+                                    <TextField
+                                            fx:id="metacolumnName"/>
+                                    <ComboBox
+                                            fx:id="metacolumntype"/>
+                                </HBox>
+                            </VBox>
                         </children>
-                    </HBox>
+                    </VBox>
                 </items>
             </SplitPane>
             <HBox styleClass="spaced-box">
