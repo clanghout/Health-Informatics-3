@@ -1,10 +1,15 @@
 package controllers;
 
 import controllers.visualizations.BarChartController;
+import controllers.visualizations.BoxPlotController;
+import controllers.visualizations.ChartController;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.chart.BarChart;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import model.data.DataModel;
@@ -28,12 +33,11 @@ public class PopupVisualizationController {
 	@FXML
 	private Label createError;
 	private DataTable table;
-	private BarChartController barChartController;
+	private ChartController chartController;
 	private VisualizationController visualizationController;
 	private GraphCreationDialog dialog;
 
 	public PopupVisualizationController() {
-
 	}
 
 	/**
@@ -69,35 +73,52 @@ public class PopupVisualizationController {
 			visualizationComboBox.setDisable(false);
 		});
 		visualizationComboBox.setItems(FXCollections.observableArrayList(
-				"BarChart", "temp"));
+				"BarChart", "BoxPlot", "Empty"));
 		visualizationComboBox.valueProperty()
 				.addListener((observable, oldValue, newValue) -> {
 					visualizationInputVBox.getChildren().clear();
 					switch (newValue) {
 						case "BarChart":
-							barChartController =
+							chartController =
 									new BarChartController(table, visualizationInputVBox);
-							barChartController.initialize();
+							chartController.initialize();
+							break;
+						case "BoxPlot":
+							chartController =
+									new BoxPlotController(table, visualizationInputVBox);
+							chartController.initialize();
 							break;
 						default:
+							visualizationInputVBox.getChildren().clear();
 							break;
 					}
 				});
 	}
 
+	/**
+	 * Create a graph if possible and send it to teh visualization controller.
+	 */
 	@FXML
 	protected void handleGraphCreateButtonAction() {
-		if(barChartController.axesSet()) {
-			visualizationController.drawGraph(barChartController.create());
+		if (chartController.axesSet()) {
+			if (chartController instanceof BarChartController) {
+				BarChart chart = ((BarChartController) chartController).create();
+				chart.snapshot(new SnapshotParameters(), null);
+				visualizationController.drawGraph(chart);
+			} else {
+				WritableImage image = chartController.createImage();
+				visualizationController.drawImage(image);
+			}
 			dialog.close();
 		} else {
 			createError.setTextFill(Color.RED);
 			createError.setText("Could not create graph; axes not fully set.");
-			// show notification axis not set.
 		}
-
 	}
 
+	/**
+	 * Close the dialog when cancel button is pressed in the popup.
+	 */
 	@FXML
 	protected void handleCancelButtonAction() {
 		dialog.close();

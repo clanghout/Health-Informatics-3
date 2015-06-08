@@ -6,7 +6,7 @@
 <Tab fx:controller="controllers.VisualizationController" text="Visualization" xmlns="http://javafx.com/javafx/8"
      xmlns:fx="http://javafx.com/fxml/1">
     <content>
-        <AnchorPane>
+        <AnchorPane fx:id="root">
             <children>
                 <Button
                         fx:id="makeGraphButton"

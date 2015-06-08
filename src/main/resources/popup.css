@@ -19,8 +19,8 @@
 .popup-box {
 	-fx-padding: 14px;
 	-fx-spacing: 5px;
-	-fx-pref-height: 240px;
-	-fx-pref-width: 240px;
+	-fx-pref-height: 340px;
+	-fx-pref-width: 340px;
 }
 
 .drop-down-menu {
