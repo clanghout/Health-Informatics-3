@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 public class MinTest {
 
 	@Test
-	public void testCompute() throws Exception {
+	public void testOperate() throws Exception {
 		DataDescriber<DateTimeValue> left = new ConstantDescriber<>(
 				new DateTimeValue(1995, 1, 17, 10, 0, 0)
 		);
