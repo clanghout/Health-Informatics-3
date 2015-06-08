@@ -6,8 +6,12 @@ package model.data.value;
 public final class FloatValue extends NumberValue<Float> {
 	private float value;
 
-	public FloatValue(float value) {
-		this.value = value;
+	public FloatValue(Float value) {
+		if (value == null) {
+			this.value = 0.0f;
+		} else {
+			this.value = value;
+		}
 	}
 
 	@Override
@@ -36,6 +40,11 @@ public final class FloatValue extends NumberValue<Float> {
 		}
 		FloatValue o = (FloatValue) other;
 		return Float.compare(value, o.value);
+	}
+
+	@Override
+	public FloatValue copy() {
+		return new FloatValue(value);
 	}
 
 	@Override

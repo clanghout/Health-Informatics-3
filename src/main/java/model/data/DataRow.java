@@ -82,7 +82,7 @@ public class DataRow extends Row {
 	public DataRow copy() {
 		DataRow row = new DataRow();
 		for (Map.Entry<SoftColumn, DataValue> entry : values.entrySet()) {
-			row.setValue(entry.getKey().getColumn(), values.get(entry.getKey()));
+			row.setValue(entry.getKey().getColumn(), values.get(entry.getKey()).copy());
 			row.addCodes(this.codes);
 		}
 		return row;
@@ -101,7 +101,7 @@ public class DataRow extends Row {
 				for (Map.Entry<SoftColumn, DataValue> entry : values.entrySet()) {
 					if (entry.getKey().getColumn().equalsExcludeTable(column)) {
 						row.setValue(column,
-								values.get(entry.getKey()));
+								values.get(entry.getKey()).copy());
 						row.addCodes(this.codes);
 						break;
 					}

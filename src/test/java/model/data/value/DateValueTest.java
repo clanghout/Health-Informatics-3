@@ -1,8 +1,9 @@
 package model.data.value;
 
+import model.data.value.DataValue;
 import org.junit.Test;
 
-import java.time.LocalDate;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -15,13 +16,13 @@ public class DateValueTest {
 
 	@Test
 	public void testGetValue() throws Exception {
-		DataValue<LocalDate> value = new DateValue(2011, 6, 18);
-		assertEquals(LocalDate.of(2011, 6, 18), value.getValue());
+		DataValue<Calendar> value = new DateValue(2011, 6, 18);
+		assertEquals(new GregorianCalendar(2011, 5, 18), value.getValue());
 	}
 
 	@Test
 	public void testToString() throws Exception {
-		DataValue<LocalDate> value = new DateValue(2011, 7, 18);
+		DataValue<Calendar> value = new DateValue(2011, 7, 18);
 		assertEquals("18-07-2011", value.toString());
 	}
 
@@ -33,6 +34,14 @@ public class DateValueTest {
 		assertTrue(value.equals(same));
 		assertFalse(value.equals(other));
 		assertFalse(value.equals(new IntValue(12)));
+	}
+
+	@Test
+	public void testEqualsFormat() throws Exception {
+		DataValue value = new DateValue(2019, 4, 4);
+		DateValue notsame = new DateValue(2019, 4, 4);
+		notsame.setSimpleDateFormat("dd/mm/yyyy");
+		assertFalse(value.equals(notsame));
 	}
 
 	@Test

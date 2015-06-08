@@ -31,6 +31,6 @@ public class DataTableIsProcess extends DataProcess {
 	protected Table doProcess() {
 		DataTable res = getInput().getTable(original.getName()).export(save.getName());
 		getDataModel().add(res);
-		return getInput();
+		return res;
 	}
 }

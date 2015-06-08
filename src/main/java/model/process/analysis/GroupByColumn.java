@@ -66,7 +66,7 @@ public class GroupByColumn extends GroupByAnalysis {
 							new EqualityCheck<>(
 									column,
 									new ConstantDescriber<>(
-											value)))));
+											value.copy())))));
 		}
 		setConstraints(constraints);
 	}

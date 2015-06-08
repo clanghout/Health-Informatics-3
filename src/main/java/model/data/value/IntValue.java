@@ -9,7 +9,11 @@ public final class IntValue extends NumberValue<Integer> {
 	private int value;
 
 	public IntValue(Integer value) {
-		this.value = value;
+		if (value == null) {
+			this.value = 0;
+		} else {
+			this.value = value;
+		}
 	}
 
 	@Override
@@ -38,6 +42,11 @@ public final class IntValue extends NumberValue<Integer> {
 		}
 		IntValue o = (IntValue) other;
 		return Integer.compare(value, o.value);
+	}
+
+	@Override
+	public IntValue copy() {
+		return new IntValue(value);
 	}
 
 	@Override

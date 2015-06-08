@@ -1,37 +1,27 @@
 package model.data.value;
 
-import java.time.LocalDate;
-
 /**
- * Represent a value containg a date.
+ * Data Class containing a value with type Date.
  */
-public class DateValue extends TemporalValue<LocalDate> {
-
-	private LocalDate date;
-
-	private DateValue() {
-		super("dd-MM-yyyy");
-	}
+public class DateValue extends DateTimeValue {
 
 	/**
-	 * Construct a new DateValue.
+	 * Create calendar with zero values for time elements.
 	 *
 	 * @param year  the year as int
 	 * @param month the month as int
 	 * @param day   the day as int
 	 */
-	public DateValue(int year, int month, int day) {
-		this();
-		date = LocalDate.of(year, month, day);
+	public DateValue(Integer year, Integer month, Integer day) {
+		super(year, month, day, 0, 0, 0);
+		if (year == null) {
+			year = 0;
+		} if (month == null) {
+			month = 0;
+		} if (day == null) {
+			day = 0;
+		}
+		setSimpleDateFormat("dd-MM-yyyy");
 	}
 
-	public DateValue(LocalDate date) {
-		this();
-		this.date = date;
-	}
-
-	@Override
-	public LocalDate getValue() {
-		return date;
-	}
 }
