@@ -85,6 +85,8 @@ public class DataTableBuilderTest {
 		builder.addColumn(column);
 		assertEquals(builder.build().getColumn("test"), column);
 	}
+	
+	
 
 	@Test
 	public void testAddRow() throws Exception {
@@ -99,6 +101,27 @@ public class DataTableBuilderTest {
 		DataRow row = new DataRow(column, values);
 		builder.addRow(row);
 		assertEquals(builder.build().getRows().get(0),row);
+	}
+	
+	@Test
+	public void testAddRowAndColumn() throws Exception {
+		DataTableBuilder builder =  new DataTableBuilder();
+		builder.setName("test");
+		DataColumn[] column = new DataColumn[1];
+		DataValue[] values = new DataValue[1];
+		column[0] = builder.createColumn("test", StringValue.class);
+		assertTrue(builder.build().getRows().isEmpty());
+		values[0] = new StringValue("v1");
+
+		DataRow row = new DataRow(column, values);
+		builder.addRow(row);
+		assertEquals(builder.build().getRows().get(0),row);
+		
+		DataColumn addcol = builder.createColumn("add", StringValue.class);
+		
+		builder.addColumn(addcol);
+		
+		assertEquals(builder.build().getRow(0).getValue(addcol), null);
 	}
 
 }
