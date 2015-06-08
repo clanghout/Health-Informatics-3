@@ -34,27 +34,4 @@ public class DateValue extends TemporalValue<LocalDate> {
 	public LocalDate getValue() {
 		return date;
 	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-
-		DateValue dateValue = (DateValue) o;
-		return date.equals(dateValue.date);
-	}
-
-	@Override
-	public int hashCode() {
-		return date.hashCode();
-	}
-
-	@Override
-	public String toString() {
-		return getFormatter().format(date);
-	}
 }
