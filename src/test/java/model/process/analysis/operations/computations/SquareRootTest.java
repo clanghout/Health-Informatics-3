@@ -16,19 +16,19 @@ public class SquareRootTest {
 	@Test
 	public void testSquareRootZero() throws Exception {
 		SquareRoot check = new SquareRoot<>(new ConstantDescriber<>(new IntValue(0)));
-		assertEquals(new FloatValue(0f), check.compute(null));
+		assertEquals(new FloatValue(0), check.compute(null));
 	}
 
 	@Test
 	public void testSquareRootConstant() throws Exception {
 		SquareRoot check = new SquareRoot<>(new ConstantDescriber<>(new IntValue(144)));
-		assertEquals(new FloatValue(12f), check.compute(null));
+		assertEquals(new FloatValue(12), check.compute(null));
 	}
 
 	@Test
 	public void testSquareRootFloatZero() throws Exception {
 		SquareRoot check = new SquareRoot<>(new ConstantDescriber<>(new FloatValue(0.0f)));
-		assertEquals(new FloatValue(0f), check.compute(null));
+		assertEquals(new FloatValue(0), check.compute(null));
 	}
 
 	@Test

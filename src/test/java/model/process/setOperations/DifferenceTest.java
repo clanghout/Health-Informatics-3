@@ -83,7 +83,7 @@ public class DifferenceTest {
 
 		DataTableBuilder builder2 = new DataTableBuilder();
 		builder2.createColumn("c1", FloatValue.class);
-		builder2.createRow(new FloatValue(2f));
+		builder2.createRow(new FloatValue(2));
 		builder2.setName("table2");
 
 		DataTable table2 = builder2.build();

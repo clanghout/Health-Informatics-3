@@ -6,53 +6,43 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Created by Louis Gosschalk on 8-6-2015.
+ * Created by Chris on 4-6-2015.
  */
 public class NullValueTest {
-	private DataValue value;
-		
-	@Test
-	public void testGetValueBool() throws Exception {
-		value = new BoolValue(null);
-		assertEquals(false, value.getValue());
+	private NullValue value;
+
+	@Before
+	public void setUp() throws Exception {
+		value = new NullValue();
 	}
-	
+
 	@Test
-	public void testGetValueDateTime() throws Exception {
-		value = new DateTimeValue(null, null, null, null, null, null);
-		DataValue compare = new DateTimeValue(0,0,0,0,0,0);
-		assertEquals(compare.getValue(), value.getValue());
+	public void testGetValue() throws Exception {
+		assertEquals(null, value.getValue());
 	}
-	
+
 	@Test
-	public void testGetValueDate() throws Exception {
-		value = new DateValue(null,null,null);
-		DataValue compare = new DateValue(0,0,0);
-		assertEquals(compare.getValue(), value.getValue());
+	public void testToString() throws Exception {
+		assertEquals("null", value.toString());
 	}
-	
+
 	@Test
-	public void testGetValueTime() throws Exception {
-		value = new TimeValue(null,null,null);
-		DataValue compare = new TimeValue(0,0,0);
-		assertEquals(compare.getValue(), value.getValue());
+	public void testEquals() throws Exception {
+		NullValue same = new NullValue();
+		DataValue other = new StringValue("");
+		assertTrue(value.equals(same));
+		assertFalse(value.equals(other));
 	}
-	
+
 	@Test
-	public void testGetValueFloat() throws Exception {
-		value = new FloatValue(null);
-		assertEquals(0f, value.getValue());
+	public void testHashCode() throws Exception {
+		assertEquals(0, value.hashCode());
 	}
-	
+
 	@Test
-	public void testGetValueInt() throws Exception {
-		value = new IntValue(null);
-		assertEquals(0, value.getValue());
-	}
-	
-	@Test
-	public void testGetValueString() throws Exception {
-		value = new StringValue(null);
-		assertEquals("", value.getValue());
+	public void testCopy() throws Exception {
+		NullValue copy = value.copy();
+		assertTrue(copy.equals(value));
+		assertEquals(copy.hashCode(),value.hashCode());
 	}
 }

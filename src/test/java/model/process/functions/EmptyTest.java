@@ -18,46 +18,44 @@ import static org.junit.Assert.assertEquals;
 public class EmptyTest {
 	private DataTable table;
 	private DataColumn column;
-	private FloatValue f;
 
 	@Before
 	public void setUp() {
 		table = new DataTable();
-		f = new FloatValue(0f);
 	}
 
 	@Test
 	public void testEmptyTableAverage() throws Exception {
-		assertEquals(f,
+		assertEquals(new FloatValue(0),
 				new Average(table, new RowValueDescriber<>(column)).calculate());
 	}
 
 	@Test
 	public void testEmptyTableMaximum() throws Exception {
-		assertEquals(f,
+		assertEquals(new FloatValue(0),
 				new Maximum(table, new RowValueDescriber<>(column)).calculate());
 	}
 
 	@Test
 	public void testEmptyTableMinimum() throws Exception {
-		assertEquals(f,
+		assertEquals(new FloatValue(0),
 				new Minimum(table, new RowValueDescriber<>(column)).calculate());
 	}
 
 	@Test
 	public void testEmptyTableMedian() throws Exception {
-		assertEquals(f,
+		assertEquals(new FloatValue(0),
 				new Median(table, new RowValueDescriber<>(column)).calculate());
 	}
 
 	@Test
 	public void testEmptyTableSum() throws Exception {
-		assertEquals(f, new Sum(table, new RowValueDescriber<>(column)).calculate());
+		assertEquals(new FloatValue(0), new Sum(table, new RowValueDescriber<>(column)).calculate());
 	}
 
 	@Test
 	public void testEmptyTableDeviation() throws Exception {
-		assertEquals(f,
+		assertEquals(new FloatValue(0),
 				new StandardDeviation(table, new RowValueDescriber<>(column)).calculate());
 	}
 }
