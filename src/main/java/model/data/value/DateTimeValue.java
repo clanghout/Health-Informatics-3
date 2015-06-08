@@ -21,9 +21,4 @@ public class DateTimeValue extends TemporalValue<LocalDateTime> {
 	public LocalDateTime getValue() {
 		return dateTime;
 	}
-
-	@Override
-	public DataValue copy() {
-		return this;
-	}
 }

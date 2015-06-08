@@ -34,9 +34,4 @@ public class DateValue extends TemporalValue<LocalDate> {
 	public LocalDate getValue() {
 		return date;
 	}
-
-	@Override
-	public DataValue<LocalDate> copy() {
-		return new DateValue(date);
-	}
 }

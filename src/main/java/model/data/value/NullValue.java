@@ -31,9 +31,4 @@ public class NullValue extends DataValue {
 	public int hashCode() {
 		return 0;
 	}
-
-	@Override
-	public NullValue copy() {
-		return new NullValue();
-	}
 }

@@ -25,9 +25,4 @@ public class TimeValue extends TemporalValue<LocalTime> {
 	public LocalTime getValue() {
 		return time;
 	}
-
-	@Override
-	public DataValue copy() {
-		return this;
-	}
 }
