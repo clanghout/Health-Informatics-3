@@ -30,7 +30,7 @@ public class Average extends Function {
 	@Override
 	public FloatValue calculate() {
 		if (!initialize()) {
-			return new FloatValue(0);
+			return new FloatValue(0f);
 		}
 		FloatValue sum = new Sum(getTable(), getArgument()).calculate();
 		float total = sum.getValue();

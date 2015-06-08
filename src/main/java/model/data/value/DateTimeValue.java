@@ -24,7 +24,20 @@ public class DateTimeValue extends DataValue<Calendar> {
 	 * @param minute the minute as int
 	 * @param second the second as int
 	 */
-	public DateTimeValue(int year, int month, int day, int hour, int minute, int second) {
+	public DateTimeValue(Integer year, Integer month, Integer day, Integer hour, Integer minute, Integer second) {
+		if (year == null) {
+			year = 0;
+		} if (month == null) {
+			month = 0;
+		} if (day == null) {
+			day = 0;
+		} if (hour == null) {
+			hour = 0;
+		} if (minute == null) {
+			minute = 0;
+		} if (second == null) {
+			second = 0;
+		}
 		this.value = new GregorianCalendar(year, month - 1, day, hour, minute, second);
 		setSimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 	}

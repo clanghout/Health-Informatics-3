@@ -36,15 +36,15 @@ public class GroupByColumnTest {
 		builder.setName("test");
 		c1 = builder.createColumn("c1", StringValue.class);
 		c2 = builder.createColumn("c2", FloatValue.class);
-		builder.createRow(new StringValue("test"), new FloatValue(2));
-		builder.createRow(new StringValue("bob"), new FloatValue(3));
-		builder.createRow(new StringValue("henk"), new FloatValue(4));
-		builder.createRow(new StringValue("test"), new FloatValue(5));
+		builder.createRow(new StringValue("test"), new FloatValue(2f));
+		builder.createRow(new StringValue("bob"), new FloatValue(3f));
+		builder.createRow(new StringValue("henk"), new FloatValue(4f));
+		builder.createRow(new StringValue("test"), new FloatValue(5f));
 
-		builder.createRow(new StringValue("test"), new FloatValue(2));
-		builder.createRow(new StringValue("henk"), new FloatValue(-1));
-		builder.createRow(new StringValue("test"), new FloatValue(3));
-		builder.createRow(new StringValue("henk"), new FloatValue(5));
+		builder.createRow(new StringValue("test"), new FloatValue(2f));
+		builder.createRow(new StringValue("henk"), new FloatValue(-1f));
+		builder.createRow(new StringValue("test"), new FloatValue(3f));
+		builder.createRow(new StringValue("henk"), new FloatValue(5f));
 
 		table = builder.build();
 	}
@@ -82,9 +82,9 @@ public class GroupByColumnTest {
 		assertEquals("bob", out.getRow(1).getValue(out.getColumn("Chunk")).getValue());
 		assertEquals("henk", out.getRow(2).getValue(out.getColumn("Chunk")).getValue());
 
-		assertEquals(new FloatValue(5), out.getRow(0).getValue(out.getColumn("max")));
-		assertEquals(new FloatValue(3), out.getRow(1).getValue(out.getColumn("max")));
-		assertEquals(new FloatValue(5), out.getRow(2).getValue(out.getColumn("max")));
+		assertEquals(new FloatValue(5f), out.getRow(0).getValue(out.getColumn("max")));
+		assertEquals(new FloatValue(3f), out.getRow(1).getValue(out.getColumn("max")));
+		assertEquals(new FloatValue(5f), out.getRow(2).getValue(out.getColumn("max")));
 
 	}
 
@@ -108,13 +108,13 @@ public class GroupByColumnTest {
 		assertEquals("bob", out.getRow(1).getValue(out.getColumn("Chunk")).getValue());
 		assertEquals("henk", out.getRow(2).getValue(out.getColumn("Chunk")).getValue());
 
-		assertEquals(new FloatValue(5), out.getRow(0).getValue(out.getColumn("max")));
-		assertEquals(new FloatValue(3), out.getRow(1).getValue(out.getColumn("max")));
-		assertEquals(new FloatValue(5), out.getRow(2).getValue(out.getColumn("max")));
+		assertEquals(new FloatValue(5f), out.getRow(0).getValue(out.getColumn("max")));
+		assertEquals(new FloatValue(3f), out.getRow(1).getValue(out.getColumn("max")));
+		assertEquals(new FloatValue(5f), out.getRow(2).getValue(out.getColumn("max")));
 
-		assertEquals(new FloatValue(2), out.getRow(0).getValue(out.getColumn("min")));
-		assertEquals(new FloatValue(3), out.getRow(1).getValue(out.getColumn("min")));
-		assertEquals(new FloatValue(-1), out.getRow(2).getValue(out.getColumn("min")));
+		assertEquals(new FloatValue(2f), out.getRow(0).getValue(out.getColumn("min")));
+		assertEquals(new FloatValue(3f), out.getRow(1).getValue(out.getColumn("min")));
+		assertEquals(new FloatValue(-1f), out.getRow(2).getValue(out.getColumn("min")));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
