@@ -43,11 +43,6 @@ public final class FloatValue extends NumberValue<Float> {
 	}
 
 	@Override
-	public FloatValue copy() {
-		return new FloatValue(value);
-	}
-
-	@Override
 	public int hashCode() {
 		return Float.floatToIntBits(value);
 	}

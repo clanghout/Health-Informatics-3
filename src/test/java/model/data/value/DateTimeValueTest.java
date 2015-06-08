@@ -56,7 +56,7 @@ public class DateTimeValueTest {
 	@Test
 	public void testcopy() throws Exception {
 		DataValue value = new DateTimeValue(2019, 4, 4, 12,36,12);
-		DataValue copy = value.copy();
+		DataValue copy = value;
 		assertEquals(copy.getValue(),value.getValue());
 		assertEquals(copy.getClass(),value.getClass());
 	}

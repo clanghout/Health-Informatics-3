@@ -161,7 +161,7 @@ public abstract class Table implements Iterable {
 			Row row = iterator.next();
 
 			for (Map.Entry<DataColumn, DataColumn> entry: mappingColumns.entrySet()) {
-				newRow.setValue(entry.getValue(), row.getValue(entry.getKey()).copy());
+				newRow.setValue(entry.getValue(), row.getValue(entry.getKey()));
 				newRow.addCodes(row.getCodes());
 			}
 			builder.addRow(newRow);

@@ -76,13 +76,4 @@ public class DateTimeValue extends DataValue<Calendar> {
 		return value.hashCode();
 	}
 
-	@Override
-	public DataValue copy() {
-		DateTimeValue  res = new DateTimeValue(0, 0, 0, 0, 0, 0);
-		res.value = (Calendar) value.clone();
-		res.simpleDateFormat = (SimpleDateFormat) simpleDateFormat.clone();
-
-		return res;
-
-	}
 }

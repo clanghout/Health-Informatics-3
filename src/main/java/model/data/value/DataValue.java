@@ -15,10 +15,4 @@ public abstract class DataValue<Type> {
 
 	@Override
 	public abstract int hashCode();
-
-	/**
-	 * Copy the datavalue.
-	 * @return a copy of this datavalue
-	 */
-	public abstract DataValue copy();
 }

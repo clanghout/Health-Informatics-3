@@ -47,7 +47,7 @@ public class FloatValueTest {
 	public void testcopy() throws Exception {
 		Float val = 2335f;
 		DataValue value = new FloatValue(val);
-		DataValue copy = value.copy();
+		DataValue copy = value;
 		assertEquals(copy.getValue(),value.getValue());
 		assertEquals(copy.getClass(),value.getClass());
 	}
