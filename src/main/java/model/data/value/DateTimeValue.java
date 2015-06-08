@@ -12,7 +12,8 @@ public class DateTimeValue extends TemporalValue<LocalDateTime> {
 	/**
 	 * Construct new DateTimeValue.
 	 */
-	public DateTimeValue(Integer year, Integer month, Integer day, Integer hour, Integer minute, Integer second) {
+	public DateTimeValue(Integer year, Integer month, Integer day,
+			Integer hour, Integer minute, Integer second) {
 		super("dd-MM-yyyy HH:mm:ss");
 		if (year == null) {
 			year = 0;
@@ -30,4 +31,3 @@ public class DateTimeValue extends TemporalValue<LocalDateTime> {
 		return dateTime;
 	}
 }
-

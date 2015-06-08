@@ -16,13 +16,16 @@ public class DateValue extends TemporalValue<LocalDate> {
 	/**
 	 * Construct a new DateValue.
 	 *
-	 * @param year  the year as int
-	 * @param month the month as int
-	 * @param day   the day as int
+	 * @param year
+	 *            the year as int
+	 * @param month
+	 *            the month as int
+	 * @param day
+	 *            the day as int
 	 */
 	public DateValue(Integer year, Integer month, Integer day) {
 		this();
-		if(year == null) {
+		if (year == null) {
 			year = 0;
 			month = 1;
 			day = 1;
