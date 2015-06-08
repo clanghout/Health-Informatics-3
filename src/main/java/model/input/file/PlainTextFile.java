@@ -40,7 +40,7 @@ public class PlainTextFile extends DataFile {
 			skipToStartLine(scanner);
 			if (hasFirstRowAsHeader()) {
 				String headers = scanner.nextLine();
-				String[] sections = headers.split(",");
+				String[] sections = headers.split(delimiter);
 				for (int i = 0; i < getColumnTypes().length; i++) {
 					getColumns().put(sections[i], getColumnTypes()[i]);
 				}
@@ -52,7 +52,8 @@ public class PlainTextFile extends DataFile {
 					builder.createColumn(entry.getKey(), entry.getValue());
 				}
 			}
-			readLines(scanner);
+			ArrayList<String> lines = readLines(scanner);
+			filterLastRows(lines);
 		}
 
 		return builder.build();
@@ -76,29 +77,45 @@ public class PlainTextFile extends DataFile {
 	}
 
 	/**
-	 * Reads the lines from a scanner and inserts rows into the table.
+	 * Reads the lines from a scanner and inserts them into a list
 	 * @param scanner The scanner
+	 * @return The list containing all lines read from the start line
 	 */
-	private void readLines(Scanner scanner) {
-		while (counter <= getEndLine() && scanner.hasNextLine()) {
+	private ArrayList readLines(Scanner scanner) {
+		ArrayList<String> result = new ArrayList<>();
+		while (scanner.hasNextLine()) {
 			String line = scanner.nextLine();
-			String[] sections = line.split(delimiter);
-			List<Class<? extends DataValue>> columns = getColumnList();
-			DataValue[] values = new DataValue[getColumns().size()];
-			for (int i = 0; i < getColumns().size(); i++) {
-				values[i] = toDataValue(sections[i].trim(), columns.get(i));
-			}
-			builder.createRow(values);
+			result.add(line);
+		}
+		return result;
+	}
 
-			counter++;
+	private DataValue[] createRow(String line) {
+		String[] sections = line.split(delimiter);
+		List<Class<? extends DataValue>> columns = getColumnList();
+		DataValue[] values = new DataValue[getColumns().size()];
+
+		for (int i = 0; i < getColumns().size(); i++) {
+			values[i] = toDataValue(sections[i].trim(), columns.get(i));
+		}
+
+		return values;
+	}
+
+	private void filterLastRows(ArrayList<String> lines) {
+		List<String> subList = lines.subList(0, lines.size() - getEndLine());
+		for (String line : subList) {
+			DataValue[] values = createRow(line);
+			builder.createRow(values);
 		}
 	}
+
 
 	/**
 	 * Creates a DataValue from a string.
 	 * @param value The string that will be converted
 	 * @param type The type of the column in which the value will be inserted.
-	 * @return
+	 * @return The datavalue
 	 */
 	private DataValue toDataValue(String value, Class<? extends DataValue> type) {
 		if (type.equals(StringValue.class)) {

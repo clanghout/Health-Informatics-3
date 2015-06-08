@@ -34,7 +34,7 @@ public abstract class DataFile {
 	public DataFile(String path) {
 		this.path = path;
 		this.setStartLine(1);
-		this.setEndLine(Integer.MAX_VALUE);
+		this.setEndLine(0);
 		this.setFirstRowAsHeader(false);
 		this.setColumns(new LinkedHashMap<>(), new ArrayList<>());
 	}
