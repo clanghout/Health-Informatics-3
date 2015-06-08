@@ -7,7 +7,11 @@ public class StringValue extends DataValue<String> {
 	private String value;
 
 	public StringValue(String value) {
-		this.value = value;
+		if (value == null) {
+			this.value = "";
+		} else {
+			this.value = value;
+		}
 	}
 
 	@Override

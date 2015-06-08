@@ -41,4 +41,12 @@ public class DateTimeValueTest {
 		DataValue same = new DateTimeValue(2019, 4, 4, 12,36,12);
 		assertEquals(value.hashCode(), same.hashCode());
 	}
+
+	@Test
+	public void testCopy() throws Exception {
+		DataValue value = new DateTimeValue(2019, 4, 4, 12,36,12);
+		DataValue copy = value;
+		assertEquals(copy.getValue(),value.getValue());
+		assertEquals(copy.getClass(),value.getClass());
+	}
 }

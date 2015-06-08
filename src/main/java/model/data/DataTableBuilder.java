@@ -65,7 +65,14 @@ public class DataTableBuilder {
 	 * @param column The new column
 	 */
 	public void addColumn(DataColumn column) {
-		columns.add(column);
+		if (rows.size() == 0) {
+			columns.add(column);
+		} else {
+			columns.add(column);
+			for (DataRow row : rows) {
+				row.setValue(column, null);
+			}
+		}
 	}
 
 	/**
