@@ -71,7 +71,12 @@ public class XmlReader {
 	 * The name of the firstrowheader tag in the xml file.
 	 */
 	private static final String FIRST_ROW_HEADER_ATTRIBUTE = "firstrowheader";
-	
+
+	/**
+	 * The name of the metadata tag in the xml file.
+	 */
+	private static final String METADATA_TAG = "metadata";
+
 	private Logger log = Logger.getLogger("XmlReader");
 
 	private Document document;
@@ -140,6 +145,8 @@ public class XmlReader {
 		String completePath = createPath(elem, parentDir);
 		DataFile theDataFile = DataFile.createDataFile(completePath, type);
 
+		NodeList metaData = elem.getElementsByTagName(METADATA_TAG);
+		theDataFile = setMetaData(theDataFile, metaData);
 		Element columnsElement = (Element) elem.getElementsByTagName(COLUMNS_TAG).item(0);
 		Element data = (Element) elem.getElementsByTagName(DATA_TAG).item(0);
 		theDataFile = setStartEndLine(data, theDataFile);
@@ -151,6 +158,20 @@ public class XmlReader {
 		NodeList columns = columnsElement.getElementsByTagName(COLUMN_TAG);
 		setColumnTypes(theDataFile, columns);
 		
+		return theDataFile;
+	}
+
+	private DataFile setMetaData(DataFile theDataFile, NodeList metaData) {
+		Element metaDataElem = ((Element) metaData.item(0));
+
+		String type = metaDataElem.getAttribute("type");
+		String name = metaDataElem.getAttribute("name");
+		try {
+			theDataFile.createMetaDataValue(name, type);
+		} catch (ClassNotFoundException e) {
+			log.log(Level.SEVERE, "Specified Class was not found", e);
+		}
+
 		return theDataFile;
 	}
 
