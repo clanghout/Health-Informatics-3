@@ -9,12 +9,11 @@ import java.time.temporal.TemporalUnit;
  *
  * Created by Boudewijn on 7-6-2015.
  */
-public class PeriodValue extends TemporalValue<Period> {
+public class PeriodValue extends DataValue<Period> {
 
 	private Period period;
 
 	public PeriodValue(int years, int months, int days) {
-		super("");
 		period = Period.of(years, months, days);
 	}
 
