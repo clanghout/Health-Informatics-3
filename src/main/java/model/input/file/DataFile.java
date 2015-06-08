@@ -316,7 +316,8 @@ public abstract class DataFile {
 	public void createMetaDataValue(String name, String type) throws ClassNotFoundException {
 		try {
 			DataValue res = null;
-			String metavalue = this.getFile().getName().substring(0, name.lastIndexOf("."));
+			String filename = this.getFile().getName();
+			String metavalue = filename.substring(0, filename.lastIndexOf("."));
 
 			switch (type) {
 				case "int":
