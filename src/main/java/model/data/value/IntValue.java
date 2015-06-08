@@ -9,7 +9,11 @@ public final class IntValue extends NumberValue<Integer> {
 	private int value;
 
 	public IntValue(Integer value) {
-		this.value = value;
+		if (value == null) {
+			this.value = 0;
+		} else {
+			this.value = value;
+		}
 	}
 
 	@Override

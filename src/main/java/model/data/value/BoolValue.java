@@ -8,8 +8,12 @@ public final class BoolValue extends DataValue<Boolean> {
 
 	private boolean value;
 
-	public BoolValue(boolean value) {
-		this.value = value;
+	public BoolValue(Boolean value) {
+		if (value == null) {
+			this.value = false;
+		} else {
+			this.value = value;
+		}
 	}
 
 	@Override
