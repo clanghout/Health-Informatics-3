@@ -5,6 +5,8 @@ import controllers.visualizations.BoxPlotController;
 import controllers.visualizations.ChartController;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.chart.BarChart;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.WritableImage;
@@ -34,10 +36,8 @@ public class PopupVisualizationController {
 	private ChartController chartController;
 	private VisualizationController visualizationController;
 	private GraphCreationDialog dialog;
-	private WritableImage image;
 
 	public PopupVisualizationController() {
-
 	}
 
 	/**
@@ -95,20 +95,30 @@ public class PopupVisualizationController {
 				});
 	}
 
+	/**
+	 * Create a graph if possible and send it to teh visualization controller.
+	 */
 	@FXML
 	protected void handleGraphCreateButtonAction() {
 		if (chartController.axesSet()) {
-			image = chartController.createImage();
-			visualizationController.drawImage(image);
+			if (chartController instanceof BarChartController) {
+				BarChart chart = ((BarChartController) chartController).create();
+				chart.snapshot(new SnapshotParameters(), null);
+				visualizationController.drawGraph(chart);
+			} else {
+				WritableImage image = chartController.createImage();
+				visualizationController.drawImage(image);
+			}
 			dialog.close();
 		} else {
 			createError.setTextFill(Color.RED);
 			createError.setText("Could not create graph; axes not fully set.");
-			// show notification axis not set.
 		}
-
 	}
 
+	/**
+	 * Close the dialog when cancel button is pressed in the popup.
+	 */
 	@FXML
 	protected void handleCancelButtonAction() {
 		dialog.close();

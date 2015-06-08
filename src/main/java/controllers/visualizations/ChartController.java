@@ -5,7 +5,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.StringConverter;
 import model.data.DataColumn;
@@ -16,24 +15,8 @@ import model.data.DataTable;
  * Created by Chris on 4-6-2015.
  */
 public abstract class ChartController {
-	protected DataTable table;
-	protected VBox vBox;
-	protected DataColumn xCol;
-	protected DataColumn yCol;
-	protected boolean xSet = false;
-	protected boolean ySet = false;
-	protected ComboBox<DataColumn> xAxisBox;
-	protected ComboBox<DataColumn> yAxisBox;
-	protected Label xAxisErrorLabel;
-	protected Label yAxisErrorLabel;
-
 	public static final int YAXIS_SEPARATION = 5;
 	public static final int SIZE = 420;
-
-	public ChartController(DataTable table, VBox vBox) {
-		this.table = table;
-		this.vBox = vBox;
-	}
 
 	/**
 	 * Creation of the controller.
@@ -43,11 +26,10 @@ public abstract class ChartController {
 	/**
 	 * Checks if all data Axes are set and contain valid information.
 	 * Used to check before building the actual graph.
+	 *
 	 * @return true if all axes are well defined.
 	 */
-	public boolean axesSet() {
-		return xSet && ySet;
-	}
+	public abstract boolean axesSet();
 
 	/**
 	 * Create WritableImage to draw.

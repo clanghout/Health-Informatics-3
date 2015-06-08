@@ -1,11 +1,10 @@
 package controllers.visualizations;
 
-
-import javafx.scene.chart.Chart;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
+import model.data.DataColumn;
 import model.data.DataTable;
 import model.data.describer.DataDescriber;
 import model.data.describer.RowValueDescriber;
@@ -34,11 +33,19 @@ import static javafx.embed.swing.SwingFXUtils.toFXImage;
  * Created by Chris on 7-6-2015.
  */
 public class BoxPlotController extends ChartController {
-	private NumberAxis yAxis;
+	private DataTable table;
+	private VBox vBox;
+	private DataColumn yCol;
+	private ComboBox<DataColumn> yAxisBox;
+	private Label yAxisErrorLabel;
 
+	private boolean ySet = false;
+
+	private NumberAxis yAxis;
 
 	public static final double SCALEUP_YAXIS = 1.01;
 	public static final double SCALEDOWN_YAXIS = 0.99;
+	public static final int WIDTH = 150;
 
 	/**
 	 * create new BoxPlot controller.
@@ -47,7 +54,8 @@ public class BoxPlotController extends ChartController {
 	 * @param vBox  placement box for the input boxes and labels.
 	 */
 	public BoxPlotController(DataTable table, VBox vBox) {
-		super(table, vBox);
+		this.table = table;
+		this.vBox = vBox;
 	}
 
 	/**
@@ -69,7 +77,16 @@ public class BoxPlotController extends ChartController {
 		initializeFields();
 		setYAxisEventListener();
 		vBox.getChildren().addAll(yAxisErrorLabel, yAxisBox);
-		xSet = true;
+	}
+
+	/**
+	 * Check if y axis contains valid data.
+	 *
+	 * @return true if axis is correct.
+	 */
+	@Override
+	public boolean axesSet() {
+		return ySet;
 	}
 
 	/**
@@ -95,20 +112,8 @@ public class BoxPlotController extends ChartController {
 	}
 
 	/**
-	 * cannot use this method because javaFX return is expected.
-	 *
-	 * @return null
-	 */
-	public Chart create() {
-		// Ik weet niet goed hoe ik dit kan oplossen omdat het ene dus javaFX gebruikt en het andere
-		// JFreeChart. De javaFX elementen kunnen gewoon getekend worden in de Visualization tab
-		// alleen van de FreeChart moet dus een image gemaakt worden die dan weer
-		// getekend kan worden.
-		return null;
-	}
-
-	/**
 	 * create the dataSet for the boxPlot.
+	 *
 	 * @return dataSet containing the data for the boxPlot.
 	 */
 	public DefaultBoxAndWhiskerCategoryDataset createDataset() {
@@ -119,9 +124,17 @@ public class BoxPlotController extends ChartController {
 		return dataset;
 	}
 
+	/**
+	 * Create an image out of the dataSet.
+	 * First, a renderer is created. With that renderer a plot is made
+	 * and a chart is added to the plot. Then an image is created.
+	 *
+	 * @return WritableImage of the BoxPlot.
+	 */
 	public WritableImage createImage() {
 		final BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
 		renderer.setFillBox(false);
+		renderer.setMeanVisible(false);
 		renderer.setToolTipGenerator(new BoxAndWhiskerToolTipGenerator());
 		final CategoryPlot plot =
 				new CategoryPlot(createDataset(),
@@ -132,11 +145,8 @@ public class BoxPlotController extends ChartController {
 				plot,
 				false
 		);
-		WritableImage image = new WritableImage(SIZE, SIZE);
-		toFXImage(chart.createBufferedImage(SIZE, SIZE), image);
-		System.out.println("image = " + image);
+		WritableImage image = new WritableImage(WIDTH + WIDTH, SIZE);
+		toFXImage(chart.createBufferedImage(WIDTH, SIZE), image);
 		return image;
 	}
-
-
 }

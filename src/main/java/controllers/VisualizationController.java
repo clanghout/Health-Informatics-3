@@ -6,6 +6,7 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.Chart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -43,7 +44,6 @@ public class VisualizationController {
 	private Button saveButton;
 	private DataModel model;
 	private Logger logger = Logger.getLogger("VisualizationController");
-	private PopupVisualizationController popupController;
 	private WritableImage image;
 
 	/**
@@ -71,10 +71,22 @@ public class VisualizationController {
 		clearViewButton.setDisable(false);
 	}
 
+	/**
+	 * Draw a javaFX chart object.
+	 *
+	 * @param chart the object drawn.
+	 */
 	public void drawGraph(Chart chart) {
 		visualizationGraph.getChildren().add(chart);
+		this.image = visualizationGraph.snapshot(new SnapshotParameters(), null);
+		saveButton.setDisable(false);
 	}
 
+	/**
+	 * Draw an image.
+	 *
+	 * @param image WritableImage to be drawn.
+	 */
 	public void drawImage(WritableImage image) {
 		this.image = image;
 		Node node = new ImageView(image);
@@ -128,8 +140,7 @@ public class VisualizationController {
 			GraphCreationDialog graphCreationDialog = new GraphCreationDialog();
 			graphCreationDialog.show();
 
-			popupController =
-					graphCreationDialog.getFxml().getController();
+			PopupVisualizationController popupController = graphCreationDialog.getFxml().getController();
 			popupController.initializeView(model, this, graphCreationDialog);
 
 		} catch (NullPointerException e) {

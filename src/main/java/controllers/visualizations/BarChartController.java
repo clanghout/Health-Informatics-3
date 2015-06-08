@@ -10,6 +10,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
+import model.data.DataColumn;
 import model.data.DataRow;
 import model.data.DataTable;
 import model.data.describer.DataDescriber;
@@ -29,6 +30,19 @@ import java.util.stream.Collectors;
  * Created by Chris on 28-5-2015.
  */
 public class BarChartController extends ChartController {
+	private DataTable table;
+	private VBox vBox;
+
+	private DataColumn xCol;
+	private DataColumn yCol;
+	private ComboBox<DataColumn> xAxisBox;
+	private ComboBox<DataColumn> yAxisBox;
+	private Label xAxisErrorLabel;
+	private Label yAxisErrorLabel;
+
+	private boolean xSet = false;
+	private boolean ySet = false;
+
 	private CategoryAxis xAxis;
 	private NumberAxis yAxis;
 
@@ -39,7 +53,8 @@ public class BarChartController extends ChartController {
 	 * @param vBox  the box for the input comboBoxes.
 	 */
 	public BarChartController(DataTable table, VBox vBox) {
-		super(table, vBox);
+		this.table = table;
+		this.vBox = vBox;
 	}
 
 	/**
@@ -115,6 +130,16 @@ public class BarChartController extends ChartController {
 	}
 
 	/**
+	 * Checks whether the two axes are set correctly.
+	 *
+	 * @return true if both axes contain correct data.
+	 */
+	@Override
+	public boolean axesSet() {
+		return xSet && ySet;
+	}
+
+	/**
 	 * Create the BarChart that can be added to the view.
 	 *
 	 * @return BarChart object.
@@ -128,18 +153,21 @@ public class BarChartController extends ChartController {
 					Integer.valueOf(row.getValue(yCol).getValue().toString())));
 		}
 		res.getData().add(series1);
+		res.setAnimated(false);
 		return res;
 	}
 
 	/**
 	 * create a writable image to print to the screen.
+	 *
 	 * @return writableImage object.
 	 */
 	public WritableImage createImage() {
-		// Barchart object is goed
 		BarChart chart = create();
-		// Does not work =(
-		// writable image is verre van compleet
-		return chart.snapshot(new SnapshotParameters(), new WritableImage(SIZE, SIZE));
+		VBox box = new VBox();
+		box.setMaxWidth(Double.MAX_VALUE);
+		box.setMaxHeight(Double.MAX_VALUE);
+		box.getChildren().add(chart);
+		return box.snapshot(new SnapshotParameters(), new WritableImage(SIZE, SIZE));
 	}
 }
