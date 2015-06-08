@@ -51,7 +51,6 @@ public class PlainTextFile extends DataFile {
 					getBuilder().createColumn(entry.getKey(), entry.getValue());
 				}
 			}
-			addMetaDataFileColumn();
 			readLines(scanner);
 		}
 
@@ -83,16 +82,28 @@ public class PlainTextFile extends DataFile {
 		while (counter <= getEndLine() && scanner.hasNextLine()) {
 			String line = scanner.nextLine();
 			String[] sections = line.split(delimiter);
-			List<Class<? extends DataValue>> columns = getColumnList();
-			DataValue[] values = new DataValue[getColumns().size() + 1];
-			for (int i = 0; i < getColumns().size(); i++) {
-				values[i] = toDataValue(sections[i].trim(), columns.get(i));
+			DataValue[] values = createValues(sections);
+			if (hasMetaData()) {
+				values[values.length - 1] = getMetaDataValue();
 			}
-			values[values.length - 1] = new FileValue(this);
 			getBuilder().createRow(values);
 
 			counter++;
 		}
+	}
+
+	private DataValue[] createValues(String[] sections) {
+		DataValue[] values;
+		if (hasMetaData()) {
+			values = new DataValue[getColumns().size() + 1];
+		} else {
+			values = new DataValue[getColumns().size()];
+		}
+		List<Class<? extends DataValue>> columns = getColumnList();
+		for (int i = 0; i < getColumns().size(); i++) {
+			values[i] = toDataValue(sections[i].trim(), columns.get(i));
+		}
+		return values;
 	}
 
 	/**

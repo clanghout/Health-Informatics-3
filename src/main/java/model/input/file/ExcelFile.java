@@ -7,6 +7,7 @@ import org.apache.poi.ss.usermodel.Row;
 
 import java.io.FileNotFoundException;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Class representing a general MS Excel file.
@@ -37,24 +38,33 @@ public abstract class ExcelFile extends DataFile {
 			for (int i = 0; i < getColumnTypes().length; i++) {
 				getColumns().put(headers.getCell(i).getStringCellValue(), getColumnTypes()[i]);
 			}
-		} else {			
+		} else {
 			for (String key : getColumns().keySet()) {
 				getBuilder().createColumn(key, getColumns().get(key));
 			}
 		}
-		addMetaDataFileColumn();
+		addRows(rowIterator);
+		return getBuilder().build();
+	}
 
+	private void addRows(Iterator<Row> rowIterator) {
 		while (rowIterator.hasNext()) {
 			Row row = rowIterator.next();
-			DataValue[] values = new DataValue[getColumns().size() + 1];
+			DataValue[] values;
+			if (hasMetaData()) {
+				values = new DataValue[getColumns().size() + 1];
+			} else {
+				values = new DataValue[getColumns().size()];
+			}
 			for (int i = 0; i < getColumns().size(); i++) {
 				Cell cell = row.getCell(i, Row.CREATE_NULL_AS_BLANK);
 				values[i] = toDataValue(cell);
 			}
-			values[values.length - 1] = new FileValue(this);
+			if(hasMetaData()) {
+				values[values.length - 1] = getMetaDataValue();
+			}
 			getBuilder().createRow(values);
 		}
-		return getBuilder().build();
 	}
 
 	private DataValue toDataValue(Cell cell) {

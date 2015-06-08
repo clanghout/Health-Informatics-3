@@ -35,6 +35,7 @@ public abstract class DataFile {
 	private boolean firstRowAsHeader;
 	private Class[] columnTypes;
 	private DataTableBuilder builder = new DataTableBuilder();
+	private boolean hasMetaData;
 
 	/**
 	 * Creates a new type of a DataFile. Sets the default range of lines to read
@@ -265,13 +266,6 @@ public abstract class DataFile {
 	}
 
 	/**
-	 * Adds a column containing the name of the file from which the column comes.
-	 */
-	public void addMetaDataFileColumn() {
-		builder.createColumn(metaDataColumnName, metaDataType);
-	}
-
-	/**
 	 * Returns the DataValue that is considered the metadata.
 	 * @return The metadatavalue
 	 */
@@ -315,6 +309,7 @@ public abstract class DataFile {
 
 	/**
 	 * Sets the standard metadata value.
+	 *
 	 * @param name The name that the metadata column will get
 	 * @param type The type of the column
 	 */
@@ -339,9 +334,17 @@ public abstract class DataFile {
 			}
 			this.metaDataValue = res;
 			builder.createColumn(name, getColumnType(type));
-
+			hasMetaData = true;
 		} catch (FileNotFoundException e) {
 			log.log(Level.SEVERE, "The file could not be found", e);
 		}
+	}
+
+	/**
+	 * returns true if the datafile has metadata.
+	 * @return true if the datafile has metadata
+	 */
+	public boolean hasMetaData() {
+		return hasMetaData;
 	}
 }

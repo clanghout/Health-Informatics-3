@@ -164,12 +164,16 @@ public class XmlReader {
 	private DataFile setMetaData(DataFile theDataFile, NodeList metaData) {
 		Element metaDataElem = ((Element) metaData.item(0));
 
-		String type = metaDataElem.getAttribute("type");
-		String name = metaDataElem.getAttribute("name");
-		try {
-			theDataFile.createMetaDataValue(name, type);
-		} catch (ClassNotFoundException e) {
-			log.log(Level.SEVERE, "Specified Class was not found", e);
+		if ((metaDataElem != null
+				&& metaDataElem.getAttribute("type") != null)
+				&& metaDataElem.getAttribute("name") != null) {
+			String type = metaDataElem.getAttribute("type");
+			String name = metaDataElem.getAttribute("name");
+			try {
+				theDataFile.createMetaDataValue(name, type);
+			} catch (ClassNotFoundException e) {
+				log.log(Level.SEVERE, "Specified Class was not found", e);
+			}
 		}
 
 		return theDataFile;

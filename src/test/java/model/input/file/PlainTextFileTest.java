@@ -37,6 +37,7 @@ public class PlainTextFileTest {
 		list.add(FloatValue.class);
 		list.add(StringValue.class);
 		textFile.setColumns(mapping, list);
+		textFile.createMetaDataValue("meta", "string");
 	}
 
 	@Test
@@ -55,8 +56,7 @@ public class PlainTextFileTest {
 		assertEquals(new IntValue(5), row.getValue(table.getColumn("int")));
 		assertEquals(new FloatValue(3.5f), row.getValue(table.getColumn("float")));
 		assertEquals(new StringValue("dingen"), row.getValue(table.getColumn("string")));
-		assertEquals(new FileValue(textFile), row.getValue(table.getColumn(DataFile.METADATA_COLUMNNAME)));
+		assertEquals(new StringValue("plaintext"),
+				row.getValue(table.getColumn("meta")));
 	}
-	
-
 }
