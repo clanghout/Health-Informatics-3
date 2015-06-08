@@ -45,7 +45,6 @@ public abstract class DataFile {
 	 */
 	public DataFile(String path) throws FileNotFoundException {
 		this.path = path;
-		metaDataColumnName = path;
 		this.setStartLine(1);
 		this.setEndLine(Integer.MAX_VALUE);
 		this.setFirstRowAsHeader(false);
