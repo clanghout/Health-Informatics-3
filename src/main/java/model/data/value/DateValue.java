@@ -34,4 +34,13 @@ public class DateValue extends TemporalValue<LocalDate> {
 	public LocalDate getValue() {
 		return date;
 	}
+
+	@Override
+	public int compareTo(DataValue other) {
+		if (!(other instanceof DateValue)) {
+			throw new IllegalArgumentException("Cannot compare non datevalue to datevalue.");
+		}
+		DateValue o = (DateValue) other;
+		return date.compareTo(o.date);
+	}
 }

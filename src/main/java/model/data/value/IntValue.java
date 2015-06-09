@@ -9,7 +9,11 @@ public final class IntValue extends NumberValue<Integer> {
 	private int value;
 
 	public IntValue(Integer value) {
-		this.value = value;
+		if (value == null) {
+			this.value = 0;
+		} else {
+			this.value = value;
+		}
 	}
 
 	@Override
@@ -32,7 +36,7 @@ public final class IntValue extends NumberValue<Integer> {
 	}
 
 	@Override
-	public int compareTo(NumberValue other) {
+	public int compareTo(DataValue other) {
 		if (!(other instanceof IntValue)) {
 			throw new IllegalArgumentException("IntValue cannot compare to non ints");
 		}
