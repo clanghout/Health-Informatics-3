@@ -1,8 +1,8 @@
 package model.language.nodes;
 
 import model.data.DataModel;
-import model.data.describer.ComputationDescriber;
 import model.data.describer.DataDescriber;
+import model.data.describer.OperationDescriber;
 import model.data.value.NumberValue;
 import model.process.analysis.operations.computations.*;
 
@@ -59,6 +59,6 @@ public class NumberOperationNode extends OperationNode<NumberValue> {
 	 * @return A DataDescriber describing the operation.
 	 */
 	public DataDescriber<NumberValue> resolve(DataModel model) {
-		return new ComputationDescriber<>(resolveComputation(model));
+		return new OperationDescriber<NumberValue>(resolveComputation(model));
 	}
 }

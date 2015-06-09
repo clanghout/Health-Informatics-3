@@ -1,5 +1,6 @@
 package model.language;
 
+import com.sun.tracing.dtrace.FunctionName;
 import model.data.value.*;
 import model.language.nodes.*;
 import org.parboiled.BaseParser;
@@ -179,9 +180,21 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
+	Rule ChronoUnit() {
+		return FirstOf(
+				PeriodUnit(),
+				Sequence(
+						"HOURS",
+						"MINUTES",
+						"SECONDS"
+				),
+				push(match())
+		);
+	}
+
 	Rule DateExpression() {
 		return FirstOf(
-				DateOperation(),
+				DateCalculation(),
 				Sequence("(", DateExpression(), ")"),
 				DateTimeLiteral(),
 				DateLiteral(),
@@ -198,7 +211,7 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
-	Rule DateOperation() {
+	Rule DateCalculation() {
 		return Sequence(
 				DateTerm(),
 				OneOrMore(WhiteSpaceChars()),
@@ -207,12 +220,44 @@ class LanguageParser extends BaseParser<Object> {
 				PeriodLiteral(),
 				swap3(),
 				push(
-						new DateOperationNode(
+						new DateCalculationNode(
 								(ValueNode<TemporalValue<?>>) pop(),
 								(String) pop(),
 								(ValueNode<PeriodValue>) pop()
 						)
 				)
+		);
+	}
+
+	Rule DateFunction() {
+		return Sequence(
+				DateFunctionName(),
+				"(",
+				WhiteSpace(),
+				DateExpression(),
+				WhiteSpace(),
+				",",
+				WhiteSpace(),
+				DateExpression(),
+				WhiteSpace(),
+				ChronoUnit(),
+				WhiteSpace(),
+				")",
+				swap3(),
+				push(
+						new DateFunctionNode(
+								(ValueNode<TemporalValue<?>>) pop(),
+								(ValueNode<TemporalValue<?>>) pop(),
+								(String) pop()
+						)
+				)
+		);
+	}
+
+	Rule DateFunctionName() {
+		return Sequence(
+				"RELATIVE",
+				push(match())
 		);
 	}
 
