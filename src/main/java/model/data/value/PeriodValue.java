@@ -42,13 +42,13 @@ public class PeriodValue extends DataValue<Period> {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean doEquals(Object o) {
 		if (this == o) {
 			return true;
 		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
+//		if (o == null || getClass() != o.getClass()) {
+//			return false;
+//		}
 
 		PeriodValue that = (PeriodValue) o;
 		return period.equals(that.period);

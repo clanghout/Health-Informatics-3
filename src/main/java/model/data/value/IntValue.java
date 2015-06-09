@@ -28,10 +28,10 @@ public final class IntValue extends NumberValue<Integer> {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof IntValue)) {
-			return false;
-		}
+	public boolean doEquals(Object obj) {
+//		if (!(obj instanceof IntValue)) {
+//			return false;
+//		}
 		IntValue other = (IntValue) obj;
 		return other.value == this.value;
 	}

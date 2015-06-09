@@ -30,4 +30,9 @@ public class TimeValue extends TemporalValue<LocalTime> {
 	public LocalTime getValue() {
 		return time;
 	}
+
+	@Override
+	protected boolean doEquals(Object obj) {
+		return ((TimeValue) obj).getValue() == this.time;
+	}
 }

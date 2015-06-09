@@ -38,4 +38,9 @@ public class DateTimeValue extends TemporalValue<LocalDateTime> {
 	public LocalDateTime getValue() {
 		return dateTime;
 	}
+
+	@Override
+	protected boolean doEquals(Object obj) {
+		return ((DateTimeValue) obj).getValue() == this.dateTime;
+	}
 }

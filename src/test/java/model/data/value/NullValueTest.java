@@ -25,6 +25,15 @@ public class NullValueTest {
 		assertEquals(true, value.isNull());
 	}
 
+	@Test
+	public void testNullCompareBool() throws Exception {
+		value = new BoolValue(null);
+		DataValue compare = new BoolValue(false);
+		assertEquals(false, value.getValue());
+		assertEquals(false, compare.isNull());
+		assertEquals(true, value.isNull());
+		assertNotEquals(compare, value);
+	}
 
 	@Test
 	public void testNullDateTime() throws Exception {

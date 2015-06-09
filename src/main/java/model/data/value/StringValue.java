@@ -26,10 +26,10 @@ public class StringValue extends DataValue<String> {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof StringValue)) {
-			return false;
-		}
+	public boolean doEquals(Object obj) {
+//		if (!(obj instanceof StringValue)) {
+//			return false;
+//		}
 		StringValue other = (StringValue) obj;
 		return other.value.equals(value);
 	}

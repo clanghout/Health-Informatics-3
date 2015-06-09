@@ -26,10 +26,10 @@ public final class FloatValue extends NumberValue<Float> {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof FloatValue)) {
-			return false;
-		}
+	public boolean doEquals(Object obj) {
+//		if (!(obj instanceof FloatValue)) {
+//			return false;
+//		}
 		FloatValue other = (FloatValue) obj;
 		return other.value == this.value;
 	}

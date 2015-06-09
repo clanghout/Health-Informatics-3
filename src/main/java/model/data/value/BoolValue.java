@@ -22,9 +22,11 @@ public final class BoolValue extends DataValue<Boolean> {
 		return value;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
+	public boolean doEquals(Object obj) {
 		if (!(obj instanceof BoolValue)) {
+			return false;
+		}
+		if (isNull()) {
 			return false;
 		}
 		BoolValue other = (BoolValue) obj;
