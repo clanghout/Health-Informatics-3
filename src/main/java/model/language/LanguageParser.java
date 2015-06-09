@@ -239,13 +239,16 @@ class LanguageParser extends BaseParser<Object> {
 								":",
 								IntLiteralOfN(2)
 						),
-						TestNot(
-								Sequence(
-										":",
-										IntLiteralOfN(2)
+						Sequence(
+								TestNot(
+										Sequence(
+												":",
+												IntLiteralOfN(2)
+										)
 								),
 								push(new ConstantNode<IntValue>(new IntValue(0)))
 						)
+
 				)
 		);
 	}
