@@ -6,8 +6,13 @@ package model.data.value;
 public final class FloatValue extends NumberValue<Float> {
 	private float value;
 
-	public FloatValue(float value) {
-		this.value = value;
+	public FloatValue(Float value) {
+		if (value == null) {
+			this.value = 0.0f;
+			setNull(true);
+		} else {
+			this.value = value;
+		}
 	}
 
 	@Override

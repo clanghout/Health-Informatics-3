@@ -16,13 +16,21 @@ public class DateValue extends TemporalValue<LocalDate> {
 	/**
 	 * Construct a new DateValue.
 	 *
-	 * @param year  the year as int
-	 * @param month the month as int
-	 * @param day   the day as int
+	 * @param year
+	 *            the year as int
+	 * @param month
+	 *            the month as int
+	 * @param day
+	 *            the day as int
 	 */
-	public DateValue(int year, int month, int day) {
+	public DateValue(Integer year, Integer month, Integer day) {
 		this();
-		date = LocalDate.of(year, month, day);
+		if (year == null || month == null || day == null) {
+			date = LocalDate.of(0, 1, 1);
+			setNull(true);
+		} else {
+			date = LocalDate.of(year, month, day);
+		}
 	}
 
 	public DateValue(LocalDate date) {
