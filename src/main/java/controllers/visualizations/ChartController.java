@@ -2,8 +2,10 @@ package controllers.visualizations;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.chart.Chart;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.image.WritableImage;
+import javafx.scene.paint.Color;
 import javafx.util.StringConverter;
 import model.data.DataColumn;
 import model.data.DataTable;
@@ -13,6 +15,8 @@ import model.data.DataTable;
  * Created by Chris on 4-6-2015.
  */
 public abstract class ChartController {
+	public static final int YAXIS_SEPARATION = 5;
+	public static final int SIZE = 420;
 
 	/**
 	 * Creation of the controller.
@@ -22,15 +26,15 @@ public abstract class ChartController {
 	/**
 	 * Checks if all data Axes are set and contain valid information.
 	 * Used to check before building the actual graph.
+	 *
 	 * @return true if all axes are well defined.
 	 */
 	public abstract boolean axesSet();
 
 	/**
-	 * Create the actual javaFX element
-	 * @return JavaFX chart with valid data.
+	 * Create WritableImage to draw.
 	 */
-	public abstract Chart create();
+	public abstract WritableImage createImage();
 
 	/**
 	 * Set the items of a comboBox to the columns of the dataTable.
@@ -54,5 +58,27 @@ public abstract class ChartController {
 				return dataTable.getColumn(string);
 			}
 		});
+	}
+
+	/**
+	 * Set the message to an error label.
+	 *
+	 * @param label   the label wich will show the error.
+	 * @param message the message for in the label.
+	 */
+	public void setErrorLabel(Label label, String message) {
+		label.setTextFill(Color.RED);
+		label.setText(message);
+	}
+
+	/**
+	 * Compute approximately a tenth of the range of the axis.
+	 *
+	 * @param max the maximum value of the axis.
+	 * @param min the minimum value of the axis.
+	 * @return the computed seperator value as int.
+	 */
+	public int computeSeparatorValue(float max, float min) {
+		return Math.round((max - min) / YAXIS_SEPARATION);
 	}
 }
