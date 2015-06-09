@@ -96,7 +96,7 @@ public class PopupVisualizationController {
 	}
 
 	/**
-	 * Create a graph if possible and send it to teh visualization controller.
+	 * Create a graph if possible and send it to the visualization controller.
 	 */
 	@FXML
 	protected void handleGraphCreateButtonAction() {
