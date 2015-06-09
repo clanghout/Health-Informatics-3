@@ -3,7 +3,7 @@
     <file name="ADMIRE2.txt">
         <data>
             <start>7</start>
-            <end>57</end>
+            <end>1</end>
         </data>
         <metadata name="metadata" type="string"/>
         <columns firstrowheader="false">
@@ -28,7 +28,7 @@
         </columns>
         <data>
            <start>7</start>
-           <end>8</end>
+           <end>1</end>
         </data>
         <metadata name="metadata" type="string"/>
         <type>plaintext</type>

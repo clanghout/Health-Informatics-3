@@ -39,7 +39,7 @@ public class PlainTextFile extends DataFile {
 			skipToStartLine(scanner);
 			if (hasFirstRowAsHeader()) {
 				String headers = scanner.nextLine();
-				String[] sections = headers.split(",");
+				String[] sections = headers.split(delimiter);
 				for (int i = 0; i < getColumnTypes().length; i++) {
 					getColumns().put(sections[i], getColumnTypes()[i]);
 				}
@@ -54,7 +54,8 @@ public class PlainTextFile extends DataFile {
 			if (hasMetaData()) {
 				getBuilder().createColumn(getMetaDataColumnName(),getMetaDataType());
 			}
-			readLines(scanner);
+			List<String> lines = readLines(scanner);
+			addRowsToBuilder(filterLastRows(lines));
 		}
 
 		return getBuilder().build();
@@ -78,35 +79,46 @@ public class PlainTextFile extends DataFile {
 	}
 
 	/**
-	 * Reads the lines from a scanner and inserts rows into the table.
+	 * Reads the lines from a scanner and inserts them into a list
 	 * @param scanner The scanner
+	 * @return The list containing all lines read from the start line
 	 */
-	private void readLines(Scanner scanner) {
-		while (counter <= getEndLine() && scanner.hasNextLine()) {
+	private ArrayList readLines(Scanner scanner) {
+		ArrayList<String> result = new ArrayList<>();
+		while (scanner.hasNextLine()) {
 			String line = scanner.nextLine();
-			String[] sections = line.split(delimiter);
-			DataValue[] values = createValues(sections);
-			if (hasMetaData()) {
-				values[values.length - 1] = getMetaDataValue();
-			}
-			getBuilder().createRow(values);
-
-			counter++;
+			result.add(line);
 		}
+		return result;
 	}
-
-	private DataValue[] createValues(String[] sections) {
+	
+	private DataValue[] createValues(String line) {
+		String[] sections = line.split(delimiter);
+		List<Class<? extends DataValue>> columns = getColumnList();
 		DataValue[] values;
 		if (hasMetaData()) {
 			values = new DataValue[getColumns().size() + 1];
 		} else {
 			values = new DataValue[getColumns().size()];
 		}
-		List<Class<? extends DataValue>> columns = getColumnList();
 		for (int i = 0; i < getColumns().size(); i++) {
 			values[i] = toDataValue(sections[i].trim(), columns.get(i));
 		}
+		if (hasMetaData()) {
+			values[values.length - 1] = getMetaDataValue();
+		}
 		return values;
+	}
+	
+	private void addRowsToBuilder(List<String> lines) {
+		for (String line : lines) {
+			DataValue[] values = createValues(line);
+			getBuilder().createRow(values);
+		}
+	}
+	
+	private List<String> filterLastRows(List<String> lines) {
+		return lines.subList(0, lines.size() - getEndLine());
 	}
 
 	/**

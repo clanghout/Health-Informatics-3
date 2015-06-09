@@ -122,4 +122,14 @@ public class DataModelTest {
 		assertEquals(firstTable, model.getByName(firstTable.getName()).get());
 		assertEquals(secondTable, model.getByName(secondTable.getName()).get());
 	}
+
+	@Test
+	public void testDuplicateNameInsertion() throws Exception {
+		model.add(firstTable);
+		DataTable exported = secondTable.export("first");
+		model.add(exported);
+
+		DataTable result = model.getByName("first").get();
+		assertEquals(exported, result);
+	}
 }

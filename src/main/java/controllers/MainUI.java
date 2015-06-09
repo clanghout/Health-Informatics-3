@@ -22,7 +22,6 @@ public class MainUI extends Application {
 	 */
 	@Override
 	public void start(Stage primaryStage) throws IOException {
-
 		Parent root = FXMLLoader.load(getClass().getResource("/main.fxml"));
 		Scene scene = new Scene(root);
 

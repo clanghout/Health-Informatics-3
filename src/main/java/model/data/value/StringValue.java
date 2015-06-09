@@ -30,11 +30,6 @@ public class StringValue extends DataValue<String> {
 	}
 
 	@Override
-	public StringValue copy() {
-		return new StringValue(value);
-	}
-
-	@Override
 	public int hashCode() {
 		return value.hashCode();
 	}
