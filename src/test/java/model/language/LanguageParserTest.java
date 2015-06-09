@@ -207,4 +207,16 @@ public class LanguageParserTest {
 		ValueNode<BoolValue> node = (ValueNode<BoolValue>) result.valueStack.pop();
 		assertTrue(node.resolve(null).resolve(null).getValue());
 	}
+
+	@Test
+	public void testDateOperation() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.DateExpression());
+		String input = "(#1994-01-16# ADD #1 YEARS#) ADD #1 DAYS#";
+
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+		ValueNode<DateValue> node = (ValueNode<DateValue>) result.valueStack.pop();
+		assertEquals(LocalDate.of(1995, 1, 17), node.resolve(null).resolve(null).getValue());
+	}
 }
