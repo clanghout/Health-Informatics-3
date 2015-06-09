@@ -6,6 +6,18 @@
 
 <VBox fx:id="root" styleClass="main-box" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.wizard.XmlWizardController">
         <children>
+            <MenuBar VBox.vgrow="NEVER">
+                <menus>
+                    <Menu text="File">
+                        <items>
+                            <MenuItem onAction="#loadXml" text="Load" />
+                        </items>
+                        <items>
+                            <MenuItem onAction="#createXml" text="Save" />
+                        </items>
+                    </Menu>
+                </menus>
+            </MenuBar>
             <VBox styleClass="datafiles-box">
                 <Label>Data Files:</Label>
                 <ListView

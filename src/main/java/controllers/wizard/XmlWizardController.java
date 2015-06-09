@@ -3,34 +3,28 @@ package controllers.wizard;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.stage.FileChooser;
-import javafx.util.converter.DefaultStringConverter;
-import model.data.DataTable;
 import model.data.value.DataValue;
 import model.exceptions.DataFileNotRecognizedException;
 import model.input.file.DataFile;
+import model.input.reader.XmlReader;
 import model.output.XmlWriter;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Controller class for the wizard to make the user able to create a datafile specifying xml.
@@ -38,6 +32,8 @@ import java.util.Map;
  * @author Paul.
  */
 public class XmlWizardController {
+
+	private Logger logger = Logger.getLogger("XmlWizardController");
 
 	@FXML private TextField endLine;
 	@FXML private TextField startLine;
@@ -231,6 +227,28 @@ public class XmlWizardController {
 	public void handleFirstRowHeaderCheckbox(ActionEvent actionEvent) {
 		if (selectedFile != null) {
 			selectedFile.setFirstRowAsHeader(hasFirstRowHeader.isSelected());
+		}
+	}
+
+	@FXML
+	public void loadXml(ActionEvent actionEvent) {
+		try {
+			XmlReader reader = new XmlReader();
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Select Data Descriptor File");
+			fileChooser.setInitialDirectory(
+					new File(System.getProperty("user.home"))
+			);
+			fileChooser.getExtensionFilters().add(
+					new FileChooser.ExtensionFilter("XML", "*.xml")
+			);
+
+			File file = fileChooser.showOpenDialog(root.getScene().getWindow());
+			reader.read(file);
+			datafiles.getItems().clear();
+			datafiles.getItems().addAll(reader.getDataFiles());
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			logger.log(Level.SEVERE, "Error when reading xml file: " + e.getMessage() , e);
 		}
 	}
 }
