@@ -26,7 +26,11 @@ public class DataTableConversionBuilderTest {
 
 		builder.setName("table2");
 
-		table1 = builder.build();
+		try {
+			table1 = builder.build();
+		} catch (Exception e) {
+			throw new RuntimeException("unexpected exception");
+		}
 
 		builder = new DataTableBuilder();
 		builder.createColumn("c1", StringValue.class);
@@ -37,7 +41,11 @@ public class DataTableConversionBuilderTest {
 
 		builder.setName("table1");
 
-		table2 = builder.build();
+		try {
+			table2 = builder.build();
+		} catch (Exception e) {
+			throw new RuntimeException("unexpected exception");
+		}
 
 		builder = new DataTableBuilder();
 		builder.createColumn("c1", StringValue.class);
@@ -45,7 +53,11 @@ public class DataTableConversionBuilderTest {
 
 		builder.setName("table1");
 
-		table3 = builder.build();
+		try {
+			table3 = builder.build();
+		} catch (Exception e) {
+			throw new RuntimeException("unexpected exception");
+		}
 
 	}
 	@Test

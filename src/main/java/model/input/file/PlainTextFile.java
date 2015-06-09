@@ -56,7 +56,11 @@ public class PlainTextFile extends DataFile {
 			addRowsToBuilder(filterLastRows(lines));
 		}
 
-		return builder.build();
+		try {
+			return builder.build();
+		} catch (Exception e) {
+			throw new RuntimeException("unexpected exception");
+		}
 	}
 
 	/**

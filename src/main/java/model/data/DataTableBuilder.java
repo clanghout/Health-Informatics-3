@@ -47,7 +47,7 @@ public class DataTableBuilder {
 	 *
 	 * @return The DataTable that is build by the builder
 	 */
-	public DataTable build() {
+	public DataTable build() throws InstantiationException, IllegalAccessException {
 		if (name == null) {
 			throw new IllegalStateException("Name must be set");
 		}

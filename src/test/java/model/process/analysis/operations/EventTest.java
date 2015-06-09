@@ -49,7 +49,12 @@ public class EventTest {
 		IntValue inty = new IntValue(12);
 		builder.createRow(date, string, inty);
 
-		table = builder.build();
+		try {
+			table = builder.build();
+		} catch (Exception e) {
+			throw new RuntimeException("unexpected exception");
+		}
+
 
 		DataTableBuilder builder2 = new DataTableBuilder();
 		builder2.setName("test2");
@@ -72,7 +77,11 @@ public class EventTest {
 		inty = new IntValue(10);
 		builder2.createRow(date, string, inty);
 
-		table2 = builder2.build();
+		try {
+			table2= builder2.build();
+		} catch (Exception e) {
+			throw new RuntimeException("unexpected exception");
+		}
 	}
 
 	/**
