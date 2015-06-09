@@ -3,10 +3,7 @@ package model.process.setOperations;
 import model.data.DataRow;
 import model.data.DataTable;
 import model.data.DataTableConversionBuilder;
-import model.language.Identifier;
 import model.process.DataProcess;
-
-import java.util.Optional;
 
 /**
  * Perform a union on two dataTables.
@@ -17,45 +14,28 @@ import java.util.Optional;
  * Created by jens on 5/28/15.
  */
 public class Union extends DataProcess {
-	private Identifier<DataTable> tableIdentifier;
-	private Identifier<DataTable> table2Identifier;
+	private DataTable table;
+	private DataTable table2;
 
 	/**
 	 * Create an union operation.
 	 * The tables must have the same structure.
-	 * @param tableIdentifier the first table of the union.
-	 * @param table2Identifier the second table of the union.
+	 * @param table the first table of the union.
+	 * @param table2 the second table of the union.
 	 */
-	public Union(Identifier<DataTable> tableIdentifier, Identifier<DataTable> table2Identifier) {
-		this.tableIdentifier = tableIdentifier;
-		this.table2Identifier = table2Identifier;
+	public Union(DataTable table, DataTable table2) {
+		if (!table.equalStructure(table2)) {
+			throw new IllegalArgumentException("the tables must have the same structure");
+		}
+		this.table = table;
+		this.table2 = table2;
 	}
 
 
 	@Override
 	protected DataTable doProcess() {
-		Optional<DataTable> tableOptional = getDataModel().getByName(tableIdentifier.getName());
-		Optional<DataTable> table2Optional = getDataModel().getByName(table2Identifier.getName());
-
-		if (!(tableOptional.isPresent() && table2Optional.isPresent())) {
-			throw new IllegalArgumentException(
-					String.format("Not all identifiers refer to tables: %s, %s",
-							tableIdentifier.getName(), table2Identifier.getName())
-			);
-		}
-
-		return union(tableOptional.get(), table2Optional.get());
-	}
-
-	private DataTable union(DataTable table1, DataTable table2) {
-		if (!table1.equalStructure(table2)) {
-			throw new IllegalArgumentException("the tables must have the same structure");
-		}
-
-		DataTableConversionBuilder builder = new DataTableConversionBuilder(
-				table1, table1.getName()
-		);
-		builder.addRowsFromTable(table1);
+		DataTableConversionBuilder builder = new DataTableConversionBuilder(table, table.getName());
+		builder.addRowsFromTable(table);
 		for (DataRow row : table2.getRows()) {
 			boolean sameRow = false;
 			for (DataRow rowInBuilder : builder.getRows()) {
