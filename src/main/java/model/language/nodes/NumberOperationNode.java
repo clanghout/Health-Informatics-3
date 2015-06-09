@@ -59,6 +59,6 @@ public class NumberOperationNode extends OperationNode<NumberValue> {
 	 * @return A DataDescriber describing the operation.
 	 */
 	public DataDescriber<NumberValue> resolve(DataModel model) {
-		return new OperationDescriber<NumberValue>(resolveComputation(model));
+		return new OperationDescriber<>(resolveComputation(model));
 	}
 }
