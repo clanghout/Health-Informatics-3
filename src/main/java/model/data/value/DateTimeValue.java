@@ -22,7 +22,7 @@ public class DateTimeValue extends TemporalValue<LocalDateTime> {
 		super("dd-MM-yyyy HH:mm:ss");
 		if (year == null || month == null || day == null || hour == null
 				|| minute == null || second == null) {
-			isNull = true;
+			setNull(true);
 			dateTime = LocalDateTime.of(0, 1, 1, 0, 0, 0);
 		} else {
 			dateTime = LocalDateTime.of(year, month, day, hour, minute, second);

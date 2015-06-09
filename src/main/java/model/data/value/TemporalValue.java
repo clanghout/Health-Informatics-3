@@ -16,7 +16,7 @@ public abstract class TemporalValue<T extends Temporal> extends DataValue<T> {
 	TemporalValue(String format) {
 		if (format == null) {
 			this.format = "";
-			isNull = true;
+			setNull(true);
 		} else {
 			this.format = format;
 		}

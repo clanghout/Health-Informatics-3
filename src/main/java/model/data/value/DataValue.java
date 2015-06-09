@@ -6,7 +6,7 @@ package model.data.value;
  * @param <Type> return type of getValue()
  */
 public abstract class DataValue<Type> {
-	protected boolean isNull;
+	private boolean isNull = false;
 	
 	public abstract Type getValue();
 	public abstract String toString();
@@ -19,5 +19,9 @@ public abstract class DataValue<Type> {
 	
 	public boolean isNull() {
 		return isNull;
+	}
+	
+	public void setNull(boolean nul) {
+		isNull = nul;
 	}
 }
