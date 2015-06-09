@@ -41,9 +41,9 @@ class LanguageParser extends BaseParser<Object> {
 				swap3(),
 				push(
 						new NumberOperationNode(
-							(ValueNode<NumberValue>) pop(),
-							(String) pop(),
-							(ValueNode<NumberValue>) pop()
+								(ValueNode<NumberValue>) pop(),
+								(String) pop(),
+								(ValueNode<NumberValue>) pop()
 						)
 				)
 		);
@@ -171,11 +171,102 @@ class LanguageParser extends BaseParser<Object> {
 	Rule PeriodUnit() {
 		return Sequence(
 				FirstOf(
-					"DAYS",
-					"MONTHS",
-					"YEARS"
+						"DAYS",
+						"MONTHS",
+						"YEARS"
 				),
 				push(match())
+		);
+	}
+
+	Rule DateExpression() {
+		return FirstOf(
+				DateTimeLiteral(),
+				DateLiteral()
+		);
+	}
+
+	Rule IntLiteralOfN(int n) {
+		return Sequence(
+				NTimes(n, Digit()),
+				push(new ConstantNode<IntValue>(new IntValue(Integer.parseInt(match()))))
+		);
+	}
+
+	Rule DateLiteral() {
+		return Sequence(
+				"#",
+				DateBody(),
+				"#",
+				swap3(),
+				push(
+						new DateNode(
+								(ValueNode<IntValue>) pop(),
+								(ValueNode<IntValue>) pop(),
+								(ValueNode<IntValue>) pop()
+						)
+				)
+		);
+	}
+
+	Rule DateBody() {
+		return Sequence(
+				IntLiteralOfN(4),
+				"-",
+				IntLiteralOfN(2),
+				"-",
+				IntLiteralOfN(2)
+		);
+	}
+
+	Rule DateComparison() {
+		return Sequence(
+				DateExpression(),
+				OneOrMore(WhiteSpaceChars()),
+				FirstOf("AFTER", "BEFORE"),
+				OneOrMore(WhiteSpaceChars()),
+				DateExpression()
+		);
+	}
+
+	Rule TimeBody() {
+		return Sequence(
+				IntLiteralOfN(2),
+				":",
+				IntLiteralOfN(2),
+				FirstOf(
+						Sequence(
+								":",
+								IntLiteralOfN(2)
+						),
+						TestNot(
+								Sequence(
+										":",
+										IntLiteralOfN(2)
+								),
+								push(new ConstantNode<IntValue>(new IntValue(0)))
+						)
+				)
+		);
+	}
+
+	Rule DateTimeLiteral() {
+		return Sequence(
+				"#",
+				DateBody(),
+				" ",
+				TimeBody(),
+				"#",
+				swap6(),
+				push(new DateTimeNode(
+						(ValueNode<IntValue>) pop(),
+						(ValueNode<IntValue>) pop(),
+						(ValueNode<IntValue>) pop(),
+						(ValueNode<IntValue>) pop(),
+						(ValueNode<IntValue>) pop(),
+						(ValueNode<IntValue>) pop()
+					)
+				)
 		);
 	}
 
