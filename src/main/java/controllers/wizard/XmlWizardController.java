@@ -179,7 +179,7 @@ public class XmlWizardController {
 				row.add(new SimpleStringProperty(colType));
 
 				selectedFile.getColumns().put(colName, DataFile.getColumnType(colType));
-				datacolumns.getItems().add(row);
+				updateColumnsView();
 			}
 		} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -213,9 +213,12 @@ public class XmlWizardController {
 
 	@FXML
 	public void removeColumnRow(ActionEvent actionEvent) {
-		List items = datacolumns.getItems();
-		items.remove(datacolumns.getSelectionModel().getSelectedItem());
+		String selectedColumn =
+				((ObservableList<StringProperty>)datacolumns.
+						getSelectionModel().getSelectedItem()).get(0).getValue();
 
+		selectedFile.getColumns().remove(selectedColumn);
+		updateColumnsView();
 	}
 
 	@FXML
