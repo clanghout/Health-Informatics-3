@@ -1,6 +1,7 @@
 package model.data.value;
 
 import java.time.LocalDate;
+import java.time.temporal.Temporal;
 
 /**
  * Represent a value containg a date.
@@ -25,9 +26,9 @@ public class DateValue extends TemporalValue<LocalDate> {
 		date = LocalDate.of(year, month, day);
 	}
 
-	public DateValue(LocalDate date) {
+	public DateValue(Temporal date) {
 		this();
-		this.date = date;
+		this.date = LocalDate.from(date);
 	}
 
 	@Override

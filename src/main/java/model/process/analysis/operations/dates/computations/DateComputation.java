@@ -3,10 +3,13 @@ package model.process.analysis.operations.dates.computations;
 import model.data.Row;
 import model.data.describer.DataDescriber;
 import model.data.value.DateTimeValue;
+import model.data.value.DateValue;
 import model.data.value.PeriodValue;
 import model.data.value.TemporalValue;
 import model.process.analysis.operations.Operation;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.Temporal;
 
 /**
@@ -38,7 +41,16 @@ public abstract class DateComputation extends Operation<TemporalValue<?>> {
 	 */
 	@Override
 	public final TemporalValue operate(Row row) {
-		return new DateTimeValue(compute(row));
+		Temporal moment = compute(row);
+		if (moment instanceof LocalDateTime) {
+			return new DateTimeValue(moment);
+		} else if (moment instanceof LocalDate) {
+			return new DateValue(moment);
+		} else {
+			throw new UnsupportedOperationException(
+					String.format("Type of %s not recognized", moment)
+			);
+		}
 	}
 
 	/**
