@@ -195,4 +195,16 @@ public class LanguageParserTest {
 				node.resolve(null).resolve(null).getValue()
 		);
 	}
+
+	@Test
+	public void testDateComparison() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.BooleanExpression());
+		String input = "#1995-01-17# BEFORE #1996-01-17#";
+
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+		ValueNode<BoolValue> node = (ValueNode<BoolValue>) result.valueStack.pop();
+		assertTrue(node.resolve(null).resolve(null).getValue());
+	}
 }
