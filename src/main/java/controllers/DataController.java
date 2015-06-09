@@ -110,7 +110,7 @@ public class DataController {
 			wizardDialog.setSize(1000, 640);
 			wizardDialog.show();
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, "Error creating XML file: " + e.getMessage());
+			logger.log(Level.SEVERE, "FXML error: " + e.getMessage());
 		}
 	}
 }
