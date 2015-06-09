@@ -4,6 +4,7 @@ import model.data.value.DataValue;
 import model.input.file.DataFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -72,7 +73,22 @@ public class XmlWriter {
 			throws FileNotFoundException, ClassNotFoundException {
 		Element res = document.createElement("file");
 		res.setAttribute("name", dataFile.getFile().getName());
+		res.appendChild(createBoundsElement(dataFile));
 		res.appendChild(createColumnsElement(dataFile));
+
+		return res;
+	}
+
+	private Element createBoundsElement(DataFile dataFile) {
+		Element res = document.createElement("data");
+		Element startline = document.createElement("start");
+		Element endline = document.createElement("end");
+
+		res.appendChild(startline);
+		res.appendChild(endline);
+
+		startline.setTextContent(String.valueOf(dataFile.getStartLine()));
+		endline.setTextContent(String.valueOf(dataFile.getEndLine()));
 
 		return res;
 	}
@@ -99,8 +115,7 @@ public class XmlWriter {
 			throws ClassNotFoundException {
 		Element res = document.createElement("column");
 		res.setAttribute("type", DataFile.getStringColumnType(type));
-		Element name = document.createElement(columnName);
-		res.appendChild(name);
+		res.setTextContent(columnName);
 
 		return res;
 	}

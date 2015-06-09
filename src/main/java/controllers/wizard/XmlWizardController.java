@@ -37,6 +37,9 @@ import java.util.List;
  */
 public class XmlWizardController {
 
+	@FXML private TextField endLine;
+	@FXML private TextField startLine;
+	@FXML private CheckBox hasFirstRowHeader;
 	@FXML private ComboBox metacolumntype;
 	@FXML private TextField metacolumnName;
 	@FXML private ComboBox columntype;
@@ -49,19 +52,35 @@ public class XmlWizardController {
 	private final ObservableList typesSelect = FXCollections.observableArrayList(
 			"string", "int", "float", "datetime", "date", "time"
 	);
-	private HashMap<DataFile, ObservableList<StringProperty>> fileColumns = new HashMap<>();
 	private DataFile selectedFile;
+
+
+	private final ChangeListener<DataFile> listener = (ov, oldValue, newValue) -> {
+		if (!(newValue == null)) {
+			selectedFile = newValue;
+			fillElements();
+		}
+	};
+
+	private final ChangeListener<String> startLineChangeListener = (ov, oldValue, newValue) -> {
+		if (newValue != null && selectedFile != null) {
+			selectedFile.setStartLine(Integer.parseInt(newValue));
+		}
+	};
+
+	private final ChangeListener<String> endLineChangeListener = (ov, oldValue, newValue) -> {
+		if (newValue != null && selectedFile != null) {
+			selectedFile.setEndLine(Integer.parseInt(newValue));
+		}
+	};
+
 
 	/**
 	 * Initializes the controller by filling the static content of elements in the view.
 	 */
 	public void initialize() {
-		ChangeListener<DataFile> listener = (ov, oldValue, newValue) -> {
-			if (!(newValue == null)) {
-				selectedFile = newValue;
-				datacolumns.setItems(fileColumns.get(newValue));
-			}
-		};
+		startLine.textProperty().addListener(startLineChangeListener);
+		endLine.textProperty().addListener(endLineChangeListener);
 		this.datafiles.getSelectionModel().selectedItemProperty().addListener(listener);
 		datacolumns.getColumns().add(createColumn(0, "Column name"));
 		datacolumns.getColumns().add(createColumn(1, "Type"));
@@ -103,6 +122,17 @@ public class XmlWizardController {
 		}
 	}
 
+	private void fillElements() {
+		if (selectedFile.hasFirstRowAsHeader()) {
+			hasFirstRowHeader.setSelected(true);
+		} else {
+			hasFirstRowHeader.setSelected(false);
+		}
+		startLine.setText(String.valueOf(selectedFile.getStartLine()));
+		endLine.setText(String.valueOf(selectedFile.getEndLine()));
+
+	}
+
 	private TableColumn<ObservableList<StringProperty>, String> createColumn(int index,
 																			 String columnTitle) {
 		TableColumn<ObservableList<StringProperty>, String> column
@@ -115,7 +145,6 @@ public class XmlWizardController {
 	private void addDataFile(String path, String type) {
 		DataFile file = DataFile.createDataFile(path, type);
 		datafiles.getItems().add(file);
-		fileColumns.put(file,FXCollections.observableArrayList());
 	}
 
 	@FXML
@@ -162,6 +191,23 @@ public class XmlWizardController {
 				| ClassNotFoundException
 				| TransformerException e) {
 			e.printStackTrace();
+		}
+	}
+
+	@FXML
+	public void removeColumnRow(ActionEvent actionEvent) {
+
+	}
+
+	@FXML
+	public void removeDataFile(ActionEvent actionEvent) {
+
+	}
+
+	@FXML
+	public void handleFirstRowHeaderCheckbox(ActionEvent actionEvent) {
+		if (selectedFile != null) {
+			selectedFile.setFirstRowAsHeader(hasFirstRowHeader.isSelected());
 		}
 	}
 }

@@ -21,6 +21,8 @@
                             HBox.hgrow="SOMETIMES" />
                     <Button text="Browse"
                             onAction="#selectFile"/>
+                    <Button text="Remove"
+                            onAction="#removeDataFile"/>
                 </children>
             </HBox>
             <SplitPane styleClass="splitpane">
@@ -37,8 +39,13 @@
                                        fx:id="columntype"/>
                                <Button text="Add column"
                                        onAction="#addColumnRow"/>
+                               <Button text="Remove column"
+                                       onAction="#removeColumnRow"/>
                            </HBox>
-                           <CheckBox text="First row as table header"/>
+                           <CheckBox
+                                   fx:id="hasFirstRowHeader"
+                                   text="First row as table header"
+                                   onAction="#handleFirstRowHeaderCheckbox"/>
                        </children>
                     </VBox>
                     <VBox styleClass="spaced-box">
@@ -48,11 +55,11 @@
                             </Label>
                             <HBox>
                                 <Label> Starting line: </Label>
-                                <TextField/>
+                                <TextField fx:id="startLine"/>
                             </HBox>
                             <HBox>
                                 <Label> Remove from end: </Label>
-                                <TextField/>
+                                <TextField fx:id="endLine"/>
                             </HBox>
                             <VBox>
                                 <Label>Add metadata column: </Label>
