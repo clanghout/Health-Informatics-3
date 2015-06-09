@@ -6,13 +6,16 @@ package model.data.value;
  * @param <Type> return type of getValue()
  */
 public abstract class DataValue<Type> {
-	protected boolean isNull;
+	private boolean isNull;
 	
 	public abstract Type getValue();
 	public abstract String toString();
 	
 	@Override
 	public boolean equals(Object obj) {
+		if (!(obj instanceof DataValue)) {
+			return false;
+		}
 		if (isNull || ((DataValue) obj).isNull()) {
 			return false;
 		}
