@@ -31,4 +31,10 @@ public class NullValue extends DataValue {
 	public int hashCode() {
 		return 0;
 	}
+
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
