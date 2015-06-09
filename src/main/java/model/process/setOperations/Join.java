@@ -32,6 +32,6 @@ public class Join extends DataProcess {
 
 	@Override
 	protected Table doProcess() {
-		constraint.analyse(new CombinedDataTable(table1,table2).export(name));
+		return constraint.analyse(new CombinedDataTable(table1,table2).export(name));
 	}
 }
