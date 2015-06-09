@@ -2,22 +2,22 @@ package model.data.describer;
 
 import model.data.Row;
 import model.data.value.TemporalValue;
-import model.process.analysis.operations.dates.computations.DateComputation;
+import model.process.analysis.operations.dates.computations.DateCalculation;
 
 /**
  * Describes the operation of a DateComputation.
  *
  * Created by Boudewijn on 9-6-2015.
  */
-public class DateComputationDescriber extends DataDescriber<TemporalValue<?>> {
+public class DateCalculationDescriber extends DataDescriber<TemporalValue<?>> {
 
-	private DateComputation computation;
+	private DateCalculation computation;
 
 	/**
-	 * Construct a new DateComputationDescriber.
+	 * Construct a new DateCalculationDescriber.
 	 * @param computation The computation to describe.
 	 */
-	public DateComputationDescriber(DateComputation computation) {
+	public DateCalculationDescriber(DateCalculation computation) {
 		this.computation = computation;
 	}
 
