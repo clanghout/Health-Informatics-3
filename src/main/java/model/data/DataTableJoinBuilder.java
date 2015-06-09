@@ -32,7 +32,7 @@ public class DataTableJoinBuilder extends DataTableBuilder{
 	private boolean fullRight;
 
 	/**
-	 * Create a datatableconversion builder. This uses a table to create the columns.
+	 * Create a DataTableJoinBuilder builder. This uses a table to create the columns.
 	 * @param table table from where the columns should be copied.
 	 */
 	public DataTableJoinBuilder(Table table) {
@@ -43,6 +43,14 @@ public class DataTableJoinBuilder extends DataTableBuilder{
 		this.constrain = new ConstantDescriber<>(new BoolValue(true));
 	}
 
+
+	/**
+	 * join two table.
+	 * @param left left table
+	 * @param right right table
+	 * @param fullLeft true if all left rows should exist in the result
+	 * @param fullRight true if all right rows should exist in the result
+	 */
 	public DataTableJoinBuilder(DataTable left,
 								DataTable right,
 								boolean fullLeft,
@@ -58,6 +66,11 @@ public class DataTableJoinBuilder extends DataTableBuilder{
 		this.constrain = constraint;
 	}
 
+	/**
+	 * add two columns that must get combined
+	 * @param col1
+	 * @param col2
+	 */
 	public void addCombineColumn(DataColumn col1, DataColumn col2) {
 		if (!col1.getType().equals(col2.getType())) {
 			throw new IllegalArgumentException("type of columns differ");
@@ -114,6 +127,14 @@ public class DataTableJoinBuilder extends DataTableBuilder{
 		return super.build();
 	}
 
+	/**
+	 * check if each column gets a unique name
+	 * @param mappingNewNameToOldColumns map that links the names with the original columns
+	 * @param forbidden set of column names that already exist
+	 *                  or names for which their was a name collision before.
+	 * @param column original column
+	 * @param nameColumn possible name for the column.
+	 */
 	private void checkNameCollision(Map<String, DataColumn> mappingNewNameToOldColumns,
 									Set<String> forbidden,
 									DataColumn column,
@@ -134,6 +155,10 @@ public class DataTableJoinBuilder extends DataTableBuilder{
 		}
 	}
 
+	/**
+	 * assign to each column a unique name
+	 * @return a map that maps unique names to columns
+	 */
 	private Map<String, DataColumn> addColumnToNameMapping() {
 		Map<String, DataColumn> mappingNewNameToOldColumns = new HashMap<>();
 		Set<String> forbidden = new HashSet<>();
@@ -160,6 +185,10 @@ public class DataTableJoinBuilder extends DataTableBuilder{
 		return mappingColumns;
 	}
 
+	/**
+	 * generate the mapping between the old and new column.
+	 * map the columns that should combined with another column to the new column.
+	 */
 	private void generateMappingCombinedCollumns() {
 		for (Map.Entry<DataColumn, DataColumn> entry : combineColumns.entrySet()) {
 			if (mappingColumns.containsKey(entry.getValue())) {
@@ -168,6 +197,10 @@ public class DataTableJoinBuilder extends DataTableBuilder{
 		}
 	}
 
+	/**
+	 * create the new columns and generate the mapping bewteen the old and new columns.
+	 * @param mappingNewNameToOldColumns mapping between the new names and the old columns
+	 */
 	private void generateMappingColumns(Map<String, DataColumn> mappingNewNameToOldColumns) {
 		for (Map.Entry<String, DataColumn> entry : mappingNewNameToOldColumns.entrySet()) {
 			DataColumn newColumn = new DataColumn(
@@ -197,6 +230,13 @@ public class DataTableJoinBuilder extends DataTableBuilder{
 		}
 	}
 
+	/**
+	 * Create the rows for the join
+	 * @param leftRow row in the left table
+	 * @param rightRow row in the right table
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 */
 	private void createRow(DataRow leftRow, DataRow rightRow) throws IllegalAccessException, InstantiationException {
 		DataRow newRow = new DataRow();
 		for (Map.Entry<DataColumn, DataColumn> entry : mappingColumns.entrySet()) {
@@ -215,6 +255,11 @@ public class DataTableJoinBuilder extends DataTableBuilder{
 		this.addRow(newRow);
 	}
 
+	/**
+	 * perform a Left/right/both full join
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 */
 	private void processFullJoin() throws IllegalAccessException, InstantiationException {
 		Set<Row> rightAdd = new HashSet<>();
 		for (DataRow leftRow : (Iterable<DataRow>) left) {
@@ -240,6 +285,12 @@ public class DataTableJoinBuilder extends DataTableBuilder{
 
 	}
 
+	/**
+	 * add the rows from the right table that are not added to the result.
+	 * @param rightAdd set of rows that are set in the result table.
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
 	private void addNotAddedRighRows(Set<Row> rightAdd) throws InstantiationException, IllegalAccessException {
 		for (DataRow rightRow : (Iterable<DataRow>) right) {
 			if (!rightAdd.contains(right)) {
@@ -248,6 +299,12 @@ public class DataTableJoinBuilder extends DataTableBuilder{
 		}
 	}
 
+	/**
+	 * Check if the value van added to the result table.
+	 * @param row row where the value should be set
+	 * @param column column that belongs to the value
+	 * @param newValue new value
+	 */
 	private void checkValue(DataRow row, DataColumn column, DataValue newValue) {
 		if (newValue == null) { //todo use the null values
 			return;
@@ -257,6 +314,7 @@ public class DataTableJoinBuilder extends DataTableBuilder{
 		} else if (row.getValue(column).equals(newValue)) {
 			return;
 		} else {
+			//TODO ik gooi nu een exceptie, maar je zou ook kunnen stellen dat de join gewoon doorgaat maar dat deze row niet wordt toegevoegd.
 			throw new IllegalStateException("conflicting values for column: " + column.toString());
 		}
 	}
