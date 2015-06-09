@@ -4,35 +4,37 @@
 <?import javafx.scene.layout.*?>
 
 <Tab fx:controller="controllers.VisualizationController" text="Visualization" xmlns="http://javafx.com/javafx/8"
-     xmlns:fx="http://javafx.com/fxml/1">
-    <content>
-        <AnchorPane fx:id="root">
-            <children>
-				<VBox styleClass="outsidebox"><children>
-				<HBox styleClass="buttons">
+	 xmlns:fx="http://javafx.com/fxml/1">
+	<content>
+		<AnchorPane fx:id="root">
+			<children>
+				<VBox styleClass="outsidebox">
 					<children>
-						<Button
-								fx:id="makeGraphButton"
-								styleClass="button"
-								onAction="#handlePopupButtonAction"
-								text="Make graph"/>
-						<Button
-								fx:id="clearViewButton"
-								styleClass="button"
-								onAction="#handleClearButtonAction"
-								text="Clear graph"/>
-						<Button
-								fx:id="saveButton"
-								styleClass="button"
-								onAction="#handleSaveButtonAction"
-								text="Save graph"/>
-					</children>
-				</HBox>
-                <VBox fx:id="visualizationGraph" styleClass="visualization-graph" layoutX="14.0" layoutY="42.0">
+						<HBox styleClass="buttons">
+							<children>
+								<Button
+										fx:id="makeGraphButton"
+										styleClass="button"
+										onAction="#handlePopupButtonAction"
+										text="Make graph"/>
+								<Button
+										fx:id="clearViewButton"
+										styleClass="button"
+										onAction="#handleClearButtonAction"
+										text="Clear graph"/>
+								<Button
+										fx:id="saveButton"
+										styleClass="button"
+										onAction="#handleSaveButtonAction"
+										text="Save graph"/>
+							</children>
+						</HBox>
+						<VBox fx:id="visualizationGraph" styleClass="visualization-graph" layoutX="14.0" layoutY="42.0">
 
-                </VBox>
-				</children></VBox>
-            </children>
-        </AnchorPane>
-    </content>
+						</VBox>
+					</children>
+				</VBox>
+			</children>
+		</AnchorPane>
+	</content>
 </Tab>

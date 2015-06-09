@@ -4,16 +4,21 @@
 }
 
 .hbox {
-
+	-fx-width: 340px;
 	-fx-spacing: 5px;
 }
 
-.standardVBox {
+.topvbox {
 	-fx-spacing: 5px;
 }
 
 .label {
-	-fx-pref-width: 70px;
+	-fx-pref-height: 25px;
+	-fx-text-alignment: center;
+}
+
+.standardVBox {
+	-fx-spacing: 5px;
 }
 
 .popup-box {
