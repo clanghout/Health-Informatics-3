@@ -81,6 +81,12 @@ public abstract class DataFile {
 					+ " is not recognized");
 		} 	
 	}
+
+	/**
+	 * Creates a String of the type.
+	 * @return The String of the type
+	 */
+	public abstract String getFileTypeAsString();
 	
 	/**
 	 * Returns the line at which the datafile will begin reading i.e. the 

@@ -9,6 +9,7 @@ import org.w3c.dom.Node;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -75,6 +76,7 @@ public class XmlWriter {
 		try {
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			DOMSource source = new DOMSource(createDocument());
 
 			StreamResult result = new StreamResult(file);
@@ -91,11 +93,19 @@ public class XmlWriter {
 	private Element createFileElement(DataFile dataFile)
 			throws FileNotFoundException, ClassNotFoundException {
 		Element res = document.createElement("file");
-		res.setAttribute("name", dataFile.getFile().getName());
+		res.setAttribute("name", dataFile.getFile().getPath());
+		res.appendChild(createFileTypeElement(dataFile));
 		res.appendChild(createBoundsElement(dataFile));
 		res.appendChild(createColumnsElement(dataFile));
 
 		return res;
+	}
+
+	private Element createFileTypeElement(DataFile dataFile) {
+		Element type = document.createElement("type");
+		type.setTextContent(dataFile.getFileTypeAsString());
+
+		return type;
 	}
 
 	private Element createBoundsElement(DataFile dataFile) {

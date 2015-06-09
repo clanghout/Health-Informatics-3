@@ -41,4 +41,9 @@ public class XlsFile extends ExcelFile {
 			throw e;
 		}
 	}
+
+	@Override
+	public String getFileTypeAsString() {
+		return "xls";
+	}
 }
