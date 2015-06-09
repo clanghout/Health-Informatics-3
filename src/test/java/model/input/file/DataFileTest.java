@@ -22,12 +22,6 @@ public class DataFileTest {
 
 		DataFile dataFile = DataFile.createDataFile(file, "plaintext");
 		assertTrue(dataFile instanceof PlainTextFile);
-		
-		dataFile.setStartLine(7);
-		dataFile.setEndLine(8);
-
-		DataTable dataTable = dataFile.createDataTable();
-
 	}
 	
 	@Test(expected = DataFileNotRecognizedException.class)

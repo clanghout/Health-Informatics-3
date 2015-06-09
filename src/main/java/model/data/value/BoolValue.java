@@ -11,7 +11,7 @@ public final class BoolValue extends DataValue<Boolean> {
 	public BoolValue(Boolean value) {
 		if (value == null) {
 			this.value = false;
-			this.isNull = true;
+			setNull(true);
 		} else {
 			this.value = value;
 		}

@@ -3,6 +3,7 @@ package model.data.value;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Period;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -66,6 +67,14 @@ public class NullValueTest {
 	public void testNullTime() throws Exception {
 		value = new TimeValue(null,null,null);
 		LocalTime compare = LocalTime.of(0, 0, 0);
+		assertEquals(compare, value.getValue());
+		assertEquals(true, value.isNull());
+	}
+	
+	@Test
+	public void testNullPeriod() throws Exception {
+		value = new PeriodValue(null,null,null);
+		Period compare = Period.of(0, 0, 0);
 		assertEquals(compare, value.getValue());
 		assertEquals(true, value.isNull());
 	}

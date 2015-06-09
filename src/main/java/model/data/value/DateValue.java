@@ -27,7 +27,7 @@ public class DateValue extends TemporalValue<LocalDate> {
 		this();
 		if (year == null || month == null || day == null) {
 			date = LocalDate.of(0, 1, 1);
-			isNull = true;
+			setNull(true);
 		} else {
 			date = LocalDate.of(year, month, day);
 		}

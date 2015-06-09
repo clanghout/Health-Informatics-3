@@ -11,7 +11,7 @@ public final class IntValue extends NumberValue<Integer> {
 	public IntValue(Integer value) {
 		if (value == null) {
 			this.value = 0;
-			isNull = true;
+			setNull(true);
 		} else {
 			this.value = value;
 		}

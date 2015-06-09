@@ -20,7 +20,7 @@ public class TimeValue extends TemporalValue<LocalTime> {
 		super("HH:mm:ss");
 		if (hour == null || minute == null || second == null) {
 			time = LocalTime.of(0, 0, 0);
-			isNull = true;
+			setNull(true);
 		} else {
 			time = LocalTime.of(hour, minute, second);
 		}
