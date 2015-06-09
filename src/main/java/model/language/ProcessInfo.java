@@ -7,6 +7,7 @@ import model.language.nodes.ValueNode;
 import model.process.*;
 import model.process.analysis.ConstraintAnalysis;
 import model.process.setOperations.Difference;
+import model.process.setOperations.Union;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -58,6 +59,8 @@ class ProcessInfo {
 				return new SetCode(code, tableName);
 			case "difference":
 				return new Difference((Identifier) parameters[0], (Identifier) parameters[1]);
+			case "union":
+				return new Union((Identifier) parameters[0], (Identifier) parameters[1]);
 			default:
 				throw new UnsupportedOperationException("This code has not been implemented yet");
 		}

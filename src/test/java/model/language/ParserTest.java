@@ -6,7 +6,6 @@ import model.data.value.DateTimeValue;
 import model.data.value.IntValue;
 import model.data.value.StringValue;
 import model.process.DataProcess;
-import model.process.DataTableIsProcess;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,8 +22,8 @@ public class ParserTest {
 
 	private DataModel model;
 	private DataTable test1;
-	private DateTimeValue first;
-	private DateTimeValue second;
+	private DateTimeValue firstDateTime;
+	private DateTimeValue secondDateTime;
 
 
 	@Before
@@ -36,13 +35,13 @@ public class ParserTest {
 		builder.createColumn("value", IntValue.class);
 		builder.createColumn("date", DateTimeValue.class);
 
-		first = new DateTimeValue(1995, 1, 17, 03, 45, 0);
-		second = new DateTimeValue(1997, 1, 17, 03, 45, 0);
+		firstDateTime = new DateTimeValue(1995, 1, 17, 03, 45, 0);
+		secondDateTime = new DateTimeValue(1997, 1, 17, 03, 45, 0);
 
-		builder.createRow(new IntValue(11), first);
-		builder.createRow(new IntValue(10), second);
-		builder.createRow(new IntValue(9), first);
-		builder.createRow(new IntValue(5), second);
+		builder.createRow(new IntValue(11), firstDateTime);
+		builder.createRow(new IntValue(10), secondDateTime);
+		builder.createRow(new IntValue(9), firstDateTime);
+		builder.createRow(new IntValue(5), secondDateTime);
 
 		test1 = builder.build();
 		model.add(test1);
@@ -72,14 +71,14 @@ public class ParserTest {
 	}
 
 	@Test
-	public void testParsDiff() throws Exception {
+	public void testParseDiff() throws Exception {
 		DataTableBuilder builder = new DataTableBuilder();
 		builder.setName("test2");
 		builder.createColumn("value", IntValue.class);
 		builder.createColumn("date", DateTimeValue.class);
 
-		builder.createRow(new IntValue(11), first);
-		builder.createRow(new IntValue(5), second);
+		builder.createRow(new IntValue(11), firstDateTime);
+		builder.createRow(new IntValue(5), secondDateTime);
 
 		DataTable test2 = builder.build();
 		model.add(test2);
@@ -92,8 +91,39 @@ public class ParserTest {
 		builder.createColumn("value", IntValue.class);
 		builder.createColumn("date", DateTimeValue.class);
 
-		builder.createRow(new IntValue(10), second);
-		builder.createRow(new IntValue(9), first);
+		builder.createRow(new IntValue(10), secondDateTime);
+		builder.createRow(new IntValue(9), firstDateTime);
+
+		DataTable expected = builder.build();
+		assertTrue(expected.equalsSoft(result));
+	}
+
+	@Test
+	public void testParseUnion() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("test2");
+		builder.createColumn("value", IntValue.class);
+		builder.createColumn("date", DateTimeValue.class);
+
+		builder.createRow(new IntValue(11), firstDateTime);
+		builder.createRow(new IntValue(3), secondDateTime);
+
+		DataTable test2 = builder.build();
+		model.add(test2);
+
+		String input = "union(test1, test2)";
+		Table result = parseAndProcess(input);
+
+		builder = new DataTableBuilder();
+		builder.setName("test1");
+		builder.createColumn("value", IntValue.class);
+		builder.createColumn("date", DateTimeValue.class);
+
+		builder.createRow(new IntValue(11), firstDateTime);
+		builder.createRow(new IntValue(10), secondDateTime);
+		builder.createRow(new IntValue(9), firstDateTime);
+		builder.createRow(new IntValue(5), secondDateTime);
+		builder.createRow(new IntValue(3), secondDateTime);
 
 		DataTable expected = builder.build();
 		assertTrue(expected.equalsSoft(result));
