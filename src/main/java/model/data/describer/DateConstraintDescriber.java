@@ -2,7 +2,6 @@ package model.data.describer;
 
 import model.data.Row;
 import model.data.value.BoolValue;
-import model.data.value.TemporalValue;
 import model.process.analysis.operations.dates.constraint.DateConstraint;
 
 /**
