@@ -1,7 +1,7 @@
 package model.data.value;
 
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
+import java.time.temporal.Temporal;
 
 /**
  * This class provides a basis for classes dealing with Date or Time values.
@@ -9,7 +9,7 @@ import java.time.temporal.TemporalAccessor;
  * Created by Boudewijn on 7-6-2015.
  * @param <T> The type of value contained in this DataValue.
  */
-abstract class TemporalValue<T extends TemporalAccessor> extends DataValue<T> {
+public abstract class TemporalValue<T extends Temporal> extends DataValue<T> {
 
 	private String format;
 
