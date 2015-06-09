@@ -4,7 +4,7 @@
 		<path>model/input</path>
         <data>
             <start>7</start>
-            <end>57</end>
+            <end>1</end>
         </data>
         <type>plaintext</type>
         <columns firstrowheader="false">
@@ -20,7 +20,7 @@
 	    <columns firstrowheader="false"></columns>
 		<data>
 			<start>7</start>
-			<end>8</end>
+			<end>1</end>
 		</data>
         <type>plaintext</type>
         <path>model/input</path>
@@ -37,7 +37,7 @@
 	    <columns firstrowheader="false"></columns>
 	    <data>
 	       <start>7</start>
-	       <end>8</end>
+	       <end>1</end>
 	    </data>
 		<type>plaintext</type>
 		<path>model/input</path>

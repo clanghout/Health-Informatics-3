@@ -54,12 +54,14 @@ public class ParserTest {
 		DataTable test2 = builder.build();
 		model.add(test2);
 
+		assertFalse(model.getByName("res").isPresent());
 		String input = "from(test1, test2)|is(test2, res)";
-		DataTable result = (DataTable) parseAndProcess(input);
-		assertEquals("test2", test2.getName());
-		assertEquals("res", result.getName());
+		CombinedDataTable result = (CombinedDataTable) parseAndProcess(input);
+		CombinedDataTable check = (CombinedDataTable) parseAndProcess("from(test1, test2)");
+		assertTrue(check.equalsSoft(result));
+		assertTrue(model.getByName("res").isPresent());
 
-		assertTrue(test2.equalsSoft(result));
+		assertTrue(test2.equalsSoft(model.getByName("res").get()));
 	}
 
 	@Test

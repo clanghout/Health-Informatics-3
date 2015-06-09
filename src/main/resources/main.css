@@ -8,6 +8,10 @@
 	-fx-font-weight: bold;
 }
 
+.buttons {
+	-fx-spacing: 15px;
+}
+
 .main-box {
 	-fx-pref-width: 640px;
 }
@@ -55,4 +59,8 @@
 	-fx-min-width: 0;
 	-fx-min-height: 0;
 	-fx-pref-width: 160px;
+}
+
+.outsidebox {
+	-fx-padding: 10px;
 }
