@@ -96,7 +96,11 @@ public abstract class Table implements Iterable {
 		DataTableJoinBuilder builder = new DataTableJoinBuilder(this);
 		builder.setName(nameTable);
 
-		return builder.build();
+		try {
+			return builder.build();
+		} catch (Exception e) {
+			throw new RuntimeException("unexpected exception");
+		}
 	}
 
 	/**
