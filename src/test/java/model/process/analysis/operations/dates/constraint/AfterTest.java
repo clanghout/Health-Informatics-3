@@ -30,13 +30,13 @@ public class AfterTest {
 	public void testCheckPass() throws Exception {
 		After after = new After(first, second);
 		BoolValue resultValue = after.operate(null);
-		assertTrue(resultValue.getValue());
+		assertFalse(resultValue.getValue());
 	}
 
 	@Test
 	public void testCheckFalse() throws Exception {
 		After after = new After(second, first);
 		BoolValue resultValue = after.operate(null);
-		assertFalse(resultValue.getValue());
+		assertTrue(resultValue.getValue());
 	}
 }

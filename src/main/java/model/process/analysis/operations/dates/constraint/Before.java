@@ -22,12 +22,12 @@ public class Before extends DateComparison {
 	}
 
 	/**
-	 * Checks if the amount of time between the given dates is lesser than 0.
+	 * Checks if the amount of time between the given dates is greater than 0.
 	 * @param amount The amount of time between the left and right side operands in seconds.
-	 * @return True if the amount is negative, false otherwise.
+	 * @return True if the amount is positive, false otherwise.
 	 */
 	@Override
 	protected boolean compare(long amount) {
-		return amount < 0;
+		return amount > 0;
 	}
 }

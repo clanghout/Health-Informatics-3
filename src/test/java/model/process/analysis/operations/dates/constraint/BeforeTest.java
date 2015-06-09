@@ -30,14 +30,14 @@ public class BeforeTest {
 	public void testCheckPass() throws Exception {
 		Before before = new Before(first, second);
 		BoolValue resultValue = before.operate(null);
-		assertFalse(resultValue.getValue());
+		assertTrue(resultValue.getValue());
 	}
 
 	@Test
 	public void testCheckFalse() throws Exception {
 		Before before = new Before(second, first);
 		BoolValue resultValue = before.operate(null);
-		assertTrue(resultValue.getValue());
+		assertFalse(resultValue.getValue());
 	}
 
 }
