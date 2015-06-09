@@ -4,7 +4,7 @@
         <type>plaintext</type>
         <data>
             <start>7</start>
-            <end>57</end>
+            <end>1</end>
         </data>
         <columns firstrowheader="false">
             <column type="string">quantity</column>
