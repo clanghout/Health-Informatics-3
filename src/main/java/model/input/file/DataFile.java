@@ -25,7 +25,7 @@ public abstract class DataFile {
 
 	private String metaDataColumnName;
 	private DataValue metaDataValue;
-	private Class metaDataType;
+	private Class<? extends DataValue> metaDataType;
 
 	private String path;
 	private int startLine;
@@ -33,7 +33,7 @@ public abstract class DataFile {
 	private Map<String, Class<? extends DataValue>> columns;
 	private List<Class<? extends DataValue>> columnList;
 	private boolean firstRowAsHeader;
-	private Class[] columnTypes;
+	private Class<? extends DataValue>[] columnTypes;
 	private DataTableBuilder builder = new DataTableBuilder();
 	private boolean hasMetaData;
 
@@ -43,13 +43,12 @@ public abstract class DataFile {
 	 * @param path The path to the DataFile
 	 * @throws FileNotFoundException When the file can not be found
 	 */
-	public DataFile(String path) throws FileNotFoundException {
+	public DataFile(String path) {
 		this.path = path;
 		this.setStartLine(1);
 		this.setEndLine(Integer.MAX_VALUE);
 		this.setFirstRowAsHeader(false);
 		this.setColumns(new LinkedHashMap<>(), new ArrayList<>());
-		this.builder.setName(getFile().getName().replace(".", ""));
 	}
 
 	/**

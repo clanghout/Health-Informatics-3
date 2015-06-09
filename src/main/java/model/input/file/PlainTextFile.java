@@ -33,7 +33,7 @@ public class PlainTextFile extends DataFile {
 	public DataTable createDataTable() throws IOException {
 		counter = 1;
 		InputStream stream = new FileInputStream(getFile());
-
+		getBuilder().setName(getFile().getName().replace(".", ""));
 		try (Scanner scanner = new Scanner(stream, "UTF-8")) {
 			scanner.useDelimiter("\\A");
 			skipToStartLine(scanner);

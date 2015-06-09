@@ -35,6 +35,7 @@ public abstract class ExcelFile extends DataFile {
 	 */
 	protected DataTable createTable(Iterator<Row> rowIterator) throws FileNotFoundException {
 
+		getBuilder().setName(getFile().getName().replace(".", ""));
 		if (hasFirstRowAsHeader()) {
 			Row headers = rowIterator.next();
 			for (int i = 0; i < getColumnTypes().length; i++) {
