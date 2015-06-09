@@ -156,6 +156,29 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
+	Rule PeriodLiteral() {
+		return Sequence(
+				"#",
+				IntLiteral(),
+				WhiteSpace(),
+				PeriodUnit(),
+				"#",
+				swap(),
+				push(new PeriodNode((ValueNode<IntValue>) pop(), (String) pop()))
+		);
+	}
+
+	Rule PeriodUnit() {
+		return Sequence(
+				FirstOf(
+					"DAYS",
+					"MONTHS",
+					"YEARS"
+				),
+				push(match())
+		);
+	}
+
 	Rule Variable() {
 		return FirstOf(Identifier(), StringLiteral(), FloatLiteral(), IntLiteral());
 	}
