@@ -15,15 +15,13 @@
                                 <HBox styleClass="hbox">
                                     <children>
                                         <Label styleClass="label">Data table:</Label>
-                                        <ComboBox fx:id="tableComboBox" promptText="Table to use"
-                                                  styleClass="drop-down-menu"/>
+                                        <ComboBox fx:id="tableComboBox" promptText="Table to use"/>
                                     </children>
                                 </HBox>
                                 <HBox styleClass="hbox">
                                     <children>
                                         <Label styleClass="label">Visualisation:</Label>
-                                        <ComboBox fx:id="visualizationComboBox" promptText="Visualization"
-                                                  styleClass="drop-down-menu"/>
+                                        <ComboBox fx:id="visualizationComboBox" promptText="Visualization"/>
                                     </children>
                                 </HBox>
 								<Label fx:id="createError" styleClass="label" />
