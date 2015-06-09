@@ -69,6 +69,7 @@ class LanguageParser extends BaseParser<Object> {
 				FloatLiteral(),
 				IntLiteral(),
 				NumberColumn(),
+				DateFunction(),
 				Sequence("(", NumberExpression(), ")")
 		);
 	}
@@ -239,6 +240,8 @@ class LanguageParser extends BaseParser<Object> {
 				",",
 				WhiteSpace(),
 				DateExpression(),
+				WhiteSpace(),
+				",",
 				WhiteSpace(),
 				ChronoUnit(),
 				WhiteSpace(),
