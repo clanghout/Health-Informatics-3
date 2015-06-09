@@ -42,10 +42,12 @@ public class SetCodeTest {
 
 		builder2.createRow(new StringValue("test2"), new FloatValue(2));
 		builder2.createRow(new StringValue("test3"), new FloatValue(1));
-
-		input = builder.build();
-		codeTable = builder2.build();
-
+		try {
+			input = builder.build();
+			codeTable = builder2.build();
+		} catch (Exception e) {
+			throw new RuntimeException("unexpected exception");
+		}
 		builder = new DataTableBuilder();
 		builder.setName("test3");
 
@@ -54,7 +56,11 @@ public class SetCodeTest {
 		builder.createRow(new StringValue("test"));
 		builder.createRow(new StringValue("test2"));
 
-		table3 = builder.build();
+		try {
+			table3 = builder.build();
+		} catch (Exception e) {
+			throw new RuntimeException("unexpected exception");
+		}
 
 	}
 

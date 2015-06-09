@@ -73,7 +73,11 @@ public abstract class FunctionTest {
 		float3 = new FloatValue(6.6f);
 		builder.createRow(string, int1, int2, float1, float2, float3);
 
-		table = builder.build();
+		try {
+			table = builder.build();
+		} catch (Exception e) {
+			throw new RuntimeException("unexpected exception");
+		}
 	}
 	
 	public void extendTable() {
@@ -85,6 +89,10 @@ public abstract class FunctionTest {
 		FloatValue float3 = new FloatValue(7.0f);
 		builder.createRow(string, int1, int2, float1, float2, float3);
 
-		table = builder.build();
+		try {
+			table = builder.build();
+		} catch (Exception e) {
+			throw new RuntimeException("unexpected exception");
+		}
 	}
 }

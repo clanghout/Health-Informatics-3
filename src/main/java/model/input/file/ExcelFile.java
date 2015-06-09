@@ -56,7 +56,13 @@ public abstract class ExcelFile extends DataFile {
 			}
 			builder.createRow(values);
 		}
-		return builder.build();
+		try {
+			return builder.build();
+		} catch (InstantiationException e) {
+			throw new RuntimeException("unexpected exception");
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException("unexpected exception");
+		}
 	}
 	
 	private DataValue toDataValue(Cell cell) {

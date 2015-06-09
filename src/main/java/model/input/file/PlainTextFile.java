@@ -55,7 +55,11 @@ public class PlainTextFile extends DataFile {
 			readLines(scanner);
 		}
 
-		return builder.build();
+		try {
+			return builder.build();
+		} catch (Exception e) {
+			throw new RuntimeException("unexpected exception");
+		}
 	}
 
 	/**

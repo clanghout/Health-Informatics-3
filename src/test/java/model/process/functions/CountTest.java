@@ -20,7 +20,12 @@ public class CountTest {
 		DataTableBuilder builder = new DataTableBuilder();
 		builder.setName("test");
 		DataColumn c1 = builder.createColumn("c1", StringValue.class);
-		DataTable table = builder.build();
+		DataTable table;
+		try {
+			table = builder.build();
+		} catch (Exception e) {
+			throw new RuntimeException("unexpected exception");
+		}
 
 		Count count = new Count(table, null);
 
@@ -33,7 +38,12 @@ public class CountTest {
 		builder.setName("test");
 		DataColumn c1 = builder.createColumn("c1", StringValue.class);
 		builder.createRow(new StringValue("t1"));
-		DataTable table = builder.build();
+		DataTable table;
+		try {
+			table = builder.build();
+		} catch (Exception e) {
+			throw new RuntimeException("unexpected exception");
+		}
 
 		Count count = new Count(table, null);
 
@@ -48,7 +58,13 @@ public class CountTest {
 		builder.createRow(new StringValue("t1"));
 		builder.createRow(new StringValue("t2"));
 		builder.createRow(new StringValue("t3"));
-		DataTable table = builder.build();
+		DataTable table;
+
+		try {
+			table = builder.build();
+		} catch (Exception e) {
+			throw new RuntimeException("unexpected exception");
+		}
 
 		Count count = new Count(table, new RowValueDescriber<>(c1));
 

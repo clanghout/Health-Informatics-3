@@ -71,6 +71,10 @@ public class Difference extends DataProcess {
 				builder.createRow(row);
 			}
 		}
-		return builder.build();
+		try {
+			return builder.build();
+		} catch (Exception e) {
+			throw new RuntimeException("unexpected exception");
+		}
 	}
 }

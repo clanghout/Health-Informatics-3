@@ -85,7 +85,11 @@ public abstract class GroupByAnalysis extends DataAnalysis {
 
 			builder.createRow(values);
 		}
-		return builder.build();
+		try {
+			return builder.build();
+		} catch (Exception e) {
+			throw new RuntimeException("unexpected exception");
+		}
 
 	}
 }

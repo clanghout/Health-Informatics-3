@@ -46,7 +46,11 @@ public class GroupByColumnTest {
 		builder.createRow(new StringValue("test"), new FloatValue(3));
 		builder.createRow(new StringValue("henk"), new FloatValue(5));
 
-		table = builder.build();
+		try {
+			table = builder.build();
+		} catch (Exception e) {
+			throw new RuntimeException("unexpected exception");
+		}
 	}
 
 
