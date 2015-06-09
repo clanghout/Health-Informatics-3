@@ -2,6 +2,7 @@ package model.language;
 
 import model.data.value.*;
 import model.language.nodes.*;
+import model.process.analysis.operations.dates.constraint.DateComparison;
 import org.parboiled.BaseParser;
 import org.parboiled.Rule;
 import org.parboiled.support.Var;
@@ -41,9 +42,9 @@ class LanguageParser extends BaseParser<Object> {
 				swap3(),
 				push(
 						new NumberOperationNode(
-							(ValueNode<NumberValue>) pop(),
-							(String) pop(),
-							(ValueNode<NumberValue>) pop()
+								(ValueNode<NumberValue>) pop(),
+								(String) pop(),
+								(ValueNode<NumberValue>) pop()
 						)
 				)
 		);
@@ -171,11 +172,123 @@ class LanguageParser extends BaseParser<Object> {
 	Rule PeriodUnit() {
 		return Sequence(
 				FirstOf(
-					"DAYS",
-					"MONTHS",
-					"YEARS"
+						"DAYS",
+						"MONTHS",
+						"YEARS"
 				),
 				push(match())
+		);
+	}
+
+	Rule DateExpression() {
+		return FirstOf(
+				DateTimeLiteral(),
+				DateLiteral(),
+				DateColumn()
+		);
+	}
+
+	Rule IntLiteralOfN(int n) {
+		return Sequence(
+				NTimes(n, Digit()),
+				push(new ConstantNode<IntValue>(new IntValue(Integer.parseInt(match()))))
+		);
+	}
+
+	Rule DateLiteral() {
+		return Sequence(
+				"#",
+				DateBody(),
+				"#",
+				swap3(),
+				push(
+						new DateNode(
+								(ValueNode<IntValue>) pop(),
+								(ValueNode<IntValue>) pop(),
+								(ValueNode<IntValue>) pop()
+						)
+				)
+		);
+	}
+
+	Rule DateBody() {
+		return Sequence(
+				IntLiteralOfN(4),
+				"-",
+				IntLiteralOfN(2),
+				"-",
+				IntLiteralOfN(2)
+		);
+	}
+
+	Rule DateComparison() {
+		return Sequence(
+				DateExpression(),
+				OneOrMore(WhiteSpaceChars()),
+				Sequence(
+						FirstOf("AFTER", "BEFORE"),
+						push(match())
+				),
+				OneOrMore(WhiteSpaceChars()),
+				DateExpression(),
+				swap3(),
+				push(new DateCompareNode(
+						(ValueNode<? extends TemporalValue<?>>) pop(),
+						(String) pop(),
+						(ValueNode<? extends TemporalValue<?>>) pop()
+				)
+			)
+		);
+	}
+
+	Rule TimeBody() {
+		return Sequence(
+				IntLiteralOfN(2),
+				":",
+				IntLiteralOfN(2),
+				FirstOf(
+						Sequence(
+								":",
+								IntLiteralOfN(2)
+						),
+						Sequence(
+								TestNot(
+										Sequence(
+												":",
+												IntLiteralOfN(2)
+										)
+								),
+								push(new ConstantNode<IntValue>(new IntValue(0)))
+						)
+
+				)
+		);
+	}
+
+	Rule DateTimeLiteral() {
+		return Sequence(
+				"#",
+				DateBody(),
+				" ",
+				TimeBody(),
+				"#",
+				swap6(),
+				push(new DateTimeNode(
+						(ValueNode<IntValue>) pop(),
+						(ValueNode<IntValue>) pop(),
+						(ValueNode<IntValue>) pop(),
+						(ValueNode<IntValue>) pop(),
+						(ValueNode<IntValue>) pop(),
+						(ValueNode<IntValue>) pop()
+					)
+				)
+		);
+	}
+
+	Rule DateColumn() {
+		return Sequence(
+				ColumnIdentifier(),
+				push(new TableValueNode<TemporalValue>((ColumnIdentifier) pop()))
 		);
 	}
 
@@ -276,6 +389,13 @@ class LanguageParser extends BaseParser<Object> {
 	 * Matches any comparison and pushes a CompareNode on the stack.
 	 */
 	Rule Comparison() {
+		return FirstOf(
+				DateComparison(),
+				NumberComparison()
+		);
+	}
+
+	Rule NumberComparison() {
 		return Sequence(
 				NumberExpression(),
 				WhiteSpace(),

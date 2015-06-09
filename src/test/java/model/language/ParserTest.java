@@ -2,6 +2,7 @@ package model.language;
 
 import model.data.*;
 import model.data.value.BoolValue;
+import model.data.value.DateTimeValue;
 import model.data.value.IntValue;
 import model.data.value.StringValue;
 import model.process.DataProcess;
@@ -22,6 +23,8 @@ public class ParserTest {
 
 	private DataModel model;
 	private DataTable test1;
+	private DateTimeValue first;
+	private DateTimeValue second;
 
 
 	@Before
@@ -31,11 +34,15 @@ public class ParserTest {
 
 		builder.setName("test1");
 		builder.createColumn("value", IntValue.class);
+		builder.createColumn("date", DateTimeValue.class);
 
-		builder.createRow(new IntValue(11));
-		builder.createRow(new IntValue(10));
-		builder.createRow(new IntValue(9));
-		builder.createRow(new IntValue(5));
+		first = new DateTimeValue(1995, 1, 17, 03, 45, 0);
+		second = new DateTimeValue(1997, 1, 17, 03, 45, 0);
+
+		builder.createRow(new IntValue(11), first);
+		builder.createRow(new IntValue(10), second);
+		builder.createRow(new IntValue(9), first);
+		builder.createRow(new IntValue(5), second);
 
 		test1 = builder.build();
 		model.add(test1);
@@ -69,9 +76,10 @@ public class ParserTest {
 		DataTableBuilder builder = new DataTableBuilder();
 		builder.setName("test2");
 		builder.createColumn("value", IntValue.class);
+		builder.createColumn("date", DateTimeValue.class);
 
-		builder.createRow(new IntValue(11));
-		builder.createRow(new IntValue(5));
+		builder.createRow(new IntValue(11), first);
+		builder.createRow(new IntValue(5), second);
 
 		DataTable test2 = builder.build();
 		model.add(test2);
@@ -82,9 +90,10 @@ public class ParserTest {
 		builder = new DataTableBuilder();
 		builder.setName("test1");
 		builder.createColumn("value", IntValue.class);
+		builder.createColumn("date", DateTimeValue.class);
 
-		builder.createRow(new IntValue(10));
-		builder.createRow(new IntValue(9));
+		builder.createRow(new IntValue(10), second);
+		builder.createRow(new IntValue(9), first);
 
 		DataTable expected = builder.build();
 		assertTrue(expected.equalsSoft(result));
@@ -344,5 +353,24 @@ public class ParserTest {
 		assertTrue(table.getRow(1).getCodes().contains("hallo"));
 		assertFalse(table.getRow(2).getCodes().contains("hallo"));
 		assertFalse(table.getRow(3).getCodes().contains("hallo"));
+	}
+
+	@Test
+	public void testParseDateComparison() throws Exception {
+		String input =
+				"def beforeOneYear() : Constraint = test1.date BEFORE #1996-01-17 10:00:33#;\n" +
+				"from(test1)|constraint(beforeOneYear)|is(result)";
+
+		Table result = parseAndProcess(input);
+		assertTrue(result instanceof DataTable);
+
+		DataTable table = (DataTable) result;
+
+		DataRow row1 = table.getRow(0);
+		DataRow row3 = table.getRow(1);
+		assertEquals(new IntValue(11), row1.getValue(table.getColumn("value")));
+
+
+		assertEquals(new IntValue(9), row3.getValue(table.getColumn("value")));
 	}
 }
