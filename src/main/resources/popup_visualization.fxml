@@ -13,22 +13,12 @@
 					<children>
 						<VBox styleClass="standardVBox" AnchorPane.topAnchor="14.0">
 							<children>
-								<HBox styleClass="hbox">
-									<children>
-										<VBox styleClass="topvbox">
-											<children>
-												<Label styleClass="label">Data table:</Label>
-												<Label styleClass="label">Visualisation:</Label>
-											</children>
-										</VBox>
-										<VBox styleClass="topvbox">
-											<children>
-												<ComboBox fx:id="tableComboBox" promptText="Table to use"/>
-												<ComboBox fx:id="visualizationComboBox" promptText="Visualization"/>
-											</children>
-										</VBox>
-									</children>
-								</HBox>
+								<GridPane styleClass="top-pane">
+									<Label styleClass="label" GridPane.columnIndex="0" GridPane.rowIndex="0">Data table:</Label>
+									<Label styleClass="label" GridPane.columnIndex="0" GridPane.rowIndex="1">Visualisation:</Label>
+									<ComboBox fx:id="tableComboBox" promptText="Table to use" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+									<ComboBox fx:id="visualizationComboBox" promptText="Visualization" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+								</GridPane>
 								<Label fx:id="createError" styleClass="label"/>
 							</children>
 						</VBox>

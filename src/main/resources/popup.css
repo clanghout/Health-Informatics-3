@@ -8,8 +8,11 @@
 	-fx-spacing: 5px;
 }
 
-.topvbox {
+.top-pane {
+	-fx-padding: 5px;
 	-fx-spacing: 5px;
+	-fx-hgap: 10;
+	-fx-vgap: 10;
 }
 
 .label {
