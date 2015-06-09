@@ -35,4 +35,13 @@ public final class BoolValue extends DataValue<Boolean> {
 	public String toString() {
 		return String.valueOf(value);
 	}
+
+	@Override
+	public int compareTo(DataValue other) {
+		if (!(other instanceof BoolValue)) {
+			throw new IllegalArgumentException("Boolvalue cannot compare to non bools");
+		}
+		BoolValue o = (BoolValue) other;
+		return Boolean.compare(value, o.value);
+	}
 }
