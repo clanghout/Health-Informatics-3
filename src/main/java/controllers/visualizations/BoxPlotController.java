@@ -131,6 +131,7 @@ public class BoxPlotController extends ChartController {
 	 *
 	 * @return WritableImage of the BoxPlot.
 	 */
+	@Override
 	public WritableImage createImage() {
 		final BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
 		renderer.setFillBox(false);

@@ -122,6 +122,7 @@ public class BarChartController extends ChartController {
 	/**
 	 * Called to initialize the barChartController object.
 	 */
+	@Override
 	public void initialize() {
 		initializeFields();
 		setXAxisEventListener();
@@ -162,6 +163,7 @@ public class BarChartController extends ChartController {
 	 *
 	 * @return writableImage object.
 	 */
+	@Override
 	public WritableImage createImage() {
 		BarChart chart = create();
 		VBox box = new VBox();
