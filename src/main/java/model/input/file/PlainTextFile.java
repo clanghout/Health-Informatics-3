@@ -52,8 +52,8 @@ public class PlainTextFile extends DataFile {
 					builder.createColumn(entry.getKey(), entry.getValue());
 				}
 			}
-			ArrayList<String> lines = readLines(scanner);
-			filterLastRows(lines);
+			List<String> lines = readLines(scanner);
+			addRowsToBuilder(filterLastRows(lines));
 		}
 
 		return builder.build();
@@ -90,7 +90,7 @@ public class PlainTextFile extends DataFile {
 		return result;
 	}
 
-	private DataValue[] createRow(String line) {
+	private DataValue[] createValues(String line) {
 		String[] sections = line.split(delimiter);
 		List<Class<? extends DataValue>> columns = getColumnList();
 		DataValue[] values = new DataValue[getColumns().size()];
@@ -102,14 +102,16 @@ public class PlainTextFile extends DataFile {
 		return values;
 	}
 
-	private void filterLastRows(ArrayList<String> lines) {
-		List<String> subList = lines.subList(0, lines.size() - getEndLine());
-		for (String line : subList) {
-			DataValue[] values = createRow(line);
+	private void addRowsToBuilder(List<String> lines) {
+		for (String line : filterLastRows(lines)) {
+			DataValue[] values = createValues(line);
 			builder.createRow(values);
 		}
 	}
 
+	private List<String> filterLastRows(List<String> lines) {
+		return lines.subList(0, lines.size() - getEndLine());
+	}
 
 	/**
 	 * Creates a DataValue from a string.
