@@ -27,20 +27,12 @@ public final class FloatValue extends NumberValue<Float> {
 
 	@Override
 	public boolean doEquals(Object obj) {
-//		if (!(obj instanceof FloatValue)) {
-//			return false;
-//		}
-		FloatValue other = (FloatValue) obj;
-		return other.value == this.value;
+		return ((FloatValue) obj).value == this.value;
 	}
 
 	@Override
 	public int compareTo(NumberValue other) {
-		if (!(other instanceof FloatValue)) {
-			throw new IllegalArgumentException("FloatValue cannot compare to non floats");
-		}
-		FloatValue o = (FloatValue) other;
-		return Float.compare(value, o.value);
+		return Float.compare(value, ((FloatValue) other).value);
 	}
 
 	@Override

@@ -21,16 +21,10 @@ public final class BoolValue extends DataValue<Boolean> {
 	public Boolean getValue() {
 		return value;
 	}
-
+	
+	@Override
 	public boolean doEquals(Object obj) {
-		if (!(obj instanceof BoolValue)) {
-			return false;
-		}
-		if (isNull()) {
-			return false;
-		}
-		BoolValue other = (BoolValue) obj;
-		return other.value == this.value;
+		return ((BoolValue) obj).value == this.value;
 	}
 
 	@Override

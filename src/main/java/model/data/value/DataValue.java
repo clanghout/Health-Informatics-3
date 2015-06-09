@@ -6,21 +6,20 @@ package model.data.value;
  * @param <Type> return type of getValue()
  */
 public abstract class DataValue<Type> {
-	private boolean isNull;
+	protected boolean isNull;
 	
 	public abstract Type getValue();
 	public abstract String toString();
-
+	
 	@Override
 	public boolean equals(Object obj) {
-		if (isNull) {
+		if (isNull || ((DataValue) obj).isNull()) {
 			return false;
 		}
 		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
-		return false;
-//		return doEquals(obj);
+		return doEquals(obj);
 	}
 
 	@Override
@@ -30,8 +29,8 @@ public abstract class DataValue<Type> {
 		return isNull;
 	}
 	
-	protected void setNull(boolean nul) {
-		isNull = nul;
+	protected void setNull(boolean val) {
+		isNull = val;
 	}
 	
 	protected abstract boolean doEquals(Object obj);

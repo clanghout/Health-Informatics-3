@@ -29,20 +29,12 @@ public final class IntValue extends NumberValue<Integer> {
 
 	@Override
 	public boolean doEquals(Object obj) {
-//		if (!(obj instanceof IntValue)) {
-//			return false;
-//		}
-		IntValue other = (IntValue) obj;
-		return other.value == this.value;
+		return ((IntValue) obj).value == this.value;
 	}
 
 	@Override
 	public int compareTo(NumberValue other) {
-		if (!(other instanceof IntValue)) {
-			throw new IllegalArgumentException("IntValue cannot compare to non ints");
-		}
-		IntValue o = (IntValue) other;
-		return Integer.compare(value, o.value);
+		return Integer.compare(value, ((IntValue) other).value);
 	}
 
 	@Override

@@ -34,6 +34,19 @@ public class NullValueTest {
 		assertEquals(true, value.isNull());
 		assertNotEquals(compare, value);
 	}
+	
+	@Test
+	public void testNullIntFloat() throws Exception {
+		value = new FloatValue(null);
+		DataValue compare = new IntValue(null);
+		DataValue compare2 = new IntValue(0);
+		DataValue compare3 = new IntValue(0);
+		DataValue compare4 = new FloatValue(0f);
+		assertNotEquals(value,compare);
+		assertNotEquals(compare, compare2);
+		assertEquals(compare2, compare3);
+		assertNotEquals(value, compare4);
+	}
 
 	@Test
 	public void testNullDateTime() throws Exception {
@@ -82,6 +95,7 @@ public class NullValueTest {
 	
 	@Test
 	public void testNullPeriod() throws Exception {
+		System.out.println("newtest");
 		value = new PeriodValue(null,null,null);
 		Period compare = Period.of(0, 0, 0);
 		assertEquals(compare, value.getValue());
