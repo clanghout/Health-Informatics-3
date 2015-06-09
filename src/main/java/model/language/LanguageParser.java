@@ -2,7 +2,6 @@ package model.language;
 
 import model.data.value.*;
 import model.language.nodes.*;
-import model.process.analysis.operations.dates.constraint.DateComparison;
 import org.parboiled.BaseParser;
 import org.parboiled.Rule;
 import org.parboiled.support.Var;
@@ -182,9 +181,48 @@ class LanguageParser extends BaseParser<Object> {
 
 	Rule DateExpression() {
 		return FirstOf(
+				DateOperation(),
+				Sequence("(", DateExpression(), ")"),
 				DateTimeLiteral(),
 				DateLiteral(),
 				DateColumn()
+		);
+	}
+
+	Rule DateTerm() {
+		return FirstOf(
+				DateTimeLiteral(),
+				DateLiteral(),
+				DateColumn(),
+				Sequence("(", DateExpression(), ")")
+		);
+	}
+
+	Rule DateOperation() {
+		return Sequence(
+				DateTerm(),
+				OneOrMore(WhiteSpaceChars()),
+				DateOperators(),
+				OneOrMore(WhiteSpaceChars()),
+				PeriodLiteral(),
+				swap3(),
+				push(
+						new DateOperationNode(
+								(ValueNode<TemporalValue<?>>) pop(),
+								(String) pop(),
+								(ValueNode<PeriodValue>) pop()
+						)
+				)
+		);
+	}
+
+	Rule DateOperators() {
+		return Sequence(
+				FirstOf(
+						"ADD",
+						"MIN"
+				),
+				push(match())
 		);
 	}
 
@@ -516,7 +554,8 @@ class LanguageParser extends BaseParser<Object> {
 				Comparison(),
 				Equality(),
 				UnaryBooleanOperation(),
-				Sequence("(", BooleanExpression(), ")"));
+				Sequence("(", BooleanExpression(), ")")
+		);
 	}
 
 	Rule BooleanOperator() {
