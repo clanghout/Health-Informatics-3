@@ -140,7 +140,8 @@ public class VisualizationController {
 			GraphCreationDialog graphCreationDialog = new GraphCreationDialog();
 			graphCreationDialog.show();
 
-			PopupVisualizationController popupController = graphCreationDialog.getFxml().getController();
+			PopupVisualizationController popupController =
+					graphCreationDialog.getFxml().getController();
 			popupController.initializeView(model, this, graphCreationDialog);
 
 		} catch (NullPointerException e) {
