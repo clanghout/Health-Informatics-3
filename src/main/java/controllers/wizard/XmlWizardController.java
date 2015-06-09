@@ -14,6 +14,7 @@ import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.stage.FileChooser;
 import javafx.util.converter.DefaultStringConverter;
 import model.data.DataTable;
+import model.data.value.DataValue;
 import model.exceptions.DataFileNotRecognizedException;
 import model.input.file.DataFile;
 import model.output.XmlWriter;
@@ -29,6 +30,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Controller class for the wizard to make the user able to create a datafile specifying xml.
@@ -131,6 +133,7 @@ public class XmlWizardController {
 		startLine.setText(String.valueOf(selectedFile.getStartLine()));
 		endLine.setText(String.valueOf(selectedFile.getEndLine()));
 
+		updateColumnsView();
 	}
 
 	private TableColumn<ObservableList<StringProperty>, String> createColumn(int index,
@@ -147,12 +150,40 @@ public class XmlWizardController {
 		datafiles.getItems().add(file);
 	}
 
+	private void updateColumnsView() {
+		try {
+			datacolumns.getItems().clear();
+			Map<String, Class<? extends DataValue>> columns = selectedFile.getColumns();
+
+			for (Map.Entry<String, Class<? extends DataValue>> entry : columns.entrySet()) {
+				ObservableList<StringProperty> row = FXCollections.observableArrayList();
+				row.add(new SimpleStringProperty(DataFile.getStringColumnType(entry.getValue())));
+				row.add(new SimpleStringProperty(entry.getKey()));
+				datacolumns.getItems().add(row);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
 	@FXML
 	public void addColumnRow(ActionEvent actionEvent) {
-		ObservableList<StringProperty> row = FXCollections.observableArrayList();
-		row.add(new SimpleStringProperty(columnName.getText()));
-		row.add(new SimpleStringProperty((String) columntype.getValue()));
-		datacolumns.getItems().add(row);
+		try {
+			if (selectedFile != null) {
+				ObservableList<StringProperty> row = FXCollections.observableArrayList();
+
+				String colName = columnName.getText();
+				String colType = (String) columntype.getValue();
+
+				row.add(new SimpleStringProperty(colName));
+				row.add(new SimpleStringProperty(colType));
+
+				selectedFile.getColumns().put(colName, DataFile.getColumnType(colType));
+				datacolumns.getItems().add(row);
+			}
+		} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+		}
 	}
 
 	private List<DataFile> createDataFiles() {
