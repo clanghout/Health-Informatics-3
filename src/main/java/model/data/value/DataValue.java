@@ -21,7 +21,7 @@ public abstract class DataValue<Type> {
 		return isNull;
 	}
 	
-	public void setNull(boolean nul) {
+	protected void setNull(boolean nul) {
 		isNull = nul;
 	}
 }
