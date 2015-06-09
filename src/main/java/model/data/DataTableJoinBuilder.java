@@ -132,7 +132,6 @@ public class DataTableJoinBuilder extends DataTableBuilder{
 	}
 
 	private void generateMappingCombinedCollumns() {
-
 		for (Map.Entry<DataColumn, DataColumn> entry : combineColumns.entrySet()) {
 			if (mappingColumns.containsKey(entry.getValue())) {
 				mappingColumns.put(entry.getKey(), mappingColumns.get(entry.getKey()));
