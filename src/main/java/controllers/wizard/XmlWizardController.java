@@ -157,8 +157,8 @@ public class XmlWizardController {
 
 			for (Map.Entry<String, Class<? extends DataValue>> entry : columns.entrySet()) {
 				ObservableList<StringProperty> row = FXCollections.observableArrayList();
-				row.add(new SimpleStringProperty(DataFile.getStringColumnType(entry.getValue())));
 				row.add(new SimpleStringProperty(entry.getKey()));
+				row.add(new SimpleStringProperty(DataFile.getStringColumnType(entry.getValue())));
 				datacolumns.getItems().add(row);
 			}
 		} catch (ClassNotFoundException e) {
@@ -208,31 +208,20 @@ public class XmlWizardController {
 
 	private void writeXmlToFile(File file) {
 		XmlWriter writer = new XmlWriter(createDataFiles());
-		try {
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			Transformer transformer = transformerFactory.newTransformer();
-			DOMSource source = new DOMSource(writer.createDocument());
-
-//			StreamResult result = new StreamResult(file);
-			StreamResult result = new StreamResult(System.out);
-			transformer.transform(source, result);
-
-		} catch (ParserConfigurationException
-				| FileNotFoundException
-				| ClassNotFoundException
-				| TransformerException e) {
-			e.printStackTrace();
-		}
+		writer.write(file);
 	}
 
 	@FXML
 	public void removeColumnRow(ActionEvent actionEvent) {
+		List items = datacolumns.getItems();
+		items.remove(datacolumns.getSelectionModel().getSelectedItem());
 
 	}
 
 	@FXML
 	public void removeDataFile(ActionEvent actionEvent) {
-
+		List items = datafiles.getItems();
+		items.remove(datafiles.getSelectionModel().getSelectedItem());
 	}
 
 	@FXML

@@ -9,6 +9,12 @@ import org.w3c.dom.Node;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,8 +71,21 @@ public class XmlWriter {
 	/**
 	 * Writes the xml to a file.
 	 */
-	public void write(String path) {
-		//TODO: write to xml file
+	public void write(File file) {
+		try {
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			Transformer transformer = transformerFactory.newTransformer();
+			DOMSource source = new DOMSource(createDocument());
+
+			StreamResult result = new StreamResult(file);
+			transformer.transform(source, result);
+
+		} catch (ParserConfigurationException
+				| FileNotFoundException
+				| ClassNotFoundException
+				| TransformerException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private Element createFileElement(DataFile dataFile)
