@@ -18,16 +18,12 @@ public class TimeValue extends TemporalValue<LocalTime> {
 	 */
 	public TimeValue(Integer hour, Integer minute, Integer second) {
 		super("HH:mm:ss");
-		if (hour == null) {
-			hour = 0;
+		if (hour == null || minute == null || second == null) {
+			time = LocalTime.of(0, 0, 0);
+			isNull = true;
+		} else {
+			time = LocalTime.of(hour, minute, second);
 		}
-		if (minute == null) {
-			minute = 0;
-		}
-		if (second == null) {
-			second = 0;
-		}
-		time = LocalTime.of(hour, minute, second);
 	}
 
 	@Override

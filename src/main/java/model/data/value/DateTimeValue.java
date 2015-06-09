@@ -15,15 +15,13 @@ public class DateTimeValue extends TemporalValue<LocalDateTime> {
 	public DateTimeValue(Integer year, Integer month, Integer day,
 			Integer hour, Integer minute, Integer second) {
 		super("dd-MM-yyyy HH:mm:ss");
-		if (year == null) {
-			year = 0;
-			month = 1;
-			day = 1;
-			hour = 0;
-			minute = 0;
-			second = 0;
+		if (year == null || month == null || day == null || hour == null
+				|| minute == null || second == null) {
+			isNull = true;
+			dateTime = LocalDateTime.of(0, 1, 1, 0, 0, 0);
+		} else {
+			dateTime = LocalDateTime.of(year, month, day, hour, minute, second);
 		}
-		dateTime = LocalDateTime.of(year, month, day, hour, minute, second);
 	}
 
 	@Override

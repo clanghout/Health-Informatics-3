@@ -9,6 +9,7 @@ public final class FloatValue extends NumberValue<Float> {
 	public FloatValue(Float value) {
 		if (value == null) {
 			this.value = 0.0f;
+			isNull = true;
 		} else {
 			this.value = value;
 		}

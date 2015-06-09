@@ -9,6 +9,7 @@ public class StringValue extends DataValue<String> {
 	public StringValue(String value) {
 		if (value == null) {
 			this.value = "";
+			isNull = true;
 		} else {
 			this.value = value;
 		}

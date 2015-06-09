@@ -14,7 +14,12 @@ abstract class TemporalValue<T extends TemporalAccessor> extends DataValue<T> {
 	private String format;
 
 	TemporalValue(String format) {
-		this.format = format;
+		if (format == null) {
+			this.format = "";
+			isNull = true;
+		} else {
+			this.format = format;
+		}
 	}
 
 	/**
