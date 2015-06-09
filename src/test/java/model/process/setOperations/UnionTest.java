@@ -1,12 +1,10 @@
 package model.process.setOperations;
 
-import model.data.DataRow;
-import model.data.DataTable;
-import model.data.DataTableBuilder;
-import model.data.Table;
+import model.data.*;
 import model.data.value.FloatValue;
 import model.data.value.NumberValue;
 import model.data.value.StringValue;
+import model.language.Identifier;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -16,7 +14,7 @@ import static org.junit.Assert.*;
  */
 public class UnionTest {
 
-	@Test(expected = Exception.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalUnion() throws Exception {
 		DataTableBuilder builder = new DataTableBuilder();
 		builder.createColumn("c1", StringValue.class);
@@ -31,10 +29,18 @@ public class UnionTest {
 		builder2.setName("table2");
 
 		DataTable table2 = builder2.build();
-		Union union = new Union(table1,table2);
+
+		DataModel model = new DataModel();
+		model.add(table1);
+		model.add(table2);
+
+		Union union = new Union(new Identifier<>("table1"), new Identifier<>("table2"));
+		union.setDataModel(model);
+
+		union.process();
 	}
 
-	@Test(expected = Exception.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalUnion2() throws Exception {
 		DataTableBuilder builder = new DataTableBuilder();
 		builder.createColumn("c1", StringValue.class);
@@ -49,7 +55,14 @@ public class UnionTest {
 		builder2.setName("table2");
 
 		DataTable table2 = builder2.build();
-		Union union = new Union(table1,table2);
+		DataModel model = new DataModel();
+		model.add(table1);
+		model.add(table2);
+
+		Union union = new Union(new Identifier<>("table1"), new Identifier<>("table2"));
+		union.setDataModel(model);
+
+		union.process();
 	}
 
 	@Test
@@ -67,7 +80,12 @@ public class UnionTest {
 		builder2.createRow(new StringValue("test2"));
 
 		DataTable table2 = builder2.build();
-		Union union = new Union(table1,table2);
+		DataModel model = new DataModel();
+		model.add(table1);
+		model.add(table2);
+
+		Union union = new Union(new Identifier<>("table1"), new Identifier<>("table2"));
+		union.setDataModel(model);
 
 		DataTable table3 = union.doProcess();
 
@@ -93,7 +111,12 @@ public class UnionTest {
 		builder2.createRow(new StringValue("test"));
 
 		DataTable table2 = builder2.build();
-		Union union = new Union(table1,table2);
+		DataModel model = new DataModel();
+		model.add(table1);
+		model.add(table2);
+
+		Union union = new Union(new Identifier<>("table1"), new Identifier<>("table2"));
+		union.setDataModel(model);
 
 		DataTable table3 = union.doProcess();
 
@@ -119,7 +142,12 @@ public class UnionTest {
 
 
 		DataTable table2 = builder2.build();
-		Union union = new Union(table1,table2);
+		DataModel model = new DataModel();
+		model.add(table1);
+		model.add(table2);
+
+		Union union = new Union(new Identifier<>("table1"), new Identifier<>("table2"));
+		union.setDataModel(model);
 
 		DataTable table3 = union.doProcess();
 
@@ -161,7 +189,12 @@ public class UnionTest {
 
 
 		DataTable table2 = builder2.build();
-		Union union = new Union(table1,table2);
+		DataModel model = new DataModel();
+		model.add(table1);
+		model.add(table2);
+
+		Union union = new Union(new Identifier<>("table1"), new Identifier<>("table2"));
+		union.setDataModel(model);
 
 		DataTable table3 = union.doProcess();
 
