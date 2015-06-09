@@ -2,6 +2,7 @@ package model.language;
 
 import model.data.value.*;
 import model.language.nodes.*;
+import model.process.analysis.operations.dates.constraint.DateComparison;
 import org.parboiled.BaseParser;
 import org.parboiled.Rule;
 import org.parboiled.support.Var;
@@ -223,9 +224,19 @@ class LanguageParser extends BaseParser<Object> {
 		return Sequence(
 				DateExpression(),
 				OneOrMore(WhiteSpaceChars()),
-				FirstOf("AFTER", "BEFORE"),
+				Sequence(
+						FirstOf("AFTER", "BEFORE"),
+						push(match())
+				),
 				OneOrMore(WhiteSpaceChars()),
-				DateExpression()
+				DateExpression(),
+				swap3(),
+				push(new DateCompareNode(
+						(ValueNode<? extends TemporalValue<?>>) pop(),
+						(String) pop(),
+						(ValueNode<? extends TemporalValue<?>>) pop()
+				)
+			)
 		);
 	}
 
@@ -370,6 +381,13 @@ class LanguageParser extends BaseParser<Object> {
 	 * Matches any comparison and pushes a CompareNode on the stack.
 	 */
 	Rule Comparison() {
+		return FirstOf(
+				DateComparison(),
+				NumberComparison()
+		);
+	}
+
+	Rule NumberComparison() {
 		return Sequence(
 				NumberExpression(),
 				WhiteSpace(),
