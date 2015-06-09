@@ -199,7 +199,7 @@ public class LanguageParserTest {
 	@Test
 	public void testDateComparison() throws Exception {
 		BasicParseRunner runner = new BasicParseRunner(parser.BooleanExpression());
-		String input = "#1995-01-17# BEFORE #1996-01-17#";
+		String input = "#1995-01-17 10:00:23# BEFORE #1996-01-17 10:00:30#";
 
 		ParsingResult result = runner.run(input);
 

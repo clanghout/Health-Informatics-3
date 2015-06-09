@@ -4,6 +4,7 @@ import model.data.Row;
 import model.data.describer.DataDescriber;
 import model.data.value.TemporalValue;
 
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 
@@ -34,13 +35,7 @@ public abstract class DateComparison extends DateConstraint {
 	protected boolean check(Row row) {
 		Temporal leftValue = getLeft().resolve(row).getValue();
 		Temporal rightValue = getRight().resolve(row).getValue();
-		long amount;
-		if (leftValue.isSupported(ChronoUnit.SECONDS)
-				&& rightValue.isSupported(ChronoUnit.SECONDS)) {
-			amount = ChronoUnit.SECONDS.between(leftValue, rightValue);
-		} else {
-			amount = ChronoUnit.DAYS.between(leftValue, rightValue);
-		}
+		long amount = ChronoUnit.SECONDS.between(leftValue, rightValue);
 		return compare(amount);
 	}
 

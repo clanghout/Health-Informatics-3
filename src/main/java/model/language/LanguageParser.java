@@ -183,7 +183,8 @@ class LanguageParser extends BaseParser<Object> {
 	Rule DateExpression() {
 		return FirstOf(
 				DateTimeLiteral(),
-				DateLiteral()
+				DateLiteral(),
+				DateColumn()
 		);
 	}
 
@@ -281,6 +282,13 @@ class LanguageParser extends BaseParser<Object> {
 						(ValueNode<IntValue>) pop()
 					)
 				)
+		);
+	}
+
+	Rule DateColumn() {
+		return Sequence(
+				ColumnIdentifier(),
+				push(new TableValueNode<TemporalValue>((ColumnIdentifier) pop()))
 		);
 	}
 
