@@ -39,7 +39,7 @@ public class DataTableJoinBuilder extends DataTableBuilder{
 		this.table = table;
 		this.fullLeft = false;
 		this.fullRight = false;
-		this.combineColumns = new HashMap<>();
+		this.combineColumns = new LinkedHashMap<>();
 		this.constrain = new ConstantDescriber<>(new BoolValue(true));
 	}
 
@@ -136,6 +136,7 @@ public class DataTableJoinBuilder extends DataTableBuilder{
 	 * @param nameColumn possible name for the column.
 	 */
 	private void checkNameCollision(Map<String, DataColumn> mappingNewNameToOldColumns,
+									Map<DataColumn, String> mappingColumnsToName,
 									Set<String> forbidden,
 									DataColumn column,
 									String nameColumn) {
@@ -144,14 +145,15 @@ public class DataTableJoinBuilder extends DataTableBuilder{
 			String newName = mappingNewNameToOldColumns.get(nameColumn).getTable().getName()
 					+ "_" + nameColumn;
 			DataColumn tempColumn = mappingNewNameToOldColumns.remove(nameColumn);
-			checkNameCollision(mappingNewNameToOldColumns, forbidden, tempColumn, newName);
+			checkNameCollision(mappingNewNameToOldColumns, mappingColumnsToName, forbidden, tempColumn, newName);
 		}
 
 		if (forbidden.contains(nameColumn)) {
 			String newName = column.getTable().getName() + "_" + nameColumn;
-			checkNameCollision(mappingNewNameToOldColumns, forbidden, column, newName);
+			checkNameCollision(mappingNewNameToOldColumns, mappingColumnsToName, forbidden, column, newName);
 		} else {
 			mappingNewNameToOldColumns.put(nameColumn, column);
+			mappingColumnsToName.put(column, nameColumn);
 		}
 	}
 
@@ -159,16 +161,17 @@ public class DataTableJoinBuilder extends DataTableBuilder{
 	 * assign to each column a unique name
 	 * @return a map that maps unique names to columns
 	 */
-	private Map<String, DataColumn> addColumnToNameMapping() {
-		Map<String, DataColumn> mappingNewNameToOldColumns = new HashMap<>();
+	private Map<DataColumn, String> addColumnToNameMapping() {
+		Map<String, DataColumn> mappingNewNameToOldColumns = new LinkedHashMap<>();
+		Map<DataColumn, String> mappingOldColumnsToNewName = new LinkedHashMap<>();
 		Set<String> forbidden = new HashSet<>();
 
 		for (DataColumn column : table.getColumns()) {
 			if (!combineColumns.containsKey(column)) {
-				checkNameCollision(mappingNewNameToOldColumns, forbidden, column, column.getName());
+				checkNameCollision(mappingNewNameToOldColumns, mappingOldColumnsToNewName, forbidden, column, column.getName());
 			}
 		}
-		return mappingNewNameToOldColumns;
+		return mappingOldColumnsToNewName;
 	}
 
 	/**
@@ -176,9 +179,9 @@ public class DataTableJoinBuilder extends DataTableBuilder{
 	 * @return a mapping of old columns to new columns
 	 */
 	private Map<DataColumn, DataColumn> addColumns() {
-		mappingColumns = new HashMap<>();
-		Map<String, DataColumn> mappingNewNameToOldColumns = addColumnToNameMapping();
-		generateMappingColumns(mappingNewNameToOldColumns);
+		Map<DataColumn, String> mappingOldColumnsToNewName = addColumnToNameMapping();
+		mappingColumns = new LinkedHashMap<>();
+		generateMappingColumns(mappingOldColumnsToNewName);
 
 		generateMappingCombinedCollumns();
 
@@ -192,7 +195,7 @@ public class DataTableJoinBuilder extends DataTableBuilder{
 	private void generateMappingCombinedCollumns() {
 		for (Map.Entry<DataColumn, DataColumn> entry : combineColumns.entrySet()) {
 			if (mappingColumns.containsKey(entry.getValue())) {
-				mappingColumns.put(entry.getKey(), mappingColumns.get(entry.getKey()));
+				mappingColumns.put(entry.getKey(), mappingColumns.get(entry.getValue()));
 			}
 		}
 	}
@@ -201,15 +204,15 @@ public class DataTableJoinBuilder extends DataTableBuilder{
 	 * create the new columns and generate the mapping bewteen the old and new columns.
 	 * @param mappingNewNameToOldColumns mapping between the new names and the old columns
 	 */
-	private void generateMappingColumns(Map<String, DataColumn> mappingNewNameToOldColumns) {
-		for (Map.Entry<String, DataColumn> entry : mappingNewNameToOldColumns.entrySet()) {
+	private void generateMappingColumns(Map<DataColumn, String> mappingNewNameToOldColumns) {
+		for (Map.Entry<DataColumn, String> entry : mappingNewNameToOldColumns.entrySet()) {
 			DataColumn newColumn = new DataColumn(
-					entry.getKey(),
+					entry.getValue(),
 					null,
-					entry.getValue().getType());
+					entry.getKey().getType());
 
 			this.addColumn(newColumn);
-			mappingColumns.put(entry.getValue(), newColumn);
+			mappingColumns.put(entry.getKey(), newColumn);
 		}
 	}
 
@@ -220,13 +223,14 @@ public class DataTableJoinBuilder extends DataTableBuilder{
 	private void processRows() {
 		for (Row row : (Iterable<Row>) table) {
 			DataRow newRow = new DataRow();
+			if (constrain.resolve(row).getValue()) {
+				for (Map.Entry<DataColumn, DataColumn> entry : mappingColumns.entrySet()) {
+					newRow.setValue(entry.getValue(), row.getValue(entry.getKey()));
+					newRow.addCodes(row.getCodes());
+				}
 
-			for (Map.Entry<DataColumn, DataColumn> entry : mappingColumns.entrySet()) {
-				newRow.setValue(entry.getValue(), row.getValue(entry.getKey()));
-				newRow.addCodes(row.getCodes());
+				this.addRow(newRow);
 			}
-
-			this.addRow(newRow);
 		}
 	}
 
