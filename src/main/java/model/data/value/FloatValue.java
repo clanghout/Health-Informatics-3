@@ -31,7 +31,7 @@ public final class FloatValue extends NumberValue<Float> {
 	}
 
 	@Override
-	public int compareTo(NumberValue other) {
+	public int compareTo(DataValue other) {
 		if (!(other instanceof FloatValue)) {
 			throw new IllegalArgumentException(
 					"FloatValue cannot compare to non floats");
@@ -41,7 +41,7 @@ public final class FloatValue extends NumberValue<Float> {
 	}
 
 	@Override
-	public int hashCode() {
+	public int doHashCode() {
 		return Float.floatToIntBits(value);
 	}
 }

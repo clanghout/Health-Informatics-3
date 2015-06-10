@@ -1,17 +1,15 @@
 package model.input.file;
 
-import java.io.FileNotFoundException;
-import java.util.Iterator;
-
 import model.data.DataTable;
-import model.data.DataTableBuilder;
 import model.data.value.DataValue;
 import model.data.value.FloatValue;
 import model.data.value.IntValue;
 import model.data.value.StringValue;
-
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+
+import java.io.FileNotFoundException;
+import java.util.Iterator;
 
 /**
  * Class representing a general MS Excel file.
@@ -20,63 +18,73 @@ import org.apache.poi.ss.usermodel.Row;
  */
 public abstract class ExcelFile extends DataFile {
 
+	/**
+	 * Creates a new ExcelFile.
+	 * @param path The path to the Excel file
+	 */
 	public ExcelFile(String path) {
 		super(path);
 	}
-	
+
 	/**
-	 * Creates an InputStream formed by an Iterator that iterates over the rows of either an
-	 * xls file or an xlsx file. Returns a stream with rows as lines in which the columns are
-	 * delimited with tab characters.
+	 * Creates a new DataTable from the excel file.
 	 * @param rowIterator The Iterator over the rows
-	 * @return the new stream of rows
+	 * @return A new DataTable
 	 * @throws FileNotFoundException when the file is not found
 	 */
 	protected DataTable createTable(Iterator<Row> rowIterator) throws FileNotFoundException {
 
-		DataTableBuilder builder = new DataTableBuilder();
-		builder.setName(this.getFile().getName().replace(".", ""));
+		getBuilder().setName(getFile().getName().replace(".", ""));
 		if (hasFirstRowAsHeader()) {
 			Row headers = rowIterator.next();
 			for (int i = 0; i < getColumnTypes().length; i++) {
 				getColumns().put(headers.getCell(i).getStringCellValue(), getColumnTypes()[i]);
 			}
-		} else {			
+		} else {
 			for (String key : getColumns().keySet()) {
-				builder.createColumn(key, getColumns().get(key));
+				getBuilder().createColumn(key, getColumns().get(key));
 			}
 		}
-		
+		if (hasMetaData()) {
+			getBuilder().createColumn(getMetaDataColumnName(), getMetaDataType());
+		}
+		addRows(rowIterator);
+		return getBuilder().build();
+	}
+
+	private void addRows(Iterator<Row> rowIterator) {
 		while (rowIterator.hasNext()) {
 			Row row = rowIterator.next();
-			DataValue[] values = new DataValue[getColumns().size()];
+			DataValue[] values;
+			if (hasMetaData()) {
+				values = new DataValue[getColumns().size() + 1];
+			} else {
+				values = new DataValue[getColumns().size()];
+			}
 			for (int i = 0; i < getColumns().size(); i++) {
 				Cell cell = row.getCell(i, Row.CREATE_NULL_AS_BLANK);
 				values[i] = toDataValue(cell);
 			}
-			builder.createRow(values);
+			if (hasMetaData()) {
+				values[values.length - 1] = getMetaDataValue();
+			}
+			getBuilder().createRow(values);
 		}
-		return builder.build();
 	}
-	
+
 	private DataValue toDataValue(Cell cell) {
-		DataValue value = null;
 		switch (cell.getCellType()) {
-			case Cell.CELL_TYPE_STRING: 
-				value = new StringValue(cell.getStringCellValue());
-				break;			
-			case Cell.CELL_TYPE_NUMERIC: 
+			case Cell.CELL_TYPE_STRING:
+				return new StringValue(cell.getStringCellValue());
+			case Cell.CELL_TYPE_NUMERIC:
 				double cellValue = cell.getNumericCellValue();
-				value = (cellValue % 1 == 0) 
+				return (cellValue % 1 == 0)
 						? new IntValue((int) cellValue) : new FloatValue((float) cellValue);
-				break;					
-			case Cell.CELL_TYPE_BLANK: 
-				value = new StringValue("");
-				break;
+			case Cell.CELL_TYPE_BLANK:
+				return new StringValue("");
 			default: throw new UnsupportedOperationException(
 					String.format("Cell type %s not supported", cell.getCellType())
 			);
 		}
-		return value;
 	}
 }

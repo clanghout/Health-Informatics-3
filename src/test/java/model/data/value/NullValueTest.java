@@ -103,4 +103,19 @@ public class NullValueTest {
 		assertEquals(compare, value.getValue());
 		assertEquals(true, value.isNull());
 	}
+
+
+	@Test
+	public void testGetNullBoolValue() throws Exception {
+		value = DataValue.getNullInstance(BoolValue.class);
+		assertTrue(value instanceof BoolValue);
+		assertTrue(value.isNull());
+	}
+
+	@Test
+	public void testGetNullIntValue() throws Exception {
+		value = DataValue.getNullInstance(IntValue.class);
+		assertTrue(value instanceof IntValue);
+		assertTrue(value.isNull());
+	}
 }
