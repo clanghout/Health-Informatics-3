@@ -1,5 +1,7 @@
 package model.data;
 
+import java.util.List;
+
 import model.data.value.DataValue;
 
 /**
@@ -31,6 +33,16 @@ public class DataTableConversionBuilder extends DataTableBuilder {
 	 */
 	public void addRowsFromTable(DataTable table) {
 		for (DataRow row : table.getRows()) {
+			createRow(row);
+		}
+	}
+	
+	/**
+	 * Add all rows from a List to the builder.
+	 * @param table list of datarows.
+	 */
+	public void addRowsFromList(List<DataRow> rowList) {
+		for (DataRow row : rowList) {
 			createRow(row);
 		}
 	}

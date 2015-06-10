@@ -47,12 +47,21 @@ public class PeriodValue extends DataValue<Period> {
 	}
 
 	@Override
-	public int hashCode() {
+	public int doHashCode() {
 		return period.hashCode();
 	}
 
 	@Override
 	public String toString() {
 		return period.toString();
+	}
+
+	@Override
+	public int compareTo(DataValue other) {
+		if (!(other instanceof PeriodValue)) {
+			throw new IllegalArgumentException("Cannot compare period with non period.");
+		}
+		PeriodValue o = (PeriodValue) other;
+		return period.minus(o.period).getDays();
 	}
 }
