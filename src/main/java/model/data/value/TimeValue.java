@@ -28,7 +28,7 @@ public class TimeValue extends TemporalValue<LocalTime> {
 	
 	@Override
 	public int compareTo(DataValue other) {
-		if (!(other instanceof DateTimeValue)) {
+		if (!(other instanceof TimeValue)) {
 			throw new IllegalArgumentException("Cannot compare Time with non Time.");
 		}
 		TimeValue o = (TimeValue) other;
