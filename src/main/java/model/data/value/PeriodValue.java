@@ -13,8 +13,13 @@ public class PeriodValue extends DataValue<Period> {
 
 	private Period period;
 
-	public PeriodValue(int years, int months, int days) {
-		period = Period.of(years, months, days);
+	public PeriodValue(Integer years, Integer months, Integer days) {
+		if (years == null || months == null || days == null) {
+			period = Period.of(0, 0, 0);
+			setNull(true);
+		} else {
+			period = Period.of(years, months, days);
+		}
 	}
 
 	public static PeriodValue fromUnit(int amount, TemporalUnit unit) {
@@ -37,16 +42,8 @@ public class PeriodValue extends DataValue<Period> {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-
-		PeriodValue that = (PeriodValue) o;
-		return period.equals(that.period);
+	public boolean doEquals(Object o) {
+		return period.equals(((PeriodValue) o).period);
 	}
 
 	@Override

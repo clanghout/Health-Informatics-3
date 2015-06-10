@@ -1,7 +1,5 @@
 package model.data.value;
 
-
-
 /**
  * Data Class containing a value with type Int.
  */
@@ -11,6 +9,10 @@ public final class IntValue extends NumberValue<Integer> {
 	public IntValue(Integer value) {
 		if (value == null) {
 			this.value = 0;
+<<<<<<< HEAD
+=======
+			setNull(true);
+>>>>>>> master
 		} else {
 			this.value = value;
 		}
@@ -27,18 +29,15 @@ public final class IntValue extends NumberValue<Integer> {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof IntValue)) {
-			return false;
-		}
-		IntValue other = (IntValue) obj;
-		return other.value == this.value;
+	public boolean doEquals(Object obj) {
+		return ((IntValue) obj).value == this.value;
 	}
 
 	@Override
 	public int compareTo(DataValue other) {
 		if (!(other instanceof IntValue)) {
-			throw new IllegalArgumentException("IntValue cannot compare to non ints");
+			throw new IllegalArgumentException(
+					"IntValue cannot compare to non ints");
 		}
 		IntValue o = (IntValue) other;
 		return Integer.compare(value, o.value);

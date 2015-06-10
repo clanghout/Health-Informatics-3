@@ -8,22 +8,23 @@ public final class BoolValue extends DataValue<Boolean> {
 
 	private boolean value;
 
-	public BoolValue(boolean value) {
-		this.value = value;
+	public BoolValue(Boolean value) {
+		if (value == null) {
+			this.value = false;
+			setNull(true);
+		} else {
+			this.value = value;
+		}
 	}
 
 	@Override
 	public Boolean getValue() {
 		return value;
 	}
-
+	
 	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof BoolValue)) {
-			return false;
-		}
-		BoolValue other = (BoolValue) obj;
-		return other.value == this.value;
+	public boolean doEquals(Object obj) {
+		return ((BoolValue) obj).value == this.value;
 	}
 
 	@Override

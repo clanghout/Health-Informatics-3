@@ -44,7 +44,7 @@ public class PeriodNode extends ValueNode<PeriodValue> {
 		);
 	}
 
-	private ChronoUnit resolveUnit(String unit) {
+	static ChronoUnit resolveUnit(String unit) {
 		switch (unit) {
 			case "DAYS":
 				return ChronoUnit.DAYS;
@@ -52,6 +52,12 @@ public class PeriodNode extends ValueNode<PeriodValue> {
 				return ChronoUnit.MONTHS;
 			case "YEARS":
 				return ChronoUnit.YEARS;
+			case "HOURS":
+				return ChronoUnit.HOURS;
+			case "MINUTES":
+				return ChronoUnit.MINUTES;
+			case "SECONDS":
+				return ChronoUnit.SECONDS;
 			default:
 				throw new IllegalArgumentException(String.format("unit %s not supported", unit));
 		}

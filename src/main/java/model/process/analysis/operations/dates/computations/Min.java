@@ -13,7 +13,7 @@ import java.time.temporal.Temporal;
  *
  * Created by Boudewijn on 8-6-2015.
  */
-public class Min extends DateComputation {
+public class Min extends DateCalculation {
 
 	/**
 	 * Construct a new Min DateComputation.
@@ -25,7 +25,7 @@ public class Min extends DateComputation {
 	}
 
 	@Override
-	protected Temporal compute(Row row) {
+	protected Temporal calculate(Row row) {
 		Temporal time = getLeft().resolve(row).getValue();
 		Period timeAmount = getRight().resolve(row).getValue();
 		return timeAmount.subtractFrom(time);

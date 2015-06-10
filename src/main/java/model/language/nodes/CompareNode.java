@@ -1,8 +1,8 @@
 package model.language.nodes;
 
 import model.data.DataModel;
-import model.data.describer.ConstraintDescriber;
 import model.data.describer.DataDescriber;
+import model.data.describer.OperationDescriber;
 import model.process.analysis.operations.constraints.*;
 import model.data.value.BoolValue;
 import model.data.value.NumberValue;
@@ -42,7 +42,7 @@ public final class CompareNode<T extends NumberValue> extends OperationNode<Bool
 		DataDescriber<T> leftSide = left.resolve(model);
 		DataDescriber<T> rightSide = right.resolve(model);
 
-		return new ConstraintDescriber(resolveConstraint(leftSide, rightSide));
+		return new OperationDescriber<>(resolveConstraint(leftSide, rightSide));
 	}
 
 	private Constraint resolveConstraint(
