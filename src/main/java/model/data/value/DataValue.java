@@ -69,7 +69,6 @@ public abstract class DataValue<Type> {
 					classType.getMethod("getValue").getReturnType())
 					.newInstance(new Object[1]);
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new IllegalArgumentException("no such class");
 		}
 	}
