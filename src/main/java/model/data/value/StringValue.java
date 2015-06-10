@@ -31,7 +31,16 @@ public class StringValue extends DataValue<String> {
 	}
 
 	@Override
-	public int hashCode() {
+	public int doHashCode() {
 		return value.hashCode();
+	}
+
+	@Override
+	public int compareTo(DataValue other) {
+		if (!(other instanceof StringValue)) {
+			throw new IllegalArgumentException("IntValue cannot compare to non ints");
+		}
+		StringValue o = (StringValue) other;
+		return value.compareTo(o.value);
 	}
 }

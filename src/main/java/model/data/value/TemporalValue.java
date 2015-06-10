@@ -35,7 +35,7 @@ public abstract class TemporalValue<T extends Temporal> extends DataValue<T> {
 	}
 
 	@Override
-	public int hashCode() {
+	public int doHashCode() {
 		return getValue().hashCode();
 	}
 
