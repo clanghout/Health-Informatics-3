@@ -287,7 +287,7 @@ public abstract class DataFile {
 	 * Sets the class for the metadata column.
 	 * @param metaDataType The class for the metadata
 	 */
-	public void setMetaDataType(Class metaDataType) {
+	public void setMetaDataType(Class<? extends DataValue<?>> metaDataType) {
 		this.metaDataType = metaDataType;
 	}
 
