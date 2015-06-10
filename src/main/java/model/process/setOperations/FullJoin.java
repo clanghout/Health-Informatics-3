@@ -62,12 +62,7 @@ public class FullJoin extends Join {
 
 	@Override
 	protected void joinTable() {
-		try {
-			processFullJoin(getLeft(), getRight());
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException("join error");
-		}
+		processFullJoin(getLeft(), getRight());
 	}
 
 	@Override
@@ -81,7 +76,7 @@ public class FullJoin extends Join {
 	 */
 	private DataTable getLeft() {
 		if (left == null) {
-			left =  getDataModel().getByName(left.getName()).get();
+			left =  getDataModel().getByName(leftId.getName()).get();
 		}
 		return left;
 	}
@@ -92,7 +87,7 @@ public class FullJoin extends Join {
 	 */
 	private DataTable getRight() {
 		if (right == null) {
-			right =  getDataModel().getByName(right.getName()).get();
+			right =  getDataModel().getByName(rightId.getName()).get();
 		}
 		return right;
 	}
@@ -101,10 +96,8 @@ public class FullJoin extends Join {
 	 * Create the rows for the join.
 	 * @param leftRow row in the left table
 	 * @param rightRow row in the right table
-	 * @throws IllegalAccessException
-	 * @throws InstantiationException
 	 */
-	private void createRow(DataRow leftRow, DataRow rightRow) throws IllegalAccessException, InstantiationException {
+	private void createRow(DataRow leftRow, DataRow rightRow) {
 		DataRow newRow = new DataRow();
 		for (Map.Entry<DataColumn, DataColumn> entry : getMappingColumns().entrySet()) {
 			if (leftRow.hasColumn(entry.getKey())) {
@@ -114,7 +107,7 @@ public class FullJoin extends Join {
 						DataValue.getNullInstance(entry.getValue().getType()));
 			}
 			if (rightRow.hasColumn(entry.getKey())) {
-				checkValue(newRow, entry.getValue(), leftRow.getValue(entry.getKey()));
+				checkValue(newRow, entry.getValue(), rightRow.getValue(entry.getKey()));
 			}
 		}
 		newRow.addCodes(leftRow.getCodes());
@@ -124,10 +117,8 @@ public class FullJoin extends Join {
 
 	/**
 	 * Perform a Left/right/both full join, kind of join is based in fullLeft and fullRight boolean.
-	 * @throws IllegalAccessException
-	 * @throws InstantiationException
 	 */
-	private void processFullJoin(DataTable left, DataTable right) throws IllegalAccessException, InstantiationException {
+	private void processFullJoin(DataTable left, DataTable right) {
 		Set<Row> rightAdd = new HashSet<>();
 		for (DataRow leftRow : (Iterable<DataRow>) left) {
 			boolean leftAdd = false;
@@ -155,10 +146,8 @@ public class FullJoin extends Join {
 	/**
 	 * Add the rows from the right table that are not added to the result.
 	 * @param rightAdd set of rows that are set in the result table.
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
 	 */
-	private void addNotAddedRighRows(Set<Row> rightAdd) throws InstantiationException, IllegalAccessException {
+	private void addNotAddedRighRows(Set<Row> rightAdd) {
 		for (DataRow rightRow : (Iterable<DataRow>) right) {
 			if (!rightAdd.contains(right)) {
 				createRow(new DataRow(), rightRow);
