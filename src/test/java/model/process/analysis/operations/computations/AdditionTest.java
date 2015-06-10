@@ -36,7 +36,7 @@ public class AdditionTest {
 
 	@Test
 	public void testAdditionFloatConstants() throws Exception {
-		Addition check = new Addition<>(new ConstantDescriber<>(new FloatValue(123)), new ConstantDescriber<>(new FloatValue(456.567f)));
+		Addition check = new Addition<>(new ConstantDescriber<>(new FloatValue(123f)), new ConstantDescriber<>(new FloatValue(456.567f)));
 		assertEquals(new FloatValue(579.567f), check.compute(null));
 	}
 
@@ -48,7 +48,7 @@ public class AdditionTest {
 
 	@Test(expected = UnsupportedOperationException.class)
 	public void testFloatIntFail() throws Exception {
-		Addition check = new Addition<>(new ConstantDescriber<>(new FloatValue(123)), new ConstantDescriber<>(new IntValue(456)));
+		Addition check = new Addition<>(new ConstantDescriber<>(new FloatValue(123f)), new ConstantDescriber<>(new IntValue(456)));
 		check.compute(null);
 	}
 }

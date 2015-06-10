@@ -29,10 +29,10 @@ public class SetCodeTest {
 		builder.createColumn("c1", StringValue.class);
 		builder.createColumn("c2", FloatValue.class);
 
-		builder.createRow(new StringValue("test"), new FloatValue(3));
-		builder.createRow(new StringValue("test2"), new FloatValue(2));
-		builder.createRow(new StringValue("test3"), new FloatValue(1));
-		builder.createRow(new StringValue("test4"), new FloatValue(0));
+		builder.createRow(new StringValue("test"), new FloatValue(3f));
+		builder.createRow(new StringValue("test2"), new FloatValue(2f));
+		builder.createRow(new StringValue("test3"), new FloatValue(1f));
+		builder.createRow(new StringValue("test4"), new FloatValue(0f));
 
 		DataTableBuilder builder2 = new DataTableBuilder();
 		builder2.setName("test2");
@@ -40,8 +40,8 @@ public class SetCodeTest {
 		builder2.createColumn("c1", StringValue.class);
 		builder2.createColumn("c2", FloatValue.class);
 
-		builder2.createRow(new StringValue("test2"), new FloatValue(2));
-		builder2.createRow(new StringValue("test3"), new FloatValue(1));
+		builder2.createRow(new StringValue("test2"), new FloatValue(2f));
+		builder2.createRow(new StringValue("test3"), new FloatValue(1f));
 
 		input = builder.build();
 		codeTable = builder2.build();

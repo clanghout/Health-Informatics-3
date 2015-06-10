@@ -45,7 +45,7 @@ public class MultiplicationTest {
 
 	@Test(expected = UnsupportedOperationException.class)
 	public void testFloatIntFail() throws Exception {
-		Multiplication check = new Multiplication<>(new ConstantDescriber<>(new FloatValue(123)), new ConstantDescriber<>(new IntValue(456)));
+		Multiplication check = new Multiplication<>(new ConstantDescriber<>(new FloatValue(123f)), new ConstantDescriber<>(new IntValue(456)));
 		check.compute(null);
 	}
 }
