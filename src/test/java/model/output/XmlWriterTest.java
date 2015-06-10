@@ -23,7 +23,6 @@ import static org.mockito.Mockito.when;
  */
 public class XmlWriterTest {
 
-	XmlWriter writer;
 	@Mock
 	PlainTextFile textFile;
 
@@ -59,7 +58,7 @@ public class XmlWriterTest {
 		assertEquals(1, root.getChildNodes().getLength());
 		assertEquals("file", root.getFirstChild().getNodeName());
 		Element fileElem = (Element) root.getElementsByTagName("file").item(0);
-		assertEquals("Prettyname.txt", fileElem.getAttribute("name"));
+		assertEquals("/path/to/Prettyname.txt", fileElem.getAttribute("name"));
 
 		Element columns = (Element) fileElem
 				.getElementsByTagName("columns").item(0);
@@ -80,11 +79,6 @@ public class XmlWriterTest {
 				.item(4)).getAttribute("type"));
 		assertEquals("datetime", ((Element)columns.getElementsByTagName("column")
 				.item(5)).getAttribute("type"));
-
-	}
-
-	@Test
-	public void testWrite() throws Exception {
 
 	}
 }
