@@ -28,7 +28,7 @@ public final class BoolValue extends DataValue<Boolean> {
 	}
 
 	@Override
-	public int hashCode() {
+	public int doHashCode() {
 		return Boolean.hashCode(value);
 	}
 

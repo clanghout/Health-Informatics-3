@@ -41,7 +41,7 @@ public final class FloatValue extends NumberValue<Float> {
 	}
 
 	@Override
-	public int hashCode() {
+	public int doHashCode() {
 		return Float.floatToIntBits(value);
 	}
 }

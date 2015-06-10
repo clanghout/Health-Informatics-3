@@ -16,12 +16,10 @@ import model.data.value.DataValue;
  * @author Louis Gosschalk 09-06-2015
  */
 public class SortProcess extends DataProcess {
-	private DataTable table;
 	private RowValueDescriber<DataValue> column;
 	private Order order;
 
-	public SortProcess(DataTable table, RowValueDescriber<DataValue> column, Order order) {
-		this.table = table;
+	public SortProcess(RowValueDescriber<DataValue> column, Order order) {
 		this.column = column;
 		this.order = order;
 	}
@@ -31,8 +29,7 @@ public class SortProcess extends DataProcess {
 	 */
 	@Override
 	protected Table doProcess() {
-		
-		ArrayList<DataRow> sortlist = new ArrayList<>(table.getRows());
+		ArrayList<DataRow> sortlist = new ArrayList<>(((DataTable) getInput()).getRows());
 		Collections.sort(sortlist, (DataRow row1, DataRow row2) -> {
 			int orderValue = column.resolve(row1).compareTo(column.resolve(row2));
 			return order == Order.DESCENDING ? -1 * orderValue : orderValue;
@@ -50,7 +47,7 @@ public class SortProcess extends DataProcess {
 	}
 	
 	/**
-	 * Function used in sort and reverseSort to rebuild the table after sorting.
+	 * Function used to rebuild the table after sorting.
 	 * 
 	 * @author Louis Gosschalk
 	 * @param sortlist
@@ -58,11 +55,11 @@ public class SortProcess extends DataProcess {
 	 * @return table remade
 	 */
 	private Table clearAndCreate(ArrayList sortlist) {
-		table.clearRows();
+		DataTable input = (DataTable) getInput();
 		DataTableConversionBuilder builder = new DataTableConversionBuilder(
-				table, table.getName());
+				input, input.getName());
 		builder.addRowsFromList(sortlist);
-		table = builder.build();
+		DataTable table = builder.build();
 		return table;
 	}
 }

@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.temporal.Temporal;
 
 /**
- * Represent a value containg a date.
+ * Represent a value containing a date.
  */
 public class DateValue extends TemporalValue<LocalDate> {
 
