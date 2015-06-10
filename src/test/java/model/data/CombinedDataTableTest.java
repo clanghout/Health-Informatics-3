@@ -111,9 +111,9 @@ public class CombinedDataTableTest {
 		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1));
 		Iterator<? extends Row> it = comb.iterator();
 		assertTrue(it.hasNext());
-		assertEquals(it.next().getValue(columns[1][0]).toString(), "awfg");
+		assertEquals("awfg", it.next().getValue(columns[1][0]).toString());
 		assertTrue(it.hasNext());
-		assertEquals(it.next().getValue(columns[1][0]).toString(), "sfa");
+		assertEquals("sfa", it.next().getValue(columns[1][0]).toString());
 		assertFalse(it.hasNext());
 	}
 
@@ -133,28 +133,28 @@ public class CombinedDataTableTest {
 		assertTrue(it.hasNext());
 		Row row;
 		row = it.next();
-		assertEquals(row.getValue(columns[0][1]).toString(), "value2");
-		assertEquals(row.getValue(columns[1][1]).toString(), "fsa");
+		assertEquals("value2", row.getValue(columns[0][1]).toString());
+		assertEquals("fsa", row.getValue(columns[1][1]).toString());
 		assertTrue(it.hasNext());
 		row = it.next();
-		assertEquals(row.getValue(columns[0][1]).toString(), "value2b");
-		assertEquals(row.getValue(columns[1][1]).toString(), "fsa");
+		assertEquals("value2b", row.getValue(columns[0][1]).toString());
+		assertEquals("fsa", row.getValue(columns[1][1]).toString());
 		assertTrue(it.hasNext());
 		row = it.next();
-		assertEquals(row.getValue(columns[0][1]).toString(), "value2c");
-		assertEquals(row.getValue(columns[1][1]).toString(), "fsa");
+		assertEquals("value2c", row.getValue(columns[0][1]).toString());
+		assertEquals("fsa", row.getValue(columns[1][1]).toString());
 		assertTrue(it.hasNext());
 		row = it.next();
-		assertEquals(row.getValue(columns[0][1]).toString(), "value2");
-		assertEquals(row.getValue(columns[1][1]).toString(), "asf");
+		assertEquals("value2", row.getValue(columns[0][1]).toString());
+		assertEquals("asf", row.getValue(columns[1][1]).toString());
 		assertTrue(it.hasNext());
 		row = it.next();
-		assertEquals(row.getValue(columns[0][1]).toString(), "value2b");
-		assertEquals(row.getValue(columns[1][1]).toString(), "asf");
+		assertEquals("value2b", row.getValue(columns[0][1]).toString());
+		assertEquals("asf", row.getValue(columns[1][1]).toString());
 		assertTrue(it.hasNext());
 		row = it.next();
-		assertEquals(row.getValue(columns[0][1]).toString(), "value2c");
-		assertEquals(row.getValue(columns[1][1]).toString(), "asf");
+		assertEquals("value2c", row.getValue(columns[0][1]).toString());
+		assertEquals("asf", row.getValue(columns[1][1]).toString());
 		assertFalse(it.hasNext());
 	}
 
@@ -172,9 +172,9 @@ public class CombinedDataTableTest {
 
 		comb.deleteNotFlagged();
 
-		assertEquals(dataTables.get(0).getRowCount(), 2);
-		assertEquals(dataTables.get(1).getRowCount(), 2);
-		assertEquals(dataTables.get(2).getRowCount(), 1);
+		assertEquals(2, dataTables.get(0).getRowCount());
+		assertEquals(2, dataTables.get(1).getRowCount());
+		assertEquals(1, dataTables.get(2).getRowCount());
 	}
 
 	@Test
@@ -190,9 +190,9 @@ public class CombinedDataTableTest {
 
 		comb.deleteNotFlagged();
 
-		assertEquals(dataTables.get(0).getRowCount(), 1);
-		assertEquals(dataTables.get(1).getRowCount(), 1);
-		assertEquals(dataTables.get(2).getRowCount(), 1);
+		assertEquals(1, dataTables.get(0).getRowCount());
+		assertEquals(1, dataTables.get(1).getRowCount());
+		assertEquals(1, dataTables.get(2).getRowCount());
 	}
 
 
@@ -227,12 +227,12 @@ public class CombinedDataTableTest {
 
 		ConstraintAnalysis analysis = new ConstraintAnalysis(new ConstraintDescriber(columnCheck));
 
-		assertEquals(table1.getRowCount(), 5);
-		assertEquals(table2.getRowCount(), 5);
+		assertEquals(5, table1.getRowCount());
+		assertEquals(5, table2.getRowCount());
 		analysis.analyse(comb);
 
-		assertEquals(table1.getRowCount(), 3);
-		assertEquals(table2.getRowCount(), 3);
+		assertEquals(3, table1.getRowCount());
+		assertEquals(3, table2.getRowCount());
 
 		table1.getRows();
 
@@ -325,23 +325,23 @@ public class CombinedDataTableTest {
 		DataTable copy = comb.export("test");
 
 		List<DataRow> rowsCopy = copy.getRows();
-		assertEquals(rowsCopy.get(0).getValue(copy.getColumn("test1.column1")).toString(), "value1");
-		assertEquals(rowsCopy.get(0).getValue(copy.getColumn("test2.column2")).toString(), "fsa");
-		assertEquals(rowsCopy.get(0).getValue(copy.getColumn("test3.column1")).toString(), "ewa");
+		assertEquals("value1", rowsCopy.get(0).getValue(copy.getColumn("test1.column1")).toString());
+		assertEquals("fsa", rowsCopy.get(0).getValue(copy.getColumn("test2.column2")).toString());
+		assertEquals("ewa", rowsCopy.get(0).getValue(copy.getColumn("test3.column1")).toString());
 
-		assertEquals(rowsCopy.get(1).getValue(copy.getColumn("test1.column1")).toString(), "value1b");
-		assertEquals(rowsCopy.get(1).getValue(copy.getColumn("test2.column2")).toString(), "fsa");
-		assertEquals(rowsCopy.get(1).getValue(copy.getColumn("test3.column1")).toString(), "ewa");
+		assertEquals("value1b", rowsCopy.get(1).getValue(copy.getColumn("test1.column1")).toString());
+		assertEquals("fsa", rowsCopy.get(1).getValue(copy.getColumn("test2.column2")).toString());
+		assertEquals("ewa", rowsCopy.get(1).getValue(copy.getColumn("test3.column1")).toString());
 
-		assertEquals(rowsCopy.get(3).getValue(copy.getColumn("column3")).toString(), "value3");
-		assertEquals(rowsCopy.get(3).getValue(copy.getColumn("test2.column2")).toString(), "asf");
-		assertEquals(rowsCopy.get(3).getValue(copy.getColumn("test3.column1")).toString(), "ewa");
+		assertEquals("value3", rowsCopy.get(3).getValue(copy.getColumn("column3")).toString());
+		assertEquals("asf", rowsCopy.get(3).getValue(copy.getColumn("test2.column2")).toString());
+		assertEquals("ewa", rowsCopy.get(3).getValue(copy.getColumn("test3.column1")).toString());
 
-		assertEquals(rowsCopy.get(5).getValue(copy.getColumn("test1.column2")).toString(), "value2c");
-		assertEquals(rowsCopy.get(5).getValue(copy.getColumn("test2.column1")).toString(), "sfa");
-		assertEquals(rowsCopy.get(5).getValue(copy.getColumn("test3.column1")).toString(), "ewa");
+		assertEquals("value2c", rowsCopy.get(5).getValue(copy.getColumn("test1.column2")).toString());
+		assertEquals("sfa", rowsCopy.get(5).getValue(copy.getColumn("test2.column1")).toString());
+		assertEquals("ewa", rowsCopy.get(5).getValue(copy.getColumn("test3.column1")).toString());
 
-		assertEquals(copy.getName(), "test");
+		assertEquals("test", copy.getName());
 	}
 
 	@Test
@@ -378,9 +378,24 @@ public class CombinedDataTableTest {
 				dataTables.get(2));
 		List<DataTable> list = comb.getTables();
 
-		assertEquals(list.get(0), dataTables.get(1));
-		assertEquals(list.get(1), dataTables.get(0));
-		assertEquals(list.get(2), dataTables.get(2));
+		assertEquals(dataTables.get(1), list.get(0));
+		assertEquals(dataTables.get(0), list.get(1));
+		assertEquals(dataTables.get(2), list.get(2));
+	}
+
+	@Test
+	public void testGetTable() throws Exception {
+		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
+		assertEquals(dataTables.get(0), comb.getTable("test1"));
+		assertEquals(dataTables.get(1), comb.getTable("test2"));
+		assertEquals(dataTables.get(2), comb.getTable("test3"));
+	}
+
+
+	@Test(expected = NoSuchElementException.class)
+	public void testGetTableException() throws Exception {
+		CombinedDataTable comb = new CombinedDataTable(dataTables.get(1), dataTables.get(0), dataTables.get(2));
+		comb.getTable("no");
 	}
 
 }

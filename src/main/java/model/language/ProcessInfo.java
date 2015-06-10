@@ -4,12 +4,10 @@ import model.data.DataModel;
 import model.data.describer.DataDescriber;
 import model.data.value.StringValue;
 import model.language.nodes.ValueNode;
-import model.process.DataProcess;
-import model.process.FromProcess;
-import model.process.IsProcess;
-import model.process.SetCode;
+import model.process.*;
 import model.process.analysis.ConstraintAnalysis;
 import model.process.setOperations.Difference;
+import model.process.setOperations.Union;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -45,7 +43,13 @@ class ProcessInfo {
 						.toArray(Identifier[]::new);
 				return new FromProcess(identifiers);
 			case "is":
-				return new IsProcess((Identifier) parameters[0]);
+				if (parameters.length == 1) {
+					return new IsProcess((Identifier) parameters[0]);
+				} else if(parameters.length == 2) {
+					return new DataTableIsProcess(
+							(Identifier) parameters[0],
+							(Identifier) parameters[1]);
+				}
 			case "constraint":
 				return new ConstraintAnalysis(macros.get(parameters[0]));
 			case "setCode":
@@ -55,6 +59,8 @@ class ProcessInfo {
 				return new SetCode(code, tableName);
 			case "difference":
 				return new Difference((Identifier) parameters[0], (Identifier) parameters[1]);
+			case "union":
+				return new Union((Identifier) parameters[0], (Identifier) parameters[1]);
 			default:
 				throw new UnsupportedOperationException("This code has not been implemented yet");
 		}

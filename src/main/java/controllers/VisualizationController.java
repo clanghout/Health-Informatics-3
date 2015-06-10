@@ -1,30 +1,50 @@
 package controllers;
 
-import controllers.Visualizations.BarChartController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.chart.Chart;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 import model.data.DataColumn;
 import model.data.DataModel;
 import model.data.DataTable;
+import view.GraphCreationDialog;
 
-import java.util.Observable;
-import java.util.Observer;
+import javax.imageio.ImageIO;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Control visualisation.
  * Created by Chris on 26-5-2015.
  */
-public class VisualizationController implements Observer {
+public class VisualizationController {
 	@FXML
-	private ComboBox<String> visualization;
+	private Parent root;
 	@FXML
-	private ComboBox<DataTable> table;
-
+	private VBox visualizationGraph;
+	@FXML
+	private Button makeGraphButton;
+	@FXML
+	private Button clearViewButton;
+	@FXML
+	private Button saveButton;
 	private DataModel model;
-	private DataTable dataTable;
+	private Logger logger = Logger.getLogger("VisualizationController");
+	private WritableImage image;
 
 	/**
 	 * Constructor for Visualization controller.
@@ -33,51 +53,56 @@ public class VisualizationController implements Observer {
 	}
 
 	/**
-	 * Sets the model that will be observed.
-	 *
-	 * @param model The model
-	 */
-	public void setDataModel(DataModel model) {
-		this.model = model;
-		model.addObserver(this);
-
-	}
-
-	/**
-	 * initialization module for the visualisation controller.
-	 * The dropdown menu's are disabled while no DataModel is loaded.
+	 * Initialization module for the visualisation controller.
+	 * This method is automatically called by javaFX on initialization.
+	 * The dropDown menu's are disabled while no DataModel is loaded.
 	 */
 	public void initialize() {
-		visualization.setDisable(true);
-		table.setDisable(true);
-		visualization.setMaxWidth(Double.MAX_VALUE);
-		table.setMaxWidth(Double.MAX_VALUE);
+		makeGraphButton.setDisable(true);
+		clearViewButton.setDisable(true);
+		saveButton.setDisable(true);
 	}
 
 	/**
 	 * Init method after a model is read.
 	 */
 	public void initializeVisualisation() {
-		visualization.setDisable(false);
-		table.setDisable(false);
+		makeGraphButton.setDisable(false);
+		clearViewButton.setDisable(false);
+	}
 
-		visualization.setItems(FXCollections.observableArrayList(
-				"BarChart", "BoxPlot"));
+	/**
+	 * Draw a javaFX chart object.
+	 *
+	 * @param chart the object drawn.
+	 */
+	public void drawGraph(Chart chart) {
+		visualizationGraph.getChildren().add(chart);
+		this.image = visualizationGraph.snapshot(new SnapshotParameters(), null);
+		saveButton.setDisable(false);
+	}
 
-		updateTableChoose();
-		table.valueProperty().addListener((observable, oldValue, newValue) -> {
-			this.dataTable = newValue;
-			visualization.setDisable(false);
-		});
-		visualization.valueProperty().addListener((observable, oldValue, newValue) -> {
-			switch (newValue) {
-				case "BarChart":
-					new BarChartController(dataTable).initialize();
-					break;
-				default:
-					break;
-			}
-		});
+	/**
+	 * Draw an image.
+	 *
+	 * @param image WritableImage to be drawn.
+	 */
+	public void drawImage(WritableImage image) {
+		this.image = image;
+		Node node = new ImageView(image);
+		node.maxWidth(Double.MAX_VALUE);
+		node.maxHeight(Double.MAX_VALUE);
+		visualizationGraph.getChildren().add(node);
+		saveButton.setDisable(false);
+	}
+
+	/**
+	 * Sets the model that will be observed.
+	 *
+	 * @param model The model
+	 */
+	public void setModel(DataModel model) {
+		this.model = model;
 	}
 
 	/**
@@ -105,25 +130,56 @@ public class VisualizationController implements Observer {
 	}
 
 	/**
-	 * set items of table to all the tables in the model.
+	 * Create a popupWindow and add the model to the controller.
 	 */
-	private void updateTableChoose() {
-		table.setItems(model.getObservableList());
+	@FXML
+	protected void handlePopupButtonAction() {
+		visualizationGraph.getChildren().clear();
+		saveButton.setDisable(true);
+		try {
+			GraphCreationDialog graphCreationDialog = new GraphCreationDialog();
+			graphCreationDialog.show();
 
+			PopupVisualizationController popupController =
+					graphCreationDialog.getFxml().getController();
+			popupController.initializeView(model, this, graphCreationDialog);
+
+		} catch (NullPointerException e) {
+			logger.log(Level.SEVERE, "No controller present");
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, "FXML file cannot be loaded");
+		}
 	}
 
 	/**
-	 * Update the instances in the table selection comboBox.
-	 * Whenever the observer notifies, the update method is called.
-	 *
-	 * @param o Observable dataModel where the tables in it can change on update.
-	 * @param arg an argument passed to the <code>notifyObservers</code>
-	 *                 method.
+	 * Save the graph as image.
 	 */
-	@Override
-	public void update(Observable o, Object arg) {
-		if (o instanceof DataModel) {
-			updateTableChoose();
+	@FXML
+	protected void handleSaveButtonAction() {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Save Image");
+		fileChooser.getExtensionFilters()
+				.add(new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png"));
+		File file = fileChooser.showSaveDialog(root.getScene().getWindow());
+		if (file != null) {
+			if (!file.getAbsolutePath().endsWith(".png")) {
+				file = new File(file.getAbsolutePath() + ".png");
+			}
+			RenderedImage renderedImage = SwingFXUtils.fromFXImage(image, null);
+			try {
+				ImageIO.write(renderedImage, "png", file);
+			} catch (IOException ex) {
+				System.out.println(ex.getMessage());
+			}
 		}
+	}
+
+	/**
+	 * Clear the graph.
+	 */
+	@FXML
+	protected void handleClearButtonAction() {
+		saveButton.setDisable(true);
+		visualizationGraph.getChildren().clear();
 	}
 }

@@ -1,75 +1,46 @@
 package model.data.value;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.time.LocalDateTime;
+import java.time.temporal.Temporal;
 
 /**
- * Data Class containing a value with type Calendar.
- * <p> type of value
- * This is the parent class of the dateValue and TimeValue.
+ * Represents a DateTime value.
  */
-public class DateTimeValue extends DataValue<Calendar> {
-	private SimpleDateFormat simpleDateFormat;
-	private Calendar value;
+public class DateTimeValue extends TemporalValue<LocalDateTime> {
 
-	/**
-	 * Construct new GregorianCalendar object and simpleDateFormat.
-	 *
-	 * @param year   the year as int
-	 * @param month  the month as int, in the calendar months start by 0 so
-	 *               the parameter -1 is used in the creation of the calendar.
-	 * @param day    the day as int
-	 * @param hour   the hour as int
-	 * @param minute the minute as int
-	 * @param second the second as int
-	 */
-	public DateTimeValue(int year, int month, int day, int hour, int minute, int second) {
-		this.value = new GregorianCalendar(year, month - 1, day, hour, minute, second);
-		setSimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+	private LocalDateTime dateTime;
+
+	private DateTimeValue() {
+		super("dd-MM-yyyy HH:mm:ss");
 	}
 
 	/**
-	 * Set the format of the toString.
-	 *
-	 * @param format String that specifies the format of the date.
+	 * Construct new DateTimeValue.
 	 */
-	public void setSimpleDateFormat(String format) {
-		this.simpleDateFormat = new SimpleDateFormat(format);
-	}
-
-	@Override
-	public Calendar getValue() {
-		return (Calendar) value.clone();
-	}
-
-	@Override
-	public String toString() {
-		return simpleDateFormat.format(value.getTime());
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof DateTimeValue)) {
-			return false;
+	public DateTimeValue(Integer year, Integer month, Integer day,
+			Integer hour, Integer minute, Integer second) {
+		super("dd-MM-yyyy HH:mm:ss");
+		if (year == null || month == null || day == null || hour == null
+				|| minute == null || second == null) {
+			setNull(true);
+			dateTime = LocalDateTime.of(0, 1, 1, 0, 0, 0);
+		} else {
+			dateTime = LocalDateTime.of(year, month, day, hour, minute, second);
 		}
-		DateTimeValue other = (DateTimeValue) obj;
-		return other.value.equals(this.value)
-				&& other.simpleDateFormat.equals(this.simpleDateFormat);
+	}
+
+	public DateTimeValue(Temporal temporal) {
+		this();
+		dateTime = LocalDateTime.from(temporal);
 	}
 
 	@Override
-	public int hashCode() {
-		return value.hashCode();
+	public LocalDateTime getValue() {
+		return dateTime;
 	}
 
 	@Override
-	public DataValue copy() {
-		DateTimeValue  res = new DateTimeValue(0, 0, 0, 0, 0, 0);
-		res.value = (Calendar) value.clone();
-		res.simpleDateFormat = (SimpleDateFormat) simpleDateFormat.clone();
-
-		return res;
-
+	protected boolean doEquals(Object obj) {
+		return ((DateTimeValue) obj).getValue().equals(this.dateTime);
 	}
 }

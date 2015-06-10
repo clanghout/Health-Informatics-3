@@ -1,0 +1,36 @@
+.hbox-button {
+	-fx-spacing: 5px;
+	-fx-padding: 0px 0px 0px 15px;
+}
+
+.hbox {
+	-fx-width: 340px;
+	-fx-spacing: 5px;
+}
+
+.top-pane {
+	-fx-padding: 5px;
+	-fx-spacing: 5px;
+	-fx-hgap: 10;
+	-fx-vgap: 10;
+}
+
+.label {
+	-fx-pref-height: 25px;
+	-fx-text-alignment: center;
+}
+
+.standardVBox {
+	-fx-spacing: 5px;
+}
+
+.popup-box {
+	-fx-padding: 14px;
+	-fx-spacing: 5px;
+	-fx-pref-height: 340px;
+	-fx-pref-width: 340px;
+}
+
+.visualization-input-dropdown {
+	-fx-spacing: 5px;
+}

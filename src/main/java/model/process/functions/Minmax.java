@@ -10,10 +10,10 @@ import model.data.value.NumberValue;
  * 
  * @author louisgosschalk 13-05-2015
  */
-public abstract class Minmax extends Function {
+abstract class Minmax extends Function {
 
-	public Minmax(DataTable model, DataDescriber<NumberValue> argument) {
-		super(model, argument);
+	Minmax(DataTable table, DataDescriber<NumberValue> argument) {
+		super(table, argument);
 	}
 
 	/**
@@ -24,7 +24,7 @@ public abstract class Minmax extends Function {
 	@Override
 	public FloatValue calculate() {
 		if (!initialize()) {
-			return new FloatValue(0);
+			return new FloatValue(0f);
 		}
 		return compare();
 	}

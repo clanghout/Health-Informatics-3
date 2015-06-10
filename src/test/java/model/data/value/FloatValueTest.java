@@ -36,19 +36,18 @@ public class FloatValueTest {
 	}
 
 	@Test
+	public void testEqualsWithNull() throws Exception {
+		DataValue value = new FloatValue(0f);
+		DataValue asNull = new FloatValue(null);
+
+		assertNotEquals(value, asNull);
+	}
+
+	@Test
 	public void testHashCode() throws Exception {
 		Float val = 2335f;
 		DataValue value = new FloatValue(val);
 		DataValue samevalue = new FloatValue(val);
 		assertEquals(samevalue.hashCode(),value.hashCode());
-	}
-
-	@Test
-	public void testcopy() throws Exception {
-		Float val = 2335f;
-		DataValue value = new FloatValue(val);
-		DataValue copy = value.copy();
-		assertEquals(copy.getValue(),value.getValue());
-		assertEquals(copy.getClass(),value.getClass());
 	}
 }

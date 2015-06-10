@@ -161,11 +161,20 @@ public abstract class Table implements Iterable {
 			Row row = iterator.next();
 
 			for (Map.Entry<DataColumn, DataColumn> entry: mappingColumns.entrySet()) {
-				newRow.setValue(entry.getValue(), row.getValue(entry.getKey()).copy());
+				newRow.setValue(entry.getValue(), row.getValue(entry.getKey()));
 				newRow.addCodes(row.getCodes());
 			}
 			builder.addRow(newRow);
 		}
 	}
+
+	/**
+	 * Return the table with the name name.
+	 * When a dataTable has the name name, it will return itself.
+	 * A combineDataTable will search its table for the name.
+	 * @param name name of the table.
+	 * @return a the table with the name name
+	 */
+	public abstract DataTable getTable(String name);
 
 }

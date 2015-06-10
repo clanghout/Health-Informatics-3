@@ -7,7 +7,12 @@ public class StringValue extends DataValue<String> {
 	private String value;
 
 	public StringValue(String value) {
-		this.value = value;
+		if (value == null) {
+			this.value = "";
+			setNull(true);
+		} else {
+			this.value = value;
+		}
 	}
 
 	@Override
@@ -21,17 +26,8 @@ public class StringValue extends DataValue<String> {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof StringValue)) {
-			return false;
-		}
-		StringValue other = (StringValue) obj;
-		return other.value.equals(value);
-	}
-
-	@Override
-	public StringValue copy() {
-		return new StringValue(value);
+	public boolean doEquals(Object obj) {
+		return ((StringValue) obj).value.equals(value);
 	}
 
 	@Override

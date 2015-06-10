@@ -17,8 +17,8 @@ import model.data.value.NumberValue;
 public class Median extends Function {
 
 
-	public Median(DataTable model, DataDescriber<NumberValue> argument) {
-		super(model, argument);
+	public Median(DataTable table, DataDescriber<NumberValue> argument) {
+		super(table, argument);
 	}
 
 	/**
@@ -27,7 +27,7 @@ public class Median extends Function {
 	@Override
 	public FloatValue calculate() {
 		if (!initialize()) {
-			return new FloatValue(0);
+			return new FloatValue(0f);
 		}
 		List<Float> list = createList();
 		// Amount of rows is even -> add two middle rows and divide by 2

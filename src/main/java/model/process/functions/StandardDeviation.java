@@ -12,8 +12,8 @@ import model.data.value.NumberValue;
  */
 public class StandardDeviation extends Function {
 
-	public StandardDeviation(DataTable model, DataDescriber<NumberValue> argument) {
-		super(model, argument);
+	public StandardDeviation(DataTable table, DataDescriber<NumberValue> argument) {
+		super(table, argument);
 	}
 
 	/**
@@ -22,7 +22,7 @@ public class StandardDeviation extends Function {
 	@Override
 	public FloatValue calculate() {
 		if (!initialize()) {
-			return new FloatValue(0);
+			return new FloatValue(0f);
 		}
 		float average = new Average(getTable(), getArgument()).calculate().getValue();
 		float variance = variance(average);
