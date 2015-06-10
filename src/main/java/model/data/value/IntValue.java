@@ -24,6 +24,11 @@ public final class IntValue extends NumberValue<Integer> {
 	public String toString() {
 		return String.valueOf(value);
 	}
+	
+	@Override
+	public int doHashCode() {
+		return value;
+	}
 
 	@Override
 	public boolean doEquals(Object obj) {
@@ -31,17 +36,12 @@ public final class IntValue extends NumberValue<Integer> {
 	}
 
 	@Override
-	public int compareTo(NumberValue other) {
+	public int compareTo(DataValue other) {
 		if (!(other instanceof IntValue)) {
 			throw new IllegalArgumentException(
 					"IntValue cannot compare to non ints");
 		}
 		IntValue o = (IntValue) other;
 		return Integer.compare(value, o.value);
-	}
-
-	@Override
-	public int hashCode() {
-		return value;
 	}
 }

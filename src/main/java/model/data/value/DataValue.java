@@ -1,12 +1,14 @@
 package model.data.value;
 
+
 /**
  * Abstract class DataValue describing the DataValue objects.
  * 
  * @param <Type>
  *            return type of getValue()
  */
-public abstract class DataValue<Type> {
+
+public abstract class DataValue<Type> implements Comparable<DataValue> {
 	private boolean isNull;
 
 	public abstract Type getValue();
@@ -28,7 +30,11 @@ public abstract class DataValue<Type> {
 	}
 
 	@Override
-	public abstract int hashCode();
+	public int hashCode() {
+		return doHashCode();
+	}
+	
+	public abstract int doHashCode();
 
 	/**
 	 * Shows true if the value of the object is Null.
