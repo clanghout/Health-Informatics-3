@@ -21,7 +21,7 @@ public class FullJoin extends Join {
 	private Join join;
 
 	public enum Join {
-		Full, Left, Right, Join
+		FULL, LEFT, RIGHT, JOIN
 	}
 
 	private FullJoin(String name, Join join) {
@@ -29,10 +29,10 @@ public class FullJoin extends Join {
 		this.join = join;
 	}
 	/**
-	 * Join two tables.
+	 * JOIN two tables.
 	 * @param left left table
 	 * @param right right table
-	 * @param join type of join, Full, Left, Right or Join
+	 * @param join type of join, FULL, LEFT, RIGHT or JOIN
 	 */
 	public FullJoin(String name, Identifier<DataTable> left,
 					Identifier<DataTable> right,
@@ -43,10 +43,10 @@ public class FullJoin extends Join {
 	}
 
 	/**
-	 * Join two tables.
+	 * JOIN two tables.
 	 * @param left left table
 	 * @param right right table
-	 * @param join type of join, Full, Left, Right or Join
+	 * @param join type of join, FULL, LEFT, RIGHT or JOIN
 	 */
 	public FullJoin(String name, DataTable left,
 					DataTable right,
@@ -113,7 +113,7 @@ public class FullJoin extends Join {
 	}
 
 	/**
-	 * Perform a Left/right/both full join, kind of join is based in fullLeft and fullRight boolean.
+	 * Perform a LEFT/right/both full join, kind of join is based in fullLeft and fullRight boolean.
 	 */
 	private void processFullJoin(DataTable left, DataTable right) {
 		Set<Row> rightAdd = new HashSet<>();
@@ -130,11 +130,11 @@ public class FullJoin extends Join {
 					rightAdd.add(rightRow);
 				}
 			}
-			if (!leftAdd && (join.equals(Join.Left) || join.equals(Join.Full))) {
+			if (!leftAdd && (join == Join.LEFT || join == Join.FULL)) {
 				createRow(leftRow, new DataRow());
 			}
 		}
-		if (join.equals(Join.Right) || join.equals(Join.Full)) {
+		if (join == Join.RIGHT || join == Join.FULL) {
 			addNotAddedRighRows(rightAdd);
 		}
 	}

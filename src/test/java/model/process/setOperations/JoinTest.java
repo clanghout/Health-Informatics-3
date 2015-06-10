@@ -239,7 +239,7 @@ public class JoinTest {
 		builder.createRow(new StringValue("c14"), new StringValue("c24"), new StringValue("ac13"), new StringValue("c24"));
 		DataTable expected = builder.build();
 
-		FullJoin join = new FullJoin("res", table1, table2, FullJoin.Join.Join);
+		FullJoin join = new FullJoin("res", table1, table2, FullJoin.Join.JOIN);
 		join.setConstraint(new OperationDescriber<>(
 				new EqualityCheck<>(new RowValueDescriber<>(columnA), new RowValueDescriber(columnB))));
 
@@ -261,7 +261,7 @@ public class JoinTest {
 		DataTable expected = builder.build();
 
 
-		FullJoin join = new FullJoin("res", table1, table2, FullJoin.Join.Join);
+		FullJoin join = new FullJoin("res", table1, table2, FullJoin.Join.JOIN);
 		join.setConstraint(new OperationDescriber<>(
 				new EqualityCheck<>(new RowValueDescriber<>(columnA), new RowValueDescriber(columnB))));
 
@@ -273,7 +273,7 @@ public class JoinTest {
 
 	@Test (expected = IllegalStateException.class)
 	public void testBuildFJoin() throws Exception {
-		FullJoin join = new FullJoin("res", table1, table2, FullJoin.Join.Join);
+		FullJoin join = new FullJoin("res", table1, table2, FullJoin.Join.JOIN);
 		join.addCombineColumn(columnB, columnA);
 		join.process();
 	}
@@ -295,7 +295,7 @@ public class JoinTest {
 
 
 		FullJoin join = new FullJoin("res", new Identifier<>("test1"), new Identifier<>("test2"),
-				FullJoin.Join.Left);
+				FullJoin.Join.LEFT);
 		join.setDataModel(model);
 		join.setConstraint(new OperationDescriber<>(
 				new EqualityCheck<>(new RowValueDescriber<>(columnA), new RowValueDescriber(columnB))));
@@ -325,7 +325,7 @@ public class JoinTest {
 
 
 		FullJoin join = new FullJoin("res", new Identifier<>("test1"), new Identifier<>("test2"),
-				FullJoin.Join.Right);
+				FullJoin.Join.RIGHT);
 		join.setDataModel(model);
 		join.setConstraint(new OperationDescriber<>(
 				new EqualityCheck<>(new RowValueDescriber<>(columnA), new RowValueDescriber(columnB))));
@@ -358,7 +358,7 @@ public class JoinTest {
 
 
 		FullJoin join = new FullJoin("res", new Identifier<>("test1"), new Identifier<>("test2"),
-				FullJoin.Join.Full);
+				FullJoin.Join.FULL);
 		join.setDataModel(model);
 		join.setConstraint(new OperationDescriber<>(
 				new EqualityCheck<>(new RowValueDescriber<>(columnA), new RowValueDescriber(columnB))));
