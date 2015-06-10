@@ -403,4 +403,30 @@ public class ParserTest {
 
 		assertEquals(new IntValue(9), row3.getValue(table.getColumn("value")));
 	}
+
+	@Test
+	public void testParseCount() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("test2");
+
+		builder.createColumn("value", IntValue.class);
+
+		builder.createRow(new IntValue(1));
+		builder.createRow(new IntValue(2));
+
+		model.add(builder.build());
+
+		String input = "def isMax() : Constraint = test2.value = COUNT(test2.value);\n" +
+				"from(test2)|constraint(isMax)|is(result)";
+
+		Table result = parseAndProcess(input);
+		assertTrue(result instanceof DataTable);
+
+		DataTable table = (DataTable) result;
+
+		DataRow row1 = table.getRow(0);
+		assertEquals(1, table.getRowCount());
+
+		assertEquals(2, row1.getValue(table.getColumn("value")).getValue());
+	}
 }
