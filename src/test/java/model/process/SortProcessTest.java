@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 import model.data.DataColumn;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
-import model.data.Table;
 import model.data.describer.RowValueDescriber;
 import model.data.value.BoolValue;
 import model.data.value.DataValue;
@@ -81,8 +80,9 @@ public class SortProcessTest {
 	
 	@Test
 	public void testSorting() throws Exception {
+		assertEquals(new StringValue("klm"), table.getRow(0).getValue(stringcol));
 		DataProcess process = new SortProcess(table, new RowValueDescriber<>(datecol));
 		DataTable result = process.doProcess().getTable(table.getName());
-		assertEquals("abc", table.getRow(0).getValue(stringcol));
+		assertEquals(new StringValue("abc"), result.getRow(0).getValue(stringcol));
 	}
 }
