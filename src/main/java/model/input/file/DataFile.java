@@ -141,9 +141,8 @@ public abstract class DataFile {
 	 * Returns the type of the class based on a string describing the type.
 	 * @param type The name of the type
 	 * @return The classtype
-	 * @throws ClassNotFoundException When the class is not recognized
 	 */
-	public static Class getColumnType(String type) throws ClassNotFoundException {
+	public static Class getColumnType(String type) {
 		switch (type) {
 			case "int":
 				return IntValue.class;
@@ -158,7 +157,7 @@ public abstract class DataFile {
 			case "datetime" :
 				return DateTimeValue.class;
 			default:
-				throw new ClassNotFoundException();
+				throw new RuntimeException("The specified type of data is not supported");
 		}
 	}
 
@@ -166,9 +165,8 @@ public abstract class DataFile {
 	 * Returns a string describing the type of the class.
 	 * @param type The class
 	 * @return The type of class as a string
-	 * @throws ClassNotFoundException
 	 */
-	public static String getStringColumnType(Class type) throws ClassNotFoundException {
+	public static String getStringColumnType(Class type) {
 		if (type == IntValue.class) {
 			return "int";
 		} else if (type == FloatValue.class) {
@@ -182,7 +180,7 @@ public abstract class DataFile {
 		} else if (type == DateTimeValue.class) {
 			return "datetime";
 		} else {
-			throw new ClassNotFoundException();
+			throw new RuntimeException("The specified type of data is not supported");
 		}
 	}
 
@@ -309,7 +307,7 @@ public abstract class DataFile {
 	 * @param name The name that the metadata column will get
 	 * @param type The type of the column
 	 */
-	public void createMetaDataValue(String name, String type) throws ClassNotFoundException {
+	public void createMetaDataValue(String name, String type) {
 		try {
 			String fileName = this.getFile().getName();
 			String metaValue = fileName.substring(0, fileName.lastIndexOf("."));
