@@ -67,7 +67,10 @@ public class LanguageParserMatchTest {
 				{ parser.BooleanExpression(), "NOT(false)", true},
 				{ parser.NumberExpression(), "5 * 5", true},
 				{ parser.NumberExpression(), "(5 * 5) + 3", true},
-				{ parser.BooleanExpression(), "HAS_CODE(\"test\")", true}
+				{ parser.BooleanExpression(), "HAS_CODE(\"test\")", true},
+				{ parser.DateTimeLiteral(), "#1995-01-17 03:45#", true},
+				{ parser.DateTimeLiteral(), "#1995-01-17 03:35:33#", true},
+				{ parser.DateLiteral(), "#1995-01-17#", true}
 		};
 
 		return Arrays.asList(testData);

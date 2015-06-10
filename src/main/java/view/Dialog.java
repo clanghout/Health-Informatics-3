@@ -4,6 +4,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import java.io.IOException;
 
@@ -14,20 +16,37 @@ import java.io.IOException;
 public abstract class Dialog {
 	private Stage dialog;
 	private FXMLLoader fxml;
+	private Logger logger = Logger.getLogger("VisualizationController");
 
-
+	/**
+	 * Make a custom Dialog.
+	 * @param location the location of the fxml file describing the dialog.
+	 * @param name the name of the dialog window.
+	 * @throws IOException
+	 */
 	public Dialog(String location, String name) throws IOException {
-		fxml = new FXMLLoader(getClass().getResource(location));
+		try {
+			fxml = new FXMLLoader(getClass().getResource(location));
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, "resource not found");
+		}
 		Parent root = fxml.load();
 		dialog = new Stage();
 		dialog.setTitle(name);
 		dialog.setScene(new Scene(root));
 	}
 
+	/**
+	 * return the fxml file to retrieve the controller used.
+	 * @return the fxmlLoader for the dialog.
+	 */
 	public FXMLLoader getFxml() {
 		return fxml;
 	}
 
+	/**
+	 * Pop up the dialog.
+	 */
 	public void show() {
 		dialog.show();
 	}
@@ -40,5 +59,12 @@ public abstract class Dialog {
 	public void setSize(double width, double height) {
 		dialog.setHeight(height);
 		dialog.setWidth(width);
+	}
+
+	/**
+	 * Close the dialog.
+	 */
+	public void close() {
+		dialog.close();
 	}
 }

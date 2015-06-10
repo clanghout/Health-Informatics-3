@@ -9,6 +9,9 @@ import org.parboiled.Parboiled;
 import org.parboiled.parserunners.BasicParseRunner;
 import org.parboiled.support.ParsingResult;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
@@ -149,5 +152,71 @@ public class LanguageParserTest {
 		assertTrue(result.matched);
 		ValueNode<NumberValue> node = (ValueNode<NumberValue>) result.valueStack.pop();
 		assertEquals(5.0f, node.resolve(null).resolve(null).getValue());
+	}
+
+	@Test
+	public void testPeriodLiteral() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.PeriodLiteral());
+		String input = "#5 DAYS#";
+
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+		ValueNode<PeriodValue> node = (ValueNode<PeriodValue>) result.valueStack.pop();
+		assertEquals(Period.of(0, 0, 5), node.resolve(null).resolve(null).getValue());
+	}
+
+	@Test
+	public void testDateTimeExpression() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.DateExpression());
+		String input = "#1995-01-17 03:43#";
+
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+		ValueNode<DateTimeValue> node = (ValueNode<DateTimeValue>) result.valueStack.pop();
+		assertEquals(
+				LocalDateTime.of(1995, 1, 17, 3, 43, 0),
+				node.resolve(null).resolve(null).getValue()
+		);
+	}
+
+	@Test
+	public void testDateExpression() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.DateExpression());
+		String input = "#1995-01-17#";
+
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+		ValueNode<DateValue> node = (ValueNode<DateValue>) result.valueStack.pop();
+		assertEquals(
+				LocalDate.of(1995, 1, 17),
+				node.resolve(null).resolve(null).getValue()
+		);
+	}
+
+	@Test
+	public void testDateComparison() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.BooleanExpression());
+		String input = "#1995-01-17 10:00:23# BEFORE #1996-01-17 10:00:30#";
+
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+		ValueNode<BoolValue> node = (ValueNode<BoolValue>) result.valueStack.pop();
+		assertTrue(node.resolve(null).resolve(null).getValue());
+	}
+
+	@Test
+	public void testDateOperation() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.DateExpression());
+		String input = "(#1994-01-16# ADD #1 YEARS#) ADD #1 DAYS#";
+
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+		ValueNode<DateValue> node = (ValueNode<DateValue>) result.valueStack.pop();
+		assertEquals(LocalDate.of(1995, 1, 17), node.resolve(null).resolve(null).getValue());
 	}
 }
