@@ -32,7 +32,12 @@ public final class FloatValue extends NumberValue<Float> {
 
 	@Override
 	public int compareTo(NumberValue other) {
-		return Float.compare(value, ((FloatValue) other).value);
+		if (!(other instanceof FloatValue)) {
+			throw new IllegalArgumentException(
+					"FloatValue cannot compare to non floats");
+		}
+		FloatValue o = (FloatValue) other;
+		return Float.compare(value, o.value);
 	}
 
 	@Override

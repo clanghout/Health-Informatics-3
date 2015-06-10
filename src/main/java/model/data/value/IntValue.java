@@ -1,7 +1,5 @@
 package model.data.value;
 
-
-
 /**
  * Data Class containing a value with type Int.
  */
@@ -34,7 +32,12 @@ public final class IntValue extends NumberValue<Integer> {
 
 	@Override
 	public int compareTo(NumberValue other) {
-		return Integer.compare(value, ((IntValue) other).value);
+		if (!(other instanceof IntValue)) {
+			throw new IllegalArgumentException(
+					"IntValue cannot compare to non ints");
+		}
+		IntValue o = (IntValue) other;
+		return Integer.compare(value, o.value);
 	}
 
 	@Override
