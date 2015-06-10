@@ -1,10 +1,6 @@
 package model.process;
 
-import java.util.ArrayList;
-
 import model.data.DataModel;
-import model.data.DataTable;
-import model.data.DataTableConversionBuilder;
 import model.data.Table;
 
 /**
