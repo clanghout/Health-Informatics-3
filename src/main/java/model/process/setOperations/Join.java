@@ -5,6 +5,7 @@ import model.data.describer.ConstantDescriber;
 import model.data.describer.DataDescriber;
 import model.data.value.BoolValue;
 import model.data.value.DataValue;
+import model.language.ColumnIdentifier;
 import model.process.DataProcess;
 
 import java.util.*;
@@ -31,6 +32,7 @@ public abstract class Join extends DataProcess {
 	 */
 	private Map<DataColumn, DataColumn> combineColumns;
 
+	private Map<ColumnIdentifier, ColumnIdentifier> combineColumnsIdentifier;
 	/**
 	 * Initialize the mapping arrays ands set the constraint on true.
 	 */
@@ -38,6 +40,7 @@ public abstract class Join extends DataProcess {
 		this.builder = new DataTableBuilder();
 		builder.setName(name);
 		this.mappingColumns = new HashMap<>();
+		this.combineColumnsIdentifier = new LinkedHashMap<>();
 		this.combineColumns = new LinkedHashMap<>();
 		this.constraint = new ConstantDescriber<>(new BoolValue(true));
 	}
@@ -55,11 +58,25 @@ public abstract class Join extends DataProcess {
 	 * @param col1 column that should combined with the second one.
 	 * @param col2 column that must get in the result.
 	 */
-	public void addCombineColumn(DataColumn col1, DataColumn col2) {
-		if (!col1.getType().equals(col2.getType())) {
-			throw new IllegalArgumentException("type of columns differ");
+	public void addCombineColumn(ColumnIdentifier col1, ColumnIdentifier col2) {
+		combineColumnsIdentifier.put(col1, col2);
+	}
+
+	/**
+	 * Resolve the identifiers for the combined columns.
+	 */
+	private void reslveCombineColumnsIdentigiers() {
+		for (Map.Entry<ColumnIdentifier, ColumnIdentifier> entry
+				: combineColumnsIdentifier.entrySet()) {
+			DataColumn col1 = getDataModel().getByName(entry.getKey().getTable()).get()
+					.getColumn(entry.getKey().getColumn());
+			DataColumn col2 = getDataModel().getByName(entry.getValue().getTable()).get()
+					.getColumn(entry.getValue().getColumn());
+			if (!col1.getType().equals(col2.getType())) {
+				throw new IllegalArgumentException("type of columns differ");
+			}
+			combineColumns.put(col1, col2);
 		}
-		combineColumns.put(col1, col2);
 	}
 
 	/**
@@ -97,6 +114,7 @@ public abstract class Join extends DataProcess {
 	 */
 	@Override
 	protected DataTable doProcess() {
+		reslveCombineColumnsIdentigiers();
 		simplifyCombinedColumns();
 		addColumns();
 		joinTable();

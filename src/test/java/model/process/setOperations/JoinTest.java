@@ -5,6 +5,7 @@ import model.data.describer.OperationDescriber;
 import model.data.describer.RowValueDescriber;
 import model.data.value.FloatValue;
 import model.data.value.StringValue;
+import model.language.ColumnIdentifier;
 import model.language.Identifier;
 import model.process.analysis.operations.constraints.EqualityCheck;
 import org.junit.Before;
@@ -20,45 +21,49 @@ public class JoinTest {
 	DataTable table2;
 	DataTable table3;
 	DataModel model;
-	DataColumn columnA;
-	DataColumn columnB;
-	DataColumn columnC;
-	DataColumn columnD;
-	DataColumn columnE;
+	ColumnIdentifier columnA;
+	ColumnIdentifier columnB;
+	ColumnIdentifier columnC;
+	ColumnIdentifier columnD;
+	ColumnIdentifier columnE;
+	DataColumn colA;
+	DataColumn colB;
+	DataColumn colC;
 
 	@Before
 	public void setUp() {
 		DataTableBuilder builder = new DataTableBuilder();
 		builder.setName("test1");
 		builder.createColumn("c1", StringValue.class);
-		columnA = builder.createColumn("c2", StringValue.class);
+		colA = builder.createColumn("c2", StringValue.class);
 		builder.createRow(new StringValue("c11"), new StringValue("c21"));
 		builder.createRow(new StringValue("cb23"), new StringValue("ca33"));
 		builder.createRow(new StringValue("c12"), new StringValue("c22"));
 		builder.createRow(new StringValue("cb13"), new StringValue("ca23"));
 		builder.createRow(new StringValue("c13"), new StringValue("c23"));
 		builder.createRow(new StringValue("c14"), new StringValue("c24"));
+		columnA = new ColumnIdentifier(new Identifier("test1"), new Identifier("c2"));
 		table1 = builder.build();
 
 		builder = new DataTableBuilder();
 		builder.setName("test2");
 		builder.createColumn("c1", StringValue.class);
-		columnB = builder.createColumn("c2", StringValue.class);
+		colB = builder.createColumn("c2", StringValue.class);
 		builder.createRow(new StringValue("ac11"), new StringValue("c23"));
 		builder.createRow(new StringValue("ac12"), new StringValue("c22"));
 		builder.createRow(new StringValue("ac14"), new StringValue("d24"));
 		builder.createRow(new StringValue("ac13"), new StringValue("c24"));
 		builder.createRow(new StringValue("ac15"), new StringValue("d25"));
 		builder.createRow(new StringValue("ac16"), new StringValue("d26"));
-
+		columnB = new ColumnIdentifier(new Identifier("test2"), new Identifier("c2"));
 		table2 = builder.build();
 
 		builder = new DataTableBuilder();
 		builder.setName("test3");
 		builder.createColumn("c1", StringValue.class);
-		columnC = builder.createColumn("c2", StringValue.class);
-		columnD = builder.createColumn("c3", StringValue.class);
-		columnE = builder.createColumn("c4", StringValue.class);
+		colC = builder.createColumn("c2", StringValue.class);
+		builder.createColumn("c3", StringValue.class);
+		builder.createColumn("c4", StringValue.class);
 		builder.createRow(new StringValue("k11"), new StringValue("c21"),
 				new StringValue("c21"), new StringValue("c21"));
 		builder.createRow(new StringValue("kcb23"), new StringValue("cadf33"),
@@ -68,7 +73,9 @@ public class JoinTest {
 		builder.createRow(new StringValue("k13"), new StringValue("c23"),
 				new StringValue("c23"), new StringValue("c23"));
 		table3 = builder.build();
-
+		columnC = new ColumnIdentifier(new Identifier("test3"), new Identifier("c2"));
+		columnD = new ColumnIdentifier(new Identifier("test3"), new Identifier("c3"));
+		columnE = new ColumnIdentifier(new Identifier("test3"), new Identifier("c4"));
 
 
 		model = new DataModel();
@@ -91,7 +98,7 @@ public class JoinTest {
 
 		SimpleJoin join = new SimpleJoin("res", new CombinedDataTable(table1, table2));
 		join.setConstraint(new OperationDescriber<>(
-				new EqualityCheck<>(new RowValueDescriber<>(columnA), new RowValueDescriber(columnB))));
+				new EqualityCheck<>(new RowValueDescriber<>(colA), new RowValueDescriber(colB))));
 
 		DataTable res = (DataTable) join.process();
 
@@ -113,7 +120,7 @@ public class JoinTest {
 
 		SimpleJoin join = new SimpleJoin("res", new CombinedDataTable(table1, table2));
 		join.setConstraint(new OperationDescriber<>(
-				new EqualityCheck<>(new RowValueDescriber<>(columnA), new RowValueDescriber(columnB))));
+				new EqualityCheck<>(new RowValueDescriber<>(colA), new RowValueDescriber(colB))));
 
 		join.addCombineColumn(columnB, columnA);
 		DataTable res = (DataTable) join.process();
@@ -136,7 +143,7 @@ public class JoinTest {
 
 		SimpleJoin join = new SimpleJoin("res", new CombinedDataTable(table1, table2));
 		join.setConstraint(new OperationDescriber<>(
-				new EqualityCheck<>(new RowValueDescriber<>(columnA), new RowValueDescriber(columnB))));
+				new EqualityCheck<>(new RowValueDescriber<>(colA), new RowValueDescriber(colB))));
 
 		join.addCombineColumn(columnB, columnA);
 		join.addCombineColumn(columnA, columnB);
@@ -160,7 +167,7 @@ public class JoinTest {
 
 		SimpleJoin join = new SimpleJoin("res", new CombinedDataTable(table1, table3));
 		join.setConstraint(new OperationDescriber<>(
-				new EqualityCheck<>(new RowValueDescriber<>(columnA), new RowValueDescriber(columnC))));
+				new EqualityCheck<>(new RowValueDescriber<>(colA), new RowValueDescriber(colC))));
 
 		join.addCombineColumn(columnC, columnA);
 		join.addCombineColumn(columnD, columnA);
@@ -185,7 +192,7 @@ public class JoinTest {
 
 		SimpleJoin join = new SimpleJoin("res", new CombinedDataTable(table1, table3));
 		join.setConstraint(new OperationDescriber<>(
-				new EqualityCheck<>(new RowValueDescriber<>(columnA), new RowValueDescriber(columnC))));
+				new EqualityCheck<>(new RowValueDescriber<>(colA), new RowValueDescriber(colC))));
 
 		join.addCombineColumn(columnC, columnA);
 		join.addCombineColumn(columnD, columnC);
@@ -205,7 +212,9 @@ public class JoinTest {
 
 
 		SimpleJoin join = new SimpleJoin("res", new CombinedDataTable(table1, t));
-		join.addCombineColumn(c, columnA);
+		join.addCombineColumn(
+				new ColumnIdentifier(new Identifier("res"), new Identifier("c2"))
+				, columnA);
 
 	}
 
@@ -241,7 +250,7 @@ public class JoinTest {
 
 		FullJoin join = new FullJoin("res", table1, table2, FullJoin.Join.JOIN);
 		join.setConstraint(new OperationDescriber<>(
-				new EqualityCheck<>(new RowValueDescriber<>(columnA), new RowValueDescriber(columnB))));
+				new EqualityCheck<>(new RowValueDescriber<>(colA), new RowValueDescriber(colB))));
 
 		DataTable res = (DataTable) join.process();
 
@@ -263,7 +272,7 @@ public class JoinTest {
 
 		FullJoin join = new FullJoin("res", table1, table2, FullJoin.Join.JOIN);
 		join.setConstraint(new OperationDescriber<>(
-				new EqualityCheck<>(new RowValueDescriber<>(columnA), new RowValueDescriber(columnB))));
+				new EqualityCheck<>(new RowValueDescriber<>(colA), new RowValueDescriber(colB))));
 
 		join.addCombineColumn(columnB, columnA);
 		DataTable res = (DataTable) join.process();
@@ -298,7 +307,7 @@ public class JoinTest {
 				FullJoin.Join.LEFT);
 		join.setDataModel(model);
 		join.setConstraint(new OperationDescriber<>(
-				new EqualityCheck<>(new RowValueDescriber<>(columnA), new RowValueDescriber(columnB))));
+				new EqualityCheck<>(new RowValueDescriber<>(colA), new RowValueDescriber(colB))));
 
 		join.addCombineColumn(columnB, columnA);
 		DataTable res = (DataTable) join.process();
@@ -328,7 +337,7 @@ public class JoinTest {
 				FullJoin.Join.RIGHT);
 		join.setDataModel(model);
 		join.setConstraint(new OperationDescriber<>(
-				new EqualityCheck<>(new RowValueDescriber<>(columnA), new RowValueDescriber(columnB))));
+				new EqualityCheck<>(new RowValueDescriber<>(colA), new RowValueDescriber(colB))));
 
 		join.addCombineColumn(columnB, columnA);
 		DataTable res = (DataTable) join.process();
@@ -361,7 +370,7 @@ public class JoinTest {
 				FullJoin.Join.FULL);
 		join.setDataModel(model);
 		join.setConstraint(new OperationDescriber<>(
-				new EqualityCheck<>(new RowValueDescriber<>(columnA), new RowValueDescriber(columnB))));
+				new EqualityCheck<>(new RowValueDescriber<>(colA), new RowValueDescriber(colB))));
 
 		join.addCombineColumn(columnB, columnA);
 		DataTable res = (DataTable) join.process();
