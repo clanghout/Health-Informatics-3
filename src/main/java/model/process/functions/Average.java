@@ -15,13 +15,13 @@ public class Average extends Function {
 	/**
 	 * Construct a new average.
 	 * 
-	 * @param model
+	 * @param table
 	 *            table of data
 	 * @param argument
 	 *            specified column
 	 */
-	public Average(DataTable model, DataDescriber<NumberValue> argument) {
-		super(model, argument);
+	public Average(DataTable table, DataDescriber<NumberValue> argument) {
+		super(table, argument);
 	}
 
 	/**

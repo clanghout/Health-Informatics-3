@@ -17,8 +17,8 @@ import model.data.value.NumberValue;
 public class Median extends Function {
 
 
-	public Median(DataTable model, DataDescriber<NumberValue> argument) {
-		super(model, argument);
+	public Median(DataTable table, DataDescriber<NumberValue> argument) {
+		super(table, argument);
 	}
 
 	/**

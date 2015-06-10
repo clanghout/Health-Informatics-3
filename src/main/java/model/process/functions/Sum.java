@@ -12,8 +12,8 @@ import model.data.value.NumberValue;
  */
 public class Sum extends Function {
 
-	public Sum(DataTable model, DataDescriber<NumberValue> argument) {
-		super(model, argument);
+	public Sum(DataTable table, DataDescriber<NumberValue> argument) {
+		super(table, argument);
 	}
 
 	/**

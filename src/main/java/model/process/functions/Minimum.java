@@ -11,8 +11,8 @@ import model.data.value.NumberValue;
  */
 public class Minimum extends Minmax {
 
-	public Minimum(DataTable model, DataDescriber<NumberValue> argument) {
-		super(model, argument);
+	public Minimum(DataTable table, DataDescriber<NumberValue> argument) {
+		super(table, argument);
 	}
 
 	/**
