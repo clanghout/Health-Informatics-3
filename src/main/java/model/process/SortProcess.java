@@ -31,7 +31,6 @@ public class SortProcess extends DataProcess {
 	 */
 	@Override
 	protected Table doProcess() {
-		
 		ArrayList<DataRow> sortlist = new ArrayList<>(table.getRows());
 		Collections.sort(sortlist, (DataRow row1, DataRow row2) -> {
 			int orderValue = column.resolve(row1).compareTo(column.resolve(row2));
@@ -47,7 +46,7 @@ public class SortProcess extends DataProcess {
 	}
 	
 	/**
-	 * Function used in sort and reverseSort to rebuild the table after sorting.
+	 * Function used to rebuild the table after sorting.
 	 * 
 	 * @author Louis Gosschalk
 	 * @param table
@@ -57,7 +56,6 @@ public class SortProcess extends DataProcess {
 	 * @return table remade
 	 */
 	private Table clearAndCreate(ArrayList sortlist) {
-		table.clearRows();
 		DataTableConversionBuilder builder = new DataTableConversionBuilder(
 				table, table.getName());
 		builder.addRowsFromList(sortlist);

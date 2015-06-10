@@ -61,13 +61,6 @@ public class DataTable extends Table {
 	public List<DataRow> getRows() {
 		return Collections.unmodifiableList(rows);
 	}
-	
-	/**
-	 * Remove all current rows.
-	 */
-	public void clearRows() {
-		rows.clear();
-	}
 
 
 	/**
