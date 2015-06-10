@@ -20,6 +20,13 @@ public class FullJoin extends Join {
 
 	private Join join;
 
+	/**
+	 * Specify the type of join.
+	 * Full, all the rows of both tables should exist in the result.
+	 * Left, all the rows of the left table should exist in the result.
+	 * Right, all the rows of the right table should exist in the result.
+	 * Join, only the combined rows are added to the result.
+	 */
 	public enum Join {
 		FULL, LEFT, RIGHT, JOIN
 	}

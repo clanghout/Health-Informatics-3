@@ -216,7 +216,7 @@ public abstract class Join extends DataProcess {
 
 
 	/**
-	 * return the constraint for the join.
+	 * Return the constraint for the join.
 	 * @return the constrain that should be used with the join.
 	 */
 	protected DataDescriber<BoolValue> getConstraint() {
@@ -225,14 +225,14 @@ public abstract class Join extends DataProcess {
 
 	/**
 	 * Return the builder used to build the table.
-	 * @return the builde used to build the table.
+	 * @return the builder used to build the table.
 	 */
 	protected DataTableBuilder getBuilder() {
 		return builder;
 	}
 
 	/**
-	 * return the mapping of the old columns to the new columns.
+	 * Return the mapping of the old columns to the new columns.
 	 * @return a mapping of the old columns to the new columns.
 	 */
 	protected Map<DataColumn, DataColumn>  getMappingColumns() {
@@ -240,7 +240,8 @@ public abstract class Join extends DataProcess {
 	}
 
 	/**
-	 * Check if the value van added to the result table.
+	 * Check if the value is added to the result table.
+	 * If it is added and it is not the same value as the new value, throw an exception.
 	 * @param row row where the value should be set
 	 * @param column column that belongs to the value
 	 * @param newValue new value
