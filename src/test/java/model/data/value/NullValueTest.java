@@ -23,7 +23,7 @@ public class NullValueTest {
 		value = new BoolValue(null);
 		DataValue compare = new BoolValue(null);
 		assertEquals(false, value.getValue());
-		assertEquals(compare, value);
+		assertNotEquals(compare, value);
 		assertEquals(true, value.isNull());
 	}
 

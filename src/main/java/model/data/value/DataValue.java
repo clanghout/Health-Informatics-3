@@ -19,9 +19,6 @@ public abstract class DataValue<Type> {
 		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
-		if (isNull && ((DataValue) obj).isNull()) {
-			return true;
-		}
 		if (isNull || ((DataValue) obj).isNull()) {
 			return false;
 		}
