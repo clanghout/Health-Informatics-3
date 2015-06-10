@@ -1,7 +1,7 @@
 package model.data;
 
-import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 
 import model.data.value.DataValue;
 
@@ -38,7 +38,11 @@ public class DataTableConversionBuilder extends DataTableBuilder {
 		}
 	}
 	
-	public void addRowsFromArray(ArrayList table) {
+	/**
+	 * Add all rows from a List to the builder.
+	 * @param table list of datarows.
+	 */
+	public void addRowsFromList(List table) {
 		for (Object obj : table) {
 			if (!(obj instanceof DataRow)) {
 				throw new InputMismatchException("arraylist must exist of datarows");

@@ -89,23 +89,4 @@ public abstract class DataProcess {
 	public final DataModel getDataModel() {
 		return model;
 	}
-
-	/**
-	 * Function used in sort and reverseSort to rebuild the table after sorting.
-	 * 
-	 * @author Louis Gosschalk
-	 * @param table
-	 *            initial
-	 * @param sortlist
-	 *            sorted rows
-	 * @return table remade
-	 */
-	protected Table clearAndCreate(DataTable table, ArrayList sortlist) {
-		table.clearRows();
-		DataTableConversionBuilder builder = new DataTableConversionBuilder(
-				table, table.getName());
-		builder.addRowsFromArray(sortlist);
-		table = builder.build();
-		return table;
-	}
 }

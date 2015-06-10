@@ -63,7 +63,7 @@ public class DataTable extends Table {
 	}
 	
 	/**
-	 * remove all current rows.
+	 * Remove all current rows.
 	 */
 	public void clearRows() {
 		rows.clear();

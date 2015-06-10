@@ -5,6 +5,7 @@ import java.util.Collections;
 
 import model.data.DataRow;
 import model.data.DataTable;
+import model.data.DataTableConversionBuilder;
 import model.data.Table;
 import model.data.describer.RowValueDescriber;
 import model.data.value.DataValue;
@@ -17,10 +18,12 @@ import model.data.value.DataValue;
 public class SortProcess extends DataProcess {
 	private DataTable table;
 	private RowValueDescriber<DataValue> column;
+	private Order order;
 
-	public SortProcess(DataTable table, RowValueDescriber<DataValue> column) {
+	public SortProcess(DataTable table, RowValueDescriber<DataValue> column, Order order) {
 		this.table = table;
 		this.column = column;
+		this.order = order;
 	}
 
 	/**
@@ -28,9 +31,37 @@ public class SortProcess extends DataProcess {
 	 */
 	@Override
 	protected Table doProcess() {
-		ArrayList sortlist = new ArrayList<>(table.getRows());
-		Collections.sort(sortlist, (DataRow row1, DataRow row2) -> column
-				.resolve(row1).compareTo(column.resolve(row2)));
-		return clearAndCreate(table, sortlist);
+		
+		ArrayList<DataRow> sortlist = new ArrayList<>(table.getRows());
+		Collections.sort(sortlist, (DataRow row1, DataRow row2) -> {
+			int orderValue = column.resolve(row1).compareTo(column.resolve(row2));
+			return order == Order.DESCENDING ? -1 * orderValue : orderValue;
+		});
+				
+		return clearAndCreate(sortlist);
+	}
+	
+	public static enum Order {
+		ASCENDING,
+		DESCENDING
+	}
+	
+	/**
+	 * Function used in sort and reverseSort to rebuild the table after sorting.
+	 * 
+	 * @author Louis Gosschalk
+	 * @param table
+	 *            initial
+	 * @param sortlist
+	 *            sorted rows
+	 * @return table remade
+	 */
+	private Table clearAndCreate(ArrayList sortlist) {
+		table.clearRows();
+		DataTableConversionBuilder builder = new DataTableConversionBuilder(
+				table, table.getName());
+		builder.addRowsFromList(sortlist);
+		table = builder.build();
+		return table;
 	}
 }
