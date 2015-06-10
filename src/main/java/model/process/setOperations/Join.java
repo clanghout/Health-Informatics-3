@@ -10,6 +10,8 @@ import model.process.DataProcess;
 import java.util.*;
 
 /**
+ * Abstract class for the join operations.
+ *
  * Created by jens on 6/10/15.
  */
 public abstract class Join extends DataProcess {
@@ -89,6 +91,10 @@ public abstract class Join extends DataProcess {
 		}
 	}
 
+	/**
+	 * Perform the join.
+	 * @return a new DataTable
+	 */
 	@Override
 	protected Table doProcess() {
 		simplifyCombinedColumns();
@@ -186,18 +192,38 @@ public abstract class Join extends DataProcess {
 		}
 	}
 
+	/**
+	 * Join the tables
+	 */
 	protected abstract void joinTable();
+
+	/**
+	 * Return a combined table that contains all the tables that should be joined.
+	 * @return a combined table that contains all the tales that should be joined.
+	 */
 	protected abstract Table getTable();
 
 
+	/**
+	 * return the constraint for the join.
+	 * @return the constrain that should be used with the join.
+	 */
 	protected DataDescriber<BoolValue> getConstraint() {
 		return constraint;
 	}
 
+	/**
+	 * Return the builder used to build the table.
+	 * @return the builde used to build the table.
+	 */
 	protected DataTableBuilder getBuilder() {
 		return builder;
 	}
 
+	/**
+	 * return the mapping of the old columns to the new columns.
+	 * @return a mapping of the old columns to the new columns.
+	 */
 	protected Map<DataColumn, DataColumn>  getMappingColumns() {
 		return mappingColumns;
 	}

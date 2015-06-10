@@ -42,6 +42,7 @@ public class FullJoin extends Join {
 		try {
 			processFullJoin(getLeft(), getRight());
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new RuntimeException("join error");
 		}
 	}
@@ -51,10 +52,18 @@ public class FullJoin extends Join {
 		return new CombinedDataTable(getLeft(), getRight());
 	}
 
+	/**
+	 * Get the left table.
+	 * @return the left table.
+	 */
 	private DataTable getLeft() {
 		return getDataModel().getByName(left.getName()).get();
 	}
 
+	/**
+	 * Get the right table.
+	 * @return the right table.
+	 */
 	private DataTable getRight() {
 		return getDataModel().getByName(right.getName()).get();
 	}
@@ -72,7 +81,6 @@ public class FullJoin extends Join {
 			if (leftRow.hasColumn(entry.getKey())) {
 				checkValue(newRow, entry.getValue(), leftRow.getValue(entry.getKey()));
 			} else {
-				//TODO set value to null
 				checkValue(newRow, entry.getValue(),
 						DataValue.getNullInstance(entry.getValue().getType()));
 			}
