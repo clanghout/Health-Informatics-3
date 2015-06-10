@@ -3,19 +3,14 @@ package controllers;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import model.data.DataColumn;
-import model.data.DataModel;
-import model.data.DataRow;
-import model.data.DataTable;
-import model.data.Row;
+import javafx.util.Callback;
+import model.data.*;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -51,15 +46,12 @@ public class TableViewController implements Observer {
 	 */
 	public void initialize() {
 		logger.info("initializing listview changelistener");
-		ChangeListener<DataTable> listener = new ChangeListener<DataTable>() {
-			public void changed(ObservableValue<? extends DataTable> ov,
-			                    DataTable oldValue, DataTable newValue) {
-				if (!(newValue == null)) {
-					logger.info("changing content of tableView with content of "
-							+ newValue.getName());
-					currentTable = newValue;
-					fillTable(newValue);
-				}
+		ChangeListener<DataTable> listener = (ov, oldValue, newValue) -> {
+			if (!(newValue == null)) {
+				logger.info("changing content of tableView with content of "
+						+ newValue.getName());
+				currentTable = newValue;
+				fillTable(newValue);
 			}
 		};
 		this.inputTables.getSelectionModel().selectedItemProperty().addListener(listener);
@@ -79,22 +71,21 @@ public class TableViewController implements Observer {
 		fillTableHeaders(columns);
 
 		while (rowIterator.hasNext()) {
+			StringBuilder codesBuilder = new StringBuilder();
 			Row currentRow = rowIterator.next();
 			ObservableList<StringProperty> row = FXCollections.observableArrayList();
 			if (!currentRow.getCodes().isEmpty()) {
-				StringBuilder stringBuilder = new StringBuilder();
 				Set<String> codes = currentRow.getCodes();
+				logger.info("Row has codes " + codes);
 				for (String code : codes) {
-					stringBuilder.append(code + "\n");
+					codesBuilder.append(code).append("\n");
 				}
-				SimpleStringProperty codesString =
-						new SimpleStringProperty(stringBuilder.toString());
-				row.add(codesString);
 			}
-			for (int i = 0; i < columns.size(); i++) {
-				String val = currentRow.getValue(columns.get(i)).toString();
+			for (DataColumn column : columns) {
+				String val = currentRow.getValue(column).toString();
 				row.add(new SimpleStringProperty(val));
 			}
+			row.add(new SimpleStringProperty(codesBuilder.toString()));
 			tableView.getItems().add(row);
 		}
 	}
