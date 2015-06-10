@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.util.Callback;
 import model.data.*;
 
 import java.util.*;
@@ -96,21 +95,24 @@ public class TableViewController implements Observer {
 	 * @param columns A List containing the DataColumns
 	 */
 	private void fillTableHeaders(List<DataColumn> columns) {
-		for (int i = 0; i < columns.size(); i++) {
+		int i = 0;
+		while (i < columns.size()) {
 			TableColumn<ObservableList<StringProperty>, String> fxColumn
 					= createColumn(i, columns.get(i).getName());
 			fxColumn.getStyleClass().add("table-column");
 			tableView.getColumns().add(fxColumn);
+			i++;
 		}
-		addCodesColumn();
+		addCodesColumn(i);
 	}
 
 	/**
 	 * Adds a column for the codes into the tableview.
 	 */
-	private void addCodesColumn() {
+	private void addCodesColumn(int index) {
 		TableColumn<ObservableList<StringProperty>, String> fxColumn
 				= new TableColumn<>(CODE_COLUMN_NAME);
+		fxColumn.setCellValueFactory(code -> code.getValue().get(index));
 		tableView.getColumns().add(fxColumn);
 	}
 
@@ -155,6 +157,7 @@ public class TableViewController implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		if (o instanceof DataModel) {
+			logger.info("Model changed");
 			updateList();
 			fillTable(currentTable);
 		}
