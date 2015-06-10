@@ -46,7 +46,7 @@ public class XmlWriterTest {
 		map.put("someDateTimes", DateTimeValue.class);
 
 		when(textFile.getColumns()).thenReturn(map);
-		ArrayList<DataFile> dataFiles = new ArrayList<DataFile>();
+		ArrayList<DataFile> dataFiles = new ArrayList<>();
 		dataFiles.add(textFile);
 
 		XmlWriter writer = new XmlWriter(dataFiles);
@@ -58,7 +58,9 @@ public class XmlWriterTest {
 		assertEquals(1, root.getChildNodes().getLength());
 		assertEquals("file", root.getFirstChild().getNodeName());
 		Element fileElem = (Element) root.getElementsByTagName("file").item(0);
-		assertEquals("/path/to/Prettyname.txt", fileElem.getAttribute("name"));
+		Element path = (Element) fileElem.getElementsByTagName("path").item(0);
+		assertEquals("/path/to", path.getTextContent());
+		assertEquals("Prettyname.txt", fileElem.getAttribute("name"));
 
 		Element columns = (Element) fileElem
 				.getElementsByTagName("columns").item(0);
