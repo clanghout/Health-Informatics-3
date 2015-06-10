@@ -21,9 +21,8 @@ public abstract class ExcelFile extends DataFile {
 	/**
 	 * Creates a new ExcelFile.
 	 * @param path The path to the Excel file
-	 * @throws FileNotFoundException when the file can not be found
 	 */
-	public ExcelFile(String path) throws FileNotFoundException {
+	public ExcelFile(String path) {
 		super(path);
 	}
 
@@ -47,7 +46,7 @@ public abstract class ExcelFile extends DataFile {
 			}
 		}
 		if (hasMetaData()) {
-			getBuilder().createColumn(getMetaDataColumnName(),getMetaDataType());
+			getBuilder().createColumn(getMetaDataColumnName(), getMetaDataType());
 		}
 		addRows(rowIterator);
 		return getBuilder().build();
@@ -74,23 +73,18 @@ public abstract class ExcelFile extends DataFile {
 	}
 
 	private DataValue toDataValue(Cell cell) {
-		DataValue value = null;
 		switch (cell.getCellType()) {
 			case Cell.CELL_TYPE_STRING:
-				value = new StringValue(cell.getStringCellValue());
-				break;
+				return new StringValue(cell.getStringCellValue());
 			case Cell.CELL_TYPE_NUMERIC:
 				double cellValue = cell.getNumericCellValue();
-				value = (cellValue % 1 == 0)
+				return (cellValue % 1 == 0)
 						? new IntValue((int) cellValue) : new FloatValue((float) cellValue);
-				break;
 			case Cell.CELL_TYPE_BLANK:
-				value = new StringValue("");
-				break;
+				return new StringValue("");
 			default: throw new UnsupportedOperationException(
 					String.format("Cell type %s not supported", cell.getCellType())
 			);
 		}
-		return value;
 	}
 }

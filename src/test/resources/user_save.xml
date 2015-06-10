@@ -17,7 +17,7 @@
         </columns>
     </file>
 	<file name="ADMIRE.txt">
-	    <columns firstrowheader="false"></columns>
+	    <columns firstrowheader="false" />
 		<data>
 			<start>7</start>
 			<end>1</end>
@@ -34,7 +34,7 @@
 		</columns>
 	</file>
 	<file name="statsensor.txt">
-	    <columns firstrowheader="false"></columns>
+	    <columns firstrowheader="false" />
 	    <data>
 	       <start>7</start>
 	       <end>1</end>

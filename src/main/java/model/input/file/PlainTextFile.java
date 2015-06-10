@@ -23,9 +23,8 @@ public class PlainTextFile extends DataFile {
 	/**
 	 * Creates a new PlainTextFile.
 	 * @param path The path to the plain text file
-	 * @throws FileNotFoundException when the file can not be found
 	 */
-	public PlainTextFile(String path) throws FileNotFoundException {
+	public PlainTextFile(String path) {
 		super(path);
 	}
 

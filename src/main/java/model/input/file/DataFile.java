@@ -41,7 +41,6 @@ public abstract class DataFile {
 	 * Creates a new type of a DataFile. Sets the default range of lines to read
 	 * from 1 to integer maxvalue.
 	 * @param path The path to the DataFile
-	 * @throws FileNotFoundException When the file can not be found
 	 */
 	public DataFile(String path) {
 		this.path = path;
@@ -82,10 +81,9 @@ public abstract class DataFile {
 	* @param type The type specifying what type of DataFile should be created
 	* @return A new DataFile
 	* @throws DataFileNotRecognizedException When the datafile is not recognized
-	* @throws FileNotFoundException When the file is not found
 	*/
 	public static DataFile createDataFile(String path, String type)
-			throws DataFileNotRecognizedException, FileNotFoundException {
+			throws DataFileNotRecognizedException {
 		switch (type) {
 			case "plaintext": return new PlainTextFile(path);
 			case "xls": return new XlsFile(path);
@@ -193,7 +191,7 @@ public abstract class DataFile {
 	 * @return The TableBuilder
 	 */
 	protected DataTableBuilder getBuilder() {
-		return this.builder;
+		return builder;
 	}
 
 	/**
@@ -344,7 +342,7 @@ public abstract class DataFile {
 	}
 
 	/**
-	 * returns true if the datafile has metadata.
+	 * Returns true if the datafile has metadata.
 	 * @return true if the datafile has metadata
 	 */
 	public boolean hasMetaData() {

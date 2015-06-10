@@ -6,7 +6,7 @@
             <start>7</start>
             <end>1</end>
         </data>
-        <metadata name="metadata" type="string"/>
+        <metadata name="metadata" type="string" />
         <columns firstrowheader="false">
             <column type="string">quantity</column>
             <column type="int">measurement</column>

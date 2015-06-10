@@ -26,9 +26,8 @@ public class XlsxFile extends ExcelFile {
 	/**
 	 * Creates a new XlsxFile.
 	 * @param path The path to the xlsx file
-	 * @throws FileNotFoundException When the file can not be found
 	 */
-	public XlsxFile(String path) throws FileNotFoundException {
+	public XlsxFile(String path) {
 		super(path);
 	}
 

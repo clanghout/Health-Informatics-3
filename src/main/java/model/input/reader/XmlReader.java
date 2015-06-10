@@ -173,7 +173,7 @@ public class XmlReader {
 				theDataFile.createMetaDataValue(name, type);
 				theDataFile.setHasMetaData(true);
 			} catch (ClassNotFoundException e) {
-				log.log(Level.SEVERE, "Specified Class was not found", e);
+				throw new RuntimeException("Specified Class was not found");
 			}
 		}
 
