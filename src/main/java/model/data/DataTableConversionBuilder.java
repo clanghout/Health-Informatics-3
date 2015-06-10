@@ -41,9 +41,9 @@ public class DataTableConversionBuilder extends DataTableBuilder {
 	 * Add all rows from a List to the builder.
 	 * @param table list of datarows.
 	 */
-	public void addRowsFromList(List<DataRow> table) {
-		for (Object obj : table) {
-			createRow((DataRow) obj);
+	public void addRowsFromList(List<DataRow> rowList) {
+		for (DataRow row : rowList) {
+			createRow(row);
 		}
 	}
 
