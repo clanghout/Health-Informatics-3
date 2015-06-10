@@ -47,7 +47,7 @@ public class PeriodValue extends DataValue<Period> {
 	}
 
 	@Override
-	public int hashCode() {
+	public int doHashCode() {
 		return period.hashCode();
 	}
 

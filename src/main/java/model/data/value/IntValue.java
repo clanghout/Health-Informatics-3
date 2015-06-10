@@ -24,6 +24,11 @@ public final class IntValue extends NumberValue<Integer> {
 	public String toString() {
 		return String.valueOf(value);
 	}
+	
+	@Override
+	public int doHashCode() {
+		return value;
+	}
 
 	@Override
 	public boolean doEquals(Object obj) {
@@ -38,10 +43,5 @@ public final class IntValue extends NumberValue<Integer> {
 		}
 		IntValue o = (IntValue) other;
 		return Integer.compare(value, o.value);
-	}
-
-	@Override
-	public int hashCode() {
-		return value;
 	}
 }

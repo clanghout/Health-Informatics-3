@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.temporal.Temporal;
 
 /**
- * Represent a value containg a date.
+ * Represent a value containing a date.
  */
 public class DateValue extends TemporalValue<LocalDate> {
 
@@ -37,6 +37,11 @@ public class DateValue extends TemporalValue<LocalDate> {
 	public DateValue(Temporal date) {
 		this();
 		this.date = LocalDate.from(date);
+	}
+	
+	@Override
+	public int doHashCode() {
+		return getValue().hashCode();
 	}
 
 	@Override

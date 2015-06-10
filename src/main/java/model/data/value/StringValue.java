@@ -31,7 +31,7 @@ public class StringValue extends DataValue<String> {
 	}
 
 	@Override
-	public int hashCode() {
+	public int doHashCode() {
 		return value.hashCode();
 	}
 

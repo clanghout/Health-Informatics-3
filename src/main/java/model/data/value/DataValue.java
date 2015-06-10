@@ -30,7 +30,11 @@ public abstract class DataValue<Type> implements Comparable<DataValue> {
 	}
 
 	@Override
-	public abstract int hashCode();
+	public int hashCode() {
+		return doHashCode();
+	}
+	
+	public abstract int doHashCode();
 
 	/**
 	 * Shows true if the value of the object is Null.

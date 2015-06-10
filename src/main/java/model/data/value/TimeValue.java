@@ -39,6 +39,11 @@ public class TimeValue extends TemporalValue<LocalTime> {
 		TimeValue o = (TimeValue) other;
 		return time.compareTo(o.time);
 	}
+	
+	@Override
+	public int doHashCode() {
+		return getValue().hashCode();
+	}
 
 	@Override
 	protected boolean doEquals(Object obj) {
