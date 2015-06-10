@@ -20,9 +20,16 @@ import model.process.setOperations.FullJoin;
 public class Connection extends DataProcess{
 
 	private ColumnIdentifier timeColumnIdentifier;
-	private DataColumn timeColumn;
 	private FullJoin join;
 
+	/**
+	 * Create a connection table.
+	 * @param name name of the new table.
+	 * @param left the first table.
+	 * @param timeColumnLeft the time/date column of the first table.
+	 * @param right the second table.
+	 * @param timeColumnRght the time/date column of the second table.
+	 */
 	public Connection(
 			String name,
 			Identifier<DataTable> left,
@@ -36,6 +43,11 @@ public class Connection extends DataProcess{
 		join.setConstraint(new ConstantDescriber<>(new BoolValue(false)));
 	}
 
+	/**
+	 * Add overlapping columns. Columns that can be combined into one column.
+	 * @param origin identifier of the column that can merge in to the mapTo column.
+	 * @param mapTo identifier of the column that should stay in the result.
+	 */
 	public void addOverlappingColumns(ColumnIdentifier origin, ColumnIdentifier mapTo) {
 		join.addCombineColumn(origin, mapTo);
 	}
@@ -43,7 +55,7 @@ public class Connection extends DataProcess{
 
 	@Override
 	protected DataTable doProcess() {
-		timeColumn = getDataModel().getByName(timeColumnIdentifier.getTable()).get()
+		DataColumn timeColumn = getDataModel().getByName(timeColumnIdentifier.getTable()).get()
 				.getColumn(timeColumnIdentifier.getColumn());
 		join.setDataModel(this.getDataModel());
 		DataTable joinedTable = (DataTable) join.process();

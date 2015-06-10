@@ -81,4 +81,37 @@ public class ConnectionTest {
 		assertTrue(expected.equalsSoft(res));
 
 	}
+
+	@Test
+	public void testAddCombineColumn() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("res");
+		builder.createColumn("time", TimeValue.class);
+		builder.createColumn("value2", StringValue.class);
+
+		builder.createRow(new TimeValue(1,1,2), new StringValue("1"));
+		builder.createRow(new TimeValue(3,1,2), new StringValue("2"));
+		builder.createRow(new TimeValue(4,1,2), new StringValue("3"));
+		builder.createRow(new TimeValue(4,1,4), new StringValue("4"));
+		builder.createRow(new TimeValue(5,2,2), new StringValue("5"));
+		builder.createRow(new TimeValue(6,1,2), new StringValue("6"));
+		builder.createRow(new TimeValue(7,1,2), new StringValue("7"));
+
+		DataTable expected = builder.build();
+		Connection con = new Connection("res", t1, c1, t2, c2);
+		con.addOverlappingColumns(
+				new ColumnIdentifier(
+						new Identifier("table1"),
+						new Identifier("value")),
+				new ColumnIdentifier(
+						new Identifier("table2"),
+						new Identifier("value2")));
+		con.setDataModel(model);
+		DataTable res = (DataTable) con.process();
+
+		assertTrue(expected.equalsSoft(res));
+
+	}
+
+
 }
