@@ -313,23 +313,33 @@ public abstract class DataFile {
 	 */
 	public void createMetaDataValue(String name, String type) throws ClassNotFoundException {
 		try {
-			DataValue res = null;
-			String filename = this.getFile().getName();
-			String metavalue = filename.substring(0, filename.lastIndexOf("."));
+			String fileName = this.getFile().getName();
+			String metaValue = fileName.substring(0, fileName.lastIndexOf("."));
 
-			switch (type) {
-				case "int":
-					res = new IntValue(Integer.parseInt(metavalue));
-				case "float":
-					res = new FloatValue(Float.parseFloat(metavalue));
-				case "string":
-					res = new StringValue(metavalue);
-			}
-			this.metaDataValue = res;
+			this.metaDataValue = parseDataValue(metaValue, type);
 			this.setMetaDataType(getColumnType(type));
 			this.setMetaDataColumnName(name);
 		} catch (FileNotFoundException e) {
 			log.log(Level.SEVERE, "The file could not be found", e);
+		}
+	}
+
+	/**
+	 * Parses a string to a DataValue of a given type.
+	 * @param value The value to parse
+	 * @param type The type of DataValue to parse to
+	 * @return The new created DataValue
+	 */
+	public static DataValue parseDataValue(String value, String type) {
+		switch (type) {
+			case "int":
+				return new IntValue(Integer.parseInt(value));
+			case "float":
+				return new FloatValue(Float.parseFloat(value));
+			case "string":
+				return new StringValue(value);
+			default:
+				throw new RuntimeException("Class has not yet implemented");
 		}
 	}
 
