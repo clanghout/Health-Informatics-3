@@ -1,14 +1,17 @@
 package model.process;
 
+import java.util.ArrayList;
+
 import model.data.DataModel;
+import model.data.DataTable;
+import model.data.DataTableConversionBuilder;
 import model.data.Table;
 
 /**
  * This class defines a data process.
  *
- * This class provides the framework for all data processes in our
- * analysis framework.
- * Created by Boudewijn on 5-5-2015.
+ * This class provides the framework for all data processes in our analysis
+ * framework. Created by Boudewijn on 5-5-2015.
  */
 public abstract class DataProcess {
 
@@ -25,7 +28,8 @@ public abstract class DataProcess {
 	public final Table process() {
 		Table table = doProcess();
 		if (table == null) {
-			throw new NullPointerException("A process should always result in an output");
+			throw new NullPointerException(
+					"A process should always result in an output");
 		}
 		output = table;
 		return table;
@@ -39,9 +43,11 @@ public abstract class DataProcess {
 	protected abstract Table doProcess();
 
 	/**
-	 * Set the input for the data process.
-	 * Note: Setting an input isn't required.
-	 * @param input The input for the data process
+	 * Set the input for the data process. Note: Setting an input isn't
+	 * required.
+	 * 
+	 * @param input
+	 *            The input for the data process
 	 */
 	public final void setInput(Table input) {
 		this.input = input;
@@ -68,7 +74,8 @@ public abstract class DataProcess {
 	/**
 	 * Set the DataModel for this process.
 	 *
-	 * @param model The model for this process.
+	 * @param model
+	 *            The model for this process.
 	 */
 	public final void setDataModel(DataModel model) {
 		this.model = model;
@@ -81,5 +88,24 @@ public abstract class DataProcess {
 	 */
 	public final DataModel getDataModel() {
 		return model;
+	}
+
+	/**
+	 * Function used in sort and reverseSort to rebuild the table after sorting.
+	 * 
+	 * @author Louis Gosschalk
+	 * @param table
+	 *            initial
+	 * @param sortlist
+	 *            sorted rows
+	 * @return table remade
+	 */
+	protected Table clearAndCreate(DataTable table, ArrayList sortlist) {
+		table.clearRows();
+		DataTableConversionBuilder builder = new DataTableConversionBuilder(
+				table, table.getName());
+		builder.addRowsFromArray(sortlist);
+		table = builder.build();
+		return table;
 	}
 }
