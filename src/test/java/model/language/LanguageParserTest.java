@@ -219,4 +219,16 @@ public class LanguageParserTest {
 		ValueNode<DateValue> node = (ValueNode<DateValue>) result.valueStack.pop();
 		assertEquals(LocalDate.of(1995, 1, 17), node.resolve(null).resolve(null).getValue());
 	}
+
+	@Test
+	public void testRelative() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.NumberExpression());
+		String input = "RELATIVE(#1995-01-17#, #2015-06-09#, DAYS)";
+
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+		ValueNode<IntValue> node = (ValueNode<IntValue>) result.valueStack.pop();
+		assertEquals(7448, (int) node.resolve(null).resolve(null).getValue());
+	}
 }
