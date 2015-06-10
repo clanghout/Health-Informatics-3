@@ -81,8 +81,10 @@ public class PopupVisualizationController {
 		visualizationComboBox.valueProperty()
 				.addListener((observable, oldValue, newValue) -> {
 					visualizationInputVBox.getChildren().clear();
+					validVisualization = true;
 					switch (newValue) {
 						case "BarChart":
+
 							chartController =
 									new BarChartController(table, visualizationInputVBox);
 							chartController.initialize();
