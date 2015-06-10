@@ -40,10 +40,9 @@ public class XmlWriter {
 	 * @return The document
 	 * @throws ParserConfigurationException Thrown by DocumentBuilderFactory
 	 * @throws FileNotFoundException When a dataFile is not found
-	 * @throws ClassNotFoundException When a classtype can not be found
 	 */
 	public Document createDocument()
-			throws ParserConfigurationException, FileNotFoundException, ClassNotFoundException {
+			throws ParserConfigurationException, FileNotFoundException {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document document = builder.newDocument();
@@ -69,7 +68,7 @@ public class XmlWriter {
 	}
 
 	private Element createFileElement(DataFile dataFile)
-			throws FileNotFoundException, ClassNotFoundException {
+			throws FileNotFoundException {
 		Element res = document.createElement("file");
 		res.setAttribute("name", dataFile.getFile().getName());
 		res.appendChild(createColumnsElement(dataFile));
@@ -77,8 +76,7 @@ public class XmlWriter {
 		return res;
 	}
 
-	private Element createColumnsElement(DataFile dataFile)
-			throws ClassNotFoundException {
+	private Element createColumnsElement(DataFile dataFile) {
 		Element res = document.createElement("columns");
 
 		if (dataFile.hasFirstRowAsHeader()) {
@@ -95,8 +93,7 @@ public class XmlWriter {
 		return res;
 	}
 
-	private Element createColumnElements(String columnName, Class type)
-			throws ClassNotFoundException {
+	private Element createColumnElements(String columnName, Class type) {
 		Element res = document.createElement("column");
 		res.setAttribute("type", DataFile.getStringColumnType(type));
 		Element name = document.createElement(columnName);

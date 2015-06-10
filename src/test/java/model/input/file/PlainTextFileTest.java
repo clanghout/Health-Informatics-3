@@ -2,19 +2,13 @@ package model.input.file;
 
 import static org.junit.Assert.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
 import model.data.DataColumn;
 import model.data.DataRow;
 import model.data.DataTable;
-import model.data.value.DataValue;
-import model.data.value.FloatValue;
-import model.data.value.IntValue;
-import model.data.value.StringValue;
+import model.data.value.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,7 +22,7 @@ public class PlainTextFileTest {
 	private PlainTextFile textFile;
 	
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 		String file = getClass().getResource("/model/input/plaintext.txt").getFile();
 		textFile = new PlainTextFile(file);
 		textFile.setDelimiter(" ");
@@ -62,6 +56,6 @@ public class PlainTextFileTest {
 		assertEquals(new FloatValue(3.5f), row.getValue(table.getColumn("float")));
 		assertEquals(new StringValue("dingen"), row.getValue(table.getColumn("string")));
 	}
-	
+
 
 }
