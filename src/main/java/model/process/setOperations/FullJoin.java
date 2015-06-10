@@ -17,26 +17,27 @@ public class FullJoin extends Join {
 	private Identifier<DataTable> rightId;
 	private DataTable left;
 	private DataTable right;
-	private boolean fullLeft;
-	private boolean fullRight;
 
-	private FullJoin(String name, boolean fullLeft, boolean fullRight) {
+	private Join join;
+
+	public enum Join {
+		Full, Left, Right, Join
+	}
+
+	private FullJoin(String name, Join join) {
 		super(name);
-		this.fullLeft = fullLeft;
-		this.fullRight = fullRight;
+		this.join = join;
 	}
 	/**
 	 * Join two tables.
 	 * @param left left table
 	 * @param right right table
-	 * @param fullLeft true if all left rows should exist in the result
-	 * @param fullRight true if all right rows should exist in the result
+	 * @param join type of join, Full, Left, Right or Join
 	 */
 	public FullJoin(String name, Identifier<DataTable> left,
 					Identifier<DataTable> right,
-					boolean fullLeft,
-					boolean fullRight) {
-		this(name, fullLeft, fullRight);
+					Join join) {
+		this(name, join);
 		this.leftId = left;
 		this.rightId = right;
 	}
@@ -45,18 +46,14 @@ public class FullJoin extends Join {
 	 * Join two tables.
 	 * @param left left table
 	 * @param right right table
-	 * @param fullLeft true if all left rows should exist in the result
-	 * @param fullRight true if all right rows should exist in the result
+	 * @param join type of join, Full, Left, Right or Join
 	 */
 	public FullJoin(String name, DataTable left,
 					DataTable right,
-					boolean fullLeft,
-					boolean fullRight) {
-		this(name, fullLeft, fullRight);
+					Join join) {
+		this(name, join);
 		this.left = left;
 		this.right = right;
-		this.fullLeft = fullLeft;
-		this.fullRight = fullRight;
 	}
 
 
@@ -133,13 +130,13 @@ public class FullJoin extends Join {
 					rightAdd.add(rightRow);
 				}
 			}
-			if (!leftAdd && fullLeft) {
+			if (!leftAdd && (join.equals(Join.Left) || join.equals(Join.Full))) {
 				createRow(leftRow, new DataRow());
 			}
 		}
-			if (fullRight) {
-				addNotAddedRighRows(rightAdd);
-			}
+		if (join.equals(Join.Right) || join.equals(Join.Full)) {
+			addNotAddedRighRows(rightAdd);
+		}
 	}
 
 	/**
