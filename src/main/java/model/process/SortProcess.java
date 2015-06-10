@@ -37,11 +37,14 @@ public class SortProcess extends DataProcess {
 			int orderValue = column.resolve(row1).compareTo(column.resolve(row2));
 			return order == Order.DESCENDING ? -1 * orderValue : orderValue;
 		});
-				
+
 		return clearAndCreate(sortlist);
 	}
-	
-	public static enum Order {
+
+	/**
+	 * Contains the different order you can use to sort.
+	 */
+	public enum Order {
 		ASCENDING,
 		DESCENDING
 	}
@@ -50,8 +53,6 @@ public class SortProcess extends DataProcess {
 	 * Function used in sort and reverseSort to rebuild the table after sorting.
 	 * 
 	 * @author Louis Gosschalk
-	 * @param table
-	 *            initial
 	 * @param sortlist
 	 *            sorted rows
 	 * @return table remade

@@ -81,7 +81,7 @@ public class SortProcessTest {
 		table = builder.build();
 		
 		asc = SortProcess.Order.ASCENDING;
-		desc = SortProcess.Order.ASCENDING;
+		desc = SortProcess.Order.DESCENDING;
 	}
 	
 	@Test
@@ -182,6 +182,6 @@ public class SortProcessTest {
 		assertEquals(new StringValue("klm"), table.getRow(0).getValue(stringcol));
 		DataProcess process = new SortProcess(table, new RowValueDescriber<>(intcol), desc);
 		DataTable result = process.doProcess().getTable(table.getName());
-		assertEquals(new StringValue("abc"), result.getRow(0).getValue(stringcol));
+		assertEquals(new StringValue("abb"), result.getRow(0).getValue(stringcol));
 	}
 }
