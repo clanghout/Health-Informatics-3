@@ -22,12 +22,27 @@ public class SortProcess extends DataProcess {
 		this.column = column;
 	}
 
+	/**
+	 * Input table will be sorted according to input column.
+	 */
 	@Override
 	protected Table doProcess() {
 		Collections.sort(
 				table.getRows(),
-				(DataRow row1, DataRow row2) -> 
-					column.resolve(row1).compareTo(column.resolve(row2)));
+				(DataRow row1, DataRow row2) -> column.resolve(row1).compareTo(
+						column.resolve(row2)));
+		return table;
+	}
+
+	/**
+	 * This method first sorts the table based on the specified column and then
+	 * reverses its order.
+	 * 
+	 * @return table with reversed order
+	 */
+	private Table reverseDoProcess() {
+		doProcess();
+		Collections.reverse(table.getRows());
 		return table;
 	}
 }
