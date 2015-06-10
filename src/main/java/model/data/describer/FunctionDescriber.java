@@ -15,7 +15,7 @@ import java.util.Optional;
  *
  * Created by Boudewijn on 10-6-2015.
  */
-public class FunctionDescriber extends DataDescriber<NumberValue> {
+public class FunctionDescriber extends DataDescriber<NumberValue<?>> {
 
 	private DataModel model;
 	private Identifier<Table> table;
