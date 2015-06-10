@@ -29,29 +29,11 @@ public class SortProcess extends DataProcess {
 	 */
 	@Override
 	protected Table doProcess() {
-		ArrayList sorted = new ArrayList<>(table.getRows());
+		ArrayList sortlist = new ArrayList<>(table.getRows());
 		Collections.sort(
-				sorted,
+				sortlist,
 				(DataRow row1, DataRow row2) -> column.resolve(row1).compareTo(
 						column.resolve(row2)));
-		//remove rows from table
-		table.clearRows();
-		//add sorted to table
-		DataTableConversionBuilder builder = new DataTableConversionBuilder(table, table.getName());
-		builder.addRowsFromArray(sorted);
-		table = builder.build();
-		return table;
-	}
-
-	/**
-	 * This method first sorts the table based on the specified column and then
-	 * reverses its order.
-	 * 
-	 * @return table with reversed order
-	 */
-	private Table reverseDoProcess() {
-		doProcess();
-		Collections.reverse(table.getRows());
-		return table;
+		return clearAndCreate(table,sortlist);
 	}
 }
