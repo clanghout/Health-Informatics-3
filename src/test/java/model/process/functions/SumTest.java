@@ -34,7 +34,7 @@ public class SumTest extends FunctionTest {
 	@Test
 	public void testIntsum() throws Exception {
 		DataValue sm = new Sum(table, new RowValueDescriber<>(intColumn)).calculate();
-		assertEquals(new FloatValue(27), sm);
+		assertEquals(new FloatValue(27f), sm);
 	}
 
 	@Test

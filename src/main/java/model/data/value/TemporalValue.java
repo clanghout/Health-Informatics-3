@@ -14,7 +14,12 @@ public abstract class TemporalValue<T extends Temporal> extends DataValue<T> {
 	private String format;
 
 	TemporalValue(String format) {
-		this.format = format;
+		if (format == null) {
+			this.format = "";
+			setNull(true);
+		} else {
+			this.format = format;
+		}
 	}
 
 	/**
@@ -27,19 +32,6 @@ public abstract class TemporalValue<T extends Temporal> extends DataValue<T> {
 
 	DateTimeFormatter getFormatter() {
 		return DateTimeFormatter.ofPattern(getFormat());
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null || getClass() != obj.getClass()) {
-			return false;
-		}
-
-		TemporalValue<?> otherValue = (TemporalValue<?>) obj;
-		return this.getValue().equals(otherValue.getValue());
 	}
 
 	@Override
