@@ -17,19 +17,19 @@ public class GroupByConstraint extends GroupByAnalysis {
 	/**
 	 * Create a group by. The chunks are specified by constraints and the columns by functions.
 	 * @param name name of the new table
-	 * @param constrainList list of constrainst for the chunks
+	 * @param constraintList list of constrainst for the chunks
 	 * @param groupNames name for the chunks
 	 * @param functions functions for the columns
 	 * @param columnNames name for the columns
 	 */
 	public GroupByConstraint(
 			String name,
-			List<ConstraintAnalysis> constrainList,
+			List<ConstraintAnalysis> constraintList,
 			List<String> groupNames,
 			List<Function> functions,
 			List<String> columnNames) {
 
-		constructConstraintList(groupNames, constrainList);
+		constructConstraintList(groupNames, constraintList);
 		constructBuilder(name, functions, columnNames);
 	}
 

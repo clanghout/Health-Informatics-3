@@ -5,7 +5,7 @@ import model.data.DataTable;
 import model.data.Table;
 import model.data.describer.ConstantDescriber;
 import model.data.describer.ConstraintDescriber;
-import model.data.describer.RowValueDescriber;
+import model.data.describer.DataDescriber;
 import model.data.value.DataValue;
 import model.process.analysis.operations.constraints.EqualityCheck;
 import model.process.functions.Function;
@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class GroupByColumn extends GroupByAnalysis {
 
-	private RowValueDescriber column;
+	private DataDescriber<?> column;
 
 	/**
 	 * Create a group by. The chunks are specified by distinct values in the column column.
@@ -31,7 +31,7 @@ public class GroupByColumn extends GroupByAnalysis {
 	 */
 	public GroupByColumn(
 			String name,
-			RowValueDescriber column,
+			DataDescriber<?> column,
 			List<Function> functions,
 			List<String> columnNames) {
 
@@ -60,10 +60,10 @@ public class GroupByColumn extends GroupByAnalysis {
 		LinkedHashMap<String, ConstraintAnalysis> constraints = new LinkedHashMap<>();
 
 		for (DataRow row : table.getRows()) {
-			DataValue value = column.resolve(row);
+			DataValue<?> value = column.resolve(row);
 			constraints.put(value.toString(), new ConstraintAnalysis(
 					new ConstraintDescriber(
-							new EqualityCheck<>(
+							new EqualityCheck(
 									column,
 									new ConstantDescriber<>(
 											value)))));

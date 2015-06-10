@@ -1,9 +1,10 @@
 package model.language;
 
-import com.sun.tracing.dtrace.FunctionName;
 import model.data.value.*;
 import model.language.nodes.*;
+import org.parboiled.Action;
 import org.parboiled.BaseParser;
+import org.parboiled.Context;
 import org.parboiled.Rule;
 import org.parboiled.support.Var;
 
@@ -105,8 +106,8 @@ class LanguageParser extends BaseParser<Object> {
 				swap(),
 				push(
 						new FunctionNode(
-							(String) pop(),
-							(ColumnIdentifier) pop()
+								(String) pop(),
+								(ColumnIdentifier) pop()
 						)
 				)
 		);
@@ -249,9 +250,9 @@ class LanguageParser extends BaseParser<Object> {
 	Rule DateCalculation() {
 		return Sequence(
 				DateTerm(),
-				OneOrMore(WhiteSpaceChars()),
+				SomeWhiteSpace(),
 				DateOperators(),
-				OneOrMore(WhiteSpaceChars()),
+				SomeWhiteSpace(),
 				PeriodLiteral(),
 				swap3(),
 				push(
@@ -344,20 +345,20 @@ class LanguageParser extends BaseParser<Object> {
 	Rule DateComparison() {
 		return Sequence(
 				DateExpression(),
-				OneOrMore(WhiteSpaceChars()),
+				SomeWhiteSpace(),
 				Sequence(
 						FirstOf("AFTER", "BEFORE"),
 						push(match())
 				),
-				OneOrMore(WhiteSpaceChars()),
+				SomeWhiteSpace(),
 				DateExpression(),
 				swap3(),
 				push(new DateCompareNode(
-						(ValueNode<? extends TemporalValue<?>>) pop(),
-						(String) pop(),
-						(ValueNode<? extends TemporalValue<?>>) pop()
+								(ValueNode<? extends TemporalValue<?>>) pop(),
+								(String) pop(),
+								(ValueNode<? extends TemporalValue<?>>) pop()
+						)
 				)
-			)
 		);
 	}
 
@@ -394,13 +395,13 @@ class LanguageParser extends BaseParser<Object> {
 				"#",
 				swap6(),
 				push(new DateTimeNode(
-						(ValueNode<IntValue>) pop(),
-						(ValueNode<IntValue>) pop(),
-						(ValueNode<IntValue>) pop(),
-						(ValueNode<IntValue>) pop(),
-						(ValueNode<IntValue>) pop(),
-						(ValueNode<IntValue>) pop()
-					)
+								(ValueNode<IntValue>) pop(),
+								(ValueNode<IntValue>) pop(),
+								(ValueNode<IntValue>) pop(),
+								(ValueNode<IntValue>) pop(),
+								(ValueNode<IntValue>) pop(),
+								(ValueNode<IntValue>) pop()
+						)
 				)
 		);
 	}
@@ -444,6 +445,10 @@ class LanguageParser extends BaseParser<Object> {
 
 	Rule WhiteSpace() {
 		return ZeroOrMore(WhiteSpaceChars());
+	}
+
+	Rule SomeWhiteSpace() {
+		return OneOrMore(WhiteSpaceChars());
 	}
 
 	Rule WhiteSpaceChars() {
@@ -543,6 +548,7 @@ class LanguageParser extends BaseParser<Object> {
 		return FirstOf(
 				StringExpression(),
 				NumberExpression(),
+				DateExpression(),
 				BooleanTerm()
 		);
 	}
@@ -598,8 +604,8 @@ class LanguageParser extends BaseParser<Object> {
 
 	Rule StringExpression() {
 		return FirstOf(
-					StringLiteral(),
-					StringColumn()
+				StringLiteral(),
+				StringColumn()
 		);
 	}
 
@@ -668,7 +674,6 @@ class LanguageParser extends BaseParser<Object> {
 				"def",
 				WhiteSpace(),
 				Identifier(),
-				Params(),
 				WhiteSpace(),
 				":",
 				WhiteSpace(),
@@ -678,11 +683,10 @@ class LanguageParser extends BaseParser<Object> {
 				WhiteSpace(),
 				MacroBody(),
 				";",
-				swap4(),
+				swap3(),
 				push(
 						new MacroInfo(
 								(Identifier) pop(),
-								(List<Object>) pop(),
 								new MacroType((String) pop()),
 								(String) pop()
 						)
@@ -701,4 +705,74 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
+
+	Rule GroupBy(Rule selector) {
+		return Sequence(
+				"NAME",
+				SomeWhiteSpace(),
+				Identifier(),
+				SomeWhiteSpace(),
+				"ON",
+				SomeWhiteSpace(),
+				selector,
+				GroupByFunctions()
+		);
+	}
+
+	Rule GroupByColumn() {
+		return Sequence(
+				GroupBy(
+					AnyValue()
+				),
+				swap4()
+		);
+	}
+
+	Rule GroupByFunctions() {
+		Var<List<FunctionNode>> functions = new Var<>();
+		Var<List<Identifier>> names = new Var<>();
+		return Sequence(
+				new Action() {
+					@Override
+					public boolean run(Context context) {
+						functions.set(new ArrayList<>());
+						names.set(new ArrayList<>());
+						return true;
+					}
+				},
+				Optional(
+						SomeWhiteSpace(),
+						"FROM",
+						SomeWhiteSpace(),
+						// This rather unusual structure is required, as a recursive approach would result
+						// in a StackOverflowException and since GroupByFunction is matched before
+						// the comma the values have to be added after the comma. (otherwise they'd be added
+						// twice.)
+						ZeroOrMore(
+								GroupByFunction(functions, names),
+								",",
+								WhiteSpace(),
+								names.get().add((Identifier) pop()),
+								functions.get().add((FunctionNode) pop())
+						),
+						Optional(
+								GroupByFunction(functions, names),
+								names.get().add((Identifier) pop()),
+								functions.get().add((FunctionNode) pop())
+						)
+				),
+				push(functions.get()),
+				push(names.get())
+		);
+	}
+
+	Rule GroupByFunction(Var<List<FunctionNode>> functions, Var<List<Identifier>> names) {
+		return Sequence(
+				TableFunction(),
+				SomeWhiteSpace(),
+				"AS",
+				SomeWhiteSpace(),
+				Identifier()
+		);
+	}
 }
