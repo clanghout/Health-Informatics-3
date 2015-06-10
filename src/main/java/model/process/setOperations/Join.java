@@ -209,11 +209,11 @@ public abstract class Join extends DataProcess {
 	 * @param newValue new value
 	 */
 	protected void checkValue(DataRow row, DataColumn column, DataValue newValue) {
-		if (newValue == null) { //todo use the null values
-			return;
-		} else if (row.getValue(column) == null ) { //compare on isNull()
+		if (row.getValue(column) == null || row.getValue(column).isNull()) {
 			row.setValue(column, newValue);
 			return;
+		} else if (newValue == null || newValue.isNull()) {
+				return;
 		} else if (row.getValue(column).equals(newValue)) {
 			return;
 		} else {

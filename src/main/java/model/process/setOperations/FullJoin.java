@@ -1,6 +1,7 @@
 package model.process.setOperations;
 
 import model.data.*;
+import model.data.value.DataValue;
 import model.language.Identifier;
 
 import javax.xml.crypto.Data;
@@ -72,7 +73,8 @@ public class FullJoin extends Join {
 				checkValue(newRow, entry.getValue(), leftRow.getValue(entry.getKey()));
 			} else {
 				//TODO set value to null
-				checkValue(newRow, entry.getValue(), entry.getValue().getType().newInstance());
+				checkValue(newRow, entry.getValue(),
+						DataValue.getNullInstance(entry.getValue().getType()));
 			}
 			if (rightRow.hasColumn(entry.getKey())) {
 				checkValue(newRow, entry.getValue(), leftRow.getValue(entry.getKey()));
