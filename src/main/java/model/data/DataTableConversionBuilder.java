@@ -1,6 +1,5 @@
 package model.data;
 
-import java.util.InputMismatchException;
 import java.util.List;
 
 import model.data.value.DataValue;
