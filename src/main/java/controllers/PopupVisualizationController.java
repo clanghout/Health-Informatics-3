@@ -37,6 +37,9 @@ public class PopupVisualizationController {
 	private VisualizationController visualizationController;
 	private GraphCreationDialog dialog;
 
+	private boolean validVisualization;
+	private boolean tableSet = false;
+
 	public PopupVisualizationController() {
 	}
 
@@ -69,6 +72,7 @@ public class PopupVisualizationController {
 		tableComboBox.setDisable(false);
 		tableComboBox.setItems(model.getObservableList());
 		tableComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+			tableSet = true;
 			this.table = newValue;
 			visualizationComboBox.setDisable(false);
 		});
@@ -89,6 +93,7 @@ public class PopupVisualizationController {
 							chartController.initialize();
 							break;
 						default:
+							validVisualization = false;
 							visualizationInputVBox.getChildren().clear();
 							break;
 					}
@@ -100,7 +105,7 @@ public class PopupVisualizationController {
 	 */
 	@FXML
 	protected void handleGraphCreateButtonAction() {
-		if (chartController.axesSet()) {
+		if (chartController.axesSet() && validVisualization && tableSet) {
 			if (chartController instanceof BarChartController) {
 				BarChart chart = ((BarChartController) chartController).create();
 				chart.snapshot(new SnapshotParameters(), null);
@@ -112,7 +117,7 @@ public class PopupVisualizationController {
 			dialog.close();
 		} else {
 			createError.setTextFill(Color.RED);
-			createError.setText("Could not create graph; axes not fully set.");
+			createError.setText("Could not create graph; data not fully set.");
 		}
 	}
 
