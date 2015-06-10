@@ -147,38 +147,30 @@ public class XmlWizardController {
 	}
 
 	private void updateColumnsView() {
-		try {
-			datacolumns.getItems().clear();
-			Map<String, Class<? extends DataValue>> columns = selectedFile.getColumns();
+		datacolumns.getItems().clear();
+		Map<String, Class<? extends DataValue>> columns = selectedFile.getColumns();
 
-			for (Map.Entry<String, Class<? extends DataValue>> entry : columns.entrySet()) {
-				ObservableList<StringProperty> row = FXCollections.observableArrayList();
-				row.add(new SimpleStringProperty(entry.getKey()));
-				row.add(new SimpleStringProperty(DataFile.getStringColumnType(entry.getValue())));
-				datacolumns.getItems().add(row);
-			}
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+		for (Map.Entry<String, Class<? extends DataValue>> entry : columns.entrySet()) {
+			ObservableList<StringProperty> row = FXCollections.observableArrayList();
+			row.add(new SimpleStringProperty(entry.getKey()));
+			row.add(new SimpleStringProperty(DataFile.getStringColumnType(entry.getValue())));
+			datacolumns.getItems().add(row);
 		}
 	}
 
 	@FXML
 	public void addColumnRow(ActionEvent actionEvent) {
-		try {
-			if (selectedFile != null) {
-				ObservableList<StringProperty> row = FXCollections.observableArrayList();
+		if (selectedFile != null) {
+			ObservableList<StringProperty> row = FXCollections.observableArrayList();
 
-				String colName = columnName.getText();
-				String colType = (String) columntype.getValue();
+			String colName = columnName.getText();
+			String colType = (String) columntype.getValue();
 
-				row.add(new SimpleStringProperty(colName));
-				row.add(new SimpleStringProperty(colType));
+			row.add(new SimpleStringProperty(colName));
+			row.add(new SimpleStringProperty(colType));
 
-				selectedFile.getColumns().put(colName, DataFile.getColumnType(colType));
-				updateColumnsView();
-			}
-		} catch (ClassNotFoundException e) {
-				e.printStackTrace();
+			selectedFile.getColumns().put(colName, DataFile.getColumnType(colType));
+			updateColumnsView();
 		}
 	}
 
