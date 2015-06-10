@@ -548,6 +548,7 @@ class LanguageParser extends BaseParser<Object> {
 		return FirstOf(
 				StringExpression(),
 				NumberExpression(),
+				DateExpression(),
 				BooleanTerm()
 		);
 	}
@@ -714,9 +715,16 @@ class LanguageParser extends BaseParser<Object> {
 				"ON",
 				SomeWhiteSpace(),
 				selector,
-				"FROM",
-				SomeWhiteSpace(),
 				GroupByFunctions()
+		);
+	}
+
+	Rule GroupByColumn() {
+		return Sequence(
+				GroupBy(
+					AnyValue()
+				),
+				swap4()
 		);
 	}
 
@@ -732,21 +740,26 @@ class LanguageParser extends BaseParser<Object> {
 						return true;
 					}
 				},
-				// This rather unusual structure is required, as a recursive approach would result
-				// in a StackOverflowException and since GroupByFunction is matched before
-				// the comma the values have to be added after the comma. (otherwise they'd be added
-				// twice.)
-				ZeroOrMore(
-						GroupByFunction(functions, names),
-						",",
-						WhiteSpace(),
-						names.get().add((Identifier) pop()),
-						functions.get().add((FunctionNode) pop())
-				),
 				Optional(
-						GroupByFunction(functions, names),
-						names.get().add((Identifier) pop()),
-						functions.get().add((FunctionNode) pop())
+						SomeWhiteSpace(),
+						"FROM",
+						SomeWhiteSpace(),
+						// This rather unusual structure is required, as a recursive approach would result
+						// in a StackOverflowException and since GroupByFunction is matched before
+						// the comma the values have to be added after the comma. (otherwise they'd be added
+						// twice.)
+						ZeroOrMore(
+								GroupByFunction(functions, names),
+								",",
+								WhiteSpace(),
+								names.get().add((Identifier) pop()),
+								functions.get().add((FunctionNode) pop())
+						),
+						Optional(
+								GroupByFunction(functions, names),
+								names.get().add((Identifier) pop()),
+								functions.get().add((FunctionNode) pop())
+						)
 				),
 				push(functions.get()),
 				push(names.get())

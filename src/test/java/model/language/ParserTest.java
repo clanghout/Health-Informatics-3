@@ -1,10 +1,7 @@
 package model.language;
 
 import model.data.*;
-import model.data.value.BoolValue;
-import model.data.value.DateTimeValue;
-import model.data.value.IntValue;
-import model.data.value.StringValue;
+import model.data.value.*;
 import model.process.DataProcess;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,8 +32,8 @@ public class ParserTest {
 		builder.createColumn("value", IntValue.class);
 		builder.createColumn("date", DateTimeValue.class);
 
-		firstDateTime = new DateTimeValue(1995, 1, 17, 03, 45, 0);
-		secondDateTime = new DateTimeValue(1997, 1, 17, 03, 45, 0);
+		firstDateTime = new DateTimeValue(1995, 1, 17, 3, 45, 0);
+		secondDateTime = new DateTimeValue(1997, 1, 17, 3, 45, 0);
 
 		builder.createRow(new IntValue(11), firstDateTime);
 		builder.createRow(new IntValue(10), secondDateTime);
@@ -428,5 +425,37 @@ public class ParserTest {
 		assertEquals(1, table.getRowCount());
 
 		assertEquals(2, row1.getValue(table.getColumn("value")).getValue());
+	}
+
+	@Test
+	public void testParseGroupBy() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("test2");
+		builder.createColumn("value", IntValue.class);
+		builder.createColumn("value2", IntValue.class);
+
+		builder.createRow(new IntValue(11), new IntValue(10));
+		builder.createRow(new IntValue(11), new IntValue(5));
+		builder.createRow(new IntValue(5), new IntValue(3));
+
+		DataTable test2 = builder.build();
+		model.add(test2);
+
+		String input = "def group : GroupBy = " +
+				"NAME sjon ON (test2.value * 2) " +
+				"FROM MAX(test2.value2) AS max, AVERAGE(test2.value2) AS avg;\n" +
+				"from(test2)|groupBy(group)";
+
+		Table result = parseAndProcess(input);
+		assertTrue(result instanceof DataTable);
+
+		DataTable table = (DataTable) result;
+
+		assertEquals(new StringValue("22"), table.getRow(0).getValue(table.getColumn("Chunk")));
+		assertEquals(new FloatValue(10f), table.getRow(0).getValue(table.getColumn("max")));
+		assertEquals(new FloatValue(7.5f), table.getRow(0).getValue(table.getColumn("avg")));
+
+		assertEquals(new FloatValue(3f), table.getRow(1).getValue(table.getColumn("max")));
+		assertEquals(new FloatValue(3f), table.getRow(1).getValue(table.getColumn("avg")));
 	}
 }

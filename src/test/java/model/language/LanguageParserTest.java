@@ -252,7 +252,7 @@ public class LanguageParserTest {
 	@Test
 	public void testGroupByFunctions2() throws Exception {
 		BasicParseRunner runner = new BasicParseRunner(parser.GroupByFunctions());
-		String input = "MAX(test1.value) AS sjon";
+		String input = " FROM MAX(test1.value) AS sjon";
 
 		ParsingResult result = runner.run(input);
 
@@ -270,6 +270,20 @@ public class LanguageParserTest {
 
 	@Test
 	public void testGroupByFunctions3() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.GroupByFunctions());
+		String input = " FROM MAX(test1.value) AS sjon, AVERAGE(test1.value) AS sjaak";
 
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+
+		List<Identifier> identifiers = (List<Identifier>) result.valueStack.pop();
+		List<FunctionNode> functions = (List<FunctionNode>) result.valueStack.pop();
+
+		assertEquals(2, identifiers.size());
+		assertEquals("sjon", identifiers.get(0).getName());
+		assertEquals("sjaak", identifiers.get(1).getName());
+
+		assertEquals(2, functions.size());
 	}
 }

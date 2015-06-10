@@ -1,7 +1,6 @@
 package model.language;
 
 import model.data.DataModel;
-import model.data.describer.DataDescriber;
 
 
 /**
@@ -19,7 +18,7 @@ class MacroInfo {
 		this.body = body;
 	}
 
-	DataDescriber parse(DataModel model) {
+	Object parse(DataModel model) {
 		return type.parse(body, model);
 	}
 

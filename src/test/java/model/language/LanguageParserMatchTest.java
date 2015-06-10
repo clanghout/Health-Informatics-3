@@ -71,7 +71,10 @@ public class LanguageParserMatchTest {
 				{ parser.DateTimeLiteral(), "#1995-01-17 03:45#", true},
 				{ parser.DateTimeLiteral(), "#1995-01-17 03:35:33#", true},
 				{ parser.DateLiteral(), "#1995-01-17#", true},
-				{ parser.NumberExpression(), "MAX(table.column)", true}
+				{ parser.NumberExpression(), "MAX(table.column)", true},
+				{ parser.GroupByColumn(), "NAME sjon ON table.column", true},
+				{ parser.GroupByColumn(),
+						"NAME sjon ON table.column FROM MAX(table.column) AS max", true}
 		};
 
 		return Arrays.asList(testData);
