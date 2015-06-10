@@ -51,7 +51,7 @@ public class UnionTest {
 
 		DataTableBuilder builder2 = new DataTableBuilder();
 		builder2.createColumn("c1", FloatValue.class);
-		builder2.createRow(new FloatValue(2));
+		builder2.createRow(new FloatValue(2f));
 		builder2.setName("table2");
 
 		DataTable table2 = builder2.build();
@@ -168,9 +168,9 @@ public class UnionTest {
 		DataTableBuilder builder = new DataTableBuilder();
 		builder.createColumn("c1", StringValue.class);
 		builder.createColumn("c2", FloatValue.class);
-		builder.createRow(new StringValue("tesawfawt"), new FloatValue(22));
-		DataRow row1 = builder.createRow(new StringValue("test"), new FloatValue(2));
-		builder.createRow(new StringValue("tesawfawawdt"), new FloatValue(222));
+		builder.createRow(new StringValue("tesawfawt"), new FloatValue(22f));
+		DataRow row1 = builder.createRow(new StringValue("test"), new FloatValue(2f));
+		builder.createRow(new StringValue("tesawfawawdt"), new FloatValue(222f));
 		row1.addCode("test");
 		builder.setName("table1");
 
@@ -180,11 +180,11 @@ public class UnionTest {
 		builder2.setName("table2");
 		builder2.createColumn("c1", StringValue.class);
 		builder2.createColumn("c2", FloatValue.class);
-		builder2.createRow(new StringValue("eg"), new FloatValue(2));
-		builder2.createRow(new StringValue("test"), new FloatValue(5));
-		DataRow row2 = builder2.createRow(new StringValue("test"), new FloatValue(2));
+		builder2.createRow(new StringValue("eg"), new FloatValue(2f));
+		builder2.createRow(new StringValue("test"), new FloatValue(5f));
+		DataRow row2 = builder2.createRow(new StringValue("test"), new FloatValue(2f));
 		row2.addCode("test2");
-		DataRow row3 = builder2.createRow(new StringValue("tesaawt"), new FloatValue(22));
+		DataRow row3 = builder2.createRow(new StringValue("tesaawt"), new FloatValue(22f));
 		row3.addCode("te2");
 
 
@@ -200,18 +200,18 @@ public class UnionTest {
 
 		assertEquals(table3.getRowCount(), 6);
 		assertEquals(table3.getRow(0).getValue(table3.getColumn("c1")).getValue(), "tesawfawt");
-		assertEquals(table3.getRow(0).getValue(table3.getColumn("c2")), new FloatValue(22));
+		assertEquals(table3.getRow(0).getValue(table3.getColumn("c2")), new FloatValue(22f));
 		assertFalse(table3.getRow(0).containsCode("test"));
 		assertFalse(table3.getRow(0).containsCode("test2"));
 
 
 		assertEquals(table3.getRow(1).getValue(table3.getColumn("c1")).getValue(), "test");
-		assertEquals(table3.getRow(1).getValue(table3.getColumn("c2")),	new FloatValue(2));
+		assertEquals(table3.getRow(1).getValue(table3.getColumn("c2")),	new FloatValue(2f));
 		assertTrue(table3.getRow(1).containsCode("test"));
 		assertTrue(table3.getRow(1).containsCode("test2"));
 
 		assertEquals(table3.getRow(3).getValue(table3.getColumn("c1")).getValue(), "eg");
-		assertEquals(table3.getRow(3).getValue(table3.getColumn("c2")),	new FloatValue(2));
+		assertEquals(table3.getRow(3).getValue(table3.getColumn("c2")),	new FloatValue(2f));
 
 	}
 }

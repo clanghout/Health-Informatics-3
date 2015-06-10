@@ -2,7 +2,7 @@ package model.language.nodes;
 
 import model.data.DataModel;
 import model.data.describer.DataDescriber;
-import model.data.describer.DateConstraintDescriber;
+import model.data.describer.OperationDescriber;
 import model.data.value.BoolValue;
 import model.data.value.TemporalValue;
 import model.process.analysis.operations.dates.constraint.After;
@@ -36,7 +36,7 @@ public class DateCompareNode extends OperationNode<BoolValue> {
 
 	@Override
 	public DataDescriber<BoolValue> resolve(DataModel model) {
-		return new DateConstraintDescriber(
+		return new OperationDescriber<>(
 				resolveConstraint(model)
 		);
 	}

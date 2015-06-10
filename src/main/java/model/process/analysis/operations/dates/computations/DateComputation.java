@@ -2,25 +2,22 @@ package model.process.analysis.operations.dates.computations;
 
 import model.data.Row;
 import model.data.describer.DataDescriber;
-import model.data.value.DateTimeValue;
-import model.data.value.DateValue;
-import model.data.value.PeriodValue;
+import model.data.value.DataValue;
 import model.data.value.TemporalValue;
 import model.process.analysis.operations.Operation;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.Temporal;
 
 /**
  * Represents a computation performed on a temporal value.
  *
  * Created by Boudewijn on 8-6-2015.
+ * @param <T> The type of the right side operand.
+ * @param <R> The result of the computation.
  */
-public abstract class DateComputation extends Operation<TemporalValue<?>> {
+public abstract class DateComputation<T extends DataValue<?>, R extends DataValue<?>>
+		extends Operation<R> {
 
 	private DataDescriber<? extends TemporalValue<?>> left;
-	private DataDescriber<PeriodValue> right;
+	private DataDescriber<T> right;
 
 	/**
 	 * Construct a new DateComputation.
@@ -29,7 +26,7 @@ public abstract class DateComputation extends Operation<TemporalValue<?>> {
 	 */
 	public DateComputation(
 			DataDescriber<? extends TemporalValue<?>> left,
-			DataDescriber<PeriodValue> right) {
+			DataDescriber<T> right) {
 		this.left = left;
 		this.right = right;
 	}
@@ -40,17 +37,8 @@ public abstract class DateComputation extends Operation<TemporalValue<?>> {
 	 * @return The result of this operation.
 	 */
 	@Override
-	public final TemporalValue operate(Row row) {
-		Temporal moment = compute(row);
-		if (moment instanceof LocalDateTime) {
-			return new DateTimeValue(moment);
-		} else if (moment instanceof LocalDate) {
-			return new DateValue(moment);
-		} else {
-			throw new UnsupportedOperationException(
-					String.format("Type of %s not recognized", moment)
-			);
-		}
+	public final R operate(Row row) {
+		return compute(row);
 	}
 
 	/**
@@ -58,7 +46,7 @@ public abstract class DateComputation extends Operation<TemporalValue<?>> {
 	 * @param row The row on which you want to perform the computation on.
 	 * @return The result of the computation.
 	 */
-	protected abstract Temporal compute(Row row);
+	protected abstract R compute(Row row);
 
 	/**
 	 * Get the left side operand of this operation.
@@ -72,7 +60,7 @@ public abstract class DateComputation extends Operation<TemporalValue<?>> {
 	 * Get the right side operand of this operation.
 	 * @return The right side operand of this operation.
 	 */
-	public DataDescriber<PeriodValue> getRight() {
+	public DataDescriber<T> getRight() {
 		return right;
 	}
 }
