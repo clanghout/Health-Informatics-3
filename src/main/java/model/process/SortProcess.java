@@ -1,9 +1,11 @@
 package model.process;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 import model.data.DataRow;
 import model.data.DataTable;
+import model.data.DataTableConversionBuilder;
 import model.data.Table;
 import model.data.describer.RowValueDescriber;
 import model.data.value.DataValue;
@@ -27,10 +29,17 @@ public class SortProcess extends DataProcess {
 	 */
 	@Override
 	protected Table doProcess() {
+		ArrayList sorted = new ArrayList<>(table.getRows());
 		Collections.sort(
-				table.getRows(),
+				sorted,
 				(DataRow row1, DataRow row2) -> column.resolve(row1).compareTo(
 						column.resolve(row2)));
+		//remove rows from table
+		table.clearRows();
+		//add sorted to table
+		DataTableConversionBuilder builder = new DataTableConversionBuilder(table, table.getName());
+		builder.addRowsFromArray(sorted);
+		table = builder.build();
 		return table;
 	}
 
