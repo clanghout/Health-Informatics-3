@@ -17,10 +17,7 @@ import model.data.DataRow;
 import model.data.DataTable;
 import model.data.Row;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -30,6 +27,7 @@ import java.util.logging.Logger;
  */
 public class TableViewController implements Observer {
 
+	private static final String CODE_COLUMN_NAME = "Code";
 	private Logger logger = Logger.getLogger("TabViewController");
 
 	@FXML
@@ -78,12 +76,21 @@ public class TableViewController implements Observer {
 		List<DataColumn> columns = table.getColumns();
 		Iterator<DataRow> rowIterator = table.iterator();
 
-		tableView.setPlaceholder(new Label("Loading..."));
 		fillTableHeaders(columns);
 
 		while (rowIterator.hasNext()) {
 			Row currentRow = rowIterator.next();
 			ObservableList<StringProperty> row = FXCollections.observableArrayList();
+			if (!currentRow.getCodes().isEmpty()) {
+				StringBuilder stringBuilder = new StringBuilder();
+				Set<String> codes = currentRow.getCodes();
+				for (String code : codes) {
+					stringBuilder.append(code + "\n");
+				}
+				SimpleStringProperty codesString =
+						new SimpleStringProperty(stringBuilder.toString());
+				row.add(codesString);
+			}
 			for (int i = 0; i < columns.size(); i++) {
 				String val = currentRow.getValue(columns.get(i)).toString();
 				row.add(new SimpleStringProperty(val));
@@ -104,6 +111,16 @@ public class TableViewController implements Observer {
 			fxColumn.getStyleClass().add("table-column");
 			tableView.getColumns().add(fxColumn);
 		}
+		addCodesColumn();
+	}
+
+	/**
+	 * Adds a column for the codes into the tableview.
+	 */
+	private void addCodesColumn() {
+		TableColumn<ObservableList<StringProperty>, String> fxColumn
+				= new TableColumn<>(CODE_COLUMN_NAME);
+		tableView.getColumns().add(fxColumn);
 	}
 
 	/**
