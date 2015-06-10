@@ -16,10 +16,13 @@ public abstract class DataValue<Type> {
 		if (!(obj instanceof DataValue)) {
 			return false;
 		}
-		if (isNull || ((DataValue) obj).isNull()) {
+		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
-		if (this.getClass() != obj.getClass()) {
+		if (isNull && ((DataValue) obj).isNull()) {
+			return true;
+		}
+		if (isNull || ((DataValue) obj).isNull()) {
 			return false;
 		}
 		return doEquals(obj);

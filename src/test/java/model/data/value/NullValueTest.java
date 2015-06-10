@@ -21,7 +21,9 @@ public class NullValueTest {
 	@Test
 	public void testNullBool() throws Exception {
 		value = new BoolValue(null);
+		DataValue compare = new BoolValue(null);
 		assertEquals(false, value.getValue());
+		assertEquals(compare, value);
 		assertEquals(true, value.isNull());
 	}
 
