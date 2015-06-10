@@ -181,28 +181,28 @@ public class SortProcessTest {
 	public void testReverseSortingPeriod() throws Exception {
 		DataProcess process = new SortProcess(new RowValueDescriber<>(periodcol), desc);
 		DataTable result = proc(process);
-		assertEquals(new StringValue("opq"), result.getRow(0).getValue(stringcol));
+		assertEquals(new StringValue("klm"), result.getRow(0).getValue(stringcol));
 	}
 	
 	@Test
 	public void testReverseSortingString() throws Exception {
 		DataProcess process = new SortProcess(new RowValueDescriber<>(stringcol), desc);
 		DataTable result = proc(process);
-		assertEquals(new StringValue("abb"), result.getRow(0).getValue(stringcol));
+		assertEquals(new StringValue("opq"), result.getRow(0).getValue(stringcol));
 	}
 	
 	@Test
 	public void testReverseSortingBool() throws Exception {
 		DataProcess process = new SortProcess(new RowValueDescriber<>(boolcol), desc);
 		DataTable result = proc(process);
-		assertEquals(new StringValue("abc"), result.getRow(0).getValue(stringcol));
+		assertEquals(new StringValue("klm"), result.getRow(0).getValue(stringcol));
 	}
 	
 	@Test
 	public void testReverseSortingFloat() throws Exception {
 		DataProcess process = new SortProcess(new RowValueDescriber<>(floatcol), desc);
 		DataTable result = proc(process);
-		assertEquals(new StringValue("opq"), result.getRow(0).getValue(stringcol));
+		assertEquals(new StringValue("abb"), result.getRow(0).getValue(stringcol));
 	}
 	
 	@Test
