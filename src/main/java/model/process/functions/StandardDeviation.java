@@ -12,8 +12,8 @@ import model.data.value.NumberValue;
  */
 public class StandardDeviation extends Function {
 
-	public StandardDeviation(DataTable model, DataDescriber<NumberValue> argument) {
-		super(model, argument);
+	public StandardDeviation(DataTable table, DataDescriber<NumberValue> argument) {
+		super(table, argument);
 	}
 
 	/**

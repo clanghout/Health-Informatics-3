@@ -70,6 +70,7 @@ class LanguageParser extends BaseParser<Object> {
 				IntLiteral(),
 				NumberColumn(),
 				DateFunction(),
+				TableFunction(),
 				Sequence("(", NumberExpression(), ")")
 		);
 	}
@@ -88,6 +89,39 @@ class LanguageParser extends BaseParser<Object> {
 		return Sequence(
 				FirstOf(
 						"*", "/", "+", "-", "^"
+				),
+				push(match())
+		);
+	}
+
+	Rule TableFunction() {
+		return Sequence(
+				TableFunctionName(),
+				"(",
+				WhiteSpace(),
+				ColumnIdentifier(),
+				WhiteSpace(),
+				")",
+				swap(),
+				push(
+						new FunctionNode(
+							(String) pop(),
+							(ColumnIdentifier) pop()
+						)
+				)
+		);
+	}
+
+	Rule TableFunctionName() {
+		return Sequence(
+				FirstOf(
+						"COUNT",
+						"AVERAGE",
+						"MIN",
+						"MAX",
+						"SUM",
+						"MEDIAN",
+						"STDDEV"
 				),
 				push(match())
 		);
