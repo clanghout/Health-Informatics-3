@@ -65,7 +65,7 @@ public abstract class ExcelFile extends DataFile {
 				Cell cell = row.getCell(i, Row.CREATE_NULL_AS_BLANK);
 				values[i] = toDataValue(cell);
 			}
-			if(hasMetaData()) {
+			if (hasMetaData()) {
 				values[values.length - 1] = getMetaDataValue();
 			}
 			getBuilder().createRow(values);

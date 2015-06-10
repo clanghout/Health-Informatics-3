@@ -1,14 +1,18 @@
 package model.input.file;
 
+import model.data.DataTable;
+import model.data.value.DataValue;
+import model.data.value.FloatValue;
+import model.data.value.IntValue;
+import model.data.value.StringValue;
+
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
-
-import model.data.value.*;
-
-import model.data.DataTable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 /**
  * Class to specify a .txt file.
@@ -51,7 +55,7 @@ public class PlainTextFile extends DataFile {
 				}
 			}
 			if (hasMetaData()) {
-				getBuilder().createColumn(getMetaDataColumnName(),getMetaDataType());
+				getBuilder().createColumn(getMetaDataColumnName(), getMetaDataType());
 			}
 			List<String> lines = readLines(scanner);
 			addRowsToBuilder(filterLastRows(lines));
@@ -78,7 +82,7 @@ public class PlainTextFile extends DataFile {
 	}
 
 	/**
-	 * Reads the lines from a scanner and inserts them into a list
+	 * Reads the lines from a scanner and inserts them into a list.
 	 * @param scanner The scanner
 	 * @return The list containing all lines read from the start line
 	 */

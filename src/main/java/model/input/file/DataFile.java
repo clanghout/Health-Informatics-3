@@ -276,7 +276,7 @@ public abstract class DataFile {
 	}
 
 	/**
-	 * Sets if the datafile has metadata
+	 * Sets if the datafile has metadata.
 	 * @param hasMetaData True if the datafile contains metadata
 	 */
 	public void setHasMetaData(boolean hasMetaData) {
