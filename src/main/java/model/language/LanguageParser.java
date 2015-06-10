@@ -668,7 +668,6 @@ class LanguageParser extends BaseParser<Object> {
 				"def",
 				WhiteSpace(),
 				Identifier(),
-				Params(),
 				WhiteSpace(),
 				":",
 				WhiteSpace(),
@@ -682,7 +681,6 @@ class LanguageParser extends BaseParser<Object> {
 				push(
 						new MacroInfo(
 								(Identifier) pop(),
-								(List<Object>) pop(),
 								new MacroType((String) pop()),
 								(String) pop()
 						)
