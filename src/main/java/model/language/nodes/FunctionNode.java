@@ -33,13 +33,17 @@ public class FunctionNode extends ValueNode<NumberValue<?>> {
 
 	@Override
 	public DataDescriber<NumberValue<?>> resolve(DataModel model) {
-		Function functionOperation = resolveFunction(
-				function,
-				new TableValueDescriber<>(model, tableColumn)
-		);
+		Function functionOperation = getFunction(model);
 
 		Identifier<Table> table = new Identifier<>(tableColumn.getTable());
 		return new FunctionDescriber(model, table, functionOperation);
+	}
+
+	public Function getFunction(DataModel model) {
+		return resolveFunction(
+				function,
+				new TableValueDescriber<>(model, tableColumn)
+		);
 	}
 
 	private Function resolveFunction(
