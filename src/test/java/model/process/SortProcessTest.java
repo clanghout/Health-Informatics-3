@@ -87,15 +87,18 @@ public class SortProcessTest {
 	@Test
 	public void testSortingDate() throws Exception {
 		assertEquals(new StringValue("klm"), table.getRow(0).getValue(stringcol));
-		DataProcess process = new SortProcess(table, new RowValueDescriber<>(datecol), asc);
-		DataTable result = process.doProcess().getTable(table.getName());
+		DataProcess process = new SortProcess(new RowValueDescriber<>(datecol), asc);
+		process.setInput(table);
+		DataTable result = (DataTable) process.process();
+//		DataTable result = process.doProcess().getTable(table.getName());
 		assertEquals(new StringValue("abc"), result.getRow(0).getValue(stringcol));
 	}
 	
 	@Test
 	public void testSortingPeriod() throws Exception {
 		assertEquals(new StringValue("klm"), table.getRow(0).getValue(stringcol));
-		DataProcess process = new SortProcess(table, new RowValueDescriber<>(periodcol), asc);
+		DataProcess process = new SortProcess(new RowValueDescriber<>(periodcol), asc);
+		process.setInput(table);
 		DataTable result = process.doProcess().getTable(table.getName());
 		assertEquals(new StringValue("opq"), result.getRow(0).getValue(stringcol));
 	}
@@ -103,7 +106,8 @@ public class SortProcessTest {
 	@Test
 	public void testSortingString() throws Exception {
 		assertEquals(new StringValue("klm"), table.getRow(0).getValue(stringcol));
-		DataProcess process = new SortProcess(table, new RowValueDescriber<>(stringcol), asc);
+		DataProcess process = new SortProcess(new RowValueDescriber<>(stringcol), asc);
+		process.setInput(table);
 		DataTable result = process.doProcess().getTable(table.getName());
 		assertEquals(new StringValue("abb"), result.getRow(0).getValue(stringcol));
 	}
@@ -111,7 +115,8 @@ public class SortProcessTest {
 	@Test
 	public void testSortingBool() throws Exception {
 		assertEquals(new StringValue("klm"), table.getRow(0).getValue(stringcol));
-		DataProcess process = new SortProcess(table, new RowValueDescriber<>(boolcol), asc);
+		DataProcess process = new SortProcess(new RowValueDescriber<>(boolcol), asc);
+		process.setInput(table);
 		DataTable result = process.doProcess().getTable(table.getName());
 		assertEquals(new StringValue("abc"), result.getRow(0).getValue(stringcol));
 	}
@@ -119,7 +124,8 @@ public class SortProcessTest {
 	@Test
 	public void testSortingFloat() throws Exception {
 		assertEquals(new StringValue("klm"), table.getRow(0).getValue(stringcol));
-		DataProcess process = new SortProcess(table, new RowValueDescriber<>(floatcol), asc);
+		DataProcess process = new SortProcess(new RowValueDescriber<>(floatcol), asc);
+		process.setInput(table);
 		DataTable result = process.doProcess().getTable(table.getName());
 		assertEquals(new StringValue("opq"), result.getRow(0).getValue(stringcol));
 	}
@@ -127,7 +133,8 @@ public class SortProcessTest {
 	@Test
 	public void testSortingInt() throws Exception {
 		assertEquals(new StringValue("klm"), table.getRow(0).getValue(stringcol));
-		DataProcess process = new SortProcess(table, new RowValueDescriber<>(intcol), asc);
+		DataProcess process = new SortProcess(new RowValueDescriber<>(intcol), asc);
+		process.setInput(table);
 		DataTable result = process.doProcess().getTable(table.getName());
 		assertEquals(new StringValue("abc"), result.getRow(0).getValue(stringcol));
 	}
@@ -140,7 +147,8 @@ public class SortProcessTest {
 	@Test
 	public void testReverseSortingDate() throws Exception {
 		assertEquals(new StringValue("klm"), table.getRow(0).getValue(stringcol));
-		DataProcess process = new SortProcess(table, new RowValueDescriber<>(datecol), desc);
+		DataProcess process = new SortProcess(new RowValueDescriber<>(datecol), desc);
+		process.setInput(table);
 		DataTable result = process.doProcess().getTable(table.getName());
 		assertEquals(new StringValue("abc"), result.getRow(0).getValue(stringcol));
 	}
@@ -148,7 +156,8 @@ public class SortProcessTest {
 	@Test
 	public void testReverseSortingPeriod() throws Exception {
 		assertEquals(new StringValue("klm"), table.getRow(0).getValue(stringcol));
-		DataProcess process = new SortProcess(table, new RowValueDescriber<>(periodcol), desc);
+		DataProcess process = new SortProcess(new RowValueDescriber<>(periodcol), desc);
+		process.setInput(table);
 		DataTable result = process.doProcess().getTable(table.getName());
 		assertEquals(new StringValue("opq"), result.getRow(0).getValue(stringcol));
 	}
@@ -156,7 +165,8 @@ public class SortProcessTest {
 	@Test
 	public void testReverseSortingString() throws Exception {
 		assertEquals(new StringValue("klm"), table.getRow(0).getValue(stringcol));
-		DataProcess process = new SortProcess(table, new RowValueDescriber<>(stringcol), desc);
+		DataProcess process = new SortProcess(new RowValueDescriber<>(stringcol), desc);
+		process.setInput(table);
 		DataTable result = process.doProcess().getTable(table.getName());
 		assertEquals(new StringValue("abb"), result.getRow(0).getValue(stringcol));
 	}
@@ -164,7 +174,8 @@ public class SortProcessTest {
 	@Test
 	public void testReverseSortingBool() throws Exception {
 		assertEquals(new StringValue("klm"), table.getRow(0).getValue(stringcol));
-		DataProcess process = new SortProcess(table, new RowValueDescriber<>(boolcol), desc);
+		DataProcess process = new SortProcess(new RowValueDescriber<>(boolcol), desc);
+		process.setInput(table);
 		DataTable result = process.doProcess().getTable(table.getName());
 		assertEquals(new StringValue("abc"), result.getRow(0).getValue(stringcol));
 	}
@@ -172,7 +183,8 @@ public class SortProcessTest {
 	@Test
 	public void testReverseSortingFloat() throws Exception {
 		assertEquals(new StringValue("klm"), table.getRow(0).getValue(stringcol));
-		DataProcess process = new SortProcess(table, new RowValueDescriber<>(floatcol), desc);
+		DataProcess process = new SortProcess(new RowValueDescriber<>(floatcol), desc);
+		process.setInput(table);
 		DataTable result = process.doProcess().getTable(table.getName());
 		assertEquals(new StringValue("opq"), result.getRow(0).getValue(stringcol));
 	}
@@ -180,7 +192,8 @@ public class SortProcessTest {
 	@Test
 	public void testReverseSortingInt() throws Exception {
 		assertEquals(new StringValue("klm"), table.getRow(0).getValue(stringcol));
-		DataProcess process = new SortProcess(table, new RowValueDescriber<>(intcol), desc);
+		DataProcess process = new SortProcess(new RowValueDescriber<>(intcol), desc);
+		process.setInput(table);
 		DataTable result = process.doProcess().getTable(table.getName());
 		assertEquals(new StringValue("abc"), result.getRow(0).getValue(stringcol));
 	}
