@@ -17,7 +17,7 @@ import model.process.setOperations.FullJoin;
  * Class that is able to constuct a connection table.
  * Created by jens on 6/10/15.
  */
-public class Connection extends DataProcess{
+public class Connection extends DataProcess {
 
 	private ColumnIdentifier timeColumnIdentifier;
 	private FullJoin join;

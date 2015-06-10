@@ -1,6 +1,8 @@
 package model.data.value;
 
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * Abstract class DataValue describing the DataValue objects.
  * 
@@ -69,23 +71,29 @@ public abstract class DataValue<Type> implements Comparable<DataValue> {
 	 * @return null instance of the classType
 	 */
 	public static DataValue getNullInstance(Class<? extends DataValue> classType) {
-		try {
-			if(classType.equals(DateTimeValue.class)) {
-				return new DateTimeValue(null, null, null, null, null, null);
-			} else if(classType.equals(DateValue.class)) {
-				return new DateValue(null, null, null);
-			}else if(classType.equals(TimeValue.class)) {
-				return new TimeValue(null, null, null);
-			}else if(classType.equals(PeriodValue.class)) {
-				return new PeriodValue(null, null, null);
-			} else {
+		if (classType.equals(DateTimeValue.class)) {
+			return new DateTimeValue(null, null, null, null, null, null);
+		} else if (classType.equals(DateValue.class)) {
+			return new DateValue(null, null, null);
+		} else if (classType.equals(TimeValue.class)) {
+			return new TimeValue(null, null, null);
+		} else if (classType.equals(PeriodValue.class)) {
+			return new PeriodValue(null, null, null);
+		} else {
+			try {
 				return classType.getConstructor(
 						classType.getMethod("getValue").getReturnType())
 						.newInstance(new Object[1]);
+			} catch (InvocationTargetException
+					| NoSuchMethodException
+					| InstantiationException
+					| IllegalAccessException e) {
+				throw new IllegalArgumentException(
+						"no such class or no constuctor with one argument: "
+								+ classType.getName());
 			}
-		} catch (Exception e) {
-			throw new IllegalArgumentException("no such class: " + classType.getName() );
 		}
+
 	}
 
 }

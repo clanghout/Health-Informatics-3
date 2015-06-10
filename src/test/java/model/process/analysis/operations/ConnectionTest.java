@@ -1,15 +1,12 @@
 package model.process.analysis.operations;
 
-import com.oracle.webservices.internal.api.databinding.Databinding;
 import model.data.DataModel;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
-import model.data.value.DateTimeValue;
 import model.data.value.StringValue;
 import model.data.value.TimeValue;
 import model.language.ColumnIdentifier;
 import model.language.Identifier;
-import org.jfree.data.xy.XYDatasetTableModel;
 import org.junit.Before;
 import org.junit.Test;
 
