@@ -142,7 +142,7 @@ public class SortProcessTest {
 		assertEquals(new StringValue("klm"), table.getRow(0).getValue(stringcol));
 		DataProcess process = new SortProcess(table, new RowValueDescriber<>(datecol), desc);
 		DataTable result = process.doProcess().getTable(table.getName());
-		assertEquals(new StringValue("abb"), result.getRow(0).getValue(stringcol));
+		assertEquals(new StringValue("abc"), result.getRow(0).getValue(stringcol));
 	}
 	
 	@Test
@@ -150,7 +150,7 @@ public class SortProcessTest {
 		assertEquals(new StringValue("klm"), table.getRow(0).getValue(stringcol));
 		DataProcess process = new SortProcess(table, new RowValueDescriber<>(periodcol), desc);
 		DataTable result = process.doProcess().getTable(table.getName());
-		assertEquals(new StringValue("klm"), result.getRow(0).getValue(stringcol));
+		assertEquals(new StringValue("opq"), result.getRow(0).getValue(stringcol));
 	}
 	
 	@Test
@@ -158,7 +158,7 @@ public class SortProcessTest {
 		assertEquals(new StringValue("klm"), table.getRow(0).getValue(stringcol));
 		DataProcess process = new SortProcess(table, new RowValueDescriber<>(stringcol), desc);
 		DataTable result = process.doProcess().getTable(table.getName());
-		assertEquals(new StringValue("opq"), result.getRow(0).getValue(stringcol));
+		assertEquals(new StringValue("abb"), result.getRow(0).getValue(stringcol));
 	}
 	
 	@Test
@@ -166,7 +166,7 @@ public class SortProcessTest {
 		assertEquals(new StringValue("klm"), table.getRow(0).getValue(stringcol));
 		DataProcess process = new SortProcess(table, new RowValueDescriber<>(boolcol), desc);
 		DataTable result = process.doProcess().getTable(table.getName());
-		assertEquals(new StringValue("abb"), result.getRow(0).getValue(stringcol));
+		assertEquals(new StringValue("abc"), result.getRow(0).getValue(stringcol));
 	}
 	
 	@Test
@@ -174,7 +174,7 @@ public class SortProcessTest {
 		assertEquals(new StringValue("klm"), table.getRow(0).getValue(stringcol));
 		DataProcess process = new SortProcess(table, new RowValueDescriber<>(floatcol), desc);
 		DataTable result = process.doProcess().getTable(table.getName());
-		assertEquals(new StringValue("abb"), result.getRow(0).getValue(stringcol));
+		assertEquals(new StringValue("opq"), result.getRow(0).getValue(stringcol));
 	}
 	
 	@Test
@@ -182,6 +182,6 @@ public class SortProcessTest {
 		assertEquals(new StringValue("klm"), table.getRow(0).getValue(stringcol));
 		DataProcess process = new SortProcess(table, new RowValueDescriber<>(intcol), desc);
 		DataTable result = process.doProcess().getTable(table.getName());
-		assertEquals(new StringValue("abb"), result.getRow(0).getValue(stringcol));
+		assertEquals(new StringValue("abc"), result.getRow(0).getValue(stringcol));
 	}
 }
