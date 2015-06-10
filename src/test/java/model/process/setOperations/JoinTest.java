@@ -1,16 +1,12 @@
-package model.data;
+package model.process.setOperations;
 
-import model.data.describer.ConstantDescriber;
-import model.data.describer.ConstraintDescriber;
+import model.data.*;
 import model.data.describer.OperationDescriber;
 import model.data.describer.RowValueDescriber;
-import model.data.value.BoolValue;
+import model.data.value.FloatValue;
 import model.data.value.StringValue;
-import model.input.file.DataFile;
 import model.language.Identifier;
 import model.process.analysis.operations.constraints.EqualityCheck;
-import model.process.setOperations.FullJoin;
-import model.process.setOperations.SimpleJoin;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,9 +18,13 @@ import static org.junit.Assert.*;
 public class JoinTest {
 	DataTable table1;
 	DataTable table2;
+	DataTable table3;
 	DataModel model;
 	DataColumn columnA;
 	DataColumn columnB;
+	DataColumn columnC;
+	DataColumn columnD;
+	DataColumn columnE;
 
 	@Before
 	public void setUp() {
@@ -52,6 +52,24 @@ public class JoinTest {
 		builder.createRow(new StringValue("ac16"), new StringValue("d26"));
 
 		table2 = builder.build();
+
+		builder = new DataTableBuilder();
+		builder.setName("test3");
+		builder.createColumn("c1", StringValue.class);
+		columnC = builder.createColumn("c2", StringValue.class);
+		columnD = builder.createColumn("c3", StringValue.class);
+		columnE = builder.createColumn("c4", StringValue.class);
+		builder.createRow(new StringValue("k11"), new StringValue("c21"),
+				new StringValue("c21"), new StringValue("c21"));
+		builder.createRow(new StringValue("kcb23"), new StringValue("cadf33"),
+				new StringValue("cadf33"), new StringValue("cadf33"));
+		builder.createRow(new StringValue("k12"), new StringValue("c22"),
+				new StringValue("c22"), new StringValue("c22"));
+		builder.createRow(new StringValue("k13"), new StringValue("c23"),
+				new StringValue("c23"), new StringValue("c23"));
+		table3 = builder.build();
+
+
 
 		model = new DataModel();
 		model.add(table1);
@@ -101,6 +119,94 @@ public class JoinTest {
 		DataTable res = (DataTable) join.process();
 
 		assertTrue(res.equalsSoft(expected));
+	}
+
+	@Test
+	public void testAddCombineDubbleColumn() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("res");
+		builder.createColumn("test1_c1", StringValue.class);
+		builder.createColumn("c2", StringValue.class);
+		builder.createColumn("test2_c1", StringValue.class);
+		builder.createRow(new StringValue("c12"), new StringValue("c22"), new StringValue("ac12"));
+		builder.createRow(new StringValue("c13"), new StringValue("c23"), new StringValue("ac11"));
+		builder.createRow(new StringValue("c14"), new StringValue("c24"), new StringValue("ac13"));
+		DataTable expected = builder.build();
+
+
+		SimpleJoin join = new SimpleJoin("res", new CombinedDataTable(table1, table2));
+		join.setConstraint(new OperationDescriber<>(
+				new EqualityCheck<>(new RowValueDescriber<>(columnA), new RowValueDescriber(columnB))));
+
+		join.addCombineColumn(columnB, columnA);
+		join.addCombineColumn(columnA, columnB);
+		DataTable res = (DataTable) join.process();
+
+		assertTrue(res.equalsSoft(expected));
+	}
+
+	@Test
+	public void testAddMultipleCombineColumn() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("res");
+		builder.createColumn("test1_c1", StringValue.class);
+		builder.createColumn("c2", StringValue.class);
+		builder.createColumn("test3_c1", StringValue.class);
+		builder.createRow(new StringValue("c11"), new StringValue("c21"), new StringValue("k11"));
+		builder.createRow(new StringValue("c12"), new StringValue("c22"), new StringValue("k12"));
+		builder.createRow(new StringValue("c13"), new StringValue("c23"), new StringValue("k13"));
+		DataTable expected = builder.build();
+
+
+		SimpleJoin join = new SimpleJoin("res", new CombinedDataTable(table1, table3));
+		join.setConstraint(new OperationDescriber<>(
+				new EqualityCheck<>(new RowValueDescriber<>(columnA), new RowValueDescriber(columnC))));
+
+		join.addCombineColumn(columnC, columnA);
+		join.addCombineColumn(columnD, columnA);
+		join.addCombineColumn(columnE, columnA);
+		DataTable res = (DataTable) join.process();
+
+		assertTrue(res.equalsSoft(expected));
+	}
+
+	@Test
+	public void testAddMultipleCombineColumn2() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("res");
+		builder.createColumn("test1_c1", StringValue.class);
+		builder.createColumn("c2", StringValue.class);
+		builder.createColumn("test3_c1", StringValue.class);
+		builder.createRow(new StringValue("c11"), new StringValue("c21"), new StringValue("k11"));
+		builder.createRow(new StringValue("c12"), new StringValue("c22"), new StringValue("k12"));
+		builder.createRow(new StringValue("c13"), new StringValue("c23"), new StringValue("k13"));
+		DataTable expected = builder.build();
+
+
+		SimpleJoin join = new SimpleJoin("res", new CombinedDataTable(table1, table3));
+		join.setConstraint(new OperationDescriber<>(
+				new EqualityCheck<>(new RowValueDescriber<>(columnA), new RowValueDescriber(columnC))));
+
+		join.addCombineColumn(columnC, columnA);
+		join.addCombineColumn(columnD, columnC);
+		join.addCombineColumn(columnE, columnD);
+		DataTable res = (DataTable) join.process();
+
+		assertTrue(res.equalsSoft(expected));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testAddCombineColumnWrongType() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("res");
+		builder.createColumn("test1_c1", StringValue.class);
+		DataColumn c = builder.createColumn("c2", FloatValue.class);
+		DataTable t = builder.build();
+
+
+		SimpleJoin join = new SimpleJoin("res", new CombinedDataTable(table1, t));
+		join.addCombineColumn(c, columnA);
+
 	}
 
 	@Test
