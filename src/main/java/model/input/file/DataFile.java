@@ -24,7 +24,7 @@ public abstract class DataFile {
 	private Logger log = Logger.getLogger("DataFile");
 
 	private String metaDataColumnName;
-	private DataValue metaDataValue;
+	private DataValue<?> metaDataValue;
 	private Class<? extends DataValue> metaDataType;
 
 	private String path;
@@ -129,7 +129,7 @@ public abstract class DataFile {
 		this.endLine = endLine;
 	}
 
-	public void setColumnTypes(Class[] types) {
+	public void setColumnTypes(Class<? extends DataValue<?>>[] types) {
 		this.columnTypes = types;
 	}
 	
@@ -265,7 +265,7 @@ public abstract class DataFile {
 	 * Returns the DataValue that is considered the metadata.
 	 * @return The metadatavalue
 	 */
-	public DataValue getMetaDataValue() {
+	public DataValue<?> getMetaDataValue() {
 		return metaDataValue;
 	}
 
@@ -273,7 +273,7 @@ public abstract class DataFile {
 	 * Sets the metadatavalue.
 	 * @param metaDataValue The metadatavalue
 	 */
-	public void setMetaDataValue(DataValue metaDataValue) {
+	public void setMetaDataValue(DataValue<?> metaDataValue) {
 		this.metaDataValue = metaDataValue;
 	}
 
