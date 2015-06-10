@@ -10,6 +10,7 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.Chart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
@@ -81,6 +82,11 @@ public class VisualizationController {
 		visualizationGraph.getChildren().add(chart);
 		this.image = visualizationGraph.snapshot(new SnapshotParameters(), null);
 		saveButton.setDisable(false);
+	}
+
+	public void drawMatrix(TableView matrix) {
+		visualizationGraph.getChildren().add(matrix);
+		saveButton.setDisable(true);
 	}
 
 	/**
