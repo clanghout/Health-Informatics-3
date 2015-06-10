@@ -209,6 +209,6 @@ public class SortProcessTest {
 	public void testReverseSortingInt() throws Exception {
 		DataProcess process = new SortProcess(new RowValueDescriber<>(intcol), desc);
 		DataTable result = proc(process);
-		assertEquals(new StringValue("abc"), result.getRow(0).getValue(stringcol));
+		assertEquals(new StringValue("abb"), result.getRow(0).getValue(stringcol));
 	}
 }
