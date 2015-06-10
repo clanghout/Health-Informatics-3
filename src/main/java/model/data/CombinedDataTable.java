@@ -112,12 +112,9 @@ public class CombinedDataTable extends Table {
 	@Override
 	public List<DataColumn> getColumns() {
 		if (combined != null) {
-			Set<DataColumn> columnSet = new HashSet<>();
-
-			columnSet.addAll(combined.getColumns());
-			columnSet.addAll(table.getColumns());
-
-			return new ArrayList<>(columnSet);
+			ArrayList res = new ArrayList(table.getColumns());
+			res.addAll(combined.getColumns());
+			return res;
 		} else {
 			return table.getColumns();
 		}
