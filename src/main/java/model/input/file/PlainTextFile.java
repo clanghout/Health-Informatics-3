@@ -1,17 +1,18 @@
 package model.input.file;
 
+import model.data.DataTable;
+import model.data.value.DataValue;
+import model.data.value.FloatValue;
+import model.data.value.IntValue;
+import model.data.value.StringValue;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
-
-import model.data.value.FloatValue;
-import model.data.value.IntValue;
-
-import model.data.DataTable;
-import model.data.DataTableBuilder;
-import model.data.value.DataValue;
-import model.data.value.StringValue;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 /**
  * Class to specify a .txt file.
@@ -20,21 +21,22 @@ import model.data.value.StringValue;
  */
 public class PlainTextFile extends DataFile {
 
-	private DataTableBuilder builder;
 	private int counter;
 	private String delimiter = ",";
 
+	/**
+	 * Creates a new PlainTextFile.
+	 * @param path The path to the plain text file
+	 */
 	public PlainTextFile(String path) {
 		super(path);
 	}
 
 	@Override
 	public DataTable createDataTable() throws IOException {
-		builder = new DataTableBuilder();
-		builder.setName(this.getFile().getName().replace(".", ""));
 		counter = 1;
 		InputStream stream = new FileInputStream(getFile());
-
+		getBuilder().setName(getFile().getName().replace(".", ""));
 		try (Scanner scanner = new Scanner(stream, "UTF-8")) {
 			scanner.useDelimiter("\\A");
 			skipToStartLine(scanner);
@@ -49,13 +51,17 @@ public class PlainTextFile extends DataFile {
 						String,
 						Class<? extends DataValue>
 						> entry : getColumns().entrySet()) {
-					builder.createColumn(entry.getKey(), entry.getValue());
+					getBuilder().createColumn(entry.getKey(), entry.getValue());
 				}
 			}
-			readLines(scanner);
+			if (hasMetaData()) {
+				getBuilder().createColumn(getMetaDataColumnName(), getMetaDataType());
+			}
+			List<String> lines = readLines(scanner);
+			addRowsToBuilder(filterLastRows(lines));
 		}
 
-		return builder.build();
+		return getBuilder().build();
 	}
 
 	@Override
@@ -81,29 +87,53 @@ public class PlainTextFile extends DataFile {
 	}
 
 	/**
-	 * Reads the lines from a scanner and inserts rows into the table.
+	 * Reads the lines from a scanner and inserts them into a list.
 	 * @param scanner The scanner
+	 * @return The list containing all lines read from the start line
 	 */
-	private void readLines(Scanner scanner) {
-		while (counter <= getEndLine() && scanner.hasNextLine()) {
+	private ArrayList readLines(Scanner scanner) {
+		ArrayList<String> result = new ArrayList<>();
+		while (scanner.hasNextLine()) {
 			String line = scanner.nextLine();
-			String[] sections = line.split(delimiter);
-			List<Class<? extends DataValue>> columns = getColumnList();
-			DataValue[] values = new DataValue[getColumns().size()];
-			for (int i = 0; i < getColumns().size(); i++) {
- 				values[i] = toDataValue(sections[i].trim(), columns.get(i));
-			}
-			builder.createRow(values);
-
-			counter++;
+			result.add(line);
+		}
+		return result;
+	}
+	
+	private DataValue[] createValues(String line) {
+		String[] sections = line.split(delimiter);
+		List<Class<? extends DataValue>> columns = getColumnList();
+		DataValue[] values;
+		if (hasMetaData()) {
+			values = new DataValue[getColumns().size() + 1];
+		} else {
+			values = new DataValue[getColumns().size()];
+		}
+		for (int i = 0; i < getColumns().size(); i++) {
+			values[i] = toDataValue(sections[i].trim(), columns.get(i));
+		}
+		if (hasMetaData()) {
+			values[values.length - 1] = getMetaDataValue();
+		}
+		return values;
+	}
+	
+	private void addRowsToBuilder(List<String> lines) {
+		for (String line : lines) {
+			DataValue[] values = createValues(line);
+			getBuilder().createRow(values);
 		}
 	}
 
+	private List<String> filterLastRows(List<String> lines) {
+		return lines.subList(0, lines.size() - getEndLine());
+	}
+	
 	/**
 	 * Creates a DataValue from a string.
 	 * @param value The string that will be converted
 	 * @param type The type of the column in which the value will be inserted.
-	 * @return
+	 * @return The DataValue
 	 */
 	private DataValue toDataValue(String value, Class<? extends DataValue> type) {
 		if (type.equals(StringValue.class)) {

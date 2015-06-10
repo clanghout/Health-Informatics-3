@@ -36,6 +36,14 @@ public class FloatValueTest {
 	}
 
 	@Test
+	public void testEqualsWithNull() throws Exception {
+		DataValue value = new FloatValue(0f);
+		DataValue asNull = new FloatValue(null);
+
+		assertNotEquals(value, asNull);
+	}
+
+	@Test
 	public void testHashCode() throws Exception {
 		Float val = 2335f;
 		DataValue value = new FloatValue(val);

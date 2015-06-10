@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import model.data.DataTable;
+import model.data.DataTableBuilder;
 import model.data.value.*;
 import model.exceptions.DataFileNotRecognizedException;
 /**
@@ -18,14 +21,22 @@ import model.exceptions.DataFileNotRecognizedException;
  */
 public abstract class DataFile {
 
+	private Logger log = Logger.getLogger("DataFile");
+
+	private String metaDataColumnName;
+	private DataValue<?> metaDataValue;
+	private Class<? extends DataValue> metaDataType;
+
 	private String path;
 	private int startLine;
 	private int endLine;
 	private Map<String, Class<? extends DataValue>> columns;
 	private List<Class<? extends DataValue>> columnList;
 	private boolean firstRowAsHeader;
-	private Class[] columnTypes;
-	
+	private Class<? extends DataValue>[] columnTypes;
+	private DataTableBuilder builder = new DataTableBuilder();
+	private boolean hasMetaData;
+
 	/**
 	 * Creates a new type of a DataFile. Sets the default range of lines to read
 	 * from 1 to integer maxvalue.
@@ -69,9 +80,9 @@ public abstract class DataFile {
 	* @param path The path of the DataFile
 	* @param type The type specifying what type of DataFile should be created
 	* @return A new DataFile
-	* @throws DataFileNotRecognizedException
+	* @throws DataFileNotRecognizedException When the datafile is not recognized
 	*/
-	public static DataFile createDataFile(String path, String type) 
+	public static DataFile createDataFile(String path, String type)
 			throws DataFileNotRecognizedException {
 		switch (type) {
 			case "plaintext": return new PlainTextFile(path);
@@ -124,7 +135,7 @@ public abstract class DataFile {
 		this.endLine = endLine;
 	}
 
-	public void setColumnTypes(Class[] types) {
+	public void setColumnTypes(Class<? extends DataValue<?>>[] types) {
 		this.columnTypes = types;
 	}
 	
@@ -136,9 +147,8 @@ public abstract class DataFile {
 	 * Returns the type of the class based on a string describing the type.
 	 * @param type The name of the type
 	 * @return The classtype
-	 * @throws ClassNotFoundException When the class is not recognized
 	 */
-	public static Class getColumnType(String type) throws ClassNotFoundException {
+	public static Class getColumnType(String type) {
 		switch (type) {
 			case "int":
 				return IntValue.class;
@@ -153,7 +163,7 @@ public abstract class DataFile {
 			case "datetime" :
 				return DateTimeValue.class;
 			default:
-				throw new ClassNotFoundException();
+				throw new RuntimeException("The specified type of data is not supported");
 		}
 	}
 
@@ -161,9 +171,8 @@ public abstract class DataFile {
 	 * Returns a string describing the type of the class.
 	 * @param type The class
 	 * @return The type of class as a string
-	 * @throws ClassNotFoundException
 	 */
-	public static String getStringColumnType(Class type) throws ClassNotFoundException {
+	public static String getStringColumnType(Class type) {
 		if (type == IntValue.class) {
 			return "int";
 		} else if (type == FloatValue.class) {
@@ -177,8 +186,16 @@ public abstract class DataFile {
 		} else if (type == DateTimeValue.class) {
 			return "datetime";
 		} else {
-			throw new ClassNotFoundException();
+			throw new RuntimeException("The specified type of data is not supported");
 		}
+	}
+
+	/**
+	 * Returns the TableBuilder that creates the table from the file.
+	 * @return The TableBuilder
+	 */
+	protected DataTableBuilder getBuilder() {
+		return builder;
 	}
 
 	/**
@@ -249,6 +266,38 @@ public abstract class DataFile {
 	}
 
 	/**
+	 * Returns the DataValue that is considered the metadata.
+	 * @return The metadatavalue
+	 */
+	public DataValue<?> getMetaDataValue() {
+		return metaDataValue;
+	}
+
+	/**
+	 * Sets the metadatavalue.
+	 * @param metaDataValue The metadatavalue
+	 */
+	public void setMetaDataValue(DataValue<?> metaDataValue) {
+		this.metaDataValue = metaDataValue;
+	}
+
+	/**
+	 * Sets if the datafile has metadata.
+	 * @param hasMetaData True if the datafile contains metadata
+	 */
+	public void setHasMetaData(boolean hasMetaData) {
+		this.hasMetaData = hasMetaData;
+	}
+
+	/**
+	 * Sets the class for the metadata column.
+	 * @param metaDataType The class for the metadata
+	 */
+	public void setMetaDataType(Class<? extends DataValue<?>> metaDataType) {
+		this.metaDataType = metaDataType;
+	}
+
+	/**
 	 * Returns a string representation of the datafile.
 	 *
 	 * @return The string representing the file.
@@ -256,5 +305,75 @@ public abstract class DataFile {
 	@Override
 	public String toString() {
 		return "[" + path + "]";
+	}
+
+	/**
+	 * Sets the standard metadata value.
+	 *
+	 * @param name The name that the metadata column will get
+	 * @param type The type of the column
+	 */
+	public void createMetaDataValue(String name, String type) {
+		try {
+			String fileName = this.getFile().getName();
+			String metaValue = fileName.substring(0, fileName.lastIndexOf("."));
+
+			this.metaDataValue = parseDataValue(metaValue, type);
+			this.setMetaDataType(getColumnType(type));
+			this.setMetaDataColumnName(name);
+		} catch (FileNotFoundException e) {
+			log.log(Level.SEVERE, "The file could not be found", e);
+		}
+	}
+
+	/**
+	 * Parses a string to a DataValue of a given type.
+	 * @param value The value to parse
+	 * @param type The type of DataValue to parse to
+	 * @return The new created DataValue
+	 */
+	public static DataValue parseDataValue(String value, String type) {
+		switch (type) {
+			case "int":
+				return new IntValue(Integer.parseInt(value));
+			case "float":
+				return new FloatValue(Float.parseFloat(value));
+			case "string":
+				return new StringValue(value);
+			default:
+				throw new RuntimeException("Class has not yet implemented");
+		}
+	}
+
+	/**
+	 * Returns true if the datafile has metadata.
+	 * @return true if the datafile has metadata
+	 */
+	public boolean hasMetaData() {
+		return hasMetaData;
+	}
+
+	/**
+	 * Sets the name of the metadata column.
+	 * @param metaDataColumnName The name to set
+	 */
+	public void setMetaDataColumnName(String metaDataColumnName) {
+		this.metaDataColumnName = metaDataColumnName;
+	}
+
+	/**
+	 * Returns the name of the metadata column.
+	 * @return The name of the metadata column.
+	 */
+	public String getMetaDataColumnName() {
+		return metaDataColumnName;
+	}
+
+	/**
+	 * Returns the type of class of the metadata column.
+	 * @return The type of class of the metadata column
+	 */
+	public Class getMetaDataType() {
+		return metaDataType;
 	}
 }

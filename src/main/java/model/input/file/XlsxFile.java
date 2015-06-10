@@ -1,17 +1,16 @@
 package model.input.file;
 
+import model.data.DataTable;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import model.data.DataTable;
-
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  * Class to represent a Microsoft excel (xlsx) ooxml file.
@@ -21,7 +20,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class XlsxFile extends ExcelFile {
 
 	private Logger logger = Logger.getLogger("XlsxFile");
-	
+
+	/**
+	 * Creates a new XlsxFile.
+	 * @param path The path to the xlsx file
+	 */
 	public XlsxFile(String path) {
 		super(path);
 	}
