@@ -155,7 +155,7 @@ public class DataRow extends Row {
 			boolean same = false;
 			for (SoftColumn otherColumn : other.values.keySet()) {
 				if (column.getColumn().equalsExcludeTable(otherColumn.getColumn())) {
-					if(this.getValue(column.getColumn()).isNull()
+					if (this.getValue(column.getColumn()).isNull()
 							&& other.getValue(otherColumn.getColumn()).isNull()) {
 						same = true;
 						break;

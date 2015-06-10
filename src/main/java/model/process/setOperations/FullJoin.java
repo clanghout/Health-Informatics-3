@@ -4,12 +4,12 @@ import model.data.*;
 import model.data.value.DataValue;
 import model.language.Identifier;
 
-import javax.xml.crypto.Data;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 /**
+ * Class to join two table. Option to perform a full/left/right join.
  * Created by jens on 6/10/15.
  */
 public class FullJoin extends Join {
@@ -140,8 +140,6 @@ public class FullJoin extends Join {
 			if (fullRight) {
 				addNotAddedRighRows(rightAdd);
 			}
-
-
 	}
 
 	/**

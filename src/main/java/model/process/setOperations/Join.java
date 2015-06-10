@@ -46,7 +46,7 @@ public abstract class Join extends DataProcess {
 	 * Set the constraint.
 	 * @param constraint the constraint.
 	 */
-	public void setConstraint( DataDescriber<BoolValue> constraint) {
+	public void setConstraint(DataDescriber<BoolValue> constraint) {
 		this.constraint = constraint;
 	}
 
@@ -74,7 +74,7 @@ public abstract class Join extends DataProcess {
 	 */
 	private void simplifyCombinedColumns() {
 		boolean changed = true;
-		while(changed) {
+		while (changed) {
 			changed = false;
 			for (Map.Entry<DataColumn, DataColumn> columnEntry :  combineColumns.entrySet()) {
 				if (combineColumns.containsKey(columnEntry.getValue())) {
@@ -104,7 +104,7 @@ public abstract class Join extends DataProcess {
 	}
 
 	/**
-	 * check if each column gets a unique name
+	 * Make sure that each column gets a unique name.
 	 * @param mappingNewNameToOldColumns map that links the names with the original columns
 	 * @param forbidden set of column names that already exist
 	 *                  or names for which their was a name collision before.
@@ -121,12 +121,14 @@ public abstract class Join extends DataProcess {
 			String newName = mappingNewNameToOldColumns.get(nameColumn).getTable().getName()
 					+ "_" + nameColumn;
 			DataColumn tempColumn = mappingNewNameToOldColumns.remove(nameColumn);
-			checkNameCollision(mappingNewNameToOldColumns, mappingColumnsToName, forbidden, tempColumn, newName);
+			checkNameCollision(mappingNewNameToOldColumns, mappingColumnsToName,
+					forbidden, tempColumn, newName);
 		}
 
 		if (forbidden.contains(nameColumn)) {
 			String newName = column.getTable().getName() + "_" + nameColumn;
-			checkNameCollision(mappingNewNameToOldColumns, mappingColumnsToName, forbidden, column, newName);
+			checkNameCollision(mappingNewNameToOldColumns, mappingColumnsToName,
+					forbidden, column, newName);
 		} else {
 			mappingNewNameToOldColumns.put(nameColumn, column);
 			mappingColumnsToName.put(column, nameColumn);
@@ -134,7 +136,7 @@ public abstract class Join extends DataProcess {
 	}
 
 	/**
-	 * assign to each column a unique name
+	 * Assign to each column a unique name.
 	 * @return a map that maps unique names to columns
 	 */
 	private Map<DataColumn, String> addColumnToNameMapping() {
@@ -144,7 +146,8 @@ public abstract class Join extends DataProcess {
 
 		for (DataColumn column : this.getTable().getColumns()) {
 			if (!combineColumns.containsKey(column)) {
-				checkNameCollision(mappingNewNameToOldColumns, mappingOldColumnsToNewName, forbidden, column, column.getName());
+				checkNameCollision(mappingNewNameToOldColumns, mappingOldColumnsToNewName,
+						forbidden, column, column.getName());
 			}
 		}
 		return mappingOldColumnsToNewName;
@@ -193,7 +196,7 @@ public abstract class Join extends DataProcess {
 	}
 
 	/**
-	 * Join the tables
+	 * Join the tables.
 	 */
 	protected abstract void joinTable();
 
@@ -243,7 +246,9 @@ public abstract class Join extends DataProcess {
 		} else if (row.getValue(column).equals(newValue)) {
 			return;
 		} else {
-			//TODO ik gooi nu een exceptie, maar je zou ook kunnen stellen dat de join gewoon doorgaat maar dat deze row niet wordt toegevoegd.
+			/*TODO ik gooi nu een exceptie,
+			  TODO maar je zou ook kunnen stellen dat de join gewoon doorgaat
+			  TODO maar dat deze row niet wordt toegevoegd. */
 			throw new IllegalStateException("conflicting values for column: " + column.toString());
 		}
 	}
