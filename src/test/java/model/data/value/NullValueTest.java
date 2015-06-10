@@ -118,4 +118,42 @@ public class NullValueTest {
 		assertTrue(value instanceof IntValue);
 		assertTrue(value.isNull());
 	}
+
+	@Test
+	public void testGetNullDateTimeValue() throws Exception {
+		value = DataValue.getNullInstance(DateTimeValue.class);
+		assertTrue(value instanceof DateTimeValue);
+		assertTrue(value.isNull());
+	}
+
+	@Test
+	public void testGetNullDateValue() throws Exception {
+		value = DataValue.getNullInstance(DateValue.class);
+		assertTrue(value instanceof DateValue);
+		assertTrue(value.isNull());
+	}
+	@Test
+	public void testGetNullTimeValue() throws Exception {
+		value = DataValue.getNullInstance(TimeValue.class);
+		assertTrue(value instanceof TimeValue);
+		assertTrue(value.isNull());
+	}
+	@Test
+	public void testGetNullFloatValue() throws Exception {
+		value = DataValue.getNullInstance(FloatValue.class);
+		assertTrue(value instanceof FloatValue);
+		assertTrue(value.isNull());
+	}
+	@Test
+	public void testGetNullStringValue() throws Exception {
+		value = DataValue.getNullInstance(StringValue.class);
+		assertTrue(value instanceof StringValue);
+		assertTrue(value.isNull());
+	}
+	@Test
+	public void testGetNullPeriodTimeValue() throws Exception {
+		value = DataValue.getNullInstance(PeriodValue.class);
+		assertTrue(value instanceof PeriodValue);
+		assertTrue(value.isNull());
+	}
 }

@@ -70,11 +70,21 @@ public abstract class DataValue<Type> implements Comparable<DataValue> {
 	 */
 	public static DataValue getNullInstance(Class<? extends DataValue> classType) {
 		try {
-			return classType.getConstructor(
-					classType.getMethod("getValue").getReturnType())
-					.newInstance(new Object[1]);
+			if(classType.equals(DateTimeValue.class)) {
+				return new DateTimeValue(null, null, null, null, null, null);
+			} else if(classType.equals(DateValue.class)) {
+				return new DateValue(null, null, null);
+			}else if(classType.equals(TimeValue.class)) {
+				return new TimeValue(null, null, null);
+			}else if(classType.equals(PeriodValue.class)) {
+				return new PeriodValue(null, null, null);
+			} else {
+				return classType.getConstructor(
+						classType.getMethod("getValue").getReturnType())
+						.newInstance(new Object[1]);
+			}
 		} catch (Exception e) {
-			throw new IllegalArgumentException("no such class");
+			throw new IllegalArgumentException("no such class: " + classType.getName() );
 		}
 	}
 
