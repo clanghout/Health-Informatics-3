@@ -210,7 +210,7 @@ public class XmlWizardController {
 	@FXML
 	public void removeColumnRow(ActionEvent actionEvent) {
 		String selectedColumn =
-				((ObservableList<StringProperty>)datacolumns.
+				((ObservableList<StringProperty>) datacolumns.
 						getSelectionModel().getSelectedItem()).get(0).getValue();
 
 		selectedFile.getColumns().remove(selectedColumn);
