@@ -71,7 +71,7 @@ public class LanguageParserTest {
 	@Test
 	public void testMacro() throws Exception {
 		BasicParseRunner runner = new BasicParseRunner(parser.Macro());
-		ParsingResult result = runner.run("def test() : Constraint = test1.value = 10;");
+		ParsingResult result = runner.run("def test : Constraint = test1.value = 10;");
 
 		MacroInfo info = (MacroInfo) result.valueStack.pop();
 

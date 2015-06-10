@@ -151,7 +151,7 @@ public class ParserTest {
 
 	@Test
 	public void testParseFromEqualsConstraint() throws Exception {
-		String input = "def isTen() : Constraint = test1.value = 10;\n" +
+		String input = "def isTen : Constraint = test1.value = 10;\n" +
 				"from(test1)|constraint(isTen)";
 
 
@@ -174,7 +174,7 @@ public class ParserTest {
 
 	@Test
 	public void testParseFromGreaterConstraint() throws Exception {
-		String input = "def gtTen() : Constraint = test1.value > 10;\n" +
+		String input = "def gtTen : Constraint = test1.value > 10;\n" +
 				"from(test1)|constraint(gtTen)";
 
 		Table result = parseAndProcess(input);
@@ -190,7 +190,7 @@ public class ParserTest {
 
 	@Test
 	public void testParseFromLesserConstraint() throws Exception {
-		String input = "def ltTen() : Constraint = test1.value < 10;\n" +
+		String input = "def ltTen : Constraint = test1.value < 10;\n" +
 				"from(test1)|constraint(ltTen)";
 
 		Table result = parseAndProcess(input);
@@ -208,7 +208,7 @@ public class ParserTest {
 
 	@Test
 	public void testParseFromGreaterEqualsConstraint() throws Exception {
-		String input = "def gtEqTen() : Constraint = test1.value >= 10;\n" +
+		String input = "def gtEqTen : Constraint = test1.value >= 10;\n" +
 				"from(test1)|constraint(gtEqTen)";
 
 		Table result = parseAndProcess(input);
@@ -286,7 +286,7 @@ public class ParserTest {
 
 	@Test
 	public void testReferFutureTable() throws Exception {
-		String input = "def gtTen() : Constraint = (test2.value > 10);" +
+		String input = "def gtTen : Constraint = (test2.value > 10);" +
 				"from(test1)|is(test2)|from(test2)|constraint(gtTen)|is(result)";
 
 		Table result = parseAndProcess(input);
@@ -313,7 +313,7 @@ public class ParserTest {
 
 		model.add(builder.build());
 
-		String input = "def isTrue() : Constraint = test2.value;" +
+		String input = "def isTrue : Constraint = test2.value;" +
 				"from(test2)|constraint(isTrue)|is(result)";
 
 		Table result = parseAndProcess(input);
@@ -349,7 +349,7 @@ public class ParserTest {
 		model.add(test2);
 
 		String input =
-				"def codeCheck() : Constraint = HAS_CODE(\"test\") OR HAS_CODE(test2.code);" +
+				"def codeCheck : Constraint = HAS_CODE(\"test\") OR HAS_CODE(test2.code);" +
 				"from(test2)|constraint(codeCheck)|is(result)";
 
 		Table result = parseAndProcess(input);
@@ -371,7 +371,7 @@ public class ParserTest {
 
 	@Test
 	public void testParseSetCodes() throws Exception {
-		String input = "def gtNine() : Constraint = test1.value > 9;\n" +
+		String input = "def gtNine : Constraint = test1.value > 9;\n" +
 				"from(test1)|constraint(gtNine)|is(gtThen)|from(test1)|setCode(\"hallo\", gtThen)";
 
 		Table result = parseAndProcess(input);
@@ -388,7 +388,7 @@ public class ParserTest {
 	@Test
 	public void testParseDateComparison() throws Exception {
 		String input =
-				"def beforeOneYear() : Constraint = test1.date BEFORE #1996-01-17 10:00:33#;\n" +
+				"def beforeOneYear : Constraint = test1.date BEFORE #1996-01-17 10:00:33#;\n" +
 				"from(test1)|constraint(beforeOneYear)|is(result)";
 
 		Table result = parseAndProcess(input);
@@ -416,7 +416,7 @@ public class ParserTest {
 
 		model.add(builder.build());
 
-		String input = "def isMax() : Constraint = test2.value = COUNT(test2.value);\n" +
+		String input = "def isMax : Constraint = test2.value = COUNT(test2.value);\n" +
 				"from(test2)|constraint(isMax)|is(result)";
 
 		Table result = parseAndProcess(input);

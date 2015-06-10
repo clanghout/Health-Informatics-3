@@ -677,7 +677,7 @@ class LanguageParser extends BaseParser<Object> {
 				WhiteSpace(),
 				MacroBody(),
 				";",
-				swap4(),
+				swap3(),
 				push(
 						new MacroInfo(
 								(Identifier) pop(),
