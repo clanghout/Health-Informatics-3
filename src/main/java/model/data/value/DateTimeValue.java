@@ -38,11 +38,6 @@ public class DateTimeValue extends TemporalValue<LocalDateTime> {
 	public LocalDateTime getValue() {
 		return dateTime;
 	}
-	
-	@Override
-	public int doHashCode() {
-		return getValue().hashCode();
-	}
 
 	@Override
 	public int compareTo(DataValue other) {

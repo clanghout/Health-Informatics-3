@@ -38,11 +38,6 @@ public class DateValue extends TemporalValue<LocalDate> {
 		this();
 		this.date = LocalDate.from(date);
 	}
-	
-	@Override
-	public int doHashCode() {
-		return getValue().hashCode();
-	}
 
 	@Override
 	public LocalDate getValue() {
