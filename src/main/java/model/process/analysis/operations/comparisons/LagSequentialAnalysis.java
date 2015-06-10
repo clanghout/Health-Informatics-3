@@ -10,6 +10,9 @@ import model.data.describer.DataDescriber;
 import model.data.describer.RowValueDescriber;
 import model.data.value.DateTimeValue;
 import model.exceptions.InputMismatchException;
+import model.process.DataProcess;
+import model.process.SortProcess;
+import model.process.SortProcess.Order;
 import model.process.analysis.operations.Event;
 
 /**
@@ -61,6 +64,8 @@ public class LagSequentialAnalysis {
 		 * TODO replace sorting function for tables with global sorting function
 		 * of DataTable
 		 */
+		Order order = Order.ASCENDING;
+		DataProcess sortA = new SortProcess(new RowValueDescriber<>(colA), order);
 		tableA = sortTable(tableA);
 		tableB = sortTable(tableB);
 
