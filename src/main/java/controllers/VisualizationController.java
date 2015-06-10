@@ -19,6 +19,7 @@ import model.data.DataColumn;
 import model.data.DataModel;
 import model.data.DataTable;
 import view.GraphCreationDialog;
+import view.MatrixCreationDialog;
 
 import javax.imageio.ImageIO;
 import java.awt.image.RenderedImage;
@@ -148,6 +149,22 @@ public class VisualizationController {
 			logger.log(Level.SEVERE, "No controller present");
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "FXML file cannot be loaded");
+		}
+	}
+
+	@FXML
+	protected void handlePopupMatrixButtonAction() {
+		visualizationGraph.getChildren().clear();
+		saveButton.setDisable(true);
+		try {
+			MatrixCreationDialog matrixCreationDialog =
+					new MatrixCreationDialog();
+			matrixCreationDialog.show();
+			PopupMatrixController matrixController =
+					matrixCreationDialog.getFxml().getController();
+			matrixController.initializeView(model, matrixCreationDialog, this);
+		} catch (IOException e) {
+			logger.log(Level.SEVERE, "FXML could not be loaded");
 		}
 	}
 
