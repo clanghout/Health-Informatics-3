@@ -81,6 +81,7 @@ public class JoinTest {
 		model = new DataModel();
 		model.add(table1);
 		model.add(table2);
+		model.add(table3);
 	}
 
 	@Test
@@ -97,6 +98,7 @@ public class JoinTest {
 		DataTable expected = builder.build();
 
 		SimpleJoin join = new SimpleJoin("res", new CombinedDataTable(table1, table2));
+		join.setDataModel(model);
 		join.setConstraint(new OperationDescriber<>(
 				new EqualityCheck<>(new RowValueDescriber<>(colA), new RowValueDescriber(colB))));
 
@@ -119,6 +121,7 @@ public class JoinTest {
 
 
 		SimpleJoin join = new SimpleJoin("res", new CombinedDataTable(table1, table2));
+		join.setDataModel(model);
 		join.setConstraint(new OperationDescriber<>(
 				new EqualityCheck<>(new RowValueDescriber<>(colA), new RowValueDescriber(colB))));
 
@@ -144,7 +147,7 @@ public class JoinTest {
 		SimpleJoin join = new SimpleJoin("res", new CombinedDataTable(table1, table2));
 		join.setConstraint(new OperationDescriber<>(
 				new EqualityCheck<>(new RowValueDescriber<>(colA), new RowValueDescriber(colB))));
-
+		join.setDataModel(model);
 		join.addCombineColumn(columnB, columnA);
 		join.addCombineColumn(columnA, columnB);
 		DataTable res = (DataTable) join.process();
@@ -168,7 +171,7 @@ public class JoinTest {
 		SimpleJoin join = new SimpleJoin("res", new CombinedDataTable(table1, table3));
 		join.setConstraint(new OperationDescriber<>(
 				new EqualityCheck<>(new RowValueDescriber<>(colA), new RowValueDescriber(colC))));
-
+		join.setDataModel(model);
 		join.addCombineColumn(columnC, columnA);
 		join.addCombineColumn(columnD, columnA);
 		join.addCombineColumn(columnE, columnA);
@@ -193,7 +196,7 @@ public class JoinTest {
 		SimpleJoin join = new SimpleJoin("res", new CombinedDataTable(table1, table3));
 		join.setConstraint(new OperationDescriber<>(
 				new EqualityCheck<>(new RowValueDescriber<>(colA), new RowValueDescriber(colC))));
-
+		join.setDataModel(model);
 		join.addCombineColumn(columnC, columnA);
 		join.addCombineColumn(columnD, columnC);
 		join.addCombineColumn(columnE, columnD);
@@ -205,16 +208,19 @@ public class JoinTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testAddCombineColumnWrongType() throws Exception {
 		DataTableBuilder builder = new DataTableBuilder();
-		builder.setName("res");
+		builder.setName("te");
 		builder.createColumn("test1_c1", StringValue.class);
 		DataColumn c = builder.createColumn("c2", FloatValue.class);
 		DataTable t = builder.build();
 
 
 		SimpleJoin join = new SimpleJoin("res", new CombinedDataTable(table1, t));
+		model.add(t);
+		join.setDataModel(model);
 		join.addCombineColumn(
-				new ColumnIdentifier(new Identifier("res"), new Identifier("c2"))
+				new ColumnIdentifier(new Identifier("te"), new Identifier("c2"))
 				, columnA);
+		join.process();
 
 	}
 
@@ -231,6 +237,7 @@ public class JoinTest {
 	@Test (expected = IllegalStateException.class)
 	public void testBuild() throws Exception {
 		SimpleJoin join = new SimpleJoin("res", new CombinedDataTable(table1, table2));
+		join.setDataModel(model);
 		join.addCombineColumn(columnB, columnA);
 		join.process();
 	}
@@ -251,7 +258,7 @@ public class JoinTest {
 		FullJoin join = new FullJoin("res", table1, table2, FullJoin.Join.JOIN);
 		join.setConstraint(new OperationDescriber<>(
 				new EqualityCheck<>(new RowValueDescriber<>(colA), new RowValueDescriber(colB))));
-
+		join.setDataModel(model);
 		DataTable res = (DataTable) join.process();
 
 		assertTrue(res.equalsSoft(expected));
@@ -273,7 +280,7 @@ public class JoinTest {
 		FullJoin join = new FullJoin("res", table1, table2, FullJoin.Join.JOIN);
 		join.setConstraint(new OperationDescriber<>(
 				new EqualityCheck<>(new RowValueDescriber<>(colA), new RowValueDescriber(colB))));
-
+		join.setDataModel(model);
 		join.addCombineColumn(columnB, columnA);
 		DataTable res = (DataTable) join.process();
 
@@ -284,6 +291,7 @@ public class JoinTest {
 	public void testBuildFJoin() throws Exception {
 		FullJoin join = new FullJoin("res", table1, table2, FullJoin.Join.JOIN);
 		join.addCombineColumn(columnB, columnA);
+		join.setDataModel(model);
 		join.process();
 	}
 
