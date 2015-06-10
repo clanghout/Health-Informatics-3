@@ -428,7 +428,7 @@ public class ParserTest {
 	}
 
 	@Test
-	public void testParseGroupBy() throws Exception {
+	public void testParseGroupByColumn() throws Exception {
 		DataTableBuilder builder = new DataTableBuilder();
 		builder.setName("test2");
 		builder.createColumn("value", IntValue.class);
@@ -441,7 +441,7 @@ public class ParserTest {
 		DataTable test2 = builder.build();
 		model.add(test2);
 
-		String input = "def group : GroupBy = " +
+		String input = "def group : GroupByColumn = " +
 				"NAME sjon ON (test2.value * 2) " +
 				"FROM MAX(test2.value2) AS max, AVERAGE(test2.value2) AS avg;\n" +
 				"from(test2)|groupBy(group)";
@@ -457,5 +457,40 @@ public class ParserTest {
 
 		assertEquals(new FloatValue(3f), table.getRow(1).getValue(table.getColumn("max")));
 		assertEquals(new FloatValue(3f), table.getRow(1).getValue(table.getColumn("avg")));
+	}
+
+	@Test
+	public void testParseGroupByConstraints() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("test2");
+		builder.createColumn("value", IntValue.class);
+		builder.createColumn("value2", IntValue.class);
+
+		builder.createRow(new IntValue(11), new IntValue(10));
+		builder.createRow(new IntValue(11), new IntValue(5));
+		builder.createRow(new IntValue(5), new IntValue(3));
+
+		DataTable test2 = builder.build();
+		model.add(test2);
+
+		String input = "def group : GroupByConstraint = " +
+				"NAME sjon ON " +
+				"test2.value < 10 AS first, " +
+				"test2.value > 10 AS second " +
+				"FROM MAX(test2.value2) AS max, AVERAGE(test2.value2) AS avg;\n" +
+				"from(test2)|groupBy(group)";
+
+		Table result = parseAndProcess(input);
+		assertTrue(result instanceof DataTable);
+
+		DataTable table = (DataTable) result;
+
+		assertEquals(new StringValue("first"), table.getRow(0).getValue(table.getColumn("Chunk")));
+		assertEquals(new FloatValue(3f), table.getRow(0).getValue(table.getColumn("max")));
+		assertEquals(new FloatValue(3f), table.getRow(0).getValue(table.getColumn("avg")));
+
+		assertEquals(new StringValue("second"), table.getRow(1).getValue(table.getColumn("Chunk")));
+		assertEquals(new FloatValue(10f), table.getRow(1).getValue(table.getColumn("max")));
+		assertEquals(new FloatValue(7.5f), table.getRow(1).getValue(table.getColumn("avg")));
 	}
 }
