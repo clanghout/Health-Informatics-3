@@ -13,11 +13,18 @@ import java.util.Set;
  * Created by jens on 6/10/15.
  */
 public class FullJoin extends Join {
-	private Identifier<DataTable> left;
-	private Identifier<DataTable> right;
+	private Identifier<DataTable> leftId;
+	private Identifier<DataTable> rightId;
+	private DataTable left;
+	private DataTable right;
 	private boolean fullLeft;
 	private boolean fullRight;
 
+	private FullJoin(String name, boolean fullLeft, boolean fullRight) {
+		super(name);
+		this.fullLeft = fullLeft;
+		this.fullRight = fullRight;
+	}
 	/**
 	 * Join two tables.
 	 * @param left left table
@@ -29,7 +36,23 @@ public class FullJoin extends Join {
 					Identifier<DataTable> right,
 					boolean fullLeft,
 					boolean fullRight) {
-		super(name);
+		this(name, fullLeft, fullRight);
+		this.leftId = left;
+		this.rightId = right;
+	}
+
+	/**
+	 * Join two tables.
+	 * @param left left table
+	 * @param right right table
+	 * @param fullLeft true if all left rows should exist in the result
+	 * @param fullRight true if all right rows should exist in the result
+	 */
+	public FullJoin(String name, DataTable left,
+					DataTable right,
+					boolean fullLeft,
+					boolean fullRight) {
+		this(name, fullLeft, fullRight);
 		this.left = left;
 		this.right = right;
 		this.fullLeft = fullLeft;
@@ -57,7 +80,10 @@ public class FullJoin extends Join {
 	 * @return the left table.
 	 */
 	private DataTable getLeft() {
-		return getDataModel().getByName(left.getName()).get();
+		if (left == null) {
+			left =  getDataModel().getByName(left.getName()).get();
+		}
+		return left;
 	}
 
 	/**
@@ -65,11 +91,14 @@ public class FullJoin extends Join {
 	 * @return the right table.
 	 */
 	private DataTable getRight() {
-		return getDataModel().getByName(right.getName()).get();
+		if (right == null) {
+			right =  getDataModel().getByName(right.getName()).get();
+		}
+		return right;
 	}
 
 	/**
-	 * Create the rows for the join
+	 * Create the rows for the join.
 	 * @param leftRow row in the left table
 	 * @param rightRow row in the right table
 	 * @throws IllegalAccessException
@@ -94,7 +123,7 @@ public class FullJoin extends Join {
 	}
 
 	/**
-	 * perform a Left/right/both full join
+	 * Perform a Left/right/both full join, kind of join is based in fullLeft and fullRight boolean.
 	 * @throws IllegalAccessException
 	 * @throws InstantiationException
 	 */
@@ -124,7 +153,7 @@ public class FullJoin extends Join {
 	}
 
 	/**
-	 * add the rows from the right table that are not added to the result.
+	 * Add the rows from the right table that are not added to the result.
 	 * @param rightAdd set of rows that are set in the result table.
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException

@@ -9,9 +9,15 @@ import java.util.Map;
  * Created by jens on 6/10/15.
  */
 public class SimpleJoin extends Join {
-	private  Identifier<DataTable> table;
+	private  Identifier<DataTable> tableId;
+	private Table table;
 
-	public SimpleJoin(String name,  Identifier<DataTable> table) {
+	public SimpleJoin(String name, Identifier<DataTable> table) {
+		super(name);
+		this.tableId = table;
+	}
+
+	public SimpleJoin(String name, Table table) {
 		super(name);
 		this.table = table;
 	}
@@ -33,6 +39,9 @@ public class SimpleJoin extends Join {
 
 	@Override
 	protected Table getTable() {
-		return getDataModel().getByName(table.getName()).get();
+		if (table == null) {
+			table = getDataModel().getByName(tableId.getName()).get();
+		}
+		return table;
 	}
 }

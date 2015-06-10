@@ -1,5 +1,7 @@
 package model.data;
 
+import model.process.setOperations.SimpleJoin;
+
 import java.util.*;
 
 
@@ -93,13 +95,8 @@ public abstract class Table implements Iterable {
 	 * @return a DataTable that represents the table
 	 */
 	public DataTable export(String nameTable) {
-		DataTableBuilder builder = new DataTableBuilder();
-		builder.setName(nameTable);
-
-		Map<DataColumn, DataColumn> mappingColumns = addColumns(builder);
-		processRows(mappingColumns, builder);
-
-		return builder.build();
+		SimpleJoin join = new SimpleJoin(nameTable, this);
+		return (DataTable) join.process();
 	}
 
 	/**
