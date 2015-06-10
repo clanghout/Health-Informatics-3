@@ -9,10 +9,7 @@ public final class IntValue extends NumberValue<Integer> {
 	public IntValue(Integer value) {
 		if (value == null) {
 			this.value = 0;
-<<<<<<< HEAD
-=======
 			setNull(true);
->>>>>>> master
 		} else {
 			this.value = value;
 		}

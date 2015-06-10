@@ -1,22 +1,15 @@
 package model.data.value;
 
-<<<<<<< HEAD
 
-
-=======
->>>>>>> master
 /**
  * Abstract class DataValue describing the DataValue objects.
  * 
  * @param <Type>
  *            return type of getValue()
  */
-<<<<<<< HEAD
+
 public abstract class DataValue<Type> implements Comparable<DataValue> {
-=======
-public abstract class DataValue<Type> {
 	private boolean isNull;
->>>>>>> master
 
 	public abstract Type getValue();
 

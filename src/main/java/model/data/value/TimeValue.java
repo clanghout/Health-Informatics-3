@@ -30,7 +30,6 @@ public class TimeValue extends TemporalValue<LocalTime> {
 	public LocalTime getValue() {
 		return time;
 	}
-<<<<<<< HEAD
 	
 	@Override
 	public int compareTo(DataValue other) {
@@ -40,12 +39,9 @@ public class TimeValue extends TemporalValue<LocalTime> {
 		TimeValue o = (TimeValue) other;
 		return time.compareTo(o.time);
 	}
-}
-=======
 
 	@Override
 	protected boolean doEquals(Object obj) {
 		return ((TimeValue) obj).getValue().equals(this.time);
 	}
 }
->>>>>>> master

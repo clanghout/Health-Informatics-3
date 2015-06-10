@@ -45,7 +45,6 @@ public class DateValue extends TemporalValue<LocalDate> {
 	}
 
 	@Override
-<<<<<<< HEAD
 	public int compareTo(DataValue other) {
 		if (!(other instanceof DateValue)) {
 			throw new IllegalArgumentException("Cannot compare non datevalue to datevalue.");
@@ -53,10 +52,8 @@ public class DateValue extends TemporalValue<LocalDate> {
 		DateValue o = (DateValue) other;
 		return date.compareTo(o.date);
 	}
-}
-=======
+	
 	protected boolean doEquals(Object obj) {
 		return ((DateValue) obj).getValue().equals(this.date);
 	}
 }
->>>>>>> master
