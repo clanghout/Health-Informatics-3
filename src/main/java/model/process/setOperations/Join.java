@@ -96,13 +96,21 @@ public abstract class Join extends DataProcess {
 	 * @return a new DataTable
 	 */
 	@Override
-	protected Table doProcess() {
+	protected DataTable doProcess() {
 		simplifyCombinedColumns();
 		addColumns();
 		joinTable();
 		return builder.build();
 	}
 
+	/**
+	 * Get the new column.
+	 * @param oldColumn oldcolumn
+	 * @return the new instance of the oldColum
+	 */
+	public DataColumn getNewColumn(DataColumn oldColumn) {
+		return mappingColumns.get(oldColumn);
+	}
 	/**
 	 * Make sure that each column gets a unique name.
 	 * @param mappingNewNameToOldColumns map that links the names with the original columns
