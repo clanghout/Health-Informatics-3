@@ -136,10 +136,11 @@ public class FullJoin extends Join {
 			if (!leftAdd && fullLeft) {
 				createRow(leftRow, new DataRow());
 			}
+		}
 			if (fullRight) {
 				addNotAddedRighRows(rightAdd);
 			}
-		}
+
 
 	}
 
@@ -149,7 +150,7 @@ public class FullJoin extends Join {
 	 */
 	private void addNotAddedRighRows(Set<Row> rightAdd) {
 		for (DataRow rightRow : (Iterable<DataRow>) right) {
-			if (!rightAdd.contains(right)) {
+			if (!rightAdd.contains(rightRow)) {
 				createRow(new DataRow(), rightRow);
 			}
 		}
