@@ -6,6 +6,13 @@ package model.data.value;
 public final class IntValue extends NumberValue<Integer> {
 	private int value;
 
+	/**
+	 * Return a null instance.
+	 */
+	IntValue() {
+		this(null);
+	}
+
 	public IntValue(Integer value) {
 		if (value == null) {
 			this.value = 0;
