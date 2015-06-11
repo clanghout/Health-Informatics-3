@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox styleClass="main-box-save" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainUIController">
+	<children>
+		<HBox>
+			<!--main top box-->
+			<children>
+				<VBox  styleClass="left-box">
+					<!--leftside-->
+					<children>
+						<VBox>
+							<!--extention type-->
+							<children>
+								<Label>Save as:</Label>
+								<RadioButton>.txt</RadioButton>
+								<RadioButton>.csv</RadioButton>
+							</children>
+						</VBox>
+						<VBox>
+							<!--select delimiter-->
+							<children>
+								<Label>(only for .txt extension)</Label>
+								<Label>Delimiter to use:</Label>
+								<RadioButton>comma</RadioButton>
+								<RadioButton>tabs</RadioButton>
+								<RadioButton>Space</RadioButton>
+							</children>
+						</VBox>
+					</children>
+				</VBox>
+				<VBox styleClass="inner-box">
+					<!--tables to save-->
+					<children>
+
+					</children>
+				</VBox>
+			</children>
+		</HBox>
+		<HBox alignment="BOTTOM_LEFT" styleClass="spaced-box">
+			<!--buttons-->
+			<children>
+				<Button text="Save" />
+				<Button text="Cancel" />
+			</children>
+		</HBox>
+	</children>
+	<stylesheets>
+		<URL value="@wizard.css" />
+	</stylesheets>
+</VBox>
