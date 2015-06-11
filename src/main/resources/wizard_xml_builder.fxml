@@ -74,17 +74,23 @@
                                 <Label> Remove from end: </Label>
                                 <TextField fx:id="endLine" />
                             </VBox>
-                            <VBox>
-                                <Label>Add metadata column: </Label>
+                            <VBox styleClass="spaced-box">
+                                <Label>Add filename column: </Label>
                                 <CheckBox
                                         fx:id="addmetacheck"
-                                        text="Add metadata column"
+                                        text="Add filename column"
                                         onAction="#addMetaData" />
-                                <HBox styleClass="import-box">
-                                    <TextField
-                                            fx:id="metacolumnName" />
-                                    <ComboBox
-                                            fx:id="metacolumntype" />
+                                <HBox styleClass="spaced-box">
+                                    <VBox>
+                                        <Label>Column name:</Label>
+                                        <TextField
+                                                fx:id="metacolumnName" />
+                                    </VBox>
+                                    <VBox>
+                                        <Label>Column type</Label>
+                                        <ComboBox
+                                                fx:id="metacolumntype" />
+                                    </VBox>
                                     <Button fx:id="metaApply"
                                             text="Apply"
                                             onAction="#setMetaData" />
