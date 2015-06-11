@@ -49,10 +49,10 @@ public class SetCodeTest {
 		builder = new DataTableBuilder();
 		builder.setName("test3");
 
-		builder.createColumn("c21", StringValue.class);
-
-		builder.createRow(new StringValue("test"));
-		builder.createRow(new StringValue("test2"));
+		builder.createColumn("c1", StringValue.class);
+		builder.createColumn("c2", FloatValue.class);
+		builder.createRow(new StringValue("test"), new FloatValue(3f));
+		builder.createRow(new StringValue("test2"), new FloatValue(3f));
 
 		table3 = builder.build();
 
@@ -66,10 +66,10 @@ public class SetCodeTest {
 
 		SetCode setCodes = new SetCode(
 				new ConstantDescriber<>(new StringValue("code")),
-				new Identifier<>("test2")
+				new Identifier<>("test")
 		);
 		setCodes.setDataModel(model);
-		setCodes.setInput(input);
+		setCodes.setInput(codeTable);
 
 		setCodes.process();
 		DataTable output = (DataTable) setCodes.getOutput();
@@ -88,7 +88,7 @@ public class SetCodeTest {
 
 		SetCode setCodes = new SetCode(
 				new ConstantDescriber<>(new StringValue("code")),
-				new Identifier<>("test2")
+				new Identifier<>("test")
 		);
 		setCodes.setDataModel(model);
 
@@ -102,25 +102,22 @@ public class SetCodeTest {
 		model.add(codeTable);
 		model.add(table3);
 
-		CombinedDataTable comb = new CombinedDataTable(table3, input);
+		CombinedDataTable comb = new CombinedDataTable(table3, codeTable);
 
 		SetCode setCodes = new SetCode(
 				new ConstantDescriber<>(new StringValue("code")),
-				new Identifier<>("test2")
+				new Identifier<>("test")
 		);
 		setCodes.setDataModel(model);
 		setCodes.setInput(comb);
 
 		setCodes.process();
-		CombinedDataTable output = (CombinedDataTable) setCodes.getOutput();
+		DataTable output = (DataTable) setCodes.getOutput();
 
-		assertFalse(output.getTables().get(1).getRow(0).containsCode("code"));
-		assertTrue(output.getTables().get(1).getRow(1).containsCode("code"));
-		assertTrue(output.getTables().get(1).getRow(2).containsCode("code"));
-		assertFalse(output.getTables().get(1).getRow(3).containsCode("code"));
-
-		assertFalse(output.getTables().get(0).getRow(0).containsCode("code"));
-		assertFalse(output.getTables().get(0).getRow(1).containsCode("code"));
+		assertTrue(output.getRow(0).containsCode("code"));
+		assertTrue(output.getRow(1).containsCode("code"));
+		assertTrue(output.getRow(2).containsCode("code"));
+		assertFalse(output.getRow(3).containsCode("code"));
 	}
 
 }
