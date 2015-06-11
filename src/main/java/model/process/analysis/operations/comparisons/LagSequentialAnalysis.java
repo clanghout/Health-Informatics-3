@@ -1,16 +1,12 @@
 package model.process.analysis.operations.comparisons;
 
 import java.util.*;
-
-import model.data.DataRow;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.Table;
-import model.data.describer.DataDescriber;
 import model.data.describer.RowValueDescriber;
-import model.data.value.DateTimeValue;
+import model.data.value.DataValue;
 import model.exceptions.InputMismatchException;
-import model.process.DataProcess;
 import model.process.SortProcess;
 import model.process.SortProcess.Order;
 import model.process.analysis.operations.Event;
@@ -27,12 +23,10 @@ public class LagSequentialAnalysis {
 	private DataTable tableB;
 	private DataTable result;
 
-	private DataDescriber<DateTimeValue> colA;
-	private DataDescriber<DateTimeValue> colB;
+	private RowValueDescriber<DataValue> colA;
+	private RowValueDescriber<DataValue> colB;
 
 	private DataTableBuilder tableC;
-
-	private List<String> order;
 
 	/**
 	 * This class constructs the LSA.
@@ -48,8 +42,8 @@ public class LagSequentialAnalysis {
 	 * @return
 	 */
 	public LagSequentialAnalysis(Event eventA,
-			RowValueDescriber<DateTimeValue> dateA, Event eventB,
-			RowValueDescriber<DateTimeValue> dateB) {
+			RowValueDescriber<DataValue> dateA, Event eventB,
+			RowValueDescriber<DataValue> dateB) {
 		tableA = checkTable(eventA.create());
 		tableB = checkTable(eventB.create());
 		this.colA = dateA;
@@ -58,116 +52,24 @@ public class LagSequentialAnalysis {
 
 		if (tableA.getRowCount() == 0 || tableB.getRowCount() == 0) {
 			throw new InputMismatchException("Empty event input.");
+		} else if (!tableA.getColumns().contains(colA)
+				|| !tableB.getColumns().contains(colB)) {
+			throw new IllegalArgumentException(
+					"Specified date column is not an instance of specified table.");
 		}
 
-		/**
-		 * TODO replace sorting function for tables with global sorting function
-		 * of DataTable
-		 */
 		Order order = Order.ASCENDING;
-		DataProcess sortA = new SortProcess(new RowValueDescriber<>(colA), order);
-		tableA = sortTable(tableA);
-		tableB = sortTable(tableB);
 
-		order = new ArrayList<String>();
+		SortProcess sortA = new SortProcess(colA, order);
+		SortProcess sortB = new SortProcess(colB, order);
 
-		chronoAdd();
+		tableA = (DataTable) sortA.getOutput();
+		tableB = (DataTable) sortB.getOutput();
+
+		// join the tables and sort chrono
+
 		tableC.setName("LSA");
 		result = tableC.build();
-	}
-
-	/**
-	 * Sort the table chronologically.
-	 * 
-	 * @param table
-	 *            the table to sort
-	 * @return a new table, sorted with the very same content
-	 */
-	private DataTable sortTable(DataTable table) {
-		DataTableBuilder res = new DataTableBuilder();
-		res.setName(table.getName());
-
-		DataDescriber<DateTimeValue> date = null;
-		if (table.getName().equals(tableA.getName())) {
-			date = colA;
-		} else {
-			date = colB;
-		}
-
-		List<Calendar> cal = new ArrayList<Calendar>();
-		DataRow row = null;
-		for (int i = 0; i < table.getRowCount(); i++) {
-			row = table.getRow(i);
-			cal.add(date.resolve(row).getValue());
-		}
-		Collections.sort(cal);
-
-		for (Calendar x : cal) {
-			for (int i = 0; i < table.getRowCount(); i++) {
-				row = table.getRow(i);
-				if (date.resolve(row).getValue().equals(x)) {
-					res.addRow(row);
-				}
-			}
-		}
-		return res.build();
-	}
-
-	/**
-	 * This class will put the events (rows) in one table, sorted
-	 * chronologically.
-	 */
-	private void chronoAdd() {
-		Iterator<DataRow> tableAIt = tableA.iterator();
-		Iterator<DataRow> tableBIt = tableB.iterator();
-
-		DataRow rowA = tableAIt.next();
-		DataRow rowB = tableBIt.next();
-		Calendar dataA = colA.resolve(rowA).getValue();
-		Calendar dataB = colB.resolve(rowB).getValue();
-
-		while (true) {
-			if (dataA.compareTo(dataB) < 0) {
-				order.add("A");
-				tableC.addRow(rowA);
-				if (tableAIt.hasNext()) {
-					rowA = tableAIt.next();
-					dataA = colA.resolve(rowA).getValue();
-				} else {
-					order.add("B");
-					tableC.addRow(rowB);
-					break;
-				}
-			} else {
-				order.add("B");
-				tableC.addRow(rowB);
-				if (tableBIt.hasNext()) {
-					rowB = tableBIt.next();
-					dataB = colB.resolve(rowB).getValue();
-				} else {
-					order.add("A");
-					tableC.addRow(rowA);
-					break;
-				}
-
-			}
-		}
-
-		addRemaining(tableAIt, rowA, tableBIt, rowB);
-	}
-
-	private void addRemaining(Iterator<DataRow> a, DataRow rowA,
-			Iterator<DataRow> b, DataRow rowB) {
-		while (a.hasNext()) {
-			order.add("A");
-			tableC.addRow(rowA);
-			rowA = a.next();
-		}
-		while (b.hasNext()) {
-			order.add("B");
-			tableC.addRow(rowB);
-			rowB = b.next();
-		}
 	}
 
 	/**
@@ -195,12 +97,18 @@ public class LagSequentialAnalysis {
 	}
 
 	/**
-	 * This class returns the order of the created table.Relevant for pattern
-	 * detection.
-	 * 
-	 * @return List<String> containing A's and B's specifying ordering.
+	 * This class returns the first input table (when sorted). Required for
+	 * PatternDetection.
 	 */
-	public List<String> getOrder() {
-		return order;
+	public DataTable getTableInputOne() {
+		return tableA;
+	}
+
+	/**
+	 * This class returns the second input table (when sorted). Required for
+	 * PatternDetection.
+	 */
+	public DataTable getTableInputTwo() {
+		return tableB;
 	}
 }
