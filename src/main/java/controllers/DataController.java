@@ -10,8 +10,10 @@ import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import model.data.DataModel;
+import view.SaveDialog;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,6 +41,7 @@ public class DataController {
 	private Logger logger = Logger.getLogger("DataController");
 
 	private File file;
+	private DataModel model;
 	
 	/**
 	 * Creates a new TableViewController.
@@ -51,7 +54,11 @@ public class DataController {
 		saveButton.setDisable(true);
 		errorLabel.setText("Import data");
 	}
-	
+
+	public void setModel(DataModel model) {
+		this.model = model;
+	}
+
 	@FXML
 	protected void handleImportButtonAction(ActionEvent event) {
 		errorLabel.setText("");
@@ -91,6 +98,18 @@ public class DataController {
 
 	@FXML
 	protected void handleSaveButtonAction(ActionEvent event) {
+		SaveDialog saveDialog;
+		try {
+			saveDialog = new SaveDialog();
+			saveDialog.show();
+			SaveWizardController saveWizardController
+					= saveDialog.getFxml().getController();
+			saveWizardController.initializeView(model, saveDialog, root);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 
 	}
 }
