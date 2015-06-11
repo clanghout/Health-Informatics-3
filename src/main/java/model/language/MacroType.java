@@ -4,14 +4,16 @@ import model.data.DataModel;
 import model.data.DataTable;
 import model.data.describer.DataDescriber;
 import model.data.value.BoolValue;
+import model.exceptions.ParseException;
 import model.language.nodes.FunctionNode;
 import model.language.nodes.ValueNode;
+import model.process.DataProcess;
 import model.process.analysis.ConstraintAnalysis;
 import model.process.analysis.GroupByColumn;
 import model.process.analysis.GroupByConstraint;
 import model.process.functions.Function;
 import org.parboiled.Parboiled;
-import org.parboiled.parserunners.BasicParseRunner;
+import org.parboiled.parserunners.ReportingParseRunner;
 import org.parboiled.support.ParsingResult;
 
 import java.util.List;
@@ -30,7 +32,7 @@ class MacroType {
 		this.type = type;
 	}
 
-	Object parse(String body, DataModel model) {
+	DataProcess parse(String body, DataModel model) throws ParseException {
 		LanguageParser parser = Parboiled.createParser(LanguageParser.class);
 
 		switch (type) {
@@ -41,18 +43,26 @@ class MacroType {
 			case "GroupByConstraint":
 				return parseGroupByConstraints(body, model, parser);
 			default:
-				throw new UnsupportedOperationException("Code has not yet been implemented");
+				throw new ParseException(String.format("Macro type %s isn't supported", type));
 		}
 	}
 
-	private Object parseConstraint(String body, DataModel model, LanguageParser parser) {
-		BasicParseRunner runner = new BasicParseRunner(parser.BooleanExpression());
+	private DataProcess parseConstraint(String body, DataModel model, LanguageParser parser)
+			throws ParseException {
+		ReportingParseRunner runner = new ReportingParseRunner(parser.BooleanExpression());
 		ParsingResult result = runner.run(body);
-		ValueNode<BoolValue> node = (ValueNode<BoolValue>) result.valueStack.pop();
-		return node.resolve(model);
+		if (result.matched) {
+			ValueNode<BoolValue> node = (ValueNode<BoolValue>) result.valueStack.pop();
+			ConstraintAnalysis constraintAnalysis = new ConstraintAnalysis(node.resolve(model));
+			constraintAnalysis.setDataModel(model);
+			return constraintAnalysis;
+		} else {
+			throw new ParseException("Failed to parse Constraint", result.parseErrors);
+		}
 	}
 
-	private Object parseGroupByColumn(String body, DataModel model, LanguageParser parser) {
+	private DataProcess parseGroupByColumn(String body, DataModel model, LanguageParser parser)
+			throws ParseException {
 		ParsingResult result;
 
 		if ((result = tryParseColumns(body, parser)).matched) {
@@ -68,11 +78,14 @@ class MacroType {
 					columnNames
 			);
 		} else {
-			return null;
+			throw new ParseException("Failed to parse GroupByColumn", result.parseErrors);
 		}
 	}
 
-	private Object parseGroupByConstraints(String body, DataModel model, LanguageParser parser) {
+	private DataProcess parseGroupByConstraints(
+			String body,
+			DataModel model,
+			LanguageParser parser) throws ParseException {
 		ParsingResult result;
 		if ((result = tryParseConstraints(body, parser)).matched) {
 			Identifier<DataTable> name = (Identifier<DataTable>) result.valueStack.pop();
@@ -99,7 +112,7 @@ class MacroType {
 					columnNames
 			);
 		} else {
-			return null;
+			throw new ParseException("Failed to parse GroupByConstraints", result.parseErrors);
 		}
 	}
 
@@ -124,12 +137,12 @@ class MacroType {
 	}
 
 	private ParsingResult tryParseColumns(String body, LanguageParser parser) {
-		BasicParseRunner runner = new BasicParseRunner(parser.GroupByColumn());
+		ReportingParseRunner runner = new ReportingParseRunner(parser.GroupByColumn());
 		return runner.run(body);
 	}
 
 	private ParsingResult tryParseConstraints(String body, LanguageParser parser) {
-		BasicParseRunner runner = new BasicParseRunner(parser.GroupByConstraints());
+		ReportingParseRunner runner = new ReportingParseRunner(parser.GroupByConstraints());
 		return runner.run(body);
 	}
 }

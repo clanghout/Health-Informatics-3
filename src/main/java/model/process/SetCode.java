@@ -9,23 +9,24 @@ import model.data.value.StringValue;
 import model.language.Identifier;
 
 /**
- * Class that is used to set code on the input table. In needs a string for the code.
- * And in needs a table that contains all the rows that must get a code.
+ * Class that is used to set code on the input table. It needs a string for the code.
+ * It needs a able to set the codes on.
+ * Furthermore it needs frome the pipe a table that contains all the rows that must get a code.
  *
  * Created by jens on 6/1/15.
  */
 public class SetCode extends DataProcess {
 	private DataDescriber<StringValue> code;
-	private Identifier<DataTable> codeTableName;
+	private Identifier<DataTable> table;
 
 	/**
 	 * Set the code on the rows of the input table that also exist in the codeTable.
 	 * @param code code that must be set
-	 * @param codeTableName rows on which the code must be set
+	 * @param table table that must get the codes.
 	 */
-	public SetCode(DataDescriber<StringValue> code, Identifier<DataTable> codeTableName) {
+	public SetCode(DataDescriber<StringValue> code, Identifier<DataTable> table) {
 		this.code = code;
-		this.codeTableName = codeTableName;
+		this.table = table;
 	}
 
 
@@ -35,18 +36,18 @@ public class SetCode extends DataProcess {
 	 */
 	@Override
 	public final Table doProcess() {
-		Table input = getInput();
+		Table codeTable = getInput();
 
-		DataTable codeTable = getDataModel().getByName(codeTableName.getName()).get();
-		if (input == null) {
+		DataTable input = getDataModel().getByName(table.getName()).get();
+		if (codeTable == null) {
 			throw new IllegalStateException("Input is not set");
 		}
-		if (input instanceof CombinedDataTable) {
-			CombinedDataTable comb = (CombinedDataTable) input;
-			comb.getTables().forEach(x -> setCode(x, codeTable));
-		} else if (input instanceof DataTable) {
-			DataTable inputTable = (DataTable) input;
-			setCode(inputTable, codeTable);
+		if (codeTable instanceof CombinedDataTable) {
+			CombinedDataTable comb = (CombinedDataTable) codeTable;
+			comb.getTables().forEach(x -> setCode(input, x));
+		} else if (codeTable instanceof DataTable) {
+			DataTable codeDataTable = (DataTable) codeTable;
+			setCode(input, codeDataTable);
 		}
 
 		return input;

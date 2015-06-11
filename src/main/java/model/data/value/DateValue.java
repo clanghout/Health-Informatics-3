@@ -10,8 +10,11 @@ public class DateValue extends TemporalValue<LocalDate> {
 
 	private LocalDate date;
 
-	private DateValue() {
-		super("dd-MM-yyyy");
+	/**
+	 * Return a null instance.
+	 */
+	DateValue() {
+		this(null, null, null);
 	}
 
 	/**
@@ -25,7 +28,7 @@ public class DateValue extends TemporalValue<LocalDate> {
 	 *            the day as int
 	 */
 	public DateValue(Integer year, Integer month, Integer day) {
-		this();
+		super("dd-MM-yyyy");
 		if (year == null || month == null || day == null) {
 			date = LocalDate.of(0, 1, 1);
 			setNull(true);
@@ -35,7 +38,7 @@ public class DateValue extends TemporalValue<LocalDate> {
 	}
 
 	public DateValue(Temporal date) {
-		this();
+		super("dd-MM-yyyy");
 		this.date = LocalDate.from(date);
 	}
 
