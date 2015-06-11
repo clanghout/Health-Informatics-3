@@ -65,28 +65,29 @@
                             <Label>
                                 Plain textfile
                             </Label>
-                            <HBox>
+                            <VBox styleClass="rightpadded">
                                 <Label> Starting line: </Label>
-                                <TextField fx:id="startLine"/>
-                            </HBox>
-                            <HBox>
+                                <TextField fx:id="startLine" />
+                            </VBox>
+                            <Separator />
+                            <VBox styleClass="rightpadded">
                                 <Label> Remove from end: </Label>
-                                <TextField fx:id="endLine"/>
-                            </HBox>
+                                <TextField fx:id="endLine" />
+                            </VBox>
                             <VBox>
                                 <Label>Add metadata column: </Label>
                                 <CheckBox
                                         fx:id="addmetacheck"
                                         text="Add metadata column"
-                                        onAction="#addMetaData"/>
+                                        onAction="#addMetaData" />
                                 <HBox styleClass="import-box">
                                     <TextField
-                                            fx:id="metacolumnName"/>
+                                            fx:id="metacolumnName" />
                                     <ComboBox
-                                            fx:id="metacolumntype"/>
+                                            fx:id="metacolumntype" />
                                     <Button fx:id="metaApply"
                                             text="Apply"
-                                            onAction="#setMetaData"/>
+                                            onAction="#setMetaData" />
 
                                 </HBox>
                             </VBox>
@@ -97,9 +98,9 @@
             <HBox styleClass="spaced-box">
                 <children>
                     <Button text="Create xml file"
-                            onAction="#createXml"/>
+                            onAction="#createXml" />
                     <Button text="Cancel"
-                            onAction="#handleCancelButton"/>
+                            onAction="#handleCancelButton" />
                 </children>
             </HBox>
         </children>
