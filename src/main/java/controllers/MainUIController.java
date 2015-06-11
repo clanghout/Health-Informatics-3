@@ -61,7 +61,7 @@ public class MainUIController {
 			Dialog wizardDialog = new XMLCreationDialog();
 			XmlWizardController wizardController =
 					wizardDialog.getFxml().getController();
-			wizardController.initializeView(wizardDialog);
+			wizardController.initializeView(this, wizardDialog);
 			wizardDialog.setSize(WIZARD_DIALOG_WIDTH, WIZARD_DIALOG_HEIGHT);
 			wizardDialog.show();
 		} catch (IOException e) {

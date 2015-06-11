@@ -1,5 +1,6 @@
 package controllers.wizard;
 
+import controllers.MainUIController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -10,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
+import model.data.DataModel;
 import model.data.value.DataValue;
 import model.exceptions.DataFileNotRecognizedException;
 import model.input.file.DataFile;
@@ -51,8 +53,9 @@ public class XmlWizardController {
 	@FXML private TextField fileselectfield;
 
 	private Dialog dialog;
-	private DataFile selectedFile;
+	private MainUIController mainUIcontroller;
 
+	private DataFile selectedFile;
 
 	private final ObservableList typesSelect = FXCollections.observableArrayList(
 			"string", "int", "float", "datetime", "date", "time"
@@ -76,7 +79,6 @@ public class XmlWizardController {
 			selectedFile.setEndLine(Integer.parseInt(newValue));
 		}
 	};
-
 	private final ChangeListener<String> metacolumnNameListener = (ov, oldValue, newValue) -> {
 		if (newValue != null
 				&& selectedFile != null
@@ -117,8 +119,9 @@ public class XmlWizardController {
 		columntype.setItems(typesSelect);
 	}
 
-	public void initializeView(Dialog dialog) {
+	public void initializeView(MainUIController mainUIController, Dialog dialog) {
 		this.dialog = dialog;
+		this.mainUIcontroller = mainUIController;
 	}
 
 	@FXML
@@ -247,6 +250,19 @@ public class XmlWizardController {
 		);
 		File file = fileChooser.showSaveDialog(root.getScene().getWindow());
 		writeXmlToFile(file);
+		try {
+			mainUIcontroller.setModel(createModel());
+		} catch (IOException e) {
+			logger.log(Level.SEVERE, "Error creating datamodel " + e.getMessage());
+		}
+	}
+
+	private DataModel createModel() throws IOException {
+		DataModel res = new DataModel();
+		for (DataFile datafile: datafiles.getItems()) {
+			res.add(datafile.createDataTable());
+		}
+		return res;
 	}
 
 	private void writeXmlToFile(File file) {
