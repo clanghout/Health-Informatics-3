@@ -1,8 +1,6 @@
 package model.data.value;
 
 
-import java.lang.reflect.InvocationTargetException;
-
 /**
  * Abstract class DataValue describing the DataValue objects.
  * 
