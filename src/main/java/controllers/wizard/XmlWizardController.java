@@ -211,6 +211,7 @@ public class XmlWizardController {
 				= new TableColumn<>(columnTitle);
 		column.setCellValueFactory(
 				cellDataFeatures -> cellDataFeatures.getValue().get(index));
+		column.setSortable(false);
 		return column;
 	}
 
