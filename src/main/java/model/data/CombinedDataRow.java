@@ -40,6 +40,9 @@ public class CombinedDataRow extends Row {
 
 	@Override
 	public DataValue getValue(DataColumn column) {
+		if (column == null) {
+			throw new IllegalArgumentException("column is null");
+		}
 		for (DataRow row : rows) {
 			if (row.hasColumn(column)) {
 				return row.getValue(column);
