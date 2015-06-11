@@ -170,4 +170,15 @@ public class ColumnComputationTest {
 
 	}
 
+	@Test(expected = IllegalStateException.class)
+	public void testDoProcessException() throws Exception {
+
+		ColumnComputation col = new ColumnComputation("res");
+
+		col.setDataModel(model);
+		col.setInput(new DataTable());
+		DataTable res = (DataTable) col.process();
+
+	}
+
 }

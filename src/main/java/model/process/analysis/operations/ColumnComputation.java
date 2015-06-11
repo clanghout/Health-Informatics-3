@@ -1,6 +1,5 @@
 package model.process.analysis.operations;
 
-import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.Row;
 import model.data.Table;
@@ -17,7 +16,7 @@ import java.util.Map;
  *
  * Created by jens on 6/11/15.
  */
-public class ColumnComputation extends DataProcess{
+public class ColumnComputation extends DataProcess {
 
 
 	private String name;
@@ -51,7 +50,7 @@ public class ColumnComputation extends DataProcess{
 	protected Table doProcess() {
 		Table input = getInput();
 		Iterator<? extends Row> iterator = input.iterator();
-		if (! iterator.hasNext()) {
+		if (!iterator.hasNext()) {
 			throw new IllegalStateException("Table has no rows");
 		}
 
@@ -59,7 +58,7 @@ public class ColumnComputation extends DataProcess{
 		DataTableBuilder builder = constructBuilder(row);
 
 		builder.createRow(getValues(row));
-		while(iterator.hasNext()) {
+		while (iterator.hasNext()) {
 			builder.createRow(getValues(iterator.next()));
 		}
 
