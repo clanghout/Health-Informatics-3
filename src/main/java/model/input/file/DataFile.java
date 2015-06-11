@@ -326,6 +326,26 @@ public abstract class DataFile {
 		}
 	}
 
+	protected DataValue createNullValue(Class<? extends DataValue> type) {
+		if (type == StringValue.class) {
+			return new StringValue(null);
+		} else
+		if (type == BoolValue.class) {
+			return new BoolValue(null);
+		} else
+		if (type == IntValue.class) {
+			return new IntValue(null);
+		} else
+		if (type == FloatValue.class) {
+			return new FloatValue(null);
+		} else
+		if (type == DateTimeValue.class) {
+			return new DateTimeValue(null, null, null, null, null, null);
+		}
+		throw new UnsupportedOperationException(
+				String.format("type %s not supported", type));
+	}
+
 	/**
 	 * Returns true if the datafile has metadata.
 	 * @return true if the datafile has metadata

@@ -42,7 +42,9 @@ public abstract class ExcelFile extends DataFile {
 		if (hasFirstRowAsHeader()) {
 			Row headers = rowIterator.next();
 			for (int i = 0; i < getColumns().size(); i++) {
-				getColumns().get(i).setName(headers.getCell(i).getStringCellValue());
+				ColumnInfo column = getColumns().get(i);
+				column.setName(headers.getCell(i).getStringCellValue());
+				getBuilder().createColumn(column.getName(), column.getType());
 			}
 		} else {
 			for (ColumnInfo column : getColumns()) {
@@ -86,7 +88,7 @@ public abstract class ExcelFile extends DataFile {
 			case Cell.CELL_TYPE_STRING:
 				return new StringValue(cell.getStringCellValue());
 			case Cell.CELL_TYPE_NUMERIC: {
-				return determineNumValue(cell);
+				return determineNumValue(cell, type);
 			}
 			case Cell.CELL_TYPE_BLANK:
 				return createNullValue(type);
@@ -96,44 +98,28 @@ public abstract class ExcelFile extends DataFile {
 		}
 	}
 
-	private DataValue createNullValue(Class<? extends DataValue> type) {
-		if (type == StringValue.class) {
-			return new StringValue(null);
-		} else
-		if (type == BoolValue.class) {
-			return new BoolValue(null);
-		} else
-		if (type == IntValue.class) {
-			return new IntValue(null);
-		} else
-		if (type == FloatValue.class) {
-			return new FloatValue(null);
-		} else
-		if (type == DateTimeValue.class) {
-			return new DateTimeValue(null);
-		}
-		throw new UnsupportedOperationException(
-				String.format("type %s not supported", type));
-	}
-
-	private DataValue determineNumValue(Cell cell) {
-		DataValue value;
-		if (DateUtil.isCellDateFormatted(cell)) {
+	private DataValue determineNumValue(Cell cell, Class<? extends DataValue> type) {
+		if (DateUtil.isCellDateFormatted(cell) && (type == DateTimeValue.class)) {
 			GregorianCalendar calendar = (GregorianCalendar) DateUtil.getJavaCalendar(
 					cell.getNumericCellValue(), true);
 
-			value = new DateTimeValue(
+			return new DateTimeValue(
 					calendar.get(Calendar.YEAR),
-					calendar.get(Calendar.MONTH),
+					calendar.get(Calendar.MONTH) + 1,
 					calendar.get(Calendar.DAY_OF_MONTH),
 					calendar.get(Calendar.HOUR_OF_DAY),
 					calendar.get(Calendar.MINUTE),
 					calendar.get(Calendar.SECOND));
-		} else {
-			double cellValue = cell.getNumericCellValue();
-			value = (cellValue % 1 == 0)
-					? new IntValue((int) cellValue) : new FloatValue((float) cellValue);
 		}
-		return value;
+		double cellValue = cell.getNumericCellValue();
+		if (type == IntValue.class) {
+			return new IntValue((int) cellValue);
+		} else
+		if (type == FloatValue.class) {
+			return new FloatValue((float) cellValue);
+		} else {
+			throw new UnsupportedOperationException(
+				String.format("type %s not supported", type));
+		}
 	}
 }
