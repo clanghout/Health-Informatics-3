@@ -2,12 +2,10 @@ package model.language;
 
 import model.data.DataModel;
 import model.data.describer.DataDescriber;
-import model.data.value.BoolValue;
+import model.data.describer.TableValueDescriber;
 import model.data.value.StringValue;
 import model.language.nodes.ValueNode;
 import model.process.*;
-import model.process.analysis.ConstraintAnalysis;
-import model.process.analysis.GroupByAnalysis;
 import model.process.setOperations.Difference;
 import model.process.setOperations.Union;
 
@@ -65,7 +63,6 @@ class ProcessInfo {
 				return new Union((Identifier) parameters[0], (Identifier) parameters[1]);
 			case "groupBy":
 				return macros.get(parameters[0]);
-				return (GroupByAnalysis) macros.get(parameters[0]);
 			case "sort":
 				ValueNode<StringValue> orderNode = (ValueNode<StringValue>) parameters[1];
 				SortProcess.Order order =
