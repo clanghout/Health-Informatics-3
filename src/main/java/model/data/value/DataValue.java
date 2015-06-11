@@ -14,7 +14,7 @@ public abstract class DataValue<Type> implements Comparable<DataValue> {
 	public abstract Type getValue();
 
 	public abstract String toString();
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof DataValue)) {
@@ -38,7 +38,7 @@ public abstract class DataValue<Type> implements Comparable<DataValue> {
 
 	/**
 	 * Shows true if the value of the object is Null.
-	 * 
+	 *
 	 * @return isNull
 	 */
 	public boolean isNull() {
@@ -47,9 +47,8 @@ public abstract class DataValue<Type> implements Comparable<DataValue> {
 
 	/**
 	 * Set true if value of the object is null.
-	 * 
-	 * @param val
-	 *            false if value != null
+	 *
+	 * @param val false if value != null
 	 */
 	protected void setNull(boolean val) {
 		isNull = val;
@@ -58,10 +57,25 @@ public abstract class DataValue<Type> implements Comparable<DataValue> {
 	/**
 	 * Additional function for equals for specific characteristics of each
 	 * DataValue.
-	 * 
-	 * @param obj
-	 *            The object to compare
+	 *
+	 * @param obj The object to compare
 	 * @return true if object value equals this value (null != null)
 	 */
 	protected abstract boolean doEquals(Object obj);
+
+	/**
+	 * Return a null instance of the datavalue passed in the argument.
+	 * @param classType type of the null datavalue.
+	 * @return null instance of the classType
+	 */
+	public static DataValue getNullInstance(Class<? extends DataValue> classType) {
+		try {
+			return classType.getConstructor(
+					classType.getMethod("getValue").getReturnType())
+					.newInstance(new Object[1]);
+		} catch (Exception e) {
+			throw new IllegalArgumentException("no such class");
+		}
+	}
+
 }

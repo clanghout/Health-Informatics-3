@@ -1,7 +1,6 @@
 package model.language;
 
 import model.data.DataModel;
-import model.data.describer.DataDescriber;
 import model.process.DataProcess;
 import model.process.SerialProcess;
 import org.parboiled.Parboiled;
@@ -34,7 +33,7 @@ public class Parser {
 
 		ParsingResult result = runner.run(input);
 		List<ProcessInfo> processInfos = new ArrayList<>();
-		Map<Identifier, DataDescriber> macros = new HashMap<>();
+		Map<Identifier, Object> macros = new HashMap<>();
 
 		while (!result.valueStack.isEmpty()) {
 			Object info = result.valueStack.pop();

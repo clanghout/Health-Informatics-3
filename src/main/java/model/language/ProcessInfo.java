@@ -2,10 +2,12 @@ package model.language;
 
 import model.data.DataModel;
 import model.data.describer.DataDescriber;
+import model.data.value.BoolValue;
 import model.data.value.StringValue;
 import model.language.nodes.ValueNode;
 import model.process.*;
 import model.process.analysis.ConstraintAnalysis;
+import model.process.analysis.GroupByAnalysis;
 import model.process.setOperations.Difference;
 import model.process.setOperations.Union;
 
@@ -35,7 +37,7 @@ class ProcessInfo {
 		return name;
 	}
 
-	DataProcess resolve(DataModel model, Map<Identifier, DataDescriber> macros) {
+	DataProcess resolve(DataModel model, Map<Identifier, Object> macros) {
 		switch (name.getName()) {
 			case "from":
 				Identifier[] identifiers = Arrays.stream(parameters)
@@ -45,13 +47,13 @@ class ProcessInfo {
 			case "is":
 				if (parameters.length == 1) {
 					return new IsProcess((Identifier) parameters[0]);
-				} else if(parameters.length == 2) {
+				} else if (parameters.length == 2) {
 					return new DataTableIsProcess(
 							(Identifier) parameters[0],
 							(Identifier) parameters[1]);
 				}
 			case "constraint":
-				return new ConstraintAnalysis(macros.get(parameters[0]));
+				return new ConstraintAnalysis((DataDescriber<BoolValue>) macros.get(parameters[0]));
 			case "setCode":
 				ValueNode<StringValue> stringNode = (ValueNode<StringValue>) parameters[0];
 				DataDescriber<StringValue> code = stringNode.resolve(model);
@@ -61,6 +63,8 @@ class ProcessInfo {
 				return new Difference((Identifier) parameters[0], (Identifier) parameters[1]);
 			case "union":
 				return new Union((Identifier) parameters[0], (Identifier) parameters[1]);
+			case "groupBy":
+				return (GroupByAnalysis) macros.get(parameters[0]);
 			default:
 				throw new UnsupportedOperationException("This code has not been implemented yet");
 		}
