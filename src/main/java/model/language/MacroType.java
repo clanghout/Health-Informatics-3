@@ -56,12 +56,13 @@ class MacroType {
 		ParsingResult result = runner.run(body);
 
 		if (result.matched) {
-			String joinType = (String) result.valueStack.pop();
 			Identifier<DataTable> leftTable = (Identifier<DataTable>) result.valueStack.pop();
 			Identifier<DataTable> rightTable = (Identifier<DataTable>) result.valueStack.pop();
 			Identifier name = (Identifier) result.valueStack.pop();
+			ValueNode<BoolValue> constraint = (ValueNode<BoolValue>) result.valueStack.pop();
 			List<ColumnIdentifier> oldColumns = (List<ColumnIdentifier>) result.valueStack.pop();
 			List<ColumnIdentifier> newColumns = (List<ColumnIdentifier>) result.valueStack.pop();
+			String joinType = (String) result.valueStack.pop();
 
 			FullJoin.Join type = resolveJoinType(joinType);
 			FullJoin join = new FullJoin(
@@ -76,6 +77,10 @@ class MacroType {
 						oldColumns.get(i),
 						newColumns.get(i)
 				);
+			}
+
+			if (constraint != null) {
+				join.setConstraint(constraint.resolve(model));
 			}
 
 			return join;

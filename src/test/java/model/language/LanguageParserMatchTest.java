@@ -89,6 +89,12 @@ public class LanguageParserMatchTest {
 						parser.Join(),
 						"JOIN table1 WITH table2 AS test FROM table1.col AS test.sjoin",
 						true
+				},
+				{
+						parser.Join(),
+						"JOIN table1 WITH table2 AS test ON table1.test = table2.stuff " +
+								"FROM table1.col AS test.sjoin",
+						true
 				}
 		};
 

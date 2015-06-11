@@ -849,6 +849,7 @@ class LanguageParser extends BaseParser<Object> {
 				"AS",
 				SomeWhiteSpace(),
 				Identifier(),
+				JoinConstraint(),
 				JoinColumns(),
 				swap6()
 		);
@@ -907,6 +908,27 @@ class LanguageParser extends BaseParser<Object> {
 				"AS",
 				SomeWhiteSpace(),
 				ColumnIdentifier()
+		);
+	}
+
+	Rule JoinConstraint() {
+		return FirstOf(
+				ActualJoinConstraint(),
+				Sequence(
+						TestNot(
+								ActualJoinConstraint()
+						),
+						push(null)
+				)
+		);
+	}
+
+	Rule ActualJoinConstraint() {
+		return Sequence(
+				SomeWhiteSpace(),
+				"ON",
+				SomeWhiteSpace(),
+				BooleanExpression()
 		);
 	}
 }
