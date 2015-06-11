@@ -2,6 +2,7 @@ package model.process;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import model.data.DataRow;
 import model.data.DataTable;
@@ -54,12 +55,11 @@ public class SortProcess extends DataProcess {
 	 *            sorted rows
 	 * @return table remade
 	 */
-	private Table clearAndCreate(ArrayList sortlist) {
+	private Table clearAndCreate(List<DataRow> sortlist) {
 		DataTable input = (DataTable) getInput();
 		DataTableConversionBuilder builder = new DataTableConversionBuilder(
 				input, input.getName());
 		builder.addRowsFromList(sortlist);
-		DataTable table = builder.build();
-		return table;
+		return builder.build();
 	}
 }
