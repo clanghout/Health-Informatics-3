@@ -8,6 +8,7 @@ import org.parboiled.Context;
 import org.parboiled.Rule;
 import org.parboiled.support.Var;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -815,11 +816,9 @@ class LanguageParser extends BaseParser<Object> {
 								names.get().add((Identifier) pop()),
 								functions.get().add((FunctionNode) pop())
 						),
-						Optional(
-								GroupByFunction(),
-								names.get().add((Identifier) pop()),
-								functions.get().add((FunctionNode) pop())
-						)
+						GroupByFunction(),
+						names.get().add((Identifier) pop()),
+						functions.get().add((FunctionNode) pop())
 				),
 				push(functions.get()),
 				push(names.get())
@@ -829,6 +828,80 @@ class LanguageParser extends BaseParser<Object> {
 	Rule GroupByFunction() {
 		return Sequence(
 				TableFunction(),
+				SomeWhiteSpace(),
+				"AS",
+				SomeWhiteSpace(),
+				Identifier(),
+				WhiteSpace()
+		);
+	}
+
+	Rule Join() {
+		return Sequence(
+				JoinType(),
+				SomeWhiteSpace(),
+				Identifier(),
+				SomeWhiteSpace(),
+				"WITH",
+				SomeWhiteSpace(),
+				Identifier(),
+				SomeWhiteSpace(),
+				"AS",
+				SomeWhiteSpace(),
+				Identifier(),
+				JoinColumns()
+		);
+	}
+
+	Rule JoinType() {
+		return Sequence(
+				FirstOf(
+						"FULL JOIN",
+						"LEFT JOIN",
+						"RIGHT JOIN",
+						"JOIN"
+				),
+				push(match())
+		);
+	}
+
+	Rule JoinColumns() {
+		Var<List<ColumnIdentifier>> oldColumns = new Var<>();
+		Var<List<Identifier>> newColumns = new Var<>();
+		return Sequence(
+				new Action() {
+					@Override
+					public boolean run(Context context) {
+						oldColumns.set(new ArrayList<>());
+						newColumns.set(new ArrayList<>());
+						return true;
+					}
+				},
+				Optional(
+						SomeWhiteSpace(),
+						"FROM",
+						SomeWhiteSpace(),
+						ZeroOrMore(
+								Sequence(
+										JoinColumn(),
+										",",
+										WhiteSpace(),
+										newColumns.get().add((Identifier) pop()),
+										oldColumns.get().add((ColumnIdentifier) pop())
+								)
+						),
+						JoinColumn(),
+						newColumns.get().add((Identifier) pop()),
+						oldColumns.get().add((ColumnIdentifier) pop())
+				),
+				push(oldColumns.get()),
+				push(newColumns.get())
+		);
+	}
+
+	Rule JoinColumn() {
+		return Sequence(
+				ColumnIdentifier(),
 				SomeWhiteSpace(),
 				"AS",
 				SomeWhiteSpace(),
