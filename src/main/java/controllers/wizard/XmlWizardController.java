@@ -140,7 +140,7 @@ public class XmlWizardController {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().addAll(
 				new FileChooser.ExtensionFilter("All supported files",
-						Arrays.asList("*.txt", "*.xls", "*.xlsx")),
+						Arrays.<String>asList("*.txt", "*.xls", "*.xlsx")),
 				new FileChooser.ExtensionFilter("Plain text file", "*.txt"),
 				new FileChooser.ExtensionFilter("MS Excel xls file", "*.xls"),
 				new FileChooser.ExtensionFilter("MS Excel xlsx file", "*.xlsx")
