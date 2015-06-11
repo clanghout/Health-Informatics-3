@@ -7,6 +7,9 @@ import model.data.value.DataValue;
 /**
  * A describer for values contained within a table.
  *
+ * <b>Don't use this describer in any DataProcess. It depends on a DataColumn which may not
+ * exist yet when this class is constructed. The parser doesn't support this class. Use
+ * TableValueDescriber instead.</b>
  * Created by Boudewijn on 11-5-2015.
  * @param <Type> The type of data you want to describe.
  */
