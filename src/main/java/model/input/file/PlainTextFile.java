@@ -37,12 +37,12 @@ public class PlainTextFile extends DataFile {
 		counter = 1;
 		InputStream stream = new FileInputStream(getFile());
 		getBuilder().setName(getFile().getName().replace(".", ""));
-		try (Scanner scanner = new Scanner(stream, "UTF-8")) {
+		Scanner scanner = new Scanner(stream, "UTF-8");
 			scanner.useDelimiter("\\A");
 			skipToStartLine(scanner);
 			if (hasFirstRowAsHeader()) {
 				String headers = scanner.nextLine();
-				String[] sections = headers.split(",");
+				String[] sections = headers.split(delimiter);
 				for (int i = 0; i < getColumnTypes().length; i++) {
 					getColumns().put(sections[i], getColumnTypes()[i]);
 				}
@@ -59,7 +59,6 @@ public class PlainTextFile extends DataFile {
 			}
 			List<String> lines = readLines(scanner);
 			addRowsToBuilder(filterLastRows(lines));
-		}
 
 		return getBuilder().build();
 	}
@@ -128,7 +127,7 @@ public class PlainTextFile extends DataFile {
 	private List<String> filterLastRows(List<String> lines) {
 		return lines.subList(0, lines.size() - getEndLine());
 	}
-	
+
 	/**
 	 * Creates a DataValue from a string.
 	 * @param value The string that will be converted
