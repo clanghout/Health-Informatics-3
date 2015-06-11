@@ -12,6 +12,7 @@ import model.process.analysis.ConstraintAnalysis;
 import model.process.analysis.GroupByColumn;
 import model.process.analysis.GroupByConstraint;
 import model.process.functions.Function;
+import model.process.setOperations.FullJoin;
 import org.parboiled.Parboiled;
 import org.parboiled.parserunners.ReportingParseRunner;
 import org.parboiled.support.ParsingResult;
@@ -42,8 +43,55 @@ class MacroType {
 				return parseGroupByColumn(body, model, parser);
 			case "GroupByConstraint":
 				return parseGroupByConstraints(body, model, parser);
+			case "Join":
+				return parseJoin(body, model, parser);
 			default:
 				throw new ParseException(String.format("Macro type %s isn't supported", type));
+		}
+	}
+
+	private DataProcess parseJoin(String body, DataModel model, LanguageParser parser)
+			throws ParseException {
+		ReportingParseRunner runner = new ReportingParseRunner(parser.Join());
+		ParsingResult result = runner.run(body);
+
+		if (result.matched) {
+			String joinType = (String) result.valueStack.pop();
+			Identifier<DataTable> leftTable = (Identifier<DataTable>) result.valueStack.pop();
+			Identifier<DataTable> rightTable = (Identifier<DataTable>) result.valueStack.pop();
+			Identifier name = (Identifier) result.valueStack.pop();
+			List<ColumnIdentifier> oldColumns = (List<ColumnIdentifier>) result.valueStack.pop();
+			List<ColumnIdentifier> newColumns = (List<ColumnIdentifier>) result.valueStack.pop();
+
+			FullJoin.Join type = resolveJoinType(joinType);
+			FullJoin join = new FullJoin(
+					name.getName(),
+					leftTable,
+					rightTable,
+					type
+			);
+
+			for (int i = 0; i < newColumns.size(); i++) {
+				join.addCombineColumn(
+						oldColumns.get(i),
+						newColumns.get(i)
+				);
+			}
+
+			return join;
+		} else {
+			throw new ParseException("Failed to parse Join", result.parseErrors);
+		}
+	}
+
+	private FullJoin.Join resolveJoinType(String type) throws ParseException {
+		switch (type) {
+			case "FULL JOIN": return FullJoin.Join.FULL;
+			case "LEFT JOIN": return FullJoin.Join.LEFT;
+			case "RIGHT JOIN": return FullJoin.Join.RIGHT;
+			case "JOIN": return FullJoin.Join.JOIN;
+			default:
+				throw new ParseException(String.format("Type %s is not a valid join type", type));
 		}
 	}
 

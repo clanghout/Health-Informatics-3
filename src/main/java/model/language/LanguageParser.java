@@ -849,7 +849,8 @@ class LanguageParser extends BaseParser<Object> {
 				"AS",
 				SomeWhiteSpace(),
 				Identifier(),
-				JoinColumns()
+				JoinColumns(),
+				swap6()
 		);
 	}
 
@@ -867,7 +868,7 @@ class LanguageParser extends BaseParser<Object> {
 
 	Rule JoinColumns() {
 		Var<List<ColumnIdentifier>> oldColumns = new Var<>();
-		Var<List<Identifier>> newColumns = new Var<>();
+		Var<List<ColumnIdentifier>> newColumns = new Var<>();
 		return Sequence(
 				new Action() {
 					@Override
@@ -886,12 +887,12 @@ class LanguageParser extends BaseParser<Object> {
 										JoinColumn(),
 										",",
 										WhiteSpace(),
-										newColumns.get().add((Identifier) pop()),
+										newColumns.get().add((ColumnIdentifier) pop()),
 										oldColumns.get().add((ColumnIdentifier) pop())
 								)
 						),
 						JoinColumn(),
-						newColumns.get().add((Identifier) pop()),
+						newColumns.get().add((ColumnIdentifier) pop()),
 						oldColumns.get().add((ColumnIdentifier) pop())
 				),
 				push(oldColumns.get()),
@@ -905,7 +906,7 @@ class LanguageParser extends BaseParser<Object> {
 				SomeWhiteSpace(),
 				"AS",
 				SomeWhiteSpace(),
-				Identifier()
+				ColumnIdentifier()
 		);
 	}
 }
