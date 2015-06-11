@@ -2,12 +2,10 @@ package model.language;
 
 import model.data.DataModel;
 import model.data.describer.DataDescriber;
-import model.data.value.BoolValue;
+import model.data.describer.TableValueDescriber;
 import model.data.value.StringValue;
 import model.language.nodes.ValueNode;
 import model.process.*;
-import model.process.analysis.ConstraintAnalysis;
-import model.process.analysis.GroupByAnalysis;
 import model.process.setOperations.Difference;
 import model.process.setOperations.Union;
 
@@ -37,7 +35,7 @@ class ProcessInfo {
 		return name;
 	}
 
-	DataProcess resolve(DataModel model, Map<Identifier, Object> macros) {
+	DataProcess resolve(DataModel model, Map<Identifier, DataProcess> macros) {
 		switch (name.getName()) {
 			case "from":
 				Identifier[] identifiers = Arrays.stream(parameters)
@@ -53,7 +51,7 @@ class ProcessInfo {
 							(Identifier) parameters[1]);
 				}
 			case "constraint":
-				return new ConstraintAnalysis((DataDescriber<BoolValue>) macros.get(parameters[0]));
+				return macros.get(parameters[0]);
 			case "setCode":
 				ValueNode<StringValue> stringNode = (ValueNode<StringValue>) parameters[0];
 				DataDescriber<StringValue> code = stringNode.resolve(model);
@@ -64,7 +62,16 @@ class ProcessInfo {
 			case "union":
 				return new Union((Identifier) parameters[0], (Identifier) parameters[1]);
 			case "groupBy":
-				return (GroupByAnalysis) macros.get(parameters[0]);
+				return macros.get(parameters[0]);
+			case "sort":
+				ValueNode<StringValue> orderNode = (ValueNode<StringValue>) parameters[1];
+				SortProcess.Order order =
+						"ASC".equals(orderNode.resolve(model).resolve(null).getValue())
+						? SortProcess.Order.ASCENDING
+						: SortProcess.Order.DESCENDING;
+				return new SortProcess(
+						new TableValueDescriber<>(model, (ColumnIdentifier) parameters[0]),
+						order);
 			default:
 				throw new UnsupportedOperationException("This code has not been implemented yet");
 		}

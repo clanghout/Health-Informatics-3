@@ -5,6 +5,7 @@ import model.data.describer.ConstantDescriber;
 import model.data.describer.DataDescriber;
 import model.data.value.BoolValue;
 import model.data.value.DataValue;
+import model.language.ColumnIdentifier;
 import model.process.DataProcess;
 
 import java.util.*;
@@ -31,6 +32,7 @@ public abstract class Join extends DataProcess {
 	 */
 	private Map<DataColumn, DataColumn> combineColumns;
 
+	private Map<ColumnIdentifier, ColumnIdentifier> combineColumnsIdentifier;
 	/**
 	 * Initialize the mapping arrays ands set the constraint on true.
 	 */
@@ -38,6 +40,7 @@ public abstract class Join extends DataProcess {
 		this.builder = new DataTableBuilder();
 		builder.setName(name);
 		this.mappingColumns = new HashMap<>();
+		this.combineColumnsIdentifier = new LinkedHashMap<>();
 		this.combineColumns = new LinkedHashMap<>();
 		this.constraint = new ConstantDescriber<>(new BoolValue(true));
 	}
@@ -55,11 +58,25 @@ public abstract class Join extends DataProcess {
 	 * @param col1 column that should combined with the second one.
 	 * @param col2 column that must get in the result.
 	 */
-	public void addCombineColumn(DataColumn col1, DataColumn col2) {
-		if (!col1.getType().equals(col2.getType())) {
-			throw new IllegalArgumentException("type of columns differ");
+	public void addCombineColumn(ColumnIdentifier col1, ColumnIdentifier col2) {
+		combineColumnsIdentifier.put(col1, col2);
+	}
+
+	/**
+	 * Resolve the identifiers for the combined columns.
+	 */
+	private void resolveCombineColumnsIdentifiers() {
+		for (Map.Entry<ColumnIdentifier, ColumnIdentifier> entry
+				: combineColumnsIdentifier.entrySet()) {
+			DataColumn col1 = getDataModel().getByName(entry.getKey().getTable()).get()
+					.getColumn(entry.getKey().getColumn());
+			DataColumn col2 = getDataModel().getByName(entry.getValue().getTable()).get()
+					.getColumn(entry.getValue().getColumn());
+			if (!col1.getType().equals(col2.getType())) {
+				throw new IllegalArgumentException("type of columns differ");
+			}
+			combineColumns.put(col1, col2);
 		}
-		combineColumns.put(col1, col2);
 	}
 
 	/**
@@ -96,13 +113,22 @@ public abstract class Join extends DataProcess {
 	 * @return a new DataTable
 	 */
 	@Override
-	protected Table doProcess() {
+	protected DataTable doProcess() {
+		resolveCombineColumnsIdentifiers();
 		simplifyCombinedColumns();
 		addColumns();
 		joinTable();
 		return builder.build();
 	}
 
+	/**
+	 * Get the new column.
+	 * @param oldColumn oldcolumn
+	 * @return the new instance of the oldColum
+	 */
+	public DataColumn getNewColumn(DataColumn oldColumn) {
+		return mappingColumns.get(oldColumn);
+	}
 	/**
 	 * Make sure that each column gets a unique name.
 	 * @param mappingNewNameToOldColumns map that links the names with the original columns
@@ -208,7 +234,7 @@ public abstract class Join extends DataProcess {
 
 
 	/**
-	 * return the constraint for the join.
+	 * Return the constraint for the join.
 	 * @return the constrain that should be used with the join.
 	 */
 	protected DataDescriber<BoolValue> getConstraint() {
@@ -217,14 +243,14 @@ public abstract class Join extends DataProcess {
 
 	/**
 	 * Return the builder used to build the table.
-	 * @return the builde used to build the table.
+	 * @return the builder used to build the table.
 	 */
 	protected DataTableBuilder getBuilder() {
 		return builder;
 	}
 
 	/**
-	 * return the mapping of the old columns to the new columns.
+	 * Return the mapping of the old columns to the new columns.
 	 * @return a mapping of the old columns to the new columns.
 	 */
 	protected Map<DataColumn, DataColumn>  getMappingColumns() {
@@ -232,7 +258,8 @@ public abstract class Join extends DataProcess {
 	}
 
 	/**
-	 * Check if the value van added to the result table.
+	 * Check if the value is added to the result table.
+	 * If it is added and it is not the same value as the new value, throw an exception.
 	 * @param row row where the value should be set
 	 * @param column column that belongs to the value
 	 * @param newValue new value

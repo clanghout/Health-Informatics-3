@@ -13,6 +13,13 @@ public abstract class TemporalValue<T extends Temporal> extends DataValue<T> {
 
 	private String format;
 
+	/**
+	 * Return a null instance.
+	 */
+	TemporalValue() {
+		this(null);
+	}
+
 	TemporalValue(String format) {
 		if (format == null) {
 			this.format = "";
