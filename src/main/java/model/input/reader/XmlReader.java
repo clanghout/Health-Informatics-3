@@ -10,12 +10,8 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -74,7 +70,12 @@ public class XmlReader {
 	 * The name of the firstrowheader tag in the xml file.
 	 */
 	private static final String FIRST_ROW_HEADER_ATTRIBUTE = "firstrowheader";
-	
+
+	/**
+	 * The name of the metadata tag in the xml file.
+	 */
+	private static final String METADATA_TAG = "metadata";
+
 	private Logger log = Logger.getLogger("XmlReader");
 
 	private Document document;
@@ -136,8 +137,9 @@ public class XmlReader {
 	 * @return a new DataFile
 	 * @param elem The file element read from the xml file
 	 * @param parentDir The parent of the file
+	 * @throws FileNotFoundException When the file can not be found
 	 */
-	public DataFile createDataFile(Element elem, String parentDir) {
+	public DataFile createDataFile(Element elem, String parentDir) throws FileNotFoundException {
 		String type = elem.getElementsByTagName(TYPE_TAG).item(0).getTextContent();
 		String completePath = createPath(elem, parentDir);
 		DataFile theDataFile = DataFile.createDataFile(completePath, type);
@@ -152,7 +154,23 @@ public class XmlReader {
 		
 		NodeList columns = columnsElement.getElementsByTagName(COLUMN_TAG);
 		setColumnTypes(theDataFile, columns);
-		
+		NodeList metaData = elem.getElementsByTagName(METADATA_TAG);
+		theDataFile = setMetaData(theDataFile, metaData);
+
+		return theDataFile;
+	}
+
+	private DataFile setMetaData(DataFile theDataFile, NodeList metaData) {
+		Element metaDataElem = ((Element) metaData.item(0));
+
+		if ((metaDataElem != null
+				&& metaDataElem.getAttribute("type") != null)
+				&& metaDataElem.getAttribute("name") != null) {
+			String type = metaDataElem.getAttribute("type");
+			String name = metaDataElem.getAttribute("name");
+			theDataFile.createMetaDataValue(name, type);
+			theDataFile.setHasMetaData(true);
+		}
 		return theDataFile;
 	}
 
@@ -179,36 +197,27 @@ public class XmlReader {
 	}
 
 	private DataFile setColumnTypeMapping(NodeList columns, DataFile dataFile) {
-		try {
-			Map<String, Class<? extends DataValue>> mapping = new LinkedHashMap<>();
-			List<Class<? extends DataValue>> columnTypes = new ArrayList<>();
-			for (int i = 0; i < columns.getLength(); i++) {
-				Element columnElement = (Element) columns.item(i);
-				String typeAttribute = columnElement.getAttribute("type");
-				Class columnType = DataFile.getColumnType(typeAttribute);
-				mapping.put(columnElement.getTextContent(),
-						columnType);
-				columnTypes.add(columnType);
-			}
-			dataFile.setColumns(mapping, columnTypes);		
-			return dataFile;
-		} catch (ClassNotFoundException e) {
-			log.log(Level.SEVERE, "Specified Class was not found", e);
+		Map<String, Class<? extends DataValue>> mapping = new LinkedHashMap<>();
+		List<Class<? extends DataValue>> columnTypes = new ArrayList<>();
+		for (int i = 0; i < columns.getLength(); i++) {
+			Element columnElement = (Element) columns.item(i);
+			String typeAttribute = columnElement.getAttribute("type");
+			Class columnType = DataFile.getColumnType(typeAttribute);
+			mapping.put(columnElement.getTextContent(),
+					columnType);
+			columnTypes.add(columnType);
 		}
-		return null;
+		dataFile.setColumns(mapping, columnTypes);
+		return dataFile;
 	}
 		
 	
 	private Class[] createTypesArray(NodeList columns) {
 		Class[] types = new Class[columns.getLength()];
-		try {
-			for (int i = 0; i < columns.getLength(); i++) {
-				Element columnElement = (Element) columns.item(i);
-				String typeAttribute = columnElement.getAttribute("type");
-				types[i] = DataFile.getColumnType(typeAttribute);
-			}
-		} catch (ClassNotFoundException e) {
-			log.log(Level.SEVERE, "Specified Class was not found", e);
+		for (int i = 0; i < columns.getLength(); i++) {
+			Element columnElement = (Element) columns.item(i);
+			String typeAttribute = columnElement.getAttribute("type");
+			types[i] = DataFile.getColumnType(typeAttribute);
 		}
 		return types;
 	}

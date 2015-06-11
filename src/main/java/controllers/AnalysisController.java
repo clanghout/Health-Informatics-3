@@ -3,6 +3,7 @@ package controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
+import model.exceptions.ParseException;
 import model.language.Parser;
 import model.data.DataModel;
 import model.process.DataProcess;
@@ -31,8 +32,12 @@ public class AnalysisController {
 	@FXML
 	protected void handleExecuteButtonAction(ActionEvent event) {
 		Parser parser = new Parser();
-		DataProcess process = parser.parse(userscript.getText(), model);
 
-		process.process();
+		try {
+			DataProcess process = parser.parse(userscript.getText(), model);
+			process.process();
+		} catch (ParseException e) {
+
+		}
 	}
 }

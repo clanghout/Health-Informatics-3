@@ -30,6 +30,13 @@ public class DataReaderTest {
 		DataTable table = model.getByName("xlsfilexls").get();
 		Row theRow = table.getRow(1);
 		assertEquals("bat", (theRow.getValue(table.getColumn("thecolumn"))).getValue());
+
+		DataTable table2 = model.getByName("ADMIRE2txt").get();
+		Row theRow2 = table2.getRow(0);
+		Row theRow3 = table2.getRow(1);
+
+		assertEquals("ADMIRE2", (theRow2.getValue(table2.getColumn("metadata"))).getValue());
+		assertEquals("ADMIRE2", (theRow3.getValue(table2.getColumn("metadata"))).getValue());
 	}
 	
 	@Test(expected = IOException.class)

@@ -13,7 +13,7 @@ import java.time.temporal.Temporal;
  *
  * Created by Boudewijn on 8-6-2015.
  */
-public class Add extends DateComputation {
+public class Add extends DateCalculation {
 
 	/**
 	 * Construct a new Add operation.
@@ -25,7 +25,7 @@ public class Add extends DateComputation {
 	}
 
 	@Override
-	protected Temporal compute(Row row) {
+	protected Temporal calculate(Row row) {
 		Temporal time = getLeft().resolve(row).getValue();
 		Period timeAmount = getRight().resolve(row).getValue();
 		return timeAmount.addTo(time);

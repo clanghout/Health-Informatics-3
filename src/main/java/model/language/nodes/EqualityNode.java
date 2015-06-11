@@ -1,8 +1,8 @@
 package model.language.nodes;
 
 import model.data.DataModel;
-import model.data.describer.ConstraintDescriber;
 import model.data.describer.DataDescriber;
+import model.data.describer.OperationDescriber;
 import model.data.value.BoolValue;
 import model.data.value.DataValue;
 import model.process.analysis.operations.constraints.EqualityCheck;
@@ -36,7 +36,7 @@ public final class EqualityNode<T extends DataValue> extends OperationNode<BoolV
 	 */
 	@Override
 	public DataDescriber<BoolValue> resolve(DataModel model) {
-		return new ConstraintDescriber(
+		return new OperationDescriber<>(
 				new EqualityCheck<>(left.resolve(model), right.resolve(model))
 		);
 	}

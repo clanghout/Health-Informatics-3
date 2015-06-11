@@ -325,21 +325,21 @@ public class CombinedDataTableTest {
 		DataTable copy = comb.export("test");
 
 		List<DataRow> rowsCopy = copy.getRows();
-		assertEquals("value1", rowsCopy.get(0).getValue(copy.getColumn("test1.column1")).toString());
-		assertEquals("fsa", rowsCopy.get(0).getValue(copy.getColumn("test2.column2")).toString());
-		assertEquals("ewa", rowsCopy.get(0).getValue(copy.getColumn("test3.column1")).toString());
+		assertEquals("value1", rowsCopy.get(0).getValue(copy.getColumn("test1_column1")).toString());
+		assertEquals("fsa", rowsCopy.get(0).getValue(copy.getColumn("test2_column2")).toString());
+		assertEquals("ewa", rowsCopy.get(0).getValue(copy.getColumn("test3_column1")).toString());
 
-		assertEquals("value1b", rowsCopy.get(1).getValue(copy.getColumn("test1.column1")).toString());
-		assertEquals("fsa", rowsCopy.get(1).getValue(copy.getColumn("test2.column2")).toString());
-		assertEquals("ewa", rowsCopy.get(1).getValue(copy.getColumn("test3.column1")).toString());
+		assertEquals("value1b", rowsCopy.get(1).getValue(copy.getColumn("test1_column1")).toString());
+		assertEquals("fsa", rowsCopy.get(1).getValue(copy.getColumn("test2_column2")).toString());
+		assertEquals("ewa", rowsCopy.get(1).getValue(copy.getColumn("test3_column1")).toString());
 
 		assertEquals("value3", rowsCopy.get(3).getValue(copy.getColumn("column3")).toString());
-		assertEquals("asf", rowsCopy.get(3).getValue(copy.getColumn("test2.column2")).toString());
-		assertEquals("ewa", rowsCopy.get(3).getValue(copy.getColumn("test3.column1")).toString());
+		assertEquals("asf", rowsCopy.get(3).getValue(copy.getColumn("test2_column2")).toString());
+		assertEquals("ewa", rowsCopy.get(3).getValue(copy.getColumn("test3_column1")).toString());
 
-		assertEquals("value2c", rowsCopy.get(5).getValue(copy.getColumn("test1.column2")).toString());
-		assertEquals("sfa", rowsCopy.get(5).getValue(copy.getColumn("test2.column1")).toString());
-		assertEquals("ewa", rowsCopy.get(5).getValue(copy.getColumn("test3.column1")).toString());
+		assertEquals("value2c", rowsCopy.get(5).getValue(copy.getColumn("test1_column2")).toString());
+		assertEquals("sfa", rowsCopy.get(5).getValue(copy.getColumn("test2_column1")).toString());
+		assertEquals("ewa", rowsCopy.get(5).getValue(copy.getColumn("test3_column1")).toString());
 
 		assertEquals("test", copy.getName());
 	}

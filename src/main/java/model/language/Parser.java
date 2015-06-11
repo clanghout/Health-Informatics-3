@@ -1,7 +1,7 @@
 package model.language;
 
 import model.data.DataModel;
-import model.data.describer.DataDescriber;
+import model.exceptions.ParseException;
 import model.process.DataProcess;
 import model.process.SerialProcess;
 import org.parboiled.Parboiled;
@@ -28,13 +28,20 @@ public class Parser {
 	 * @param input The SUGAR code.
 	 * @return The DataProcesses parsed from the given string.
 	 */
-	public DataProcess parse(String input, DataModel model) {
+	public DataProcess parse(String input, DataModel model) throws ParseException {
 		LanguageParser parser = Parboiled.createParser(LanguageParser.class);
 		ParseRunner runner = new ReportingParseRunner<>(parser.Sugar());
 
 		ParsingResult result = runner.run(input);
+
+		if (!result.matched) {
+			throw new ParseException(
+					"Failed to parse process chain and macros",
+					result.parseErrors
+			);
+		}
 		List<ProcessInfo> processInfos = new ArrayList<>();
-		Map<Identifier, DataDescriber> macros = new HashMap<>();
+		Map<Identifier, DataProcess> macros = new HashMap<>();
 
 		while (!result.valueStack.isEmpty()) {
 			Object info = result.valueStack.pop();

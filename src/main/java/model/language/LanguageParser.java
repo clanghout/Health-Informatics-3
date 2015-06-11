@@ -2,7 +2,9 @@ package model.language;
 
 import model.data.value.*;
 import model.language.nodes.*;
+import org.parboiled.Action;
 import org.parboiled.BaseParser;
+import org.parboiled.Context;
 import org.parboiled.Rule;
 import org.parboiled.support.Var;
 
@@ -41,9 +43,9 @@ class LanguageParser extends BaseParser<Object> {
 				swap3(),
 				push(
 						new NumberOperationNode(
-							(ValueNode<NumberValue>) pop(),
-							(String) pop(),
-							(ValueNode<NumberValue>) pop()
+								(ValueNode<NumberValue>) pop(),
+								(String) pop(),
+								(ValueNode<NumberValue>) pop()
 						)
 				)
 		);
@@ -68,6 +70,8 @@ class LanguageParser extends BaseParser<Object> {
 				FloatLiteral(),
 				IntLiteral(),
 				NumberColumn(),
+				DateFunction(),
+				TableFunction(),
 				Sequence("(", NumberExpression(), ")")
 		);
 	}
@@ -86,6 +90,39 @@ class LanguageParser extends BaseParser<Object> {
 		return Sequence(
 				FirstOf(
 						"*", "/", "+", "-", "^"
+				),
+				push(match())
+		);
+	}
+
+	Rule TableFunction() {
+		return Sequence(
+				TableFunctionName(),
+				"(",
+				WhiteSpace(),
+				ColumnIdentifier(),
+				WhiteSpace(),
+				")",
+				swap(),
+				push(
+						new FunctionNode(
+								(String) pop(),
+								(ColumnIdentifier) pop()
+						)
+				)
+		);
+	}
+
+	Rule TableFunctionName() {
+		return Sequence(
+				FirstOf(
+						"COUNT",
+						"AVERAGE",
+						"MIN",
+						"MAX",
+						"SUM",
+						"MEDIAN",
+						"STDDEV"
 				),
 				push(match())
 		);
@@ -171,16 +208,219 @@ class LanguageParser extends BaseParser<Object> {
 	Rule PeriodUnit() {
 		return Sequence(
 				FirstOf(
-					"DAYS",
-					"MONTHS",
-					"YEARS"
+						"DAYS",
+						"MONTHS",
+						"YEARS"
 				),
 				push(match())
 		);
 	}
 
+	Rule ChronoUnit() {
+		return FirstOf(
+				PeriodUnit(),
+				Sequence(
+						"HOURS",
+						"MINUTES",
+						"SECONDS"
+				),
+				push(match())
+		);
+	}
+
+	Rule DateExpression() {
+		return FirstOf(
+				DateCalculation(),
+				Sequence("(", DateExpression(), ")"),
+				DateTimeLiteral(),
+				DateLiteral(),
+				DateColumn()
+		);
+	}
+
+	Rule DateTerm() {
+		return FirstOf(
+				DateTimeLiteral(),
+				DateLiteral(),
+				DateColumn(),
+				Sequence("(", DateExpression(), ")")
+		);
+	}
+
+	Rule DateCalculation() {
+		return Sequence(
+				DateTerm(),
+				SomeWhiteSpace(),
+				DateOperators(),
+				SomeWhiteSpace(),
+				PeriodLiteral(),
+				swap3(),
+				push(
+						new DateCalculationNode(
+								(ValueNode<TemporalValue<?>>) pop(),
+								(String) pop(),
+								(ValueNode<PeriodValue>) pop()
+						)
+				)
+		);
+	}
+
+	Rule DateFunction() {
+		return Sequence(
+				DateFunctionName(),
+				"(",
+				WhiteSpace(),
+				DateExpression(),
+				WhiteSpace(),
+				",",
+				WhiteSpace(),
+				DateExpression(),
+				WhiteSpace(),
+				",",
+				WhiteSpace(),
+				ChronoUnit(),
+				WhiteSpace(),
+				")",
+				swap3(),
+				push(
+						new DateFunctionNode(
+								(ValueNode<TemporalValue<?>>) pop(),
+								(ValueNode<TemporalValue<?>>) pop(),
+								(String) pop()
+						)
+				)
+		);
+	}
+
+	Rule DateFunctionName() {
+		return Sequence(
+				"RELATIVE",
+				push(match())
+		);
+	}
+
+	Rule DateOperators() {
+		return Sequence(
+				FirstOf(
+						"ADD",
+						"MIN"
+				),
+				push(match())
+		);
+	}
+
+	Rule IntLiteralOfN(int n) {
+		return Sequence(
+				NTimes(n, Digit()),
+				push(new ConstantNode<IntValue>(new IntValue(Integer.parseInt(match()))))
+		);
+	}
+
+	Rule DateLiteral() {
+		return Sequence(
+				"#",
+				DateBody(),
+				"#",
+				swap3(),
+				push(
+						new DateNode(
+								(ValueNode<IntValue>) pop(),
+								(ValueNode<IntValue>) pop(),
+								(ValueNode<IntValue>) pop()
+						)
+				)
+		);
+	}
+
+	Rule DateBody() {
+		return Sequence(
+				IntLiteralOfN(4),
+				"-",
+				IntLiteralOfN(2),
+				"-",
+				IntLiteralOfN(2)
+		);
+	}
+
+	Rule DateComparison() {
+		return Sequence(
+				DateExpression(),
+				SomeWhiteSpace(),
+				Sequence(
+						FirstOf("AFTER", "BEFORE"),
+						push(match())
+				),
+				SomeWhiteSpace(),
+				DateExpression(),
+				swap3(),
+				push(new DateCompareNode(
+								(ValueNode<? extends TemporalValue<?>>) pop(),
+								(String) pop(),
+								(ValueNode<? extends TemporalValue<?>>) pop()
+						)
+				)
+		);
+	}
+
+	Rule TimeBody() {
+		return Sequence(
+				IntLiteralOfN(2),
+				":",
+				IntLiteralOfN(2),
+				FirstOf(
+						Sequence(
+								":",
+								IntLiteralOfN(2)
+						),
+						Sequence(
+								TestNot(
+										Sequence(
+												":",
+												IntLiteralOfN(2)
+										)
+								),
+								push(new ConstantNode<IntValue>(new IntValue(0)))
+						)
+
+				)
+		);
+	}
+
+	Rule DateTimeLiteral() {
+		return Sequence(
+				"#",
+				DateBody(),
+				" ",
+				TimeBody(),
+				"#",
+				swap6(),
+				push(new DateTimeNode(
+								(ValueNode<IntValue>) pop(),
+								(ValueNode<IntValue>) pop(),
+								(ValueNode<IntValue>) pop(),
+								(ValueNode<IntValue>) pop(),
+								(ValueNode<IntValue>) pop(),
+								(ValueNode<IntValue>) pop()
+						)
+				)
+		);
+	}
+
+	Rule DateColumn() {
+		return Sequence(
+				ColumnIdentifier(),
+				push(new TableValueNode<TemporalValue>((ColumnIdentifier) pop()))
+		);
+	}
+
 	Rule Variable() {
-		return FirstOf(Identifier(), StringLiteral(), FloatLiteral(), IntLiteral());
+		return FirstOf(
+				ColumnIdentifier(),
+				Identifier(),
+				StringLiteral(),
+				FloatLiteral(),
+				IntLiteral()
+		);
 	}
 
 	/**
@@ -213,8 +453,12 @@ class LanguageParser extends BaseParser<Object> {
 		return ZeroOrMore(WhiteSpaceChars());
 	}
 
+	Rule SomeWhiteSpace() {
+		return OneOrMore(WhiteSpaceChars());
+	}
+
 	Rule WhiteSpaceChars() {
-		return FirstOf(" ", "\t");
+		return FirstOf(" ", "\t", "\n");
 	}
 
 	/**
@@ -244,7 +488,8 @@ class LanguageParser extends BaseParser<Object> {
 								Pipe(),
 								Process()
 						)
-				)
+				),
+				TestNot("|")
 		);
 	}
 
@@ -276,6 +521,13 @@ class LanguageParser extends BaseParser<Object> {
 	 * Matches any comparison and pushes a CompareNode on the stack.
 	 */
 	Rule Comparison() {
+		return FirstOf(
+				DateComparison(),
+				NumberComparison()
+		);
+	}
+
+	Rule NumberComparison() {
 		return Sequence(
 				NumberExpression(),
 				WhiteSpace(),
@@ -303,6 +555,7 @@ class LanguageParser extends BaseParser<Object> {
 		return FirstOf(
 				StringExpression(),
 				NumberExpression(),
+				DateExpression(),
 				BooleanTerm()
 		);
 	}
@@ -358,8 +611,8 @@ class LanguageParser extends BaseParser<Object> {
 
 	Rule StringExpression() {
 		return FirstOf(
-					StringLiteral(),
-					StringColumn()
+				StringLiteral(),
+				StringColumn()
 		);
 	}
 
@@ -396,7 +649,8 @@ class LanguageParser extends BaseParser<Object> {
 				Comparison(),
 				Equality(),
 				UnaryBooleanOperation(),
-				Sequence("(", BooleanExpression(), ")"));
+				Sequence("(", BooleanExpression(), ")")
+		);
 	}
 
 	Rule BooleanOperator() {
@@ -410,12 +664,10 @@ class LanguageParser extends BaseParser<Object> {
 	 * The main entry point for our language.
 	 */
 	Rule Sugar() {
-		return ZeroOrMore(
-				FirstOf(
-						Macro(),
-						Pipe(),
-						ANY
-				)
+		return Sequence(
+				ZeroOrMore(Macro()),
+				WhiteSpace(),
+				Pipe()
 		);
 	}
 
@@ -427,7 +679,6 @@ class LanguageParser extends BaseParser<Object> {
 				"def",
 				WhiteSpace(),
 				Identifier(),
-				Params(),
 				WhiteSpace(),
 				":",
 				WhiteSpace(),
@@ -437,11 +688,10 @@ class LanguageParser extends BaseParser<Object> {
 				WhiteSpace(),
 				MacroBody(),
 				";",
-				swap4(),
+				swap3(),
 				push(
 						new MacroInfo(
 								(Identifier) pop(),
-								(List<Object>) pop(),
 								new MacroType((String) pop()),
 								(String) pop()
 						)
@@ -460,4 +710,129 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
+
+	Rule GroupBy(Rule selector) {
+		return Sequence(
+				"NAME",
+				SomeWhiteSpace(),
+				Identifier(),
+				SomeWhiteSpace(),
+				"ON",
+				SomeWhiteSpace(),
+				selector,
+				GroupByFunctions()
+		);
+	}
+
+	Rule GroupByColumn() {
+		return Sequence(
+				GroupBy(
+						Sequence(
+								AnyValue(),
+								TestNot(
+										WhiteSpace(),
+										"AS",
+										WhiteSpace()
+								)
+						)
+				),
+				swap4()
+		);
+	}
+
+	Rule GroupByConstraints() {
+		return Sequence(
+				GroupBy(
+						GroupByConstraintsList()
+				),
+				swap5()
+		);
+	}
+
+	Rule GroupByConstraintsList() {
+		Var<List<ValueNode<BoolValue>>> constraints = new Var<>();
+		Var<List<Identifier>> groupNames = new Var<>();
+		return Sequence(
+				new Action() {
+					@Override
+					public boolean run(Context context) {
+						constraints.set(new ArrayList<>());
+						groupNames.set(new ArrayList<>());
+						return true;
+					}
+				},
+				ZeroOrMore(
+						GroupByConstraintConstraint(),
+						",",
+						WhiteSpace(),
+						groupNames.get().add((Identifier) pop()),
+						constraints.get().add((ValueNode<BoolValue>) pop())
+				),
+				Optional(
+						GroupByConstraintConstraint(),
+						groupNames.get().add((Identifier) pop()),
+						constraints.get().add((ValueNode<BoolValue>) pop())
+				),
+				push(constraints.get()),
+				push(groupNames.get())
+		);
+	}
+
+	Rule GroupByConstraintConstraint() {
+		return Sequence(
+				BooleanExpression(),
+				SomeWhiteSpace(),
+				"AS",
+				SomeWhiteSpace(),
+				Identifier()
+		);
+	}
+
+	Rule GroupByFunctions() {
+		Var<List<FunctionNode>> functions = new Var<>();
+		Var<List<Identifier>> names = new Var<>();
+		return Sequence(
+				new Action() {
+					@Override
+					public boolean run(Context context) {
+						functions.set(new ArrayList<>());
+						names.set(new ArrayList<>());
+						return true;
+					}
+				},
+				Optional(
+						SomeWhiteSpace(),
+						"FROM",
+						SomeWhiteSpace(),
+						// This rather unusual structure is required, as a recursive approach would
+						// result in a StackOverflowException and since GroupByFunction is matched
+						// before the comma the values have to be added after the comma.
+						// (otherwise they'd be added twice.)
+						ZeroOrMore(
+								GroupByFunction(),
+								",",
+								WhiteSpace(),
+								names.get().add((Identifier) pop()),
+								functions.get().add((FunctionNode) pop())
+						),
+						Optional(
+								GroupByFunction(),
+								names.get().add((Identifier) pop()),
+								functions.get().add((FunctionNode) pop())
+						)
+				),
+				push(functions.get()),
+				push(names.get())
+		);
+	}
+
+	Rule GroupByFunction() {
+		return Sequence(
+				TableFunction(),
+				SomeWhiteSpace(),
+				"AS",
+				SomeWhiteSpace(),
+				Identifier()
+		);
+	}
 }

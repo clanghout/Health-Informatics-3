@@ -8,31 +8,48 @@ public final class BoolValue extends DataValue<Boolean> {
 
 	private boolean value;
 
-	public BoolValue(boolean value) {
-		this.value = value;
+	/**
+	 * Return a null instance.
+	 */
+	BoolValue() {
+		this(null);
+	}
+
+	public BoolValue(Boolean value) {
+		if (value == null) {
+			this.value = false;
+			setNull(true);
+		} else {
+			this.value = value;
+		}
 	}
 
 	@Override
 	public Boolean getValue() {
 		return value;
 	}
-
+	
 	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof BoolValue)) {
-			return false;
-		}
-		BoolValue other = (BoolValue) obj;
-		return other.value == this.value;
+	public boolean doEquals(Object obj) {
+		return ((BoolValue) obj).value == this.value;
 	}
 
 	@Override
-	public int hashCode() {
+	public int doHashCode() {
 		return Boolean.hashCode(value);
 	}
 
 	@Override
 	public String toString() {
 		return String.valueOf(value);
+	}
+
+	@Override
+	public int compareTo(DataValue other) {
+		if (!(other instanceof BoolValue)) {
+			throw new IllegalArgumentException("Boolvalue cannot compare to non bools");
+		}
+		BoolValue o = (BoolValue) other;
+		return Boolean.compare(value, o.value);
 	}
 }

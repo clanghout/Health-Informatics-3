@@ -57,7 +57,7 @@ public class LanguageParserMatchTest {
 				{ parser.Pipe(), "test()|test2()", true },
 				{ parser.ColumnIdentifier(), "test.dignen", true },
 				{ parser.ColumnIdentifier(), "test", false }, // 20
-				{ parser.Macro(), "def test() : Constraint = test;", true},
+				{ parser.Macro(), "def test : Constraint = test;", true},
 				{ parser.CompareOperator(), ">=", true},
 				{ parser.Comparison(), "test.dingen >= 10", true},
 				{ parser.BooleanExpression(), "true", true},
@@ -66,8 +66,23 @@ public class LanguageParserMatchTest {
 				{ parser.BooleanExpression(), "5 = 5 AND true", true},
 				{ parser.BooleanExpression(), "NOT(false)", true},
 				{ parser.NumberExpression(), "5 * 5", true},
-				{ parser.NumberExpression(), "(5 * 5) + 3", true},
-				{ parser.BooleanExpression(), "HAS_CODE(\"test\")", true}
+				{ parser.NumberExpression(), "(5 * 5) + 3", true}, // 30
+				{ parser.BooleanExpression(), "HAS_CODE(\"test\")", true},
+				{ parser.DateTimeLiteral(), "#1995-01-17 03:45#", true},
+				{ parser.DateTimeLiteral(), "#1995-01-17 03:35:33#", true},
+				{ parser.DateLiteral(), "#1995-01-17#", true},
+				{ parser.NumberExpression(), "MAX(table.column)", true},
+				{ parser.GroupByColumn(), "NAME sjon ON table.column", true},
+				{ parser.GroupByColumn(),
+						"NAME sjon ON table.column FROM MAX(table.column) AS max", true},
+				{
+						parser.GroupByConstraints(),
+						"NAME sjon ON table.column < 5 AS test FROM MAX(table.column) AS max",
+						true
+				},
+				{ parser.Sugar(), "test()", true},
+				{ parser.Sugar(), "def test : Macro = dingen; \ntest()", true}, // 40
+				{ parser.Sugar(), "test(argument)|from()", true}
 		};
 
 		return Arrays.asList(testData);

@@ -2,11 +2,12 @@ package model.language;
 
 import model.data.DataModel;
 import model.data.describer.DataDescriber;
+import model.data.describer.TableValueDescriber;
 import model.data.value.StringValue;
 import model.language.nodes.ValueNode;
 import model.process.*;
-import model.process.analysis.ConstraintAnalysis;
 import model.process.setOperations.Difference;
+import model.process.setOperations.Union;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -34,7 +35,7 @@ class ProcessInfo {
 		return name;
 	}
 
-	DataProcess resolve(DataModel model, Map<Identifier, DataDescriber> macros) {
+	DataProcess resolve(DataModel model, Map<Identifier, DataProcess> macros) {
 		switch (name.getName()) {
 			case "from":
 				Identifier[] identifiers = Arrays.stream(parameters)
@@ -44,13 +45,13 @@ class ProcessInfo {
 			case "is":
 				if (parameters.length == 1) {
 					return new IsProcess((Identifier) parameters[0]);
-				} else if(parameters.length == 2) {
+				} else if (parameters.length == 2) {
 					return new DataTableIsProcess(
 							(Identifier) parameters[0],
 							(Identifier) parameters[1]);
 				}
 			case "constraint":
-				return new ConstraintAnalysis(macros.get(parameters[0]));
+				return macros.get(parameters[0]);
 			case "setCode":
 				ValueNode<StringValue> stringNode = (ValueNode<StringValue>) parameters[0];
 				DataDescriber<StringValue> code = stringNode.resolve(model);
@@ -58,6 +59,19 @@ class ProcessInfo {
 				return new SetCode(code, tableName);
 			case "difference":
 				return new Difference((Identifier) parameters[0], (Identifier) parameters[1]);
+			case "union":
+				return new Union((Identifier) parameters[0], (Identifier) parameters[1]);
+			case "groupBy":
+				return macros.get(parameters[0]);
+			case "sort":
+				ValueNode<StringValue> orderNode = (ValueNode<StringValue>) parameters[1];
+				SortProcess.Order order =
+						"ASC".equals(orderNode.resolve(model).resolve(null).getValue())
+						? SortProcess.Order.ASCENDING
+						: SortProcess.Order.DESCENDING;
+				return new SortProcess(
+						new TableValueDescriber<>(model, (ColumnIdentifier) parameters[0]),
+						order);
 			default:
 				throw new UnsupportedOperationException("This code has not been implemented yet");
 		}

@@ -19,8 +19,8 @@ public abstract class Function {
 	private DataTable table;
 	private DataDescriber<NumberValue> argument;
 
-	public Function(DataTable model, DataDescriber<NumberValue> argument) {
-		this.table = model;
+	public Function(DataTable table, DataDescriber<NumberValue> argument) {
+		this.table = table;
 		this.argument = argument;
 	}
 
@@ -45,15 +45,15 @@ public abstract class Function {
 	 * @param table table on which the funtion must perform
 	 */
 	public void setTable(DataTable table) {
-		this.table = table.copy();
+		this.table = table;
 	}
 
 	/**
 	 * This abstract function will execute various arithmetic calculations.
 	 * 
-	 * @return DataValue
+	 * @return DataValue The result of the calculation.
 	 */
-	public abstract DataValue calculate();
+	public abstract NumberValue calculate();
 
 	/**
 	 * Initialize class checks if specified column is eligible.
@@ -80,9 +80,9 @@ public abstract class Function {
 	 *            the specification of the column
 	 * @param line
 	 *            the specific row of the value
-	 * @return float
+	 * @return float The value as a float.
 	 */
-	public float intOrFloat(DataDescriber<NumberValue> arg, DataRow line) {
+	protected float intOrFloat(DataDescriber<NumberValue> arg, DataRow line) {
 		float result = 0.0f;
 		if (arg.resolve(line) instanceof FloatValue) {
 			result = (Float) argument.resolve(line).getValue();
