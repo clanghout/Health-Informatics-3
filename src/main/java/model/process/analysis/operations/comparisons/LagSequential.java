@@ -6,6 +6,7 @@ import model.data.Table;
 import model.data.describer.RowValueDescriber;
 import model.data.value.DataValue;
 import model.exceptions.InputMismatchException;
+import model.process.DataProcess;
 import model.process.SortProcess;
 import model.process.SortProcess.Order;
 import model.process.analysis.operations.Event;
@@ -18,7 +19,7 @@ import model.process.setOperations.Join;
  * 
  * @author Louis Gosschalk 26-05-2015
  */
-public class LagSequentialAnalysis {
+public class LagSequential {
 
 	private DataTable tableA;
 	private DataTable tableB;
@@ -40,7 +41,7 @@ public class LagSequentialAnalysis {
 	 *            The column of the dateValues (second event)
 	 * @return
 	 */
-	public LagSequentialAnalysis(Event eventA,
+	public LagSequential(Event eventA,
 			RowValueDescriber<DataValue> dateA, Event eventB,
 			RowValueDescriber<DataValue> dateB) {
 		tableA = checkTable(eventA.create());
@@ -50,24 +51,29 @@ public class LagSequentialAnalysis {
 
 		if (tableA.getRowCount() == 0 || tableB.getRowCount() == 0) {
 			throw new InputMismatchException("Empty event input.");
-		} else if (!tableA.getColumns().contains(colA)
-				|| !tableB.getColumns().contains(colB)) {
-			throw new IllegalArgumentException(
-					"Specified date column is not an instance of specified table.");
 		}
 
 		Order order = Order.ASCENDING;
 
 		SortProcess sortA = new SortProcess(colA, order);
+		sortA.setInput(tableA);
+		tableA = (DataTable) sortA.process();
+		
 		SortProcess sortB = new SortProcess(colB, order);
+		sortB.setInput(tableB);
+		tableB = (DataTable) sortB.process();
 
-		tableA = (DataTable) sortA.getOutput();
-		tableB = (DataTable) sortB.getOutput();
+		
+		System.out.println("tabel a "+tableA.getRowCount() + " tabel b "+tableB.getRowCount());
+		
 
 		// join the tables and sort chrono
 		FullJoin.Join full = FullJoin.Join.FULL;
 		Join join = new FullJoin("LSA", tableA, tableB, full);
-		result = (DataTable) join.getOutput();
+		result = (DataTable) join.process();
+		System.out.println(result.toString());
+		
+		System.out.println("end");
 	}
 
 	/**
@@ -86,7 +92,7 @@ public class LagSequentialAnalysis {
 	}
 
 	/**
-	 * This class returns the actual created table.
+	 * This class returns the created table.
 	 * 
 	 * @return result the built Table
 	 */
