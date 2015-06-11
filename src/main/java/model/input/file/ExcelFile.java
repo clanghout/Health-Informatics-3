@@ -88,7 +88,7 @@ public abstract class ExcelFile extends DataFile {
 			case Cell.CELL_TYPE_STRING:
 				return new StringValue(cell.getStringCellValue());
 			case Cell.CELL_TYPE_NUMERIC: {
-				return determineNumValue(cell, type);
+				return parseNumValue(cell, type);
 			}
 			case Cell.CELL_TYPE_BLANK:
 				return createNullValue(type);
@@ -98,18 +98,9 @@ public abstract class ExcelFile extends DataFile {
 		}
 	}
 
-	private DataValue determineNumValue(Cell cell, Class<? extends DataValue> type) {
-		if (DateUtil.isCellDateFormatted(cell) && (type == DateTimeValue.class)) {
-			GregorianCalendar calendar = (GregorianCalendar) DateUtil.getJavaCalendar(
-					cell.getNumericCellValue(), true);
-
-			return new DateTimeValue(
-					calendar.get(Calendar.YEAR),
-					calendar.get(Calendar.MONTH) + 1,
-					calendar.get(Calendar.DAY_OF_MONTH),
-					calendar.get(Calendar.HOUR_OF_DAY),
-					calendar.get(Calendar.MINUTE),
-					calendar.get(Calendar.SECOND));
+	private DataValue parseNumValue(Cell cell, Class<? extends DataValue> type) {
+		if (DateUtil.isCellDateFormatted(cell)) {
+			return parseDateValue(cell, type);
 		}
 		double cellValue = cell.getNumericCellValue();
 		if (type == IntValue.class) {
@@ -121,5 +112,34 @@ public abstract class ExcelFile extends DataFile {
 			throw new UnsupportedOperationException(
 				String.format("type %s not supported", type));
 		}
+	}
+
+	private DataValue parseDateValue(Cell cell, Class<? extends DataValue> type) {
+		GregorianCalendar calendar = (GregorianCalendar) DateUtil.getJavaCalendar(
+				cell.getNumericCellValue(), true);
+
+		if (type == DateTimeValue.class) {
+			return new DateTimeValue(
+					calendar.get(Calendar.YEAR),
+					calendar.get(Calendar.MONTH) + 1,
+					calendar.get(Calendar.DAY_OF_MONTH),
+					calendar.get(Calendar.HOUR_OF_DAY),
+					calendar.get(Calendar.MINUTE),
+					calendar.get(Calendar.SECOND));
+		} else
+		if (type == DateValue.class) {
+			return new DateValue(
+					calendar.get(Calendar.YEAR),
+					calendar.get(Calendar.MONTH) + 1,
+					calendar.get(Calendar.DAY_OF_MONTH)
+			);
+		} else
+		if (type == TimeValue.class) {
+			return new TimeValue(
+					calendar.get(Calendar.HOUR_OF_DAY),
+					calendar.get(Calendar.MINUTE),
+					calendar.get(Calendar.SECOND));
+		}
+		return null;
 	}
 }

@@ -1,18 +1,18 @@
 package model.input.file;
 
 import model.data.DataTable;
-import model.data.value.DataValue;
-import model.data.value.FloatValue;
-import model.data.value.IntValue;
-import model.data.value.StringValue;
+import model.data.value.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class to specify a .txt file.
@@ -20,6 +20,8 @@ import java.util.Scanner;
  * @author Paul
  */
 public class PlainTextFile extends DataFile {
+
+	private Logger logger = Logger.getLogger("PlainTextFile");
 
 	private int counter;
 	private String delimiter = ",";
@@ -143,11 +145,28 @@ public class PlainTextFile extends DataFile {
 				// TODO: throw appropriate exception
 				return null;
 			}
-		} else {
+		} else if(type.equals(DateValue.class)) {
+			return parseDateValue(value);
+		} else if(type.equals(TimeValue.class)) {
+			return parseTimeValue(value);
+		}
+		else {
 			throw new UnsupportedOperationException(
 					String.format("Class %s not yet supported", type)
 			);
 		}
+	}
+
+	private TimeValue parseTimeValue(String value) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hhmm");
+		LocalDateTime dateTime = LocalDateTime.from(formatter.parse(value));
+		return new TimeValue(dateTime.getHour(), dateTime.getMinute(), dateTime.getSecond());
+	}
+
+	private DateValue parseDateValue(String value) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yymmdd");
+		LocalDateTime dateTime = LocalDateTime.from(formatter.parse(value));
+		return new DateValue(dateTime.getYear(), dateTime.getMonthValue(), dateTime.getDayOfMonth());
 	}
 
 	/**
