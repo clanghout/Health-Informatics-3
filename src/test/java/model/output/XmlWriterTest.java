@@ -1,6 +1,7 @@
 package model.output;
 
 import model.data.value.*;
+import model.input.file.ColumnInfo;
 import model.input.file.DataFile;
 import model.input.file.PlainTextFile;
 import org.junit.Before;
@@ -12,6 +13,7 @@ import org.w3c.dom.Element;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -37,17 +39,17 @@ public class XmlWriterTest {
 
 		when(textFile.getFile()).thenReturn(new File("/path/to/Prettyname.txt"));
 		when(textFile.hasFirstRowAsHeader()).thenReturn(false);
-		LinkedHashMap<String, Class<? extends DataValue>> map = new LinkedHashMap<>();
+		List<ColumnInfo> cols = new ArrayList<>();
+		
+		cols.add(new ColumnInfo("someInts", IntValue.class));
+		cols.add(new ColumnInfo("someStrings", StringValue.class));
+		cols.add(new ColumnInfo("someDates", DateValue.class));
+		cols.add(new ColumnInfo("someFloats", FloatValue.class));
+		cols.add(new ColumnInfo("someTimes", TimeValue.class));
+		cols.add(new ColumnInfo("someDateTimes", DateTimeValue.class));
 
-		map.put("someInts", IntValue.class);
-		map.put("someStrings", StringValue.class);
-		map.put("someDates", DateValue.class);
-		map.put("someFloats", FloatValue.class);
-		map.put("someTimes", TimeValue.class);
-		map.put("someDateTimes", DateTimeValue.class);
-
-		when(textFile.getColumns()).thenReturn(map);
-		ArrayList<DataFile> dataFiles = new ArrayList<DataFile>();
+		when(textFile.getColumns()).thenReturn(cols);
+		ArrayList<DataFile> dataFiles = new ArrayList<>();
 		dataFiles.add(textFile);
 
 		XmlWriter writer = new XmlWriter(dataFiles);
@@ -65,7 +67,7 @@ public class XmlWriterTest {
 				.getElementsByTagName("columns").item(0);
 
 		assertEquals("columns", columns.getTagName());
-		assertTrue(columns.getChildNodes().getLength() == 6);
+		assertEquals(6, columns.getChildNodes().getLength());
 		assertEquals("false", columns.getAttribute("firstrowheader"));
 
 		assertEquals("int", ((Element)columns.getElementsByTagName("column")

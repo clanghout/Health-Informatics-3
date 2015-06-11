@@ -26,17 +26,10 @@ public class PlainTextFileTest {
 		String file = getClass().getResource("/model/input/plaintext.txt").getFile();
 		textFile = new PlainTextFile(file);
 		textFile.setDelimiter(" ");
-		LinkedHashMap<String, Class<? extends DataValue>> mapping = new LinkedHashMap<>();
-		mapping.put("test", StringValue.class);
-		mapping.put("int", IntValue.class);
-		mapping.put("float", FloatValue.class);
-		mapping.put("string", StringValue.class);
-		List<Class<? extends DataValue>> list = new ArrayList<>();
-		list.add(StringValue.class);
-		list.add(IntValue.class);
-		list.add(FloatValue.class);
-		list.add(StringValue.class);
-		textFile.setColumns(mapping, list);
+		textFile.addColumn("test", StringValue.class);
+		textFile.addColumn("int", IntValue.class);
+		textFile.addColumn("float", FloatValue.class);
+		textFile.addColumn("string", StringValue.class);
 	}
 
 	@Test

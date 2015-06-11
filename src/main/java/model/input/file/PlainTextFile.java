@@ -43,15 +43,12 @@ public class PlainTextFile extends DataFile {
 			if (hasFirstRowAsHeader()) {
 				String headers = scanner.nextLine();
 				String[] sections = headers.split(delimiter);
-				for (int i = 0; i < getColumnTypes().length; i++) {
-					getColumns().put(sections[i], getColumnTypes()[i]);
+				for (int i = 0; i < getColumns().size(); i++) {
+					getColumns().get(i).setName(sections[i]);;
 				}
 			} else {
-				for (Map.Entry<
-						String,
-						Class<? extends DataValue>
-						> entry : getColumns().entrySet()) {
-					getBuilder().createColumn(entry.getKey(), entry.getValue());
+				for (ColumnInfo column : getColumns()) {
+					getBuilder().createColumn(column.getName(), column.getType());
 				}
 			}
 			if (hasMetaData()) {
@@ -97,7 +94,6 @@ public class PlainTextFile extends DataFile {
 	
 	private DataValue[] createValues(String line) {
 		String[] sections = line.split(delimiter);
-		List<Class<? extends DataValue>> columns = getColumnList();
 		DataValue[] values;
 		if (hasMetaData()) {
 			values = new DataValue[getColumns().size() + 1];
@@ -105,7 +101,7 @@ public class PlainTextFile extends DataFile {
 			values = new DataValue[getColumns().size()];
 		}
 		for (int i = 0; i < getColumns().size(); i++) {
-			values[i] = toDataValue(sections[i].trim(), columns.get(i));
+			values[i] = toDataValue(sections[i].trim(), getColumns().get(i).getType());
 		}
 		if (hasMetaData()) {
 			values[values.length - 1] = getMetaDataValue();

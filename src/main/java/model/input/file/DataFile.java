@@ -30,11 +30,11 @@ public abstract class DataFile {
 	private String path;
 	private int startLine;
 	private int endLine;
-	private Map<String, Class<? extends DataValue>> columns;
-	private List<Class<? extends DataValue>> columnList;
-	private boolean firstRowAsHeader;
-	private Class<? extends DataValue>[] columnTypes;
+
+	private List<ColumnInfo> columns;
+
 	private DataTableBuilder builder = new DataTableBuilder();
+	private boolean firstRowAsHeader;
 	private boolean hasMetaData;
 
 	/**
@@ -47,7 +47,7 @@ public abstract class DataFile {
 		this.setStartLine(1);
 		this.setEndLine(0);
 		this.setFirstRowAsHeader(false);
-		this.setColumns(new LinkedHashMap<>(), new ArrayList<>());
+		this.columns = new ArrayList<>();
 	}
 
 	/**
@@ -129,14 +129,6 @@ public abstract class DataFile {
 		this.endLine = endLine;
 	}
 
-	public void setColumnTypes(Class<? extends DataValue<?>>[] types) {
-		this.columnTypes = types;
-	}
-	
-	public Class[] getColumnTypes() {
-		return this.columnTypes;
-	}
-
 	/**
 	 * Returns the type of the class based on a string describing the type.
 	 * @param type The name of the type
@@ -193,26 +185,21 @@ public abstract class DataFile {
 	}
 
 	/**
-	 * Returns the array with the names of the columns.
-	 * @return The array with the names of the columns
+	 * Returns the List with the names and types of the columns.
+	 * @return The List with the names and types of the columns
 	 */
-	public Map<String, Class<? extends DataValue>> getColumns() {
+	public List<ColumnInfo> getColumns() {
 		return columns;
 	}
 
-	public List<Class<? extends DataValue>> getColumnList() {
-		return columnList;
+	public void addColumnTypes(Class<? extends DataValue> type[]) {
+		for (Class t : type) {
+			columns.add(new ColumnInfo(null, t));
+		}
 	}
 
-	/**
-	 * Sets the names of the columns.
-	 * @param columns The columns to set
-	 */
-	public void setColumns(
-			Map<String, Class<? extends DataValue>> columns,
-			List<Class<? extends DataValue>> columnList) {
-		this.columns = new LinkedHashMap<>(columns);
-		this.columnList = columnList;
+	public void addColumn(String name, Class<? extends DataValue> type) {
+		columns.add(new ColumnInfo(name, type));
 	}
 
 	/**

@@ -33,24 +33,13 @@ public class ExcelFileTest {
 		String file2 = getClass().getResource("/model/input/xls1.xls").getFile();
 		xlsFile = new XlsFile(file2);
 
-		xlsxFile.setColumns(createmapping(), createList());
-		xlsFile.setColumns(createmapping(), createList());
+		xlsFile.addColumn("string", StringValue.class);
+		xlsFile.addColumn("float", FloatValue.class);
+		xlsFile.addColumn("int", IntValue.class);
 
-	}
-
-	private LinkedHashMap<String, Class<? extends DataValue>> createmapping() {
-		LinkedHashMap<String, Class<? extends DataValue>> mapping = new LinkedHashMap<>();mapping.put("string", StringValue.class);
-		mapping.put("float", FloatValue.class);
-		mapping.put("int", IntValue.class);
-		return mapping;
-	}
-
-	private List<Class<? extends DataValue>> createList() {
-		List<Class<? extends DataValue>> list = new ArrayList<>();
-		list.add(StringValue.class);
-		list.add(FloatValue.class);
-		list.add(IntValue.class);
-		return list;
+		xlsxFile.addColumn("string", StringValue.class);
+		xlsxFile.addColumn("float", FloatValue.class);
+		xlsxFile.addColumn("int", IntValue.class);
 	}
 
 	@Test

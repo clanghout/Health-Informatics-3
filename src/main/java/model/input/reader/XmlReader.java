@@ -176,9 +176,9 @@ public class XmlReader {
 
 	private DataFile setColumnTypes(DataFile theDataFile, NodeList columns) {
 		if (theDataFile.hasFirstRowAsHeader()) {
-			theDataFile.setColumnTypes(createTypesArray(columns));
+			theDataFile.addColumnTypes(createTypesArray(columns));
 		} else {
-			theDataFile = setColumnTypeMapping(columns, theDataFile);
+			theDataFile = setColumn(columns, theDataFile);
 		}
 		return theDataFile;
 	}
@@ -196,18 +196,13 @@ public class XmlReader {
 		return completePath;
 	}
 
-	private DataFile setColumnTypeMapping(NodeList columns, DataFile dataFile) {
-		Map<String, Class<? extends DataValue>> mapping = new LinkedHashMap<>();
-		List<Class<? extends DataValue>> columnTypes = new ArrayList<>();
+	private DataFile setColumn(NodeList columns, DataFile dataFile) {
 		for (int i = 0; i < columns.getLength(); i++) {
 			Element columnElement = (Element) columns.item(i);
 			String typeAttribute = columnElement.getAttribute("type");
 			Class columnType = DataFile.getColumnType(typeAttribute);
-			mapping.put(columnElement.getTextContent(),
-					columnType);
-			columnTypes.add(columnType);
+			dataFile.addColumn(columnElement.getTextContent(), columnType);
 		}
-		dataFile.setColumns(mapping, columnTypes);
 		return dataFile;
 	}
 		

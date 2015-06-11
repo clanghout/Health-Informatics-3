@@ -1,6 +1,7 @@
 package model.output;
 
 import model.data.value.DataValue;
+import model.input.file.ColumnInfo;
 import model.input.file.DataFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -85,9 +86,9 @@ public class XmlWriter {
 			res.setAttribute("firstrowheader", "false");
 		}
 
-		Map<String, Class<? extends DataValue>> columns = dataFile.getColumns();
-		for (Map.Entry<String, Class<? extends DataValue>> entry : columns.entrySet()) {
-			res.appendChild(createColumnElements(entry.getKey(), entry.getValue()));
+		List<ColumnInfo> columns = dataFile.getColumns();
+		for (ColumnInfo column : columns) {
+			res.appendChild(createColumnElements(column.getName(), column.getType()));
 		}
 
 		return res;

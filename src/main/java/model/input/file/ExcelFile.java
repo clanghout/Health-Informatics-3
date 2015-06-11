@@ -41,12 +41,12 @@ public abstract class ExcelFile extends DataFile {
 		getBuilder().setName(getFile().getName().replace(".", ""));
 		if (hasFirstRowAsHeader()) {
 			Row headers = rowIterator.next();
-			for (int i = 0; i < getColumnTypes().length; i++) {
-				getColumns().put(headers.getCell(i).getStringCellValue(), getColumnTypes()[i]);
+			for (int i = 0; i < getColumns().size(); i++) {
+				getColumns().get(i).setName(headers.getCell(i).getStringCellValue());
 			}
 		} else {
-			for (String key : getColumns().keySet()) {
-				getBuilder().createColumn(key, getColumns().get(key));
+			for (ColumnInfo column : getColumns()) {
+				getBuilder().createColumn(column.getName(), column.getType());
 			}
 		}
 		if (hasMetaData()) {
@@ -68,8 +68,8 @@ public abstract class ExcelFile extends DataFile {
 			int nullCount = 0;
 			for (int i = 0; i < getColumns().size(); i++) {
 				Cell cell = row.getCell(i, Row.CREATE_NULL_AS_BLANK);
-				values[i] = toDataValue(cell);
-				if (values[i] instanceof NullValue) {
+				values[i] = toDataValue(cell, getColumns().get(i).getType());
+				if (values[i].isNull()) {
 					nullCount++;
 				}
 			}
@@ -81,7 +81,7 @@ public abstract class ExcelFile extends DataFile {
 		}
 	}
 
-	private DataValue toDataValue(Cell cell) {
+	private DataValue toDataValue(Cell cell, Class<? extends DataValue> type) {
 		switch (cell.getCellType()) {
 			case Cell.CELL_TYPE_STRING:
 				return new StringValue(cell.getStringCellValue());
@@ -89,11 +89,31 @@ public abstract class ExcelFile extends DataFile {
 				return determineNumValue(cell);
 			}
 			case Cell.CELL_TYPE_BLANK:
-				return new NullValue();
+				return createNullValue(type);
 			default:
 				throw new UnsupportedOperationException(
 						String.format("Cell type %s not supported", cell.getCellType()));
 		}
+	}
+
+	private DataValue createNullValue(Class<? extends DataValue> type) {
+		if (type == StringValue.class) {
+			return new StringValue(null);
+		} else
+		if (type == BoolValue.class) {
+			return new BoolValue(null);
+		} else
+		if (type == IntValue.class) {
+			return new IntValue(null);
+		} else
+		if (type == FloatValue.class) {
+			return new FloatValue(null);
+		} else
+		if (type == DateTimeValue.class) {
+			return new DateTimeValue(null);
+		}
+		throw new UnsupportedOperationException(
+				String.format("type %s not supported", type));
 	}
 
 	private DataValue determineNumValue(Cell cell) {
