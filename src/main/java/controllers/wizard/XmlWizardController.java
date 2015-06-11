@@ -151,10 +151,12 @@ public class XmlWizardController {
 		);
 
 		File file = fileChooser.showOpenDialog(root.getScene().getWindow());
-		String type = getTypeByExtension(
-				fileChooser.getSelectedExtensionFilter().getExtensions().get(0));
-		addDataFile(file.getPath(), type);
-		fileselectfield.setText(file.getPath());
+		if (file != null) {
+			String type = getTypeByExtension(
+					fileChooser.getSelectedExtensionFilter().getExtensions().get(0));
+			addDataFile(file.getPath(), type);
+			fileselectfield.setText(file.getPath());
+		}
 	}
 
 	private String getTypeByExtension(String extension) {
