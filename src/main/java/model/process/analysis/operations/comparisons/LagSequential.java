@@ -30,8 +30,8 @@ public class LagSequential {
 	private DataTable tableB;
 	private DataTable result;
 
-	private RowValueDescriber<DataValue> colA;
-	private RowValueDescriber<DataValue> colB;
+	private Identifier<DataColumn> colA;
+	private Identifier<DataColumn> colB;
 
 	/**
 	 * This class constructs the LSA.
@@ -47,8 +47,8 @@ public class LagSequential {
 	 * @return
 	 */
 	public LagSequential(Event eventA,
-			RowValueDescriber<DataValue> dateA, Event eventB,
-			RowValueDescriber<DataValue> dateB) {
+			Identifier<DataColumn> dateA, Event eventB,
+			Identifier<DataColumn> dateB) {
 		tableA = checkTable(eventA.create());
 		tableB = checkTable(eventB.create());
 		this.colA = dateA;
