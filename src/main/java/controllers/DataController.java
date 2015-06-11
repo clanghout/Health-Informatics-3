@@ -1,5 +1,8 @@
 package controllers;
 
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 import model.input.reader.DataReader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,13 +30,18 @@ public class DataController {
 	
 	@FXML
 	private Parent root;
-	
+
+	@FXML
+	private Button saveButton;
+
+	@FXML
+	private Label errorLabel;
+
 	private MainUIController mainUIController;
 	
 	private Logger logger = Logger.getLogger("DataController");
 
 	private File file;
-	private DataTable out;
 	
 	/**
 	 * Creates a new TableViewController.
@@ -43,10 +51,13 @@ public class DataController {
 	
 	public void initialize(MainUIController mainUIController) {
 		this.mainUIController = mainUIController;
+		saveButton.setDisable(true);
+		errorLabel.setTextFill(Color.RED);
 	}
 	
 	@FXML
 	protected void handleImportButtonAction(ActionEvent event) {
+		errorLabel.setText("");
 		FileChooser fileChooser = new FileChooser();
 
 		fileChooser.setTitle("Select Data Descriptor File");
@@ -59,10 +70,11 @@ public class DataController {
 
 		file = fileChooser.showOpenDialog(root.getScene().getWindow());
 		if (file == null) {
-			// TODO: Handle no file selected with message.
+			errorLabel.setText("ERROR: No file selected for import.");
 		} else {
 			fileNameField.setText(file.getAbsolutePath());
 			read();
+			saveButton.setDisable(false);
 		}
 	}
 
@@ -79,25 +91,6 @@ public class DataController {
 
 	@FXML
 	protected void handleSaveButtonAction(ActionEvent event) {
-		if (out != null) {
-			FileChooser fileChooser = new FileChooser();
 
-			fileChooser.setTitle("Select location to save output");
-			fileChooser.setInitialDirectory(
-					new File(System.getProperty("user.home"))
-			);
-			fileChooser.getExtensionFilters().add(
-					new FileChooser.ExtensionFilter("TXT", "*.txt")
-			);
-			File temp = fileChooser.showSaveDialog(root.getScene().getWindow());
-
-			DataTableWriter dmw = new DataTableWriter();
-			try {
-				dmw.write(out, temp, "\t");
-			} catch (IOException e) {
-				logger.log(Level.SEVERE, "Error saving", e);
-				// TODO: Show the error to the user.
-			}
-		}
 	}
 }
