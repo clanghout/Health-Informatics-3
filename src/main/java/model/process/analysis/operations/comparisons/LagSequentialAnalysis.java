@@ -1,6 +1,5 @@
 package model.process.analysis.operations.comparisons;
 
-import java.util.*;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.Table;
@@ -10,6 +9,8 @@ import model.exceptions.InputMismatchException;
 import model.process.SortProcess;
 import model.process.SortProcess.Order;
 import model.process.analysis.operations.Event;
+import model.process.setOperations.FullJoin;
+import model.process.setOperations.Join;
 
 /**
  * This class will determine a relation between events. Relation will be shown
@@ -25,8 +26,6 @@ public class LagSequentialAnalysis {
 
 	private RowValueDescriber<DataValue> colA;
 	private RowValueDescriber<DataValue> colB;
-
-	private DataTableBuilder tableC;
 
 	/**
 	 * This class constructs the LSA.
@@ -48,7 +47,6 @@ public class LagSequentialAnalysis {
 		tableB = checkTable(eventB.create());
 		this.colA = dateA;
 		this.colB = dateB;
-		this.tableC = new DataTableBuilder();
 
 		if (tableA.getRowCount() == 0 || tableB.getRowCount() == 0) {
 			throw new InputMismatchException("Empty event input.");
@@ -67,9 +65,9 @@ public class LagSequentialAnalysis {
 		tableB = (DataTable) sortB.getOutput();
 
 		// join the tables and sort chrono
-
-		tableC.setName("LSA");
-		result = tableC.build();
+		FullJoin.Join full = FullJoin.Join.FULL;
+		Join join = new FullJoin("LSA", tableA, tableB, full);
+		result = (DataTable) join.getOutput();
 	}
 
 	/**
