@@ -24,6 +24,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -138,6 +139,8 @@ public class XmlWizardController {
 	public void selectFile(ActionEvent actionEvent) {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().addAll(
+				new FileChooser.ExtensionFilter("All supported files",
+						Arrays.asList("*.txt", "*.xls", "*.xlsx")),
 				new FileChooser.ExtensionFilter("Plain text file", "*.txt"),
 				new FileChooser.ExtensionFilter("MS Excel xls file", "*.xls"),
 				new FileChooser.ExtensionFilter("MS Excel xlsx file", "*.xlsx")
