@@ -11,8 +11,8 @@ import model.data.value.NumberValue;
  */
 public class Count extends Function {
 
-	public Count(DataTable model, DataDescriber<NumberValue> argument) {
-		super(model, argument);
+	public Count(DataTable table, DataDescriber<NumberValue> argument) {
+		super(table, argument);
 	}
 
 	/**

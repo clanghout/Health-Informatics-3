@@ -30,6 +30,15 @@ public class TimeValue extends TemporalValue<LocalTime> {
 	public LocalTime getValue() {
 		return time;
 	}
+	
+	@Override
+	public int compareTo(DataValue other) {
+		if (!(other instanceof TimeValue)) {
+			throw new IllegalArgumentException("Cannot compare Time with non Time.");
+		}
+		TimeValue o = (TimeValue) other;
+		return time.compareTo(o.time);
+	}
 
 	@Override
 	protected boolean doEquals(Object obj) {

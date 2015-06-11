@@ -16,9 +16,6 @@ public class DateNode extends ValueNode<DateValue> {
 	private ValueNode<IntValue> year;
 	private ValueNode<IntValue> month;
 	private ValueNode<IntValue> day;
-	private ValueNode<IntValue> hours;
-	private ValueNode<IntValue> minutes;
-	private ValueNode<IntValue> seconds;
 
 	/**
 	 * Construct a new DateNode.
