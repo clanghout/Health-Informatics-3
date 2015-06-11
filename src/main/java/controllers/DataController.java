@@ -1,6 +1,5 @@
 package controllers;
 
-import model.input.reader.DataReader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -8,9 +7,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import model.data.DataModel;
 import model.data.DataTable;
+import model.input.reader.DataReader;
 import model.output.DataTableWriter;
-import view.Dialog;
-import view.XMLCreationDialog;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,9 +21,6 @@ import java.util.logging.Logger;
  * Created by Boudewijn on 6-5-2015.
  */
 public class DataController {
-
-	private static final double WIZARD_DIALOG_WIDTH = 1000;
-	private static final double WIZARD_DIALOG_HEIGHT = 640;
 
 	@FXML
 	private TextField fileNameField;
@@ -103,17 +98,6 @@ public class DataController {
 				logger.log(Level.SEVERE, "Error saving", e);
 				// TODO: Show the error to the user.
 			}
-		}
-	}
-
-	@FXML
-	protected void startWizard(ActionEvent actionEvent) {
-		try {
-			Dialog wizardDialog = new XMLCreationDialog();
-			wizardDialog.setSize(WIZARD_DIALOG_WIDTH, WIZARD_DIALOG_HEIGHT);
-			wizardDialog.show();
-		} catch (IOException e) {
-			logger.log(Level.SEVERE, "FXML error: " + e.getMessage());
 		}
 	}
 }

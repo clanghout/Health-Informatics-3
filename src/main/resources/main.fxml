@@ -10,6 +10,7 @@
 		<menus>
 		<Menu text="File">
 			<items>
+				<MenuItem onAction="#startWizard" text="XML Wizard"/>
 				<MenuItem onAction="#handleQuitAction" text="Quit" />
 			</items>
 		</Menu>
