@@ -2,6 +2,7 @@ package model.language;
 
 import model.data.*;
 import model.data.value.*;
+import model.exceptions.ParseException;
 import model.process.DataProcess;
 import org.junit.Before;
 import org.junit.Test;
@@ -162,7 +163,7 @@ public class ParserTest {
 		assertEquals(new IntValue(10), row.getValue(table.getColumn("value")));
 	}
 
-	private Table parseAndProcess(String input) {
+	private Table parseAndProcess(String input) throws Exception {
 		Parser parser = new Parser();
 		DataProcess process = parser.parse(input, model);
 
@@ -369,7 +370,7 @@ public class ParserTest {
 	@Test
 	public void testParseSetCodes() throws Exception {
 		String input = "def gtNine : Constraint = test1.value > 9;\n" +
-				"from(test1)|constraint(gtNine)|is(gtThen)|from(test1)|setCode(\"hallo\", gtThen)";
+				"from(test1)|constraint(gtNine)|setCode(\"hallo\", test1)";
 
 		Table result = parseAndProcess(input);
 		assertTrue(result instanceof DataTable);
@@ -428,7 +429,7 @@ public class ParserTest {
 	}
 
 	@Test
-	public void testParseGroupBy() throws Exception {
+	public void testParseGroupByColumn() throws Exception {
 		DataTableBuilder builder = new DataTableBuilder();
 		builder.setName("test2");
 		builder.createColumn("value", IntValue.class);
@@ -441,7 +442,7 @@ public class ParserTest {
 		DataTable test2 = builder.build();
 		model.add(test2);
 
-		String input = "def group : GroupBy = " +
+		String input = "def group : GroupByColumn = " +
 				"NAME sjon ON (test2.value * 2) " +
 				"FROM MAX(test2.value2) AS max, AVERAGE(test2.value2) AS avg;\n" +
 				"from(test2)|groupBy(group)";
@@ -457,5 +458,73 @@ public class ParserTest {
 
 		assertEquals(new FloatValue(3f), table.getRow(1).getValue(table.getColumn("max")));
 		assertEquals(new FloatValue(3f), table.getRow(1).getValue(table.getColumn("avg")));
+	}
+
+	@Test
+	public void testParseGroupByConstraints() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("test2");
+		builder.createColumn("value", IntValue.class);
+		builder.createColumn("value2", IntValue.class);
+
+		builder.createRow(new IntValue(11), new IntValue(10));
+		builder.createRow(new IntValue(11), new IntValue(5));
+		builder.createRow(new IntValue(5), new IntValue(3));
+
+		DataTable test2 = builder.build();
+		model.add(test2);
+
+		String input = "def group : GroupByConstraint = " +
+				"NAME sjon ON " +
+				"test2.value < 10 AS first, " +
+				"test2.value > 10 AS second " +
+				"FROM MAX(test2.value2) AS max, AVERAGE(test2.value2) AS avg;\n" +
+				"from(test2)|groupBy(group)";
+
+		Table result = parseAndProcess(input);
+		assertTrue(result instanceof DataTable);
+
+		DataTable table = (DataTable) result;
+
+		assertEquals(new StringValue("first"), table.getRow(0).getValue(table.getColumn("Chunk")));
+		assertEquals(new FloatValue(3f), table.getRow(0).getValue(table.getColumn("max")));
+		assertEquals(new FloatValue(3f), table.getRow(0).getValue(table.getColumn("avg")));
+
+		assertEquals(new StringValue("second"), table.getRow(1).getValue(table.getColumn("Chunk")));
+		assertEquals(new FloatValue(10f), table.getRow(1).getValue(table.getColumn("max")));
+		assertEquals(new FloatValue(7.5f), table.getRow(1).getValue(table.getColumn("avg")));
+	}
+
+	@Test( expected = ParseException.class )
+	public void testIncorrectMacroType() throws Exception {
+		String input = "def incorrectType : TypeDoesntExists = anything;";
+
+		parseAndProcess(input);
+	}
+
+	@Test( expected = ParseException.class )
+	public void testIncorrectProcessChain() throws Exception {
+		parseAndProcess("from(test)|");
+	}
+
+	@Test( expected = ParseException.class )
+	public void testIncorrectConstraints() throws Exception {
+		String input = "def stuff : Constraint = 5 <;test()";
+		parseAndProcess(input);
+	}
+
+	@Test
+	public void testParseSort() throws Exception {
+		String input = "from(test1)|sort(test1.value, \"ASC\")";
+		Table result = parseAndProcess(input);
+
+		assertTrue(result instanceof DataTable);
+
+		DataTable table = (DataTable) result;
+
+		assertEquals(new IntValue(5), table.getRow(0).getValue(table.getColumn("value")));
+		assertEquals(new IntValue(9), table.getRow(1).getValue(table.getColumn("value")));
+		assertEquals(new IntValue(10), table.getRow(2).getValue(table.getColumn("value")));
+		assertEquals(new IntValue(11), table.getRow(3).getValue(table.getColumn("value")));
 	}
 }

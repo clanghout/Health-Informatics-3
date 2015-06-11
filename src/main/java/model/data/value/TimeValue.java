@@ -10,6 +10,13 @@ public class TimeValue extends TemporalValue<LocalTime> {
 	private LocalTime time;
 
 	/**
+	 * Return a null instance.
+	 */
+	TimeValue() {
+		this(null, null, null);
+	}
+
+	/**
 	 * Construct a new TimeValue.
 	 *
 	 * @param hour   the hour as Integer

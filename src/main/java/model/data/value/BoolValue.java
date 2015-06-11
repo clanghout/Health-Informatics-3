@@ -8,6 +8,13 @@ public final class BoolValue extends DataValue<Boolean> {
 
 	private boolean value;
 
+	/**
+	 * Return a null instance.
+	 */
+	BoolValue() {
+		this(null);
+	}
+
 	public BoolValue(Boolean value) {
 		if (value == null) {
 			this.value = false;

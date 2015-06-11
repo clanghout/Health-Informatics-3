@@ -10,8 +10,11 @@ public class DateTimeValue extends TemporalValue<LocalDateTime> {
 
 	private LocalDateTime dateTime;
 
-	private DateTimeValue() {
-		super("dd-MM-yyyy HH:mm:ss");
+	/**
+	 * Return a null instance.
+	 */
+	DateTimeValue() {
+		this(null, null, null, null, null, null);
 	}
 
 	/**
@@ -30,7 +33,7 @@ public class DateTimeValue extends TemporalValue<LocalDateTime> {
 	}
 
 	public DateTimeValue(Temporal temporal) {
-		this();
+		super("dd-MM-yyyy HH:mm:ss");
 		dateTime = LocalDateTime.from(temporal);
 	}
 
