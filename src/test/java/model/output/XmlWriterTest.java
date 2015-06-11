@@ -36,6 +36,8 @@ public class XmlWriterTest {
 
 		when(textFile.getFile()).thenReturn(new File("/path/to/Prettyname.txt"));
 		when(textFile.hasFirstRowAsHeader()).thenReturn(false);
+		when(textFile.getMetaDataColumnName()).thenReturn("metaldata");
+		when(textFile.getMetaDataType()).thenReturn(StringValue.class);
 		LinkedHashMap<String, Class<? extends DataValue>> map = new LinkedHashMap<>();
 
 		map.put("someInts", IntValue.class);
@@ -59,8 +61,11 @@ public class XmlWriterTest {
 		assertEquals("file", root.getFirstChild().getNodeName());
 		Element fileElem = (Element) root.getElementsByTagName("file").item(0);
 		Element path = (Element) fileElem.getElementsByTagName("path").item(0);
+		Element meta = (Element) fileElem.getElementsByTagName("metadata").item(0);
 		assertEquals("/path/to", path.getTextContent());
 		assertEquals("Prettyname.txt", fileElem.getAttribute("name"));
+		assertEquals("metaldata", meta.getAttribute("name"));
+		assertEquals("string", meta.getAttribute("type"));
 
 		Element columns = (Element) fileElem
 				.getElementsByTagName("columns").item(0);
