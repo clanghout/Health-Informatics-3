@@ -16,6 +16,7 @@ import model.input.file.DataFile;
 import model.input.reader.XmlReader;
 import model.output.XmlWriter;
 import org.xml.sax.SAXException;
+import view.Dialog;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
@@ -49,11 +50,13 @@ public class XmlWizardController {
 	@FXML private Parent root;
 	@FXML private TextField fileselectfield;
 
+	private Dialog dialog;
+	private DataFile selectedFile;
+
+
 	private final ObservableList typesSelect = FXCollections.observableArrayList(
 			"string", "int", "float", "datetime", "date", "time"
 	);
-	private DataFile selectedFile;
-
 
 	private final ChangeListener<DataFile> listener = (ov, oldValue, newValue) -> {
 		if (!(newValue == null)) {
@@ -84,7 +87,6 @@ public class XmlWizardController {
 			metaApply.setDisable(true);
 		}
 	};
-
 	private final ChangeListener<String> metacolumntypeListener = (ov, oldValue, newValue) -> {
 		if (newValue != null
 				&& selectedFile != null
@@ -113,6 +115,10 @@ public class XmlWizardController {
 
 		metacolumntype.setItems(typesSelect);
 		columntype.setItems(typesSelect);
+	}
+
+	public void initializeView(Dialog dialog) {
+		this.dialog = dialog;
 	}
 
 	@FXML
@@ -314,5 +320,9 @@ public class XmlWizardController {
 		selectedFile.setMetaDataType(DataFile.getColumnType(
 				(String) metacolumntype.getSelectionModel().getSelectedItem()));
 		metaApply.setDisable(true);
+	}
+
+	public void handleCancelButton(ActionEvent actionEvent) {
+		dialog.close();
 	}
 }

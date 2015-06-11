@@ -1,5 +1,6 @@
 package controllers;
 
+import controllers.wizard.XmlWizardController;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -58,6 +59,9 @@ public class MainUIController {
 	protected void startWizard(ActionEvent actionEvent) {
 		try {
 			Dialog wizardDialog = new XMLCreationDialog();
+			XmlWizardController wizardController =
+					wizardDialog.getFxml().getController();
+			wizardController.initializeView(wizardDialog);
 			wizardDialog.setSize(WIZARD_DIALOG_WIDTH, WIZARD_DIALOG_HEIGHT);
 			wizardDialog.show();
 		} catch (IOException e) {

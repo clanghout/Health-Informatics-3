@@ -98,7 +98,8 @@
                 <children>
                     <Button text="Create xml file"
                             onAction="#createXml"/>
-                    <Button text="Cancel"/>
+                    <Button text="Cancel"
+                            onAction="#handleCancelButton"/>
                 </children>
             </HBox>
         </children>
