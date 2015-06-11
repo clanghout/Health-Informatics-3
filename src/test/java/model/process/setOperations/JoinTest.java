@@ -386,5 +386,59 @@ public class JoinTest {
 		assertTrue(res.equalsSoft(expected));
 	}
 
+	@Test
+	public void testAddCombineColumnFullJoinCodes() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("test5");
+		builder.createColumn("c1", StringValue.class);
+		colA = builder.createColumn("c2", StringValue.class);
+		builder.createRow(new StringValue("c11"), new StringValue("c21")).addCode("a");
+		builder.createRow(new StringValue("cb23"), new StringValue("ca33")).addCode("b");
+		builder.createRow(new StringValue("c12"), new StringValue("c22")).addCode("c");
+		builder.createRow(new StringValue("cb13"), new StringValue("ca23")).addCode("d");
+		builder.createRow(new StringValue("c13"), new StringValue("c23")).addCode("e");
+		builder.createRow(new StringValue("c14"), new StringValue("c24")).addCode("f");
+		columnA = new ColumnIdentifier(new Identifier("test5"), new Identifier("c2"));
+		table1 = builder.build();
+
+		builder = new DataTableBuilder();
+		builder.setName("test6");
+		builder.createColumn("c1", StringValue.class);
+		colB = builder.createColumn("c2", StringValue.class);
+		builder.createRow(new StringValue("ac11"), new StringValue("c23")).addCode("g");
+		builder.createRow(new StringValue("ac12"), new StringValue("c22")).addCode("h");
+		builder.createRow(new StringValue("ac14"), new StringValue("d24")).addCode("i");
+		builder.createRow(new StringValue("ac13"), new StringValue("c24")).addCode("j");
+		builder.createRow(new StringValue("ac15"), new StringValue("d25")).addCode("k");
+		builder.createRow(new StringValue("ac16"), new StringValue("d26")).addCode("l");
+		columnB = new ColumnIdentifier(new Identifier("test6"), new Identifier("c2"));
+		table2 = builder.build();
+		model = new DataModel();
+		model.add(table1);
+		model.add(table2);
+
+
+		FullJoin join = new FullJoin("res", new Identifier<>("test5"), new Identifier<>("test6"),
+				FullJoin.Join.FULL);
+		join.setDataModel(model);
+		join.setConstraint(new OperationDescriber<>(
+				new EqualityCheck<>(new RowValueDescriber<>(colA), new RowValueDescriber(colB))));
+		join.addCombineColumn(columnB, columnA);
+		DataTable res = (DataTable) join.process();
+
+		assertEquals(1, res.getRow(0).getCodes().size());
+		assertTrue(res.getRow(0).containsCode("a"));
+		assertEquals(1, res.getRow(1).getCodes().size());
+		assertTrue(res.getRow(1).containsCode("b"));
+		assertEquals(2, res.getRow(2).getCodes().size());
+		assertTrue(res.getRow(2).containsCode("c"));
+		assertTrue(res.getRow(2).containsCode("h"));
+		assertEquals(2, res.getRow(5).getCodes().size());
+		assertTrue(res.getRow(5).containsCode("f"));
+		assertTrue(res.getRow(5).containsCode("j"));
+		assertEquals(1, res.getRow(6).getCodes().size());
+		assertTrue(res.getRow(6).containsCode("i"));
+
+	}
 
 }
