@@ -75,11 +75,19 @@
                             </HBox>
                             <VBox>
                                 <Label>Add metadata column: </Label>
+                                <CheckBox
+                                        fx:id="addmetacheck"
+                                        text="Add metadata column"
+                                        onAction="#addMetaData"/>
                                 <HBox styleClass="import-box">
                                     <TextField
                                             fx:id="metacolumnName"/>
                                     <ComboBox
                                             fx:id="metacolumntype"/>
+                                    <Button fx:id="metaApply"
+                                            text="Apply"
+                                            onAction="#setMetaData"/>
+
                                 </HBox>
                             </VBox>
                         </children>

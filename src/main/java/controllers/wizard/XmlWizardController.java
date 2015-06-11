@@ -35,6 +35,8 @@ public class XmlWizardController {
 
 	private Logger logger = Logger.getLogger("XmlWizardController");
 
+	@FXML private Button metaApply;
+	@FXML private CheckBox addmetacheck;
 	@FXML private TextField endLine;
 	@FXML private TextField startLine;
 	@FXML private CheckBox hasFirstRowHeader;
@@ -72,6 +74,26 @@ public class XmlWizardController {
 		}
 	};
 
+	private final ChangeListener<String> metacolumnNameListener = (ov, oldValue, newValue) -> {
+		if (newValue != null
+				&& selectedFile != null
+				&& !(newValue.equals(selectedFile.getMetaDataColumnName()))) {
+
+			metaApply.setDisable(false);
+		} else {
+			metaApply.setDisable(true);
+		}
+	};
+
+	private final ChangeListener<String> metacolumntypeListener = (ov, oldValue, newValue) -> {
+		if (newValue != null
+				&& selectedFile != null
+				&& selectedFile.getMetaDataType() != null
+				&& !(newValue.equals(DataFile.getStringColumnType(selectedFile.getMetaDataType())))) {
+
+			metaApply.setDisable(false);
+		}
+	};
 
 	/**
 	 * Initializes the controller by filling the static content of elements in the view.
@@ -79,6 +101,12 @@ public class XmlWizardController {
 	public void initialize() {
 		startLine.textProperty().addListener(startLineChangeListener);
 		endLine.textProperty().addListener(endLineChangeListener);
+		metacolumntype.getSelectionModel().select("string");
+		metacolumnName.setDisable(true);
+		metacolumntype.setDisable(true);
+		metaApply.setDisable(true);
+		metacolumnName.textProperty().addListener(metacolumnNameListener);
+		metacolumntype.valueProperty().addListener(metacolumntypeListener);
 		this.datafiles.getSelectionModel().selectedItemProperty().addListener(listener);
 		datacolumns.getColumns().add(createColumn(0, "Column name"));
 		datacolumns.getColumns().add(createColumn(1, "Type"));
@@ -126,10 +154,31 @@ public class XmlWizardController {
 		} else {
 			hasFirstRowHeader.setSelected(false);
 		}
+		fillMetaElements();
 		startLine.setText(String.valueOf(selectedFile.getStartLine()));
 		endLine.setText(String.valueOf(selectedFile.getEndLine()));
 
 		updateColumnsView();
+	}
+
+	private void fillMetaElements() {
+		if (selectedFile.hasMetaData()
+				&& selectedFile.getMetaDataType() != null
+				&& selectedFile.getMetaDataColumnName() != null) {
+
+			addmetacheck.setSelected(true);
+			metacolumnName.setDisable(false);
+			metacolumntype.setDisable(false);
+			metacolumnName.setText(selectedFile.getMetaDataColumnName());
+			metacolumntype.getSelectionModel().select(
+					DataFile.getStringColumnType(selectedFile.getMetaDataType()));
+		} else {
+			addmetacheck.setSelected(false);
+			metacolumnName.setDisable(true);
+			metacolumnName.setText("");
+			metacolumntype.setDisable(true);
+			metaApply.setDisable(true);
+		}
 	}
 
 	private TableColumn<ObservableList<StringProperty>, String> createColumn(int index,
@@ -213,6 +262,7 @@ public class XmlWizardController {
 	public void removeDataFile(ActionEvent actionEvent) {
 		List items = datafiles.getItems();
 		items.remove(datafiles.getSelectionModel().getSelectedItem());
+		selectedFile = null;
 	}
 
 	@FXML
@@ -242,5 +292,27 @@ public class XmlWizardController {
 		} catch (ParserConfigurationException | SAXException | IOException e) {
 			logger.log(Level.SEVERE, "Error when reading xml file: " + e.getMessage() , e);
 		}
+	}
+
+	@FXML
+	public void addMetaData(ActionEvent actionEvent) {
+		if (addmetacheck.isSelected()) {
+			selectedFile.setHasMetaData(true);
+			metacolumnName.setDisable(false);
+			metacolumntype.setDisable(false);
+		} else {
+			selectedFile.setHasMetaData(false);
+			metacolumnName.setDisable(true);
+			metacolumntype.setDisable(true);
+			metaApply.setDisable(true);
+		}
+	}
+
+	@FXML
+	public void setMetaData(ActionEvent actionEvent) {
+		selectedFile.setMetaDataColumnName(metacolumnName.getText());
+		selectedFile.setMetaDataType(DataFile.getColumnType(
+				(String) metacolumntype.getSelectionModel().getSelectedItem()));
+		metaApply.setDisable(true);
 	}
 }
