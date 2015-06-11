@@ -1,6 +1,8 @@
 package model.language;
 
 import model.data.DataModel;
+import model.exceptions.ParseException;
+import model.process.DataProcess;
 
 
 /**
@@ -18,7 +20,7 @@ class MacroInfo {
 		this.body = body;
 	}
 
-	Object parse(DataModel model) {
+	DataProcess parse(DataModel model) throws ParseException {
 		return type.parse(body, model);
 	}
 
