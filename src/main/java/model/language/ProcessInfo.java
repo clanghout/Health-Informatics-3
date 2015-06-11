@@ -74,6 +74,8 @@ class ProcessInfo {
 						order);
 			case "join":
 				return macros.get(parameters[0]);
+			case "connection":
+				return macros.get(parameters[0]);
 			default:
 				throw new UnsupportedOperationException("This code has not been implemented yet");
 		}
