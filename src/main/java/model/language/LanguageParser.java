@@ -414,7 +414,13 @@ class LanguageParser extends BaseParser<Object> {
 	}
 
 	Rule Variable() {
-		return FirstOf(Identifier(), StringLiteral(), FloatLiteral(), IntLiteral());
+		return FirstOf(
+				ColumnIdentifier(),
+				Identifier(),
+				StringLiteral(),
+				FloatLiteral(),
+				IntLiteral()
+		);
 	}
 
 	/**
@@ -452,7 +458,7 @@ class LanguageParser extends BaseParser<Object> {
 	}
 
 	Rule WhiteSpaceChars() {
-		return FirstOf(" ", "\t");
+		return FirstOf(" ", "\t", "\n");
 	}
 
 	/**
@@ -482,7 +488,8 @@ class LanguageParser extends BaseParser<Object> {
 								Pipe(),
 								Process()
 						)
-				)
+				),
+				TestNot("|")
 		);
 	}
 
@@ -657,12 +664,10 @@ class LanguageParser extends BaseParser<Object> {
 	 * The main entry point for our language.
 	 */
 	Rule Sugar() {
-		return ZeroOrMore(
-				FirstOf(
-						Macro(),
-						Pipe(),
-						ANY
-				)
+		return Sequence(
+				ZeroOrMore(Macro()),
+				WhiteSpace(),
+				Pipe()
 		);
 	}
 
@@ -722,9 +727,64 @@ class LanguageParser extends BaseParser<Object> {
 	Rule GroupByColumn() {
 		return Sequence(
 				GroupBy(
-					AnyValue()
+						Sequence(
+								AnyValue(),
+								TestNot(
+										WhiteSpace(),
+										"AS",
+										WhiteSpace()
+								)
+						)
 				),
 				swap4()
+		);
+	}
+
+	Rule GroupByConstraints() {
+		return Sequence(
+				GroupBy(
+						GroupByConstraintsList()
+				),
+				swap5()
+		);
+	}
+
+	Rule GroupByConstraintsList() {
+		Var<List<ValueNode<BoolValue>>> constraints = new Var<>();
+		Var<List<Identifier>> groupNames = new Var<>();
+		return Sequence(
+				new Action() {
+					@Override
+					public boolean run(Context context) {
+						constraints.set(new ArrayList<>());
+						groupNames.set(new ArrayList<>());
+						return true;
+					}
+				},
+				ZeroOrMore(
+						GroupByConstraintConstraint(),
+						",",
+						WhiteSpace(),
+						groupNames.get().add((Identifier) pop()),
+						constraints.get().add((ValueNode<BoolValue>) pop())
+				),
+				Optional(
+						GroupByConstraintConstraint(),
+						groupNames.get().add((Identifier) pop()),
+						constraints.get().add((ValueNode<BoolValue>) pop())
+				),
+				push(constraints.get()),
+				push(groupNames.get())
+		);
+	}
+
+	Rule GroupByConstraintConstraint() {
+		return Sequence(
+				BooleanExpression(),
+				SomeWhiteSpace(),
+				"AS",
+				SomeWhiteSpace(),
+				Identifier()
 		);
 	}
 
@@ -744,19 +804,19 @@ class LanguageParser extends BaseParser<Object> {
 						SomeWhiteSpace(),
 						"FROM",
 						SomeWhiteSpace(),
-						// This rather unusual structure is required, as a recursive approach would result
-						// in a StackOverflowException and since GroupByFunction is matched before
-						// the comma the values have to be added after the comma. (otherwise they'd be added
-						// twice.)
+						// This rather unusual structure is required, as a recursive approach would
+						// result in a StackOverflowException and since GroupByFunction is matched
+						// before the comma the values have to be added after the comma.
+						// (otherwise they'd be added twice.)
 						ZeroOrMore(
-								GroupByFunction(functions, names),
+								GroupByFunction(),
 								",",
 								WhiteSpace(),
 								names.get().add((Identifier) pop()),
 								functions.get().add((FunctionNode) pop())
 						),
 						Optional(
-								GroupByFunction(functions, names),
+								GroupByFunction(),
 								names.get().add((Identifier) pop()),
 								functions.get().add((FunctionNode) pop())
 						)
@@ -766,7 +826,7 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
-	Rule GroupByFunction(Var<List<FunctionNode>> functions, Var<List<Identifier>> names) {
+	Rule GroupByFunction() {
 		return Sequence(
 				TableFunction(),
 				SomeWhiteSpace(),

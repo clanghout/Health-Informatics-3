@@ -6,6 +6,13 @@ package model.data.value;
 public class StringValue extends DataValue<String> {
 	private String value;
 
+	/**
+	 * Return a null instance.
+	 */
+	StringValue() {
+		this(null);
+	}
+
 	public StringValue(String value) {
 		if (value == null) {
 			this.value = "";

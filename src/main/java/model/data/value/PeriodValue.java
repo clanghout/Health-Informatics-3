@@ -13,6 +13,13 @@ public class PeriodValue extends DataValue<Period> {
 
 	private Period period;
 
+	/**
+	 * Return a null instance.
+	 */
+	PeriodValue() {
+		this(null, null, null);
+	}
+
 	public PeriodValue(Integer years, Integer months, Integer days) {
 		if (years == null || months == null || days == null) {
 			period = Period.of(0, 0, 0);
