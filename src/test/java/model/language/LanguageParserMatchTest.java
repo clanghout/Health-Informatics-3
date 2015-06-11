@@ -74,7 +74,9 @@ public class LanguageParserMatchTest {
 				{ parser.NumberExpression(), "MAX(table.column)", true},
 				{ parser.GroupByColumn(), "NAME sjon ON table.column", true},
 				{ parser.GroupByColumn(),
-						"NAME sjon ON table.column FROM MAX(table.column) AS max", true}
+						"NAME sjon ON table.column FROM MAX(table.column) AS max", true},
+				{ parser.GroupByConstraints(),
+						"NAME sjon ON table.column < 5 AS test FROM MAX(table.column) AS max", true}
 		};
 
 		return Arrays.asList(testData);
