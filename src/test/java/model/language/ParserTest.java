@@ -512,4 +512,19 @@ public class ParserTest {
 		String input = "def stuff : Constraint = 5 <;test()";
 		parseAndProcess(input);
 	}
+
+	@Test
+	public void testParseSort() throws Exception {
+		String input = "from(test1)|sort(test1.value, \"ASC\")";
+		Table result = parseAndProcess(input);
+
+		assertTrue(result instanceof DataTable);
+
+		DataTable table = (DataTable) result;
+
+		assertEquals(new IntValue(5), table.getRow(0).getValue(table.getColumn("value")));
+		assertEquals(new IntValue(9), table.getRow(1).getValue(table.getColumn("value")));
+		assertEquals(new IntValue(10), table.getRow(2).getValue(table.getColumn("value")));
+		assertEquals(new IntValue(11), table.getRow(3).getValue(table.getColumn("value")));
+	}
 }

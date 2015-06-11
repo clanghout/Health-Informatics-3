@@ -414,7 +414,13 @@ class LanguageParser extends BaseParser<Object> {
 	}
 
 	Rule Variable() {
-		return FirstOf(Identifier(), StringLiteral(), FloatLiteral(), IntLiteral());
+		return FirstOf(
+				ColumnIdentifier(),
+				Identifier(),
+				StringLiteral(),
+				FloatLiteral(),
+				IntLiteral()
+		);
 	}
 
 	/**
