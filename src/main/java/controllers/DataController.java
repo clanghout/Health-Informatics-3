@@ -10,11 +10,8 @@ import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import model.data.DataModel;
-import model.data.DataTable;
-import model.output.DataTableWriter;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -52,7 +49,7 @@ public class DataController {
 	public void initialize(MainUIController mainUIController) {
 		this.mainUIController = mainUIController;
 		saveButton.setDisable(true);
-		errorLabel.setTextFill(Color.RED);
+		errorLabel.setText("Import data");
 	}
 	
 	@FXML
@@ -70,10 +67,13 @@ public class DataController {
 
 		file = fileChooser.showOpenDialog(root.getScene().getWindow());
 		if (file == null) {
+			errorLabel.setTextFill(Color.RED);
 			errorLabel.setText("ERROR: No file selected for import.");
 		} else {
 			fileNameField.setText(file.getAbsolutePath());
 			read();
+			errorLabel.setTextFill(Color.BLACK);
+			errorLabel.setText("File Selected:");
 			saveButton.setDisable(false);
 		}
 	}

@@ -9,16 +9,16 @@
 	<content>
 		<AnchorPane fx:id="root">
 			<children>
-				<VBox>
+				<VBox styleClass="full-box">
 					<children>
 						<Label fx:id="errorLabel"/>
-						<HBox>
+						<HBox styleClass="space">
 							<children>
 								<TextField
 										fx:id="fileNameField"
 										styleClass="file-name-field"
 										disable="true"/>
-								<VBox>
+								<VBox styleClass="space">
 									<children>
 										<Button
 												styleClass="import-button"
@@ -29,8 +29,6 @@
 												fx:id="saveButton"
 												onAction="#handleSaveButtonAction"
 												text="Save"/>
-										<Label layoutX="14.0" layoutY="7.0" text="Import data"/>
-
 									</children>
 								</VBox>
 							</children>
