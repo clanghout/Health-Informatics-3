@@ -62,7 +62,6 @@ public class Connection extends DataProcess {
 		SortProcess sort = new SortProcess(new RowValueDescriber<>(join.getNewColumn(timeColumn))
 				, SortProcess.Order.ASCENDING);
 		sort.setDataModel(this.getDataModel());
-		sort.setDataModel(getDataModel());
 		sort.setInput(joinedTable);
 
 		return (DataTable) sort.process();

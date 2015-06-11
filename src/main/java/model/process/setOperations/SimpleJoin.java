@@ -14,7 +14,7 @@ public class SimpleJoin extends Join {
 
 	/**
 	 * Create a join that uses a combined dataTable.
-	 * @param name neww name of the table
+	 * @param name new name of the table
 	 * @param table table used in the join
 	 */
 	public SimpleJoin(String name, Identifier<DataTable> table) {
@@ -24,7 +24,7 @@ public class SimpleJoin extends Join {
 
 	/**
 	 * Create a join that uses a combined dataTable.
-	 * @param name neww name of the table
+	 * @param name new name of the table
 	 * @param table table used in the join
 	 */
 	public SimpleJoin(String name, Table table) {
