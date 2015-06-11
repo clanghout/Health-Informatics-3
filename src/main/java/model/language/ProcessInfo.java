@@ -2,7 +2,6 @@ package model.language;
 
 import model.data.DataModel;
 import model.data.describer.DataDescriber;
-import model.data.describer.TableValueDescriber;
 import model.data.value.BoolValue;
 import model.data.value.StringValue;
 import model.language.nodes.ValueNode;
@@ -38,7 +37,7 @@ class ProcessInfo {
 		return name;
 	}
 
-	DataProcess resolve(DataModel model, Map<Identifier, Object> macros) {
+	DataProcess resolve(DataModel model, Map<Identifier, DataProcess> macros) {
 		switch (name.getName()) {
 			case "from":
 				Identifier[] identifiers = Arrays.stream(parameters)
@@ -54,7 +53,7 @@ class ProcessInfo {
 							(Identifier) parameters[1]);
 				}
 			case "constraint":
-				return new ConstraintAnalysis((DataDescriber<BoolValue>) macros.get(parameters[0]));
+				return macros.get(parameters[0]);
 			case "setCode":
 				ValueNode<StringValue> stringNode = (ValueNode<StringValue>) parameters[0];
 				DataDescriber<StringValue> code = stringNode.resolve(model);
@@ -65,6 +64,7 @@ class ProcessInfo {
 			case "union":
 				return new Union((Identifier) parameters[0], (Identifier) parameters[1]);
 			case "groupBy":
+				return macros.get(parameters[0]);
 				return (GroupByAnalysis) macros.get(parameters[0]);
 			case "sort":
 				ValueNode<StringValue> orderNode = (ValueNode<StringValue>) parameters[1];

@@ -458,7 +458,7 @@ class LanguageParser extends BaseParser<Object> {
 	}
 
 	Rule WhiteSpaceChars() {
-		return FirstOf(" ", "\t");
+		return FirstOf(" ", "\t", "\n");
 	}
 
 	/**
@@ -488,7 +488,8 @@ class LanguageParser extends BaseParser<Object> {
 								Pipe(),
 								Process()
 						)
-				)
+				),
+				TestNot("|")
 		);
 	}
 
@@ -663,12 +664,10 @@ class LanguageParser extends BaseParser<Object> {
 	 * The main entry point for our language.
 	 */
 	Rule Sugar() {
-		return ZeroOrMore(
-				FirstOf(
-						Macro(),
-						Pipe(),
-						ANY
-				)
+		return Sequence(
+				ZeroOrMore(Macro()),
+				WhiteSpace(),
+				Pipe()
 		);
 	}
 
@@ -728,14 +727,14 @@ class LanguageParser extends BaseParser<Object> {
 	Rule GroupByColumn() {
 		return Sequence(
 				GroupBy(
-					Sequence(
-							AnyValue(),
-							TestNot(
-									WhiteSpace(),
-									"AS",
-									WhiteSpace()
-							)
-					)
+						Sequence(
+								AnyValue(),
+								TestNot(
+										WhiteSpace(),
+										"AS",
+										WhiteSpace()
+								)
+						)
 				),
 				swap4()
 		);
