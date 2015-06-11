@@ -75,8 +75,14 @@ public class LanguageParserMatchTest {
 				{ parser.GroupByColumn(), "NAME sjon ON table.column", true},
 				{ parser.GroupByColumn(),
 						"NAME sjon ON table.column FROM MAX(table.column) AS max", true},
-				{ parser.GroupByConstraints(),
-						"NAME sjon ON table.column < 5 AS test FROM MAX(table.column) AS max", true}
+				{
+						parser.GroupByConstraints(),
+						"NAME sjon ON table.column < 5 AS test FROM MAX(table.column) AS max",
+						true
+				},
+				{ parser.Sugar(), "test()", true},
+				{ parser.Sugar(), "def test : Macro = dingen; \ntest()", true}, // 40
+				{ parser.Sugar(), "test(argument)|from()", true}
 		};
 
 		return Arrays.asList(testData);

@@ -2,6 +2,7 @@ package model.language;
 
 import model.data.*;
 import model.data.value.*;
+import model.exceptions.ParseException;
 import model.process.DataProcess;
 import org.junit.Before;
 import org.junit.Test;
@@ -162,7 +163,7 @@ public class ParserTest {
 		assertEquals(new IntValue(10), row.getValue(table.getColumn("value")));
 	}
 
-	private Table parseAndProcess(String input) {
+	private Table parseAndProcess(String input) throws Exception {
 		Parser parser = new Parser();
 		DataProcess process = parser.parse(input, model);
 
@@ -492,5 +493,23 @@ public class ParserTest {
 		assertEquals(new StringValue("second"), table.getRow(1).getValue(table.getColumn("Chunk")));
 		assertEquals(new FloatValue(10f), table.getRow(1).getValue(table.getColumn("max")));
 		assertEquals(new FloatValue(7.5f), table.getRow(1).getValue(table.getColumn("avg")));
+	}
+
+	@Test( expected = ParseException.class )
+	public void testIncorrectMacroType() throws Exception {
+		String input = "def incorrectType : TypeDoesntExists = anything;";
+
+		parseAndProcess(input);
+	}
+
+	@Test( expected = ParseException.class )
+	public void testIncorrectProcessChain() throws Exception {
+		parseAndProcess("from(test)|");
+	}
+
+	@Test( expected = ParseException.class )
+	public void testIncorrectConstraints() throws Exception {
+		String input = "def stuff : Constraint = 5 <;test()";
+		parseAndProcess(input);
 	}
 }
