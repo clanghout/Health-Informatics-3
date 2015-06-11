@@ -82,7 +82,20 @@ public class LanguageParserMatchTest {
 				},
 				{ parser.Sugar(), "test()", true},
 				{ parser.Sugar(), "def test : Macro = dingen; \ntest()", true}, // 40
-				{ parser.Sugar(), "test(argument)|from()", true}
+				{ parser.Sugar(), "test(argument)|from()", true},
+				{ parser.JoinColumn(), "table.column AS thing.column", true},
+				{ parser.Join(), "JOIN table1 WITH table2 AS test", true},
+				{
+						parser.Join(),
+						"JOIN table1 WITH table2 AS test FROM table1.col AS test.sjoin",
+						true
+				},
+				{
+						parser.Join(),
+						"JOIN table1 WITH table2 AS test ON table1.test = table2.stuff " +
+								"FROM table1.col AS test.sjoin",
+						true
+				}
 		};
 
 		return Arrays.asList(testData);

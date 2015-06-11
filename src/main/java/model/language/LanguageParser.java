@@ -815,11 +815,9 @@ class LanguageParser extends BaseParser<Object> {
 								names.get().add((Identifier) pop()),
 								functions.get().add((FunctionNode) pop())
 						),
-						Optional(
-								GroupByFunction(),
-								names.get().add((Identifier) pop()),
-								functions.get().add((FunctionNode) pop())
-						)
+						GroupByFunction(),
+						names.get().add((Identifier) pop()),
+						functions.get().add((FunctionNode) pop())
 				),
 				push(functions.get()),
 				push(names.get())
@@ -832,7 +830,104 @@ class LanguageParser extends BaseParser<Object> {
 				SomeWhiteSpace(),
 				"AS",
 				SomeWhiteSpace(),
-				Identifier()
+				Identifier(),
+				WhiteSpace()
+		);
+	}
+
+	Rule Join() {
+		return Sequence(
+				JoinType(),
+				SomeWhiteSpace(),
+				Identifier(),
+				SomeWhiteSpace(),
+				"WITH",
+				SomeWhiteSpace(),
+				Identifier(),
+				SomeWhiteSpace(),
+				"AS",
+				SomeWhiteSpace(),
+				Identifier(),
+				JoinConstraint(),
+				JoinColumns(),
+				swap6()
+		);
+	}
+
+	Rule JoinType() {
+		return Sequence(
+				FirstOf(
+						"FULL JOIN",
+						"LEFT JOIN",
+						"RIGHT JOIN",
+						"JOIN"
+				),
+				push(match())
+		);
+	}
+
+	Rule JoinColumns() {
+		Var<List<ColumnIdentifier>> oldColumns = new Var<>();
+		Var<List<ColumnIdentifier>> newColumns = new Var<>();
+		return Sequence(
+				new Action() {
+					@Override
+					public boolean run(Context context) {
+						oldColumns.set(new ArrayList<>());
+						newColumns.set(new ArrayList<>());
+						return true;
+					}
+				},
+				Optional(
+						SomeWhiteSpace(),
+						"FROM",
+						SomeWhiteSpace(),
+						ZeroOrMore(
+								Sequence(
+										JoinColumn(),
+										",",
+										WhiteSpace(),
+										newColumns.get().add((ColumnIdentifier) pop()),
+										oldColumns.get().add((ColumnIdentifier) pop())
+								)
+						),
+						JoinColumn(),
+						newColumns.get().add((ColumnIdentifier) pop()),
+						oldColumns.get().add((ColumnIdentifier) pop())
+				),
+				push(oldColumns.get()),
+				push(newColumns.get())
+		);
+	}
+
+	Rule JoinColumn() {
+		return Sequence(
+				ColumnIdentifier(),
+				SomeWhiteSpace(),
+				"AS",
+				SomeWhiteSpace(),
+				ColumnIdentifier()
+		);
+	}
+
+	Rule JoinConstraint() {
+		return FirstOf(
+				ActualJoinConstraint(),
+				Sequence(
+						TestNot(
+								ActualJoinConstraint()
+						),
+						push(null)
+				)
+		);
+	}
+
+	Rule ActualJoinConstraint() {
+		return Sequence(
+				SomeWhiteSpace(),
+				"ON",
+				SomeWhiteSpace(),
+				BooleanExpression()
 		);
 	}
 }
