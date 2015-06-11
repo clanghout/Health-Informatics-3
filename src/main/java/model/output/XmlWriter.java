@@ -93,11 +93,22 @@ public class XmlWriter {
 		Element res = document.createElement("file");
 		res.setAttribute("name", dataFile.getFile().getName());
 		res.appendChild(createPathElement(dataFile));
+		res.appendChild(createMetaDataElement(dataFile));
 		res.appendChild(createFileTypeElement(dataFile));
 		res.appendChild(createBoundsElement(dataFile));
 		res.appendChild(createColumnsElement(dataFile));
 
 		return res;
+	}
+
+	private Node createMetaDataElement(DataFile dataFile) {
+		Element metadataElement = document.createElement("metadata");
+		String name = dataFile.getMetaDataColumnName();
+		String type = DataFile.getStringColumnType(
+				dataFile.getMetaDataType());
+		metadataElement.setAttribute("name", name);
+		metadataElement.setAttribute("type", type);
+		return metadataElement;
 	}
 
 	private Node createPathElement(DataFile dataFile) throws FileNotFoundException {
@@ -107,14 +118,14 @@ public class XmlWriter {
 		return path;
 	}
 
-	private Element createFileTypeElement(DataFile dataFile) {
+	private Node createFileTypeElement(DataFile dataFile) {
 		Element type = document.createElement("type");
 		type.setTextContent(dataFile.getFileTypeAsString());
 
 		return type;
 	}
 
-	private Element createBoundsElement(DataFile dataFile) {
+	private Node createBoundsElement(DataFile dataFile) {
 		Element res = document.createElement("data");
 		Element startline = document.createElement("start");
 		Element endline = document.createElement("end");
@@ -128,7 +139,7 @@ public class XmlWriter {
 		return res;
 	}
 
-	private Element createColumnsElement(DataFile dataFile) {
+	private Node createColumnsElement(DataFile dataFile) {
 		Element res = document.createElement("columns");
 
 		if (dataFile.hasFirstRowAsHeader()) {
@@ -145,7 +156,7 @@ public class XmlWriter {
 		return res;
 	}
 
-	private Element createColumnElements(String columnName, Class type) {
+	private Node createColumnElements(String columnName, Class type) {
 		Element res = document.createElement("column");
 		res.setAttribute("type", DataFile.getStringColumnType(type));
 		res.setTextContent(columnName);
