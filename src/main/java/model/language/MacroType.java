@@ -11,6 +11,7 @@ import model.process.DataProcess;
 import model.process.analysis.ConstraintAnalysis;
 import model.process.analysis.GroupByColumn;
 import model.process.analysis.GroupByConstraint;
+import model.process.analysis.operations.Connection;
 import model.process.functions.Function;
 import model.process.setOperations.FullJoin;
 import org.parboiled.Parboiled;
@@ -45,8 +46,28 @@ class MacroType {
 				return parseGroupByConstraints(body, model, parser);
 			case "Join":
 				return parseJoin(body, model, parser);
+			case "Connection":
+				return parseConnection(body, model, parser);
 			default:
 				throw new ParseException(String.format("Macro type %s isn't supported", type));
+		}
+	}
+
+	private DataProcess parseConnection(String body, DataModel model, LanguageParser parser)
+			throws ParseException {
+		ReportingParseRunner runner = new ReportingParseRunner(parser.Connection());
+		ParsingResult result = runner.run(body);
+
+		if (result.matched) {
+			Identifier<DataTable> leftTable = (Identifier<DataTable>) result.valueStack.pop();
+			Identifier<DataTable> rightTable = (Identifier<DataTable>) result.valueStack.pop();
+			Identifier name = (Identifier) result.valueStack.pop();
+			ColumnIdentifier leftColumn = (ColumnIdentifier) result.valueStack.pop();
+			ColumnIdentifier rightColumn = (ColumnIdentifier) result.valueStack.pop();
+
+			return new Connection(name.getName(), leftTable, leftColumn, rightTable, rightColumn);
+		} else {
+			throw new ParseException("Failed to parse Connection", result.parseErrors);
 		}
 	}
 
@@ -60,8 +81,8 @@ class MacroType {
 			Identifier<DataTable> rightTable = (Identifier<DataTable>) result.valueStack.pop();
 			Identifier name = (Identifier) result.valueStack.pop();
 			ValueNode<BoolValue> constraint = (ValueNode<BoolValue>) result.valueStack.pop();
-			List<ColumnIdentifier> oldColumns = (List<ColumnIdentifier>) result.valueStack.pop();
-			List<ColumnIdentifier> newColumns = (List<ColumnIdentifier>) result.valueStack.pop();
+			List<ColumnIdentifier> leftColumns = (List<ColumnIdentifier>) result.valueStack.pop();
+			List<ColumnIdentifier> rightColumns = (List<ColumnIdentifier>) result.valueStack.pop();
 			String joinType = (String) result.valueStack.pop();
 
 			FullJoin.Join type = resolveJoinType(joinType);
@@ -72,10 +93,10 @@ class MacroType {
 					type
 			);
 
-			for (int i = 0; i < newColumns.size(); i++) {
+			for (int i = 0; i < rightColumns.size(); i++) {
 				join.addCombineColumn(
-						oldColumns.get(i),
-						newColumns.get(i)
+						leftColumns.get(i),
+						rightColumns.get(i)
 				);
 			}
 

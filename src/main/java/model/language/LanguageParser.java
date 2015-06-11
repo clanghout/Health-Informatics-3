@@ -839,6 +839,25 @@ class LanguageParser extends BaseParser<Object> {
 		return Sequence(
 				JoinType(),
 				SomeWhiteSpace(),
+				JoinBody(JoinConstraint(), JoinColumns()),
+				swap6()
+		);
+	}
+
+	Rule Connection() {
+		return Sequence(
+				JoinBody(EMPTY,
+						Optional(
+								JoinColumnStart(),
+								JoinColumn()
+						)
+				),
+				swap5()
+		);
+	}
+
+	Rule JoinBody(Rule constraint, Rule columns) {
+		return Sequence(
 				Identifier(),
 				SomeWhiteSpace(),
 				"WITH",
@@ -848,9 +867,8 @@ class LanguageParser extends BaseParser<Object> {
 				"AS",
 				SomeWhiteSpace(),
 				Identifier(),
-				JoinConstraint(),
-				JoinColumns(),
-				swap6()
+				constraint,
+				columns
 		);
 	}
 
@@ -867,36 +885,42 @@ class LanguageParser extends BaseParser<Object> {
 	}
 
 	Rule JoinColumns() {
-		Var<List<ColumnIdentifier>> oldColumns = new Var<>();
-		Var<List<ColumnIdentifier>> newColumns = new Var<>();
+		Var<List<ColumnIdentifier>> leftColumns = new Var<>();
+		Var<List<ColumnIdentifier>> rightColumns = new Var<>();
 		return Sequence(
 				new Action() {
 					@Override
 					public boolean run(Context context) {
-						oldColumns.set(new ArrayList<>());
-						newColumns.set(new ArrayList<>());
+						leftColumns.set(new ArrayList<>());
+						rightColumns.set(new ArrayList<>());
 						return true;
 					}
 				},
 				Optional(
-						SomeWhiteSpace(),
-						"FROM",
-						SomeWhiteSpace(),
+						JoinColumnStart(),
 						ZeroOrMore(
 								Sequence(
 										JoinColumn(),
 										",",
 										WhiteSpace(),
-										newColumns.get().add((ColumnIdentifier) pop()),
-										oldColumns.get().add((ColumnIdentifier) pop())
+										rightColumns.get().add((ColumnIdentifier) pop()),
+										leftColumns.get().add((ColumnIdentifier) pop())
 								)
 						),
 						JoinColumn(),
-						newColumns.get().add((ColumnIdentifier) pop()),
-						oldColumns.get().add((ColumnIdentifier) pop())
+						rightColumns.get().add((ColumnIdentifier) pop()),
+						leftColumns.get().add((ColumnIdentifier) pop())
 				),
-				push(oldColumns.get()),
-				push(newColumns.get())
+				push(leftColumns.get()),
+				push(rightColumns.get())
+		);
+	}
+
+	Rule JoinColumnStart() {
+		return Sequence(
+				SomeWhiteSpace(),
+				"FROM",
+				SomeWhiteSpace()
 		);
 	}
 
@@ -904,7 +928,7 @@ class LanguageParser extends BaseParser<Object> {
 		return Sequence(
 				ColumnIdentifier(),
 				SomeWhiteSpace(),
-				"AS",
+				"AND",
 				SomeWhiteSpace(),
 				ColumnIdentifier()
 		);
