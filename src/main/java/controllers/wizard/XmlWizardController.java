@@ -93,7 +93,8 @@ public class XmlWizardController {
 		if (newValue != null
 				&& selectedFile != null
 				&& selectedFile.getMetaDataType() != null
-				&& !(newValue.equals(DataFile.getStringColumnType(selectedFile.getMetaDataType())))) {
+				&& !(newValue.equals(DataFile.getStringColumnType(
+					selectedFile.getMetaDataType())))) {
 
 			metaApply.setDisable(false);
 		}
@@ -119,11 +120,20 @@ public class XmlWizardController {
 		columntype.setItems(typesSelect);
 	}
 
+	/**
+	 * Initializes the view with a dialog and the referring MainUIController.
+	 * @param mainUIController The MainUIController
+	 * @param dialog The dialog that is shown to the user
+	 */
 	public void initializeView(MainUIController mainUIController, Dialog dialog) {
 		this.dialog = dialog;
 		this.mainUIcontroller = mainUIController;
 	}
 
+	/**
+	 * Creates a dialog for the user to choose a DataFile.
+	 * @param actionEvent JavaFX event
+	 */
 	@FXML
 	public void selectFile(ActionEvent actionEvent) {
 		FileChooser fileChooser = new FileChooser();
@@ -216,6 +226,10 @@ public class XmlWizardController {
 		}
 	}
 
+	/**
+	 * Adds a row describing a column to the table of columns.
+	 * @param actionEvent JavaFX event
+	 */
 	@FXML
 	public void addColumnRow(ActionEvent actionEvent) {
 		if (selectedFile != null) {
@@ -240,6 +254,10 @@ public class XmlWizardController {
 		return res;
 	}
 
+	/**
+	 * Creates a dialog for the user to choose the destination where to write the xml file to.
+	 * @param actionEvent JavaFX event
+	 */
 	@FXML
 	public void createXml(ActionEvent actionEvent) {
 		FileChooser fileChooser = new FileChooser();
@@ -270,6 +288,10 @@ public class XmlWizardController {
 		writer.write(file);
 	}
 
+	/**
+	 * Removes the selected row from the table of columns.
+	 * @param actionEvent JavaFX event
+	 */
 	@FXML
 	public void removeColumnRow(ActionEvent actionEvent) {
 		String selectedColumn =
@@ -280,6 +302,10 @@ public class XmlWizardController {
 		updateColumnsView();
 	}
 
+	/**
+	 * Removes the selected datafile in the listview of datafiles.
+	 * @param actionEvent JavaFX event
+	 */
 	@FXML
 	public void removeDataFile(ActionEvent actionEvent) {
 		List items = datafiles.getItems();
@@ -287,6 +313,11 @@ public class XmlWizardController {
 		selectedFile = null;
 	}
 
+	/**
+	 * Changes the selected file to use the first row as a header in the table
+	 * when the checkbox is selected.
+	 * @param actionEvent JavaFX event
+	 */
 	@FXML
 	public void handleFirstRowHeaderCheckbox(ActionEvent actionEvent) {
 		if (selectedFile != null) {
@@ -294,6 +325,10 @@ public class XmlWizardController {
 		}
 	}
 
+	/**
+	 * Creates a dialog for the user to select an existing xml file.
+	 * @param actionEvent JavaFX event
+	 */
 	@FXML
 	public void loadXml(ActionEvent actionEvent) {
 		try {
@@ -316,6 +351,10 @@ public class XmlWizardController {
 		}
 	}
 
+	/**
+	 * Sets the metadata property for the datafile when the checkbox is selected.
+	 * @param actionEvent JavaFX event
+	 */
 	@FXML
 	public void addMetaData(ActionEvent actionEvent) {
 		if (addmetacheck.isSelected()) {
@@ -330,6 +369,10 @@ public class XmlWizardController {
 		}
 	}
 
+	/**
+	 * Sets the metadata values of the file.
+	 * @param actionEvent JavaFX event
+	 */
 	@FXML
 	public void setMetaData(ActionEvent actionEvent) {
 		selectedFile.setMetaDataColumnName(metacolumnName.getText());
@@ -338,6 +381,11 @@ public class XmlWizardController {
 		metaApply.setDisable(true);
 	}
 
+	/**
+	 * Closes the dialog when the cancel button is pressed.
+	 * @param actionEvent JavaFX event
+	 */
+	@FXML
 	public void handleCancelButton(ActionEvent actionEvent) {
 		dialog.close();
 	}
