@@ -1,5 +1,6 @@
 package controllers.visualizations;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,7 +14,8 @@ import model.data.DataTable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Controller for State Transition Matrix.
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 public class MatrixController {
 	private DataModel model;
 	private Set<String> codes;
+	private Logger logger = Logger.getLogger("MatrixController");
 
 	/**
 	 * Construct new MatrixController.
@@ -29,17 +32,18 @@ public class MatrixController {
 	 */
 	public MatrixController(DataModel model) {
 		this.model = model;
-		codes = new HashSet<>();
-		initialize();
 	}
 
 	/**
 	 * Collect the codes from all the rows in the complete DataModel and add them to the codes set.
 	 */
 	private void collectCodes() {
+		codes = new HashSet<>();
+		logger.log(Level.INFO, "Tables in model = " + model.getObservableList());
 		for (DataTable table: model.getObservableList()) {
+			logger.log(Level.INFO, "checking table " + table);
 			for (DataRow row : table.getRows()) {
-				codes.addAll(row.getCodes().stream().collect(Collectors.toList()));
+					codes.addAll(row.getCodes());
 			}
 		}
 	}
@@ -61,6 +65,7 @@ public class MatrixController {
 	 * @return Set of codes.
 	 */
 	public Set<String> getCodes() {
+		initialize();
 		return codes;
 	}
 
@@ -71,12 +76,23 @@ public class MatrixController {
 	 * @return createImage of the tableView
 	 */
 	public TableView create(List<String> codes) {
+		System.out.println("call create");
 		TableView<ObservableList<StringProperty>> matrix = new TableView<>();
+		System.out.println("create matrix = " + matrix + " now call fill");
 		fillTableHeaders(matrix, codes);
-		ObservableList<StringProperty> row = FXCollections.observableArrayList();
-		matrix.getItems().add(row);
+		for (String code : codes) {
+			ObservableList<StringProperty> row = FXCollections.observableArrayList();
+			fillTableRow(row, code);
+			matrix.getItems().add(row);
+		}
 		return matrix;
 //		return createImage(matrix);
+	}
+
+	private void fillTableRow(ObservableList<StringProperty> row, String code) {
+		row.add(new SimpleStringProperty(code));
+
+
 	}
 
 	/**
@@ -85,7 +101,9 @@ public class MatrixController {
 	 * @param columns A List containing the DataColumns
 	 */
 	private void fillTableHeaders(TableView matrix, List<String> columns) {
+		System.out.println("fill headers callede");
 		matrix.getColumns().add(createColumn(0, ""));
+		System.out.println("add column");
 		for (int i = 0; i < columns.size(); i++) {
 			matrix.getColumns().add(createColumn(i + 1, columns.get(i)));
 		}

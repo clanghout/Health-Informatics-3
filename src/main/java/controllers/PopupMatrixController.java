@@ -14,6 +14,8 @@ import view.MatrixCreationDialog;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Controller for the popup to create the state transition matrix.
@@ -29,6 +31,7 @@ public class PopupMatrixController {
 	private VBox codesList;
 	@FXML
 	private Label createMessage;
+	private Logger logger = Logger.getLogger("PopupMatrixController");
 
 	public PopupMatrixController() {
 	}
@@ -41,9 +44,11 @@ public class PopupMatrixController {
 		this.visualizationController = visualizationController;
 		createMessage.setMaxWidth(Double.MAX_VALUE);
 		createMessage.setTextFill(Color.RED);
-		MatrixController matrixController = new MatrixController(model);
+		matrixController = new MatrixController(model);
+		logger.log(Level.INFO, "matrixController created");
 		CheckBox codeBox;
 		Set<String> codes = matrixController.getCodes();
+		logger.log(Level.INFO, "list of codes = " + codes);
 		codes.add("klaas");
 		codes.add("sjon");
 		codes.add("jacco");
@@ -74,6 +79,7 @@ public class PopupMatrixController {
 				System.out.println("selected = " + selected);
 				TableView matrix = matrixController.create(selected);
 				visualizationController.drawMatrix(matrix);
+				dialog.close();
 			}
 		} else {
 			dialog.close();
