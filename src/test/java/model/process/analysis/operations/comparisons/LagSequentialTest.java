@@ -50,7 +50,7 @@ public class LagSequentialTest {
 	@Before
 	public void setUpEvent1() {
 		DataTableBuilder builder = new DataTableBuilder();
-		builder.setName("Testing Table One H@x0R");
+		builder.setName("Table 1");
 
 		datecol = builder.createColumn("date", DateTimeValue.class);
 		builder.createColumn("measurement", IntValue.class);
@@ -79,7 +79,7 @@ public class LagSequentialTest {
 	@Before
 	public void setUpEvent2() {
 		DataTableBuilder builder = new DataTableBuilder();
-		builder.setName("Testing Table Two H@x0R");
+		builder.setName("Table 2");
 
 		datecol2 = builder.createColumn("date2", DateTimeValue.class);
 		builder.createColumn("measurement2", IntValue.class);

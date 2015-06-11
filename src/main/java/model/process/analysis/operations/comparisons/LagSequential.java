@@ -1,14 +1,19 @@
 package model.process.analysis.operations.comparisons;
 
+import model.data.DataColumn;
+import model.data.DataModel;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.Table;
 import model.data.describer.RowValueDescriber;
 import model.data.value.DataValue;
 import model.exceptions.InputMismatchException;
+import model.language.ColumnIdentifier;
+import model.language.Identifier;
 import model.process.DataProcess;
 import model.process.SortProcess;
 import model.process.SortProcess.Order;
+import model.process.analysis.operations.Connection;
 import model.process.analysis.operations.Event;
 import model.process.setOperations.FullJoin;
 import model.process.setOperations.Join;
@@ -62,18 +67,27 @@ public class LagSequential {
 		SortProcess sortB = new SortProcess(colB, order);
 		sortB.setInput(tableB);
 		tableB = (DataTable) sortB.process();
-
+		
+		DataModel model = new DataModel();
+		model.add(tableA);
+		model.add(tableB);
 		
 		System.out.println("tabel a "+tableA.getRowCount() + " tabel b "+tableB.getRowCount());
 		
 
 		// join the tables and sort chrono
-		FullJoin.Join full = FullJoin.Join.FULL;
-		Join join = new FullJoin("LSA", tableA, tableB, full);
-		result = (DataTable) join.process();
-		System.out.println(result.toString());
+		Identifier<DataTable> a = new Identifier<DataTable>(tableA.getName());
+		Identifier<DataColumn> c = new Identifier<DataColumn>(colA.toString());
+		ColumnIdentifier columnid = new ColumnIdentifier(a,c);
 		
-		System.out.println("end");
+		Identifier<DataTable> a2 = new Identifier<DataTable>(tableB.getName());
+		Identifier<DataColumn> c2 = new Identifier<DataColumn>(colB.toString());
+		ColumnIdentifier columnid2 = new ColumnIdentifier(a2,c2);
+		
+		Connection con = new Connection("con", a, columnid, a2, columnid2);
+		con.setDataModel(model);
+		result = (DataTable) con.process();
+		
 	}
 
 	/**
