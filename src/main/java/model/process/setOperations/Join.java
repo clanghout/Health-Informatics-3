@@ -65,7 +65,7 @@ public abstract class Join extends DataProcess {
 	/**
 	 * Resolve the identifiers for the combined columns.
 	 */
-	private void reslveCombineColumnsIdentifiers() {
+	private void resolveCombineColumnsIdentifiers() {
 		for (Map.Entry<ColumnIdentifier, ColumnIdentifier> entry
 				: combineColumnsIdentifier.entrySet()) {
 			DataColumn col1 = getDataModel().getByName(entry.getKey().getTable()).get()
@@ -114,7 +114,7 @@ public abstract class Join extends DataProcess {
 	 */
 	@Override
 	protected DataTable doProcess() {
-		reslveCombineColumnsIdentifiers();
+		resolveCombineColumnsIdentifiers();
 		simplifyCombinedColumns();
 		addColumns();
 		joinTable();
