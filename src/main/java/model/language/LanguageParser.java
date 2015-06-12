@@ -815,11 +815,9 @@ class LanguageParser extends BaseParser<Object> {
 								names.get().add((Identifier) pop()),
 								functions.get().add((FunctionNode) pop())
 						),
-						Optional(
-								GroupByFunction(),
-								names.get().add((Identifier) pop()),
-								functions.get().add((FunctionNode) pop())
-						)
+						GroupByFunction(),
+						names.get().add((Identifier) pop()),
+						functions.get().add((FunctionNode) pop())
 				),
 				push(functions.get()),
 				push(names.get())
@@ -832,7 +830,128 @@ class LanguageParser extends BaseParser<Object> {
 				SomeWhiteSpace(),
 				"AS",
 				SomeWhiteSpace(),
-				Identifier()
+				Identifier(),
+				WhiteSpace()
+		);
+	}
+
+	Rule Join() {
+		return Sequence(
+				JoinType(),
+				SomeWhiteSpace(),
+				JoinBody(JoinConstraint(), JoinColumns()),
+				swap6()
+		);
+	}
+
+	Rule Connection() {
+		return Sequence(
+				JoinBody(EMPTY,
+						Optional(
+								JoinColumnStart(),
+								JoinColumn()
+						)
+				),
+				swap5()
+		);
+	}
+
+	Rule JoinBody(Rule constraint, Rule columns) {
+		return Sequence(
+				Identifier(),
+				SomeWhiteSpace(),
+				"WITH",
+				SomeWhiteSpace(),
+				Identifier(),
+				SomeWhiteSpace(),
+				"AS",
+				SomeWhiteSpace(),
+				Identifier(),
+				constraint,
+				columns
+		);
+	}
+
+	Rule JoinType() {
+		return Sequence(
+				FirstOf(
+						"FULL JOIN",
+						"LEFT JOIN",
+						"RIGHT JOIN",
+						"JOIN"
+				),
+				push(match())
+		);
+	}
+
+	Rule JoinColumns() {
+		Var<List<ColumnIdentifier>> leftColumns = new Var<>();
+		Var<List<ColumnIdentifier>> rightColumns = new Var<>();
+		return Sequence(
+				new Action() {
+					@Override
+					public boolean run(Context context) {
+						leftColumns.set(new ArrayList<>());
+						rightColumns.set(new ArrayList<>());
+						return true;
+					}
+				},
+				Optional(
+						JoinColumnStart(),
+						ZeroOrMore(
+								Sequence(
+										JoinColumn(),
+										",",
+										WhiteSpace(),
+										rightColumns.get().add((ColumnIdentifier) pop()),
+										leftColumns.get().add((ColumnIdentifier) pop())
+								)
+						),
+						JoinColumn(),
+						rightColumns.get().add((ColumnIdentifier) pop()),
+						leftColumns.get().add((ColumnIdentifier) pop())
+				),
+				push(leftColumns.get()),
+				push(rightColumns.get())
+		);
+	}
+
+	Rule JoinColumnStart() {
+		return Sequence(
+				SomeWhiteSpace(),
+				"FROM",
+				SomeWhiteSpace()
+		);
+	}
+
+	Rule JoinColumn() {
+		return Sequence(
+				ColumnIdentifier(),
+				SomeWhiteSpace(),
+				"AND",
+				SomeWhiteSpace(),
+				ColumnIdentifier()
+		);
+	}
+
+	Rule JoinConstraint() {
+		return FirstOf(
+				ActualJoinConstraint(),
+				Sequence(
+						TestNot(
+								ActualJoinConstraint()
+						),
+						push(null)
+				)
+		);
+	}
+
+	Rule ActualJoinConstraint() {
+		return Sequence(
+				SomeWhiteSpace(),
+				"ON",
+				SomeWhiteSpace(),
+				BooleanExpression()
 		);
 	}
 }
