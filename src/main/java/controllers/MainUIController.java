@@ -44,7 +44,6 @@ public class MainUIController {
 		tableViewController.setDataModel(model);
 		analysisController.setDataModel(model);
 		visualizationController.setModel(model);
-		dataController.setModel(model);
 		visualizationController.initializeVisualisation();
 
 	}

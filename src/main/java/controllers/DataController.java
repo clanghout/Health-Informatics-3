@@ -4,7 +4,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import model.input.reader.DataReader;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TextField;
@@ -48,31 +47,25 @@ public class DataController {
 	 */
 	public DataController() {
 	}
-	
+
+	/**
+	 * Initialization of the controller.
+	 * @param mainUIController the main UI controller.
+	 */
 	public void initialize(MainUIController mainUIController) {
 		this.mainUIController = mainUIController;
 		saveButton.setDisable(true);
 		errorLabel.setText("Import data");
 	}
 
-	public void setModel(DataModel model) {
-		this.model = model;
-	}
-
+	/**
+	 * Handler for the import button.
+	 * Select a file and read it.
+	 */
 	@FXML
-	protected void handleImportButtonAction(ActionEvent event) {
+	protected void handleImportButtonAction() {
 		errorLabel.setText("");
-		FileChooser fileChooser = new FileChooser();
-
-		fileChooser.setTitle("Select Data Descriptor File");
-		fileChooser.setInitialDirectory(
-				new File(System.getProperty("user.home"))
-		);
-		fileChooser.getExtensionFilters().add(
-				new FileChooser.ExtensionFilter("XML", "*.xml")
-		);
-
-		file = fileChooser.showOpenDialog(root.getScene().getWindow());
+		file = chooseFile();
 		if (file == null) {
 			errorLabel.setTextFill(Color.RED);
 			errorLabel.setText("ERROR: No file selected for import.");
@@ -85,19 +78,44 @@ public class DataController {
 		}
 	}
 
+	/**
+	 * Open a fileChooser to select the location of the xml file.
+	 * @return File object containing the xml file.
+	 */
+	private File chooseFile() {
+		FileChooser fileChooser = new FileChooser();
+
+		fileChooser.setTitle("Select Data Descriptor File");
+		fileChooser.setInitialDirectory(
+				new File(System.getProperty("user.home"))
+		);
+		fileChooser.getExtensionFilters().add(
+				new FileChooser.ExtensionFilter("XML", "*.xml")
+		);
+
+		return fileChooser.showOpenDialog(root.getScene().getWindow());
+	}
+
+	/**
+	 * Read the data and set the model in the mainUIController.
+	 */
 	private void read() {
 		try {
 			DataReader reader = new DataReader(file);
-			DataModel model = reader.createDataModel();
+			model = reader.createDataModel();
 			mainUIController.setModel(model);
 			
 		} catch (Exception e) {
-			logger.log(Level.WARNING, "Error reading the file", e);
+			logger.log(Level.WARNING, "An error occurred while reading the file", e);
 		}
 	}
 
+	/**
+	 * Handle the save button.
+	 * Opens a save Dialog.
+	 */
 	@FXML
-	protected void handleSaveButtonAction(ActionEvent event) {
+	protected void handleSaveButtonAction() {
 		SaveDialog saveDialog;
 		try {
 			saveDialog = new SaveDialog();
@@ -107,7 +125,7 @@ public class DataController {
 			saveWizardController.initializeView(model, saveDialog, root);
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			errorLabel.setText("ERROR: popup file is missing.");
 		}
 
 
