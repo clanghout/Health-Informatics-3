@@ -18,7 +18,7 @@ public class LagSequentialAnalysis extends DataAnalysis {
 	private Identifier<DataColumn> dateB;
 
 	/**
-	 * Construct a new Lag Sequential analysis.
+	 * Construct a new Lag Sequential analysis to show chronological occurrence of two events.
 	 * 
 	 * @param eventA
 	 * @param dateA
