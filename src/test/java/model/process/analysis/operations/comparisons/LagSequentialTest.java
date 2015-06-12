@@ -2,6 +2,8 @@ package model.process.analysis.operations.comparisons;
 
 import static org.junit.Assert.*;
 
+import model.exceptions.InputMismatchException;
+
 import model.data.DataColumn;
 import model.data.DataModel;
 import model.data.DataTable;
@@ -30,12 +32,14 @@ public class LagSequentialTest {
 
 	private Event event;
 	private Event event2;
+	private Event event3;
 	private DataColumn datecol;
 	private DataColumn datecol2;
-	private DataModel model;
+	private DataColumn datecol3;
 	private Identifier<DataColumn> datedesc;
 	private Identifier<DataColumn> datedesc2;
-	
+	private Identifier<DataColumn> datedesc3;
+
 	/**
 	 * simulate two events.
 	 * 
@@ -43,21 +47,21 @@ public class LagSequentialTest {
 	 */
 	@Before
 	public void setUpEvent1() {
-		model = new DataModel();
-		
+		DataModel model = new DataModel();
+
 		DataTableBuilder builder = new DataTableBuilder();
 		builder.setName("Table 1");
 
 		datecol = builder.createColumn("date", DateTimeValue.class);
 		builder.createColumn("measurement", IntValue.class);
-		
+
 		datedesc = new Identifier<DataColumn>(datecol.getName());
-		
+
 		DataValue date = new DateTimeValue(2015, 1, 19, 10, 30, 30);
 		DataValue inti = new IntValue(43);
 		builder.createRow(date, inti);
 
-		date = new DateTimeValue(2019, 1, 19, 10, 30, 30);
+		date = new DateTimeValue(2016, 1, 19, 10, 30, 29);
 		inti = new IntValue(23);
 		builder.createRow(date, inti);
 
@@ -69,19 +73,19 @@ public class LagSequentialTest {
 						new ConstantDescriber<>(new IntValue(0))));
 
 		event = new Event(table, greater);
-		
+
 		model.add(table);
-		
+
 		/**
 		 * Build second table
 		 */
-		
+
 		builder = new DataTableBuilder();
 		builder.setName("Table 2");
 
 		datecol2 = builder.createColumn("date2", DateTimeValue.class);
 		builder.createColumn("measurement2", IntValue.class);
-		
+
 		datedesc2 = new Identifier<DataColumn>(datecol2.getName());
 
 		date = new DateTimeValue(2016, 1, 19, 10, 30, 30);
@@ -94,15 +98,35 @@ public class LagSequentialTest {
 
 		table = builder.build();
 
-		greater = new ConstraintDescriber(
-				new GreaterThanCheck<>(new RowValueDescriber<>(
-						table.getColumn("measurement2")),
-						new ConstantDescriber<>(new IntValue(0))));
+		greater = new ConstraintDescriber(new GreaterThanCheck<>(
+				new RowValueDescriber<>(table.getColumn("measurement2")),
+				new ConstantDescriber<>(new IntValue(0))));
 
 		event2 = new Event(table, greater);
-		
+
 		model.add(table);
-		
+
+		/**
+		 * Build third table (empty)
+		 */
+
+		builder = new DataTableBuilder();
+		builder.setName("Table 2");
+
+		datecol3 = builder.createColumn("date3", DateTimeValue.class);
+		builder.createColumn("measurement3", IntValue.class);
+
+		datedesc3 = new Identifier<DataColumn>(datecol3.getName());
+
+		table = builder.build();
+
+		greater = new ConstraintDescriber(new GreaterThanCheck<>(
+				new RowValueDescriber<>(table.getColumn("measurement3")),
+				new ConstantDescriber<>(new IntValue(0))));
+
+		event3 = new Event(table, greater);
+
+		model.add(table);
 	}
 
 	/**
@@ -111,10 +135,7 @@ public class LagSequentialTest {
 	 * @throws Exception
 	 */
 	@Test
-	public void testEvent() throws Exception {
-//		datedesc = Identifier<DataColumn>(datecol);
-//		datedesc2 = new RowValueDescriber<>(datecol2);
-
+	public void testLSA() throws Exception {
 		LagSequential lsa = new LagSequential(event, datedesc, event2,
 				datedesc2);
 		DataTable result = lsa.getResult();
@@ -122,8 +143,23 @@ public class LagSequentialTest {
 		assertEquals(((DataTable) event2.create()).getRowCount(), 2);
 		assertEquals(lsa.getTableInputOne().getRowCount(), 2);
 		assertEquals(lsa.getTableInputTwo().getRowCount(), 2);
+
+		assertEquals(result.getRowCount(), 4);
 		
-		assertEquals(result.getRowCount(),4);
+		DataColumn newdate = result.getColumns().get(0);
+		
+		assertEquals(new DateTimeValue(2015, 1, 19, 10, 30, 30),
+				result.getRow(0).getValue(newdate));
+		
+		assertEquals(new DateTimeValue(2016, 1, 19, 10, 30, 29),
+				result.getRow(1).getValue(newdate));
+		
+		assertEquals(new DateTimeValue(2016, 1, 19, 10, 30, 30),
+				result.getRow(2).getValue(newdate));
+		
+		assertEquals(new DateTimeValue(2020, 1, 19, 10, 30, 30),
+				result.getRow(3).getValue(newdate));
+
 	}
 
 	/**
@@ -131,8 +167,9 @@ public class LagSequentialTest {
 	 * 
 	 * @throws Exception
 	 */
-//	@Test(expected = InputMismatchException.class)
-//	public void testEmptyTable() throws Exception {
-//		LagSequential lsa = new LagSequential(event3, dateCol, event2, dateCol2);
-//	}
+	@Test(expected = InputMismatchException.class)
+	public void testEmptyTable() throws Exception {
+		LagSequential lsa = new LagSequential(event3, datedesc3, event2,
+				datedesc2);
+	}
 }
