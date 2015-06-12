@@ -3,7 +3,6 @@ package controllers;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,11 +16,9 @@ import model.data.DataRow;
 import model.data.DataTable;
 import model.data.Row;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * Controls the visualization of the table in the user interface.
@@ -35,7 +32,7 @@ public class TableViewController implements Observer {
 	@FXML
 	private TableView<ObservableList<StringProperty>> tableView;
 	@FXML
-	private ListView<DataTable> inputTables;
+	private ListView<TableWrapper> inputTables;
 
 	private DataModel model;
 	private DataTable currentTable;
@@ -53,15 +50,12 @@ public class TableViewController implements Observer {
 	 */
 	public void initialize() {
 		logger.info("initializing listview changelistener");
-		ChangeListener<DataTable> listener = new ChangeListener<DataTable>() {
-			public void changed(ObservableValue<? extends DataTable> ov,
-			                    DataTable oldValue, DataTable newValue) {
-				if (!(newValue == null)) {
-					logger.info("changing content of tableView with content of "
-							+ newValue.getName());
-					currentTable = newValue;
-					fillTable(newValue);
-				}
+		ChangeListener<TableWrapper> listener = (ov, oldValue, newValue) -> {
+			if (!(newValue == null)) {
+				logger.info("changing content of tableView with content of "
+						+ newValue.toString());
+				currentTable = newValue.getTable();
+				fillTable(newValue.getTable());
 			}
 		};
 		this.inputTables.getSelectionModel().selectedItemProperty().addListener(listener);
@@ -154,6 +148,35 @@ public class TableViewController implements Observer {
 
 	private void updateList() {
 
-		inputTables.setItems(model.getObservableList());
+		List<DataTable> tables = model.getTables();
+		ArrayList<TableWrapper> wrappers = new ArrayList<>(tables
+				.stream()
+				.map(TableWrapper::new)
+				.collect(Collectors.toList()));
+
+
+
+		inputTables.setItems(FXCollections.observableArrayList(wrappers));
+	}
+
+	/**
+	 * A wrapper for the table to be used in the ListView, since using the tables directly
+	 * incurs massive performance issues.
+	 */
+	private static final class TableWrapper {
+		private DataTable table;
+
+		private TableWrapper(DataTable table) {
+			this.table = table;
+		}
+
+		private DataTable getTable() {
+			return table;
+		}
+
+		@Override
+		public String toString() {
+			return table.getName();
+		}
 	}
 }
