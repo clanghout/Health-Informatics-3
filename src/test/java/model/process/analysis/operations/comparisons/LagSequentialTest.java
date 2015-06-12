@@ -141,8 +141,6 @@ public class LagSequentialTest {
 		DataTable result = lsa.getResult();
 		assertEquals(((DataTable) event.create()).getRowCount(), 2);
 		assertEquals(((DataTable) event2.create()).getRowCount(), 2);
-		assertEquals(lsa.getTableInputOne().getRowCount(), 2);
-		assertEquals(lsa.getTableInputTwo().getRowCount(), 2);
 
 		assertEquals(result.getRowCount(), 4);
 		
