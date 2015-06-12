@@ -49,6 +49,4 @@ public class PlainTextFileTest {
 		assertEquals(new FloatValue(3.5f), row.getValue(table.getColumn("float")));
 		assertEquals(new StringValue("dingen"), row.getValue(table.getColumn("string")));
 	}
-
-
 }

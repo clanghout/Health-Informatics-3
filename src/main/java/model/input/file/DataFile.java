@@ -237,22 +237,6 @@ public abstract class DataFile {
 	}
 
 	/**
-	 * Sets the metadatavalue.
-	 * @param metaDataValue The metadatavalue
-	 */
-	public void setMetaDataValue(DataValue<?> metaDataValue) {
-		this.metaDataValue = metaDataValue;
-	}
-
-	/**
-	 * Sets if the datafile has metadata.
-	 * @param hasMetaData True if the datafile contains metadata
-	 */
-	public void setHasMetaData(boolean hasMetaData) {
-		this.hasMetaData = hasMetaData;
-	}
-
-	/**
 	 * Sets the class for the metadata column.
 	 * @param metaDataType The class for the metadata
 	 */
@@ -284,6 +268,7 @@ public abstract class DataFile {
 			this.metaDataValue = parseSimpleDataValue(metaValue, typeClass);
 			this.setMetaDataType(getColumnType(type));
 			this.setMetaDataColumnName(name);
+			hasMetaData = true;
 		} catch (FileNotFoundException e) {
 			log.log(Level.SEVERE, "The file could not be found", e);
 		}

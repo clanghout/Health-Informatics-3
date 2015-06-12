@@ -169,7 +169,6 @@ public class XmlReader {
 			String type = metaDataElem.getAttribute("type");
 			String name = metaDataElem.getAttribute("name");
 			theDataFile.createMetaDataValue(name, type);
-			theDataFile.setHasMetaData(true);
 		}
 		return theDataFile;
 	}
