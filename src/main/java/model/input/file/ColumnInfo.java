@@ -11,6 +11,22 @@ public class ColumnInfo {
 	private String name;
 	private Class<? extends DataValue> type;
 
+	private String dateFormat;
+	private String dateTimeFormat;
+	private ColumnInfo timeFormat;
+
+	public ColumnInfo(String name,
+					  Class<? extends DataValue> type,
+					  String dateFormat,
+					  String dateTimeFormat,
+					  ColumnInfo timeFormat) {
+		this.name = name;
+		this.type = type;
+		this.dateFormat = dateFormat;
+		this.dateTimeFormat = dateTimeFormat;
+		this.timeFormat = timeFormat;
+	}
+
 	public ColumnInfo(String name, Class<? extends DataValue> type) {
 		this.name = name;
 		this.type = type;
@@ -30,5 +46,17 @@ public class ColumnInfo {
 
 	public void setType(Class<? extends DataValue> type) {
 		this.type = type;
+	}
+
+	public String getDateFormat() {
+		return dateFormat;
+	}
+
+	public String getDateTimeFormat() {
+		return dateTimeFormat;
+	}
+
+	public ColumnInfo getTimeFormat() {
+		return timeFormat;
 	}
 }

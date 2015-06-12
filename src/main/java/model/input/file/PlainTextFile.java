@@ -1,17 +1,19 @@
 package model.input.file;
 
 import model.data.DataTable;
-import model.data.value.*;
+import model.data.value.DataValue;
+import model.data.value.DateTimeValue;
+import model.data.value.DateValue;
+import model.data.value.TimeValue;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.logging.Level;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 import java.util.logging.Logger;
 
 /**
@@ -46,7 +48,7 @@ public class PlainTextFile extends DataFile {
 				String headers = scanner.nextLine();
 				String[] sections = headers.split(delimiter);
 				for (int i = 0; i < getColumns().size(); i++) {
-					getColumns().get(i).setName(sections[i]);;
+					getColumns().get(i).setName(sections[i]);
 				}
 			} else {
 				for (ColumnInfo column : getColumns()) {
@@ -85,7 +87,7 @@ public class PlainTextFile extends DataFile {
 	 * @param scanner The scanner
 	 * @return The list containing all lines read from the start line
 	 */
-	private ArrayList readLines(Scanner scanner) {
+	private ArrayList<String> readLines(Scanner scanner) {
 		ArrayList<String> result = new ArrayList<>();
 		while (scanner.hasNextLine()) {
 			String line = scanner.nextLine();
@@ -103,7 +105,7 @@ public class PlainTextFile extends DataFile {
 			values = new DataValue[getColumns().size()];
 		}
 		for (int i = 0; i < getColumns().size(); i++) {
-			values[i] = toDataValue(sections[i].trim(), getColumns().get(i).getType());
+			values[i] = toDataValue(sections[i].trim(), getColumns().get(i));
 		}
 		if (hasMetaData()) {
 			values[values.length - 1] = getMetaDataValue();
@@ -125,48 +127,33 @@ public class PlainTextFile extends DataFile {
 	/**
 	 * Creates a DataValue from a string.
 	 * @param value The string that will be converted
-	 * @param type The type of the column in which the value will be inserted.
+	 * @param columnInfo The info of the column to which the DataValue will be inserted
 	 * @return The DataValue
 	 */
-	private DataValue toDataValue(String value, Class<? extends DataValue> type) {
-		if (type.equals(StringValue.class)) {
-			return new StringValue(value);
-		} else if (type.equals(IntValue.class)) {
-			if (tryParseInt(value)) {
-				return new IntValue(Integer.parseInt(value));
-			} else {
-				// TODO: throw appropriate exception
-				return null;
-			}
-		} else if (type.equals(FloatValue.class)) {
-			if (tryParseFloat(value)) {
-				return new FloatValue(Float.parseFloat(value));
-			} else {
-				// TODO: throw appropriate exception
-				return null;
-			}
-		} else if(type.equals(DateValue.class)) {
-			return parseDateValue(value);
-		} else if(type.equals(TimeValue.class)) {
-			return parseTimeValue(value);
-		}
-		else {
-			throw new UnsupportedOperationException(
-					String.format("Class %s not yet supported", type)
-			);
+	private DataValue toDataValue(String value, ColumnInfo columnInfo) {
+		if (columnInfo.getType() == DateValue.class) {
+			return new DateValue(parseLocalDateTime(value, columnInfo.getDateFormat()));
+		} else if (columnInfo.getType() == DateTimeValue.class) {
+			return new DateTimeValue(parseLocalDateTime(value, columnInfo.getDateTimeFormat()));
+		} else if (columnInfo.getType() == TimeValue.class) {
+			return parseLocalTime(value, columnInfo.getTimeFormat());
+		} else {
+			return parseSimpleDataValue(value, columnInfo.getType());
 		}
 	}
 
-	private TimeValue parseTimeValue(String value) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hhmm");
-		LocalDateTime dateTime = LocalDateTime.from(formatter.parse(value));
-		return new TimeValue(dateTime.getHour(), dateTime.getMinute(), dateTime.getSecond());
+	private TimeValue parseLocalTime(String value, ColumnInfo columnInfo) {
+		//TODO: implement to parse to a localtime using the columninfo
+		return null;
 	}
 
-	private DateValue parseDateValue(String value) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yymmdd");
-		LocalDateTime dateTime = LocalDateTime.from(formatter.parse(value));
-		return new DateValue(dateTime.getYear(), dateTime.getMonthValue(), dateTime.getDayOfMonth());
+	private LocalDateTime parseLocalDateTime(String value, String format) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+		return LocalDateTime.from(formatter.parse(value));
+	}
+
+	private String getDateFormat() {
+		return null;
 	}
 
 	/**

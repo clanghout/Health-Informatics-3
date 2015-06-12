@@ -1,17 +1,18 @@
 package model.input.file;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.value.*;
 import model.exceptions.DataFileNotRecognizedException;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Class for a datafile. This class contains all the specification of a datafile such as the 
  * path to the file, the starting and ending line of the data in the file and the names of the
@@ -134,7 +135,7 @@ public abstract class DataFile {
 	 * @param type The name of the type
 	 * @return The classtype
 	 */
-	public static Class getColumnType(String type) {
+	public static Class<? extends DataValue> getColumnType(String type) {
 		switch (type) {
 			case "int":
 				return IntValue.class;
@@ -158,7 +159,7 @@ public abstract class DataFile {
 	 * @param type The class
 	 * @return The type of class as a string
 	 */
-	public static String getStringColumnType(Class type) {
+	public static String getStringColumnType(Class<? extends DataValue> type) {
 		if (type == IntValue.class) {
 			return "int";
 		} else if (type == FloatValue.class) {
@@ -192,44 +193,25 @@ public abstract class DataFile {
 		return columns;
 	}
 
+	/**
+	 * Adds an array with types of the columns to the list with columns.
+	 * @param type The array with types.
+	 */
 	public void addColumnTypes(Class<? extends DataValue> type[]) {
-		for (Class t : type) {
+		for (Class<? extends DataValue> t : type) {
 			columns.add(new ColumnInfo(null, t));
 		}
 	}
 
+	/**
+	 * Adds a new column with given name and type.
+	 * @param name The name of the column
+	 * @param type The type of the column
+	 */
 	public void addColumn(String name, Class<? extends DataValue> type) {
 		columns.add(new ColumnInfo(name, type));
 	}
 
-	/**
-	 * Tries to parse an integer.
-	 * @param value The String to parse
-	 * @return True if the value can be parsed as integer
-	 */
-	protected boolean tryParseInt(String value) {
-		try {
-			Integer.parseInt(value);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
-	
-	/**
-	 * Tries to parse a float.
-	 * @param value The String to parse
-	 * @return True if the value can be parsed as float
-	 */
-	protected boolean tryParseFloat(String value) {
-		try {
-			Float.parseFloat(value);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
-	
 	/**
 	 * Returns true if the columns' headers are in the first row.
 	 * @return The firstRowAsHeader
@@ -274,7 +256,7 @@ public abstract class DataFile {
 	 * Sets the class for the metadata column.
 	 * @param metaDataType The class for the metadata
 	 */
-	public void setMetaDataType(Class<? extends DataValue<?>> metaDataType) {
+	public void setMetaDataType(Class<? extends DataValue> metaDataType) {
 		this.metaDataType = metaDataType;
 	}
 
@@ -298,8 +280,8 @@ public abstract class DataFile {
 		try {
 			String fileName = this.getFile().getName();
 			String metaValue = fileName.substring(0, fileName.lastIndexOf("."));
-
-			this.metaDataValue = parseDataValue(metaValue, type);
+			Class<? extends DataValue> typeClass = DataFile.getColumnType(type);
+			this.metaDataValue = parseSimpleDataValue(metaValue, typeClass);
 			this.setMetaDataType(getColumnType(type));
 			this.setMetaDataColumnName(name);
 		} catch (FileNotFoundException e) {
@@ -308,25 +290,31 @@ public abstract class DataFile {
 	}
 
 	/**
-	 * Parses a string to a DataValue of a given type.
+	 * Parses a String or number to a DataValue of a given type.
 	 * @param value The value to parse
 	 * @param type The type of DataValue to parse to
 	 * @return The new created DataValue
 	 */
-	public static DataValue parseDataValue(String value, String type) {
-		switch (type) {
-			case "int":
-				return new IntValue(Integer.parseInt(value));
-			case "float":
-				return new FloatValue(Float.parseFloat(value));
-			case "string":
-				return new StringValue(value);
-			default:
-				throw new RuntimeException("Class has not yet implemented");
+	public static DataValue parseSimpleDataValue(String value, Class<? extends DataValue> type) {
+		if (type == IntValue.class) {
+			return new IntValue(Integer.parseInt(value));
+		} else
+		if (type == FloatValue.class) {
+			return new FloatValue(Float.parseFloat(value));
+		} else
+		if (type == StringValue.class) {
+			return new StringValue(value);
+		} else {
+			throw new RuntimeException("Class has not yet implemented");
 		}
 	}
 
-	protected DataValue createNullValue(Class<? extends DataValue> type) {
+	/**
+	 * Creates a DataValue representing a null of a given type.
+	 * @param type The type to create a null value of
+	 * @return The DataValue representing the null
+	 */
+	public static DataValue createNullValue(Class<? extends DataValue> type) {
 		if (type == StringValue.class) {
 			return new StringValue(null);
 		} else
@@ -339,6 +327,12 @@ public abstract class DataFile {
 		if (type == FloatValue.class) {
 			return new FloatValue(null);
 		} else
+		if (type == TimeValue.class) {
+			return new TimeValue(null, null, null);
+		} else
+		if (type == DateValue.class) {
+			return new DateValue(null);
+		}
 		if (type == DateTimeValue.class) {
 			return new DateTimeValue(null, null, null, null, null, null);
 		}
@@ -374,7 +368,7 @@ public abstract class DataFile {
 	 * Returns the type of class of the metadata column.
 	 * @return The type of class of the metadata column
 	 */
-	public Class getMetaDataType() {
+	public Class<? extends DataValue> getMetaDataType() {
 		return metaDataType;
 	}
 }

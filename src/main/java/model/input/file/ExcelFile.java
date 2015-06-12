@@ -11,7 +11,11 @@ import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 
 import java.io.FileNotFoundException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 
@@ -100,7 +104,7 @@ public abstract class ExcelFile extends DataFile {
 
 	private DataValue parseNumValue(Cell cell, Class<? extends DataValue> type) {
 		if (DateUtil.isCellDateFormatted(cell)) {
-			return parseDateValue(cell, type);
+			return parseDateCellValue(cell, type);
 		}
 		double cellValue = cell.getNumericCellValue();
 		if (type == IntValue.class) {
@@ -114,31 +118,22 @@ public abstract class ExcelFile extends DataFile {
 		}
 	}
 
-	private DataValue parseDateValue(Cell cell, Class<? extends DataValue> type) {
-		GregorianCalendar calendar = (GregorianCalendar) DateUtil.getJavaCalendar(
-				cell.getNumericCellValue(), true);
-
+	private DataValue parseDateCellValue(Cell cell, Class<? extends DataValue> type) {
+		Date date = cell.getDateCellValue();
 		if (type == DateTimeValue.class) {
-			return new DateTimeValue(
-					calendar.get(Calendar.YEAR),
-					calendar.get(Calendar.MONTH) + 1,
-					calendar.get(Calendar.DAY_OF_MONTH),
-					calendar.get(Calendar.HOUR_OF_DAY),
-					calendar.get(Calendar.MINUTE),
-					calendar.get(Calendar.SECOND));
+			Instant instant = Instant.ofEpochMilli(date.getTime());
+			return new DateTimeValue(LocalDateTime.ofInstant(instant, ZoneId.systemDefault()));
 		} else
 		if (type == DateValue.class) {
-			return new DateValue(
-					calendar.get(Calendar.YEAR),
-					calendar.get(Calendar.MONTH) + 1,
-					calendar.get(Calendar.DAY_OF_MONTH)
-			);
+			Instant instant = Instant.ofEpochMilli(date.getTime());
+			return new DateValue(LocalDateTime.ofInstant(instant, ZoneId.systemDefault()));
 		} else
 		if (type == TimeValue.class) {
-			return new TimeValue(
-					calendar.get(Calendar.HOUR_OF_DAY),
-					calendar.get(Calendar.MINUTE),
-					calendar.get(Calendar.SECOND));
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(date);
+			return new TimeValue(calendar.get(Calendar.HOUR_OF_DAY),
+								calendar.get(Calendar.MINUTE),
+								calendar.get(Calendar.SECOND));
 		}
 		return null;
 	}
