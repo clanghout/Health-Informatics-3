@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 
 <VBox styleClass="main-box-save" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-	  fx:controller="controllers.SaveWizardController">
+	  fx:controller="controllers.SaveWizardController" fx:id="root">
 	<children>
 		<HBox styleClass="save-box">
 			<!--main top box-->

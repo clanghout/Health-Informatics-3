@@ -122,7 +122,7 @@ public class DataController {
 			saveDialog.show();
 			SaveWizardController saveWizardController
 					= saveDialog.getFxml().getController();
-			saveWizardController.initializeView(model, saveDialog, root);
+			saveWizardController.initializeView(model, saveDialog);
 
 		} catch (IOException e) {
 			errorLabel.setText("ERROR: popup file is missing.");
