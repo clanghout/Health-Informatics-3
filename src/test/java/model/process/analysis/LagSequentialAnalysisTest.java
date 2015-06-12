@@ -1,7 +1,6 @@
 package model.process.analysis;
 
 import static org.junit.Assert.*;
-import model.exceptions.InputMismatchException;
 import model.data.DataColumn;
 import model.data.DataModel;
 import model.data.DataTable;
@@ -16,7 +15,6 @@ import model.data.value.DateTimeValue;
 import model.data.value.IntValue;
 import model.language.Identifier;
 import model.process.analysis.operations.Event;
-import model.process.analysis.operations.comparisons.LagSequential;
 import model.process.analysis.operations.constraints.GreaterThanCheck;
 
 import org.junit.Before;
