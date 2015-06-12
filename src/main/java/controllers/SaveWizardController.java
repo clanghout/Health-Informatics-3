@@ -227,6 +227,7 @@ public class SaveWizardController {
 				break;
 			case "space":
 				res = " ";
+				break;
 			default:
 				break;
 		}
