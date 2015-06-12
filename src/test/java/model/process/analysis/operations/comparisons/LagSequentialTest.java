@@ -2,11 +2,8 @@ package model.process.analysis.operations.comparisons;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import model.data.DataColumn;
+import model.data.DataModel;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.describer.ConstantDescriber;
@@ -17,11 +14,9 @@ import model.data.value.BoolValue;
 import model.data.value.DataValue;
 import model.data.value.DateTimeValue;
 import model.data.value.IntValue;
-import model.data.value.StringValue;
-import model.exceptions.InputMismatchException;
+import model.language.Identifier;
 import model.process.analysis.operations.Event;
 import model.process.analysis.operations.constraints.GreaterThanCheck;
-import model.process.functions.StandardDeviation;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -35,12 +30,11 @@ public class LagSequentialTest {
 
 	private Event event;
 	private Event event2;
-	private Event event3;
-	private DataTable tablecheck;
 	private DataColumn datecol;
 	private DataColumn datecol2;
-	private RowValueDescriber<DataValue> datedesc;
-	private RowValueDescriber<DataValue> datedesc2;
+	private DataModel model;
+	private Identifier<DataColumn> datedesc;
+	private Identifier<DataColumn> datedesc2;
 	
 	/**
 	 * simulate two events.
@@ -49,13 +43,15 @@ public class LagSequentialTest {
 	 */
 	@Before
 	public void setUpEvent1() {
+		model = new DataModel();
+		
 		DataTableBuilder builder = new DataTableBuilder();
 		builder.setName("Table 1");
 
 		datecol = builder.createColumn("date", DateTimeValue.class);
 		builder.createColumn("measurement", IntValue.class);
 		
-		datedesc = new RowValueDescriber<>(datecol);
+		datedesc = new Identifier<DataColumn>(datecol.getName());
 		
 		DataValue date = new DateTimeValue(2015, 1, 19, 10, 30, 30);
 		DataValue inti = new IntValue(43);
@@ -73,35 +69,40 @@ public class LagSequentialTest {
 						new ConstantDescriber<>(new IntValue(0))));
 
 		event = new Event(table, greater);
-
-	}
-
-	@Before
-	public void setUpEvent2() {
-		DataTableBuilder builder = new DataTableBuilder();
+		
+		model.add(table);
+		
+		/**
+		 * Build second table
+		 */
+		
+		builder = new DataTableBuilder();
 		builder.setName("Table 2");
 
 		datecol2 = builder.createColumn("date2", DateTimeValue.class);
 		builder.createColumn("measurement2", IntValue.class);
 		
-		datedesc2 = new RowValueDescriber<>(datecol2);
+		datedesc2 = new Identifier<DataColumn>(datecol2.getName());
 
-		DataValue date = new DateTimeValue(2016, 1, 19, 10, 30, 30);
-		DataValue inti = new IntValue(21);
+		date = new DateTimeValue(2016, 1, 19, 10, 30, 30);
+		inti = new IntValue(21);
 		builder.createRow(date, inti);
 
 		date = new DateTimeValue(2020, 1, 19, 10, 30, 30);
 		inti = new IntValue(90);
 		builder.createRow(date, inti);
 
-		DataTable table = builder.build();
+		table = builder.build();
 
-		DataDescriber<BoolValue> greater = new ConstraintDescriber(
+		greater = new ConstraintDescriber(
 				new GreaterThanCheck<>(new RowValueDescriber<>(
 						table.getColumn("measurement2")),
 						new ConstantDescriber<>(new IntValue(0))));
 
 		event2 = new Event(table, greater);
+		
+		model.add(table);
+		
 	}
 
 	/**
@@ -111,12 +112,8 @@ public class LagSequentialTest {
 	 */
 	@Test
 	public void testEvent() throws Exception {
-		datedesc = new RowValueDescriber<>(datecol);
-		datedesc2 = new RowValueDescriber<>(datecol2);
-//		RowValueDescriber<DataValue> datedesc = new RowValueDescriber<DataValue>(
-//				datecol);
-//		RowValueDescriber<DataValue> datedesc2 = new RowValueDescriber<DataValue>(
-//				datecol2);
+//		datedesc = Identifier<DataColumn>(datecol);
+//		datedesc2 = new RowValueDescriber<>(datecol2);
 
 		LagSequential lsa = new LagSequential(event, datedesc, event2,
 				datedesc2);

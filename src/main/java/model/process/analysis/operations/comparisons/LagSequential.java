@@ -5,7 +5,9 @@ import model.data.DataModel;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.Table;
+import model.data.describer.DataDescriber;
 import model.data.describer.RowValueDescriber;
+import model.data.describer.TableValueDescriber;
 import model.data.value.DataValue;
 import model.exceptions.InputMismatchException;
 import model.language.ColumnIdentifier;
@@ -57,32 +59,40 @@ public class LagSequential {
 		if (tableA.getRowCount() == 0 || tableB.getRowCount() == 0) {
 			throw new InputMismatchException("Empty event input.");
 		}
-
-		Order order = Order.ASCENDING;
-
-		SortProcess sortA = new SortProcess(colA, order);
-		sortA.setInput(tableA);
-		tableA = (DataTable) sortA.process();
 		
-		SortProcess sortB = new SortProcess(colB, order);
-		sortB.setInput(tableB);
-		tableB = (DataTable) sortB.process();
-		
-		DataModel model = new DataModel();
-		model.add(tableA);
-		model.add(tableB);
-		
-		System.out.println("tabel a "+tableA.getRowCount() + " tabel b "+tableB.getRowCount());
-		
-
-		// join the tables and sort chrono
 		Identifier<DataTable> a = new Identifier<DataTable>(tableA.getName());
 		Identifier<DataColumn> c = new Identifier<DataColumn>(colA.toString());
 		ColumnIdentifier columnid = new ColumnIdentifier(a,c);
 		
 		Identifier<DataTable> a2 = new Identifier<DataTable>(tableB.getName());
 		Identifier<DataColumn> c2 = new Identifier<DataColumn>(colB.toString());
-		ColumnIdentifier columnid2 = new ColumnIdentifier(a2,c2);
+		ColumnIdentifier columnid2 = new ColumnIdentifier(a,c);
+		
+		DataModel model = new DataModel();
+		model.add(tableA);
+		model.add(tableB);
+		
+		
+		Order order = Order.ASCENDING;
+		DataDescriber datadesc = new TableValueDescriber<DataValue>(model, columnid);
+		DataDescriber datadesc2 = new TableValueDescriber<DataValue>(model, columnid2);
+		
+		
+		
+		SortProcess sortA = new SortProcess(datadesc, order);
+		sortA.setInput(tableA);
+		tableA = (DataTable) sortA.process();
+		
+		SortProcess sortB = new SortProcess(datadesc2, order);
+		sortB.setInput(tableB);
+		tableB = (DataTable) sortB.process();
+		
+		model.add(tableA);
+		model.add(tableB);
+		
+		System.out.println("tabel a "+tableA.getRowCount() + " tabel b "+tableB.getRowCount());
+
+		// join the tables and sort chrono
 		
 		Connection con = new Connection("con", a, columnid, a2, columnid2);
 		con.setDataModel(model);
