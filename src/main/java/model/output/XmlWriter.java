@@ -93,7 +93,9 @@ public class XmlWriter {
 		Element res = document.createElement("file");
 		res.setAttribute("name", dataFile.getFile().getName());
 		res.appendChild(createPathElement(dataFile));
-		res.appendChild(createMetaDataElement(dataFile));
+		if (dataFile.hasMetaData()) {
+			res.appendChild(createMetaDataElement(dataFile));
+		}
 		res.appendChild(createFileTypeElement(dataFile));
 		res.appendChild(createBoundsElement(dataFile));
 		res.appendChild(createColumnsElement(dataFile));

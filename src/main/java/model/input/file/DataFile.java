@@ -163,7 +163,10 @@ public abstract class DataFile {
 			case "datetime" :
 				return DateTimeValue.class;
 			default:
-				throw new RuntimeException("The specified type of data is not supported");
+				throw new RuntimeException(
+						String.format("The specified type %s of data is not supported",
+								type)
+				);
 		}
 	}
 
@@ -186,7 +189,10 @@ public abstract class DataFile {
 		} else if (type == DateTimeValue.class) {
 			return "datetime";
 		} else {
-			throw new RuntimeException("The specified type of data is not supported");
+			throw new RuntimeException(
+					String.format("The specified type %s of data is not supported",
+									type.toString())
+			);
 		}
 	}
 
