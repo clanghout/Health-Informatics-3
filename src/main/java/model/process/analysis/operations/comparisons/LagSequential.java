@@ -115,20 +115,4 @@ public class LagSequential {
 	public DataTable getResult() {
 		return result;
 	}
-
-	/**
-	 * This class returns the first input table (when sorted). Required for
-	 * PatternDetection.
-	 */
-	public DataTable getTableInputOne() {
-		return tableA;
-	}
-
-	/**
-	 * This class returns the second input table (when sorted). Required for
-	 * PatternDetection.
-	 */
-	public DataTable getTableInputTwo() {
-		return tableB;
-	}
 }
