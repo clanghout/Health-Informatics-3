@@ -43,9 +43,8 @@ public class LagSequential {
 	 *            The column of the dateValues (second event)
 	 * @return
 	 */
-	public LagSequential(Event eventA,
-			Identifier<DataColumn> dateA, Event eventB,
-			Identifier<DataColumn> dateB) {
+	public LagSequential(Event eventA, Identifier<DataColumn> dateA,
+			Event eventB, Identifier<DataColumn> dateB) {
 		tableA = checkTable(eventA.create());
 		tableB = checkTable(eventB.create());
 		this.colA = dateA;
@@ -57,11 +56,11 @@ public class LagSequential {
 		
 		Identifier<DataTable> a = new Identifier<DataTable>(tableA.getName());
 		Identifier<DataColumn> c = new Identifier<DataColumn>(colA.getName());
-		ColumnIdentifier columnid = new ColumnIdentifier(a,c);
+		ColumnIdentifier columnid = new ColumnIdentifier(a, c);
 		
 		Identifier<DataTable> a2 = new Identifier<DataTable>(tableB.getName());
 		Identifier<DataColumn> c2 = new Identifier<DataColumn>(colB.getName());
-		ColumnIdentifier columnid2 = new ColumnIdentifier(a2,c2);
+		ColumnIdentifier columnid2 = new ColumnIdentifier(a2, c2);
 		
 		DataModel model = new DataModel();
 		model.add(tableA);
@@ -84,8 +83,6 @@ public class LagSequential {
 		
 		model.add(tableA);
 		model.add(tableB);
-		
-		System.out.println("tabel a "+tableA.getRowCount() + " tabel b "+tableB.getRowCount());
 
 		// join the tables and sort chrono
 		
