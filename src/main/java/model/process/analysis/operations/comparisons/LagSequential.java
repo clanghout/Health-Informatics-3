@@ -27,11 +27,19 @@ public class LagSequential {
 	private DataTable tableB;
 	private DataTable result;
 
+	private DataModel model;
+
 	private Identifier<DataColumn> colA;
 	private Identifier<DataColumn> colB;
 
+	Identifier<DataTable> a;
+	Identifier<DataTable> a2;
+
+	ColumnIdentifier columnid;
+	ColumnIdentifier columnid2;
+
 	/**
-	 * This class constructs the LSA.
+	 * Construct LSA resulting combined table of events sorted chronologically.
 	 * 
 	 * @param eventA
 	 *            The first event
@@ -49,47 +57,18 @@ public class LagSequential {
 		tableB = checkTable(eventB.create());
 		this.colA = dateA;
 		this.colB = dateB;
+		this.model = new DataModel();
 
-		if (tableA.getRowCount() == 0 || tableB.getRowCount() == 0) {
-			throw new InputMismatchException("Empty event input.");
-		}
-		
-		Identifier<DataTable> a = new Identifier<DataTable>(tableA.getName());
-		Identifier<DataColumn> c = new Identifier<DataColumn>(colA.getName());
-		ColumnIdentifier columnid = new ColumnIdentifier(a, c);
-		
-		Identifier<DataTable> a2 = new Identifier<DataTable>(tableB.getName());
-		Identifier<DataColumn> c2 = new Identifier<DataColumn>(colB.getName());
-		ColumnIdentifier columnid2 = new ColumnIdentifier(a2, c2);
-		
-		DataModel model = new DataModel();
-		model.add(tableA);
-		model.add(tableB);
-		
-		
-		Order order = Order.ASCENDING;
-		DataDescriber datadesc = new TableValueDescriber<DataValue>(model, columnid);
-		DataDescriber datadesc2 = new TableValueDescriber<DataValue>(model, columnid2);
-		
-		
-		
-		SortProcess sortA = new SortProcess(datadesc, order);
-		sortA.setInput(tableA);
-		tableA = (DataTable) sortA.process();
-		
-		SortProcess sortB = new SortProcess(datadesc2, order);
-		sortB.setInput(tableB);
-		tableB = (DataTable) sortB.process();
-		
+		tableA = sort(tableA, colA);
+		tableB = sort(tableB, colB);
+
 		model.add(tableA);
 		model.add(tableB);
 
-		// join the tables and sort chrono
-		
 		Connection con = new Connection("con", a, columnid, a2, columnid2);
 		con.setDataModel(model);
 		result = (DataTable) con.process();
-		
+
 	}
 
 	/**
@@ -99,12 +78,51 @@ public class LagSequential {
 	 * @return the datatable
 	 */
 	private DataTable checkTable(Table table) {
-		if (table instanceof DataTable) {
-			return (DataTable) table;
-		} else {
+		if (!(table instanceof DataTable)) {
 			throw new InputMismatchException(
 					"Table should be instance of DataTable");
 		}
+		DataTable result = (DataTable) table;
+		if (result.getRowCount() == 0) {
+			throw new InputMismatchException("Empty event input.");
+		}
+		return result;
+	}
+
+	/**
+	 * Calls sorting on the table. 
+	 * 
+	 * @param table
+	 *            The table to sort
+	 * @param column
+	 *            The column to sort on
+	 * @return
+	 */
+	private DataTable sort(DataTable table, Identifier<DataColumn> column) {
+
+		model.add(table);
+
+		Order order = Order.ASCENDING;
+
+		Identifier<DataColumn> c = new Identifier<DataColumn>(column.getName());
+
+		DataDescriber datadesc = null;
+
+		if (table.getName().equals(tableA.getName())) {
+			a = new Identifier<DataTable>(table.getName());
+			columnid = new ColumnIdentifier(a, c);
+			datadesc = new TableValueDescriber<DataValue>(model, columnid);
+		} else {
+			a2 = new Identifier<DataTable>(table.getName());
+			columnid2 = new ColumnIdentifier(a2, c);
+			datadesc = new TableValueDescriber<DataValue>(model, columnid2);
+		}
+
+		SortProcess sort = new SortProcess(datadesc, order);
+		sort.setInput(table);
+		table = (DataTable) sort.process();
+
+		return table;
 	}
 
 	/**
