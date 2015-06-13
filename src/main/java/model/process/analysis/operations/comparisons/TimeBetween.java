@@ -32,7 +32,14 @@ public class TimeBetween extends DataProcess {
 	private Identifier<DataColumn> date;
 	private String dateName;
 	private DataValue value;
-
+	private LocalDate curdate;
+	private LocalTime curtime;
+	private LocalDate predate;
+	private LocalTime pretime;
+	private int hour;
+	private int min;
+	private int sec;
+ 
 	public TimeBetween(Identifier<DataColumn> date) {
 		this.date = date;
 		this.dateName = date.getName();
@@ -77,14 +84,6 @@ public class TimeBetween extends DataProcess {
 			DataRow current = table.getRow(i);
 			DataRow previous = table.getRow(i - 1);
 
-			LocalDate curdate = null;
-			LocalTime curtime = null;
-			LocalDate predate = null;
-			LocalTime pretime = null;
-
-			
-			
-			
 			if (value.getClass().equals(DateTimeValue.class)) {
 				System.out.println("calculating datetimevalue ");
 				
@@ -119,15 +118,15 @@ public class TimeBetween extends DataProcess {
 			
 			if (!value.getClass().equals(DateValue.class)) {
 				Duration diffTime = Duration.between(pretime, curtime);
-				int hour = (int) diffTime.toHours();
+				hour = (int) diffTime.toHours();
 				System.out.println(hour);
-				int min = ((int) diffTime.toMinutes()) - (hour * 60);
+				min = ((int) diffTime.toMinutes()) - (hour * 60);
 				System.out.println(min);
-				int sec = ((int) diffTime.getSeconds()) - (min * 60)
+				sec = ((int) diffTime.getSeconds()) - (min * 60)
 						- (hour * 60 * 60);
 				System.out.println(sec);
 				//magically wizardize negative to positive.
-				negative = checkNegative(hour, min, sec);
+				negative = checkNegative();
 				DataValue val = new TimeValue(hour, min, sec);
 				current.setValue(table.getColumn("Difference time"), val);
 			}
@@ -145,12 +144,20 @@ public class TimeBetween extends DataProcess {
 		return table;
 	}
 	
-	private boolean checkNegative(int hour, int min, int sec) {
+	private boolean checkNegative() {
 		
 		if (hour < 0 || min < 0 || sec < 0) {
-			
+			if (hour < 0) {
+				hour *= -1;
+			} 
+			if (min < 0) {
+				min *= -1;
+			}
+			if (sec < 0) {
+				sec *= -1;
+			}
 			return true;
-		} else if ((hour < 0 || min < 0 || sec < 0) && datediff=0) {
+		} else if ((hour < 0 || min < 0 || sec < 0) && !(Period.between(predate, curdate).getDays() > 0)) {
 			throw new InputMismatchException("Input table is not chronologically sorted.");
 		}
 		return false;
