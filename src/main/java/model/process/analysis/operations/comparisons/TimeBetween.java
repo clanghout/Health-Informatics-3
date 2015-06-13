@@ -68,14 +68,11 @@ public class TimeBetween extends DataProcess {
 
 		DataTable result = getVars((DataTable) getInput());
 
-		System.out.println("COLUMN SIZE " + result.getColumns().size());
-
 		return result;
 
 	}
 
 	private DataTable getVars(DataTable table) {
-		System.out.println("column type " + value.getClass().toString());
 
 		table.getRow(0).setValue(table.getColumn("Difference date"),
 				new PeriodValue(0, 0, 0));
@@ -87,8 +84,6 @@ public class TimeBetween extends DataProcess {
 			DataRow previous = table.getRow(i - 1);
 
 			if (value.getClass().equals(DateTimeValue.class)) {
-				System.out.println("calculating datetimevalue ");
-
 				LocalDateTime cur = (LocalDateTime) current.getValue(
 						table.getColumn(dateName)).getValue();
 				curdate = cur.toLocalDate();
@@ -100,29 +95,25 @@ public class TimeBetween extends DataProcess {
 				pretime = prev.toLocalTime();
 			}
 			if (value.getClass().equals(DateValue.class)) {
-				System.out.println("calculating datevalue ");
-
 				curdate = (LocalDate) current.getValue(
 						table.getColumn(dateName)).getValue();
 				predate = (LocalDate) previous.getValue(
 						table.getColumn(dateName)).getValue();
 			}
 			if (value.getClass().equals(TimeValue.class)) {
-				System.out.println("calculating timevalue ");
-
 				curtime = (LocalTime) current.getValue(
 						table.getColumn(dateName)).getValue();
 				pretime = (LocalTime) previous.getValue(
 						table.getColumn(dateName)).getValue();
 			}
 			
-			table = calculate(table, current, previous);
+			table = calculate(table, current);
 			
 		}
 		return table;
 	}
 	
-	private DataTable calculate(DataTable table, DataRow current, DataRow previous) {
+	private DataTable calculate(DataTable table, DataRow current) {
 		boolean negative = false;
 
 		if (!value.getClass().equals(DateValue.class)) {
