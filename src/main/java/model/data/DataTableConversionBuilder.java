@@ -35,7 +35,7 @@ public class DataTableConversionBuilder extends DataTableBuilder {
 	 * @param columnName the name of the new column
 	 */
 	public void addColumn(DataTable table, DataValue type, String columnName) {
-		table.getColumns().add(new DataColumn(columnName, table, type.getClass()));
+		addColumn(new DataColumn(columnName, table, type.getClass()));
 		for (DataRow row : table.getRows()) {
 			int i = 1;
 			for (DataColumn col : table.getColumns()) {
