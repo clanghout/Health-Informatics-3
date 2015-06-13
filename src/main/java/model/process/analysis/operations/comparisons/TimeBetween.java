@@ -1,8 +1,10 @@
 package model.process.analysis.operations.comparisons;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Period;
 
 import model.data.DataColumn;
 import model.data.DataRow;
@@ -12,6 +14,7 @@ import model.data.Table;
 import model.data.value.DataValue;
 import model.data.value.DateTimeValue;
 import model.data.value.DateValue;
+import model.data.value.PeriodValue;
 import model.data.value.TimeValue;
 import model.language.Identifier;
 import model.process.DataProcess;
@@ -28,8 +31,8 @@ public class TimeBetween extends DataProcess {
 	private Identifier<DataColumn> date;
 	private String dateName;
 
-	public TimeBetween(DataTable table, Identifier<DataColumn> date) {
-		this.table = table;
+	public TimeBetween(Identifier<DataColumn> date) {
+		this.table = (DataTable) getInput();
 		this.date = date;
 		this.dateName = date.getName();
 	}
@@ -41,8 +44,15 @@ public class TimeBetween extends DataProcess {
 	public Table doProcess() {
 		DataTableConversionBuilder builder = 
 				new DataTableConversionBuilder(table, table.getName());
-		builder.addColumn(table, 
-				new DateTimeValue(null, null, null, null, null, null), "Difference");
+
+		if (!date.getClass().equals(TimeValue.class)) {
+			builder.addColumn(table, 
+					new PeriodValue(null, null, null), "Difference date");
+		}
+		if (!date.getClass().equals(DateValue.class)) {
+			builder.addColumn(table, 
+					new TimeValue(null, null,null), "Difference time");
+		}
 		
 		table = builder.build();
 		calculateDiff();
@@ -52,48 +62,49 @@ public class TimeBetween extends DataProcess {
 	}
 
 	private void calculateDiff() {
-		table.getRow(0).setValue(table.getColumn(dateName), new DateTimeValue(0, 0, 0, 0, 0, 0));
+		table.getRow(0).setValue(table.getColumn("Difference date"), new PeriodValue(0, 0, 0));
+		table.getRow(0).setValue(table.getColumn("Difference time"), new TimeValue(0, 0, 0));
+		
 		for (int i = 1; i < table.getRowCount(); i++) {
 			DataRow current = table.getRow(i);
 			DataRow previous = table.getRow(i-1);
 			
-			int year = 0; 
-			int month = 0; 
-			int day = 0; 
-			int hour = 0; 
-			int minute = 0; 
-			int second = 0;
+			LocalDate curdate = null;
+			LocalTime curtime = null;
+			LocalDate predate = null;
+			LocalTime pretime = null;
 			
 			if (date.getClass().equals(DateTimeValue.class)) {
 				LocalDateTime cur = (LocalDateTime) current.getValue(table.getColumn(dateName)).getValue();
+				curdate = cur.toLocalDate();
+				curtime = cur.toLocalTime();
 				LocalDateTime prev = (LocalDateTime) previous.getValue(table.getColumn(dateName)).getValue();
-				year = cur.getYear() - prev.getYear();
-				month = cur.getMonthValue() - prev.getMonthValue();
-				day = cur.getDayOfMonth() - prev.getDayOfMonth();
-				hour = cur.getHour() - prev.getHour();
-				minute = cur.getMinute() - prev.getMinute();
-				second = cur.getSecond() - prev.getSecond();
+				predate = cur.toLocalDate();
+				pretime = cur.toLocalTime();
 			}
 			if (date.getClass().equals(DateValue.class)) {
-				LocalDate cur = (LocalDate) current.getValue(table.getColumn(dateName)).getValue();
-				LocalDate prev = (LocalDate) previous.getValue(table.getColumn(dateName)).getValue();
-				year = cur.getYear() - prev.getYear();
-				month = cur.getMonthValue() - prev.getMonthValue();
-				day = cur.getDayOfMonth() - prev.getDayOfMonth();
+				curdate = (LocalDate) current.getValue(table.getColumn(dateName)).getValue();
+				predate = (LocalDate) previous.getValue(table.getColumn(dateName)).getValue();
 			}
 			if (date.getClass().equals(TimeValue.class)) {
-				LocalTime cur = (LocalTime) current.getValue(table.getColumn(dateName)).getValue();
-				LocalTime prev = (LocalTime) previous.getValue(table.getColumn(dateName)).getValue();
-				hour = cur.getHour() - prev.getHour();
-				minute = cur.getMinute() - prev.getMinute();
-				second = cur.getSecond() - prev.getSecond();
+				curtime = (LocalTime) current.getValue(table.getColumn(dateName)).getValue();
+				pretime = (LocalTime) previous.getValue(table.getColumn(dateName)).getValue();
 			}
 			
-			
-			LocalDateTime diff = LocalDateTime.of(year, month, day, hour, minute, second);
-			
-			DataValue input = new DateTimeValue(diff);
-			current.setValue(table.getColumn(dateName), input);
+			if (!date.getClass().equals(TimeValue.class)) {
+				Period diffDate = Period.between(predate, curdate);
+				DataValue value = new PeriodValue(diffDate.getYears(), diffDate.getMonths(), diffDate.getDays());
+				current.setValue(table.getColumn("Difference date"), value);
+			}
+			if (!date.getClass().equals(DateValue.class)) {
+				Duration diffTime = Duration.between(pretime, curtime);
+				//CONVERTEER VAN SECONDES NAAR UREN,MINUTEN,SECONDES
+				int hour = (int) diffTime.toHours();
+				int min = ((int) diffTime.toMinutes()) - (hour*60);
+				int sec = ((int) diffTime.getSeconds()) - (min*60) - (hour*60*60);
+				DataValue value = new TimeValue(hour, min, sec);
+				current.setValue(table.getColumn("Difference time"), value);
+			}
 		}
 	}
 }
