@@ -19,21 +19,41 @@ import org.junit.Test;
  */
 public class PlainTextFileTest {
 
-	private PlainTextFile textFile;
-	
-	@Before
-	public void setUp() throws Exception {
+	@Test
+	public void testParseValues() throws Exception {
+		PlainTextFile textFile;
+		String file = getClass().getResource("/model/input/plaintext2.txt").getFile();
+		textFile = new PlainTextFile(file);
+		textFile.setDelimiter(",");
+		textFile.setFirstRowAsHeader(true);
+
+		textFile.addColumnInfo(new ColumnInfo(StringValue.class));
+		textFile.addColumnInfo(new ColumnInfo(IntValue.class));
+		textFile.addColumnInfo(new ColumnInfo(FloatValue.class));
+		textFile.addColumnInfo(new ColumnInfo(DateTimeValue.class, "dd/MM/yy HH:mm:ss"));
+		textFile.addColumnInfo(new ColumnInfo(DateValue.class, "dd/MM/yy"));
+		textFile.addColumnInfo(new ColumnInfo(TimeValue.class, "HH:mm"));
+		textFile.addColumnInfo(new ColumnInfo(StringValue.class));
+
+		textFile.createMetaDataValue("MetaData", "string");
+		textFile.setStartLine(6);
+		textFile.setEndLine(2);
+
+		DataTable table = textFile.createDataTable();
+		DataRow row0 = table.getRow(0);
+		assertEquals(new StringValue("Hallo"), row0.getValue(table.getColumn("Stringen")));
+	}
+
+	public void test() throws Exception {
+		PlainTextFile textFile;
 		String file = getClass().getResource("/model/input/plaintext.txt").getFile();
 		textFile = new PlainTextFile(file);
 		textFile.setDelimiter(" ");
-		textFile.addColumn("test", StringValue.class);
-		textFile.addColumn("int", IntValue.class);
-		textFile.addColumn("float", FloatValue.class);
-		textFile.addColumn("string", StringValue.class);
-	}
+		textFile.addColumnInfo(new ColumnInfo("test", StringValue.class));
+		textFile.addColumnInfo(new ColumnInfo("int", IntValue.class));
+		textFile.addColumnInfo(new ColumnInfo("float", FloatValue.class));
+		textFile.addColumnInfo(new ColumnInfo("string", StringValue.class));
 
-	@Test
-	public void test() throws Exception {
 		DataTable table = textFile.createDataTable();
 		List<DataColumn> columns = table.getColumns();
 

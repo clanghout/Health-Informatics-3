@@ -10,26 +10,28 @@ public class ColumnInfo {
 
 	private String name;
 	private Class<? extends DataValue> type;
-
-	private String dateFormat;
-	private String dateTimeFormat;
-	private ColumnInfo timeFormat;
+	private String format;
 
 	public ColumnInfo(String name,
 					  Class<? extends DataValue> type,
-					  String dateFormat,
-					  String dateTimeFormat,
-					  ColumnInfo timeFormat) {
+					  String format) {
 		this.name = name;
 		this.type = type;
-		this.dateFormat = dateFormat;
-		this.dateTimeFormat = dateTimeFormat;
-		this.timeFormat = timeFormat;
+		this.format = format;
 	}
 
 	public ColumnInfo(String name, Class<? extends DataValue> type) {
 		this.name = name;
 		this.type = type;
+	}
+
+	public ColumnInfo(Class<? extends DataValue> type) {
+		this.type = type;
+	}
+
+	public ColumnInfo(Class<? extends DataValue> type, String format) {
+		this.type = type;
+		this.format = format;
 	}
 
 	public String getName() {
@@ -44,19 +46,11 @@ public class ColumnInfo {
 		return type;
 	}
 
-	public void setType(Class<? extends DataValue> type) {
-		this.type = type;
+	public String getFormat() {
+		return format;
 	}
 
-	public String getDateFormat() {
-		return dateFormat;
-	}
-
-	public String getDateTimeFormat() {
-		return dateTimeFormat;
-	}
-
-	public ColumnInfo getTimeFormat() {
-		return timeFormat;
+	public void print() {
+		System.out.println(getName() + ", " + getType() + ", " + getFormat());
 	}
 }

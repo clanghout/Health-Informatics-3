@@ -42,13 +42,13 @@ public class ExcelFileTest {
 		xlsFile2 = new XlsFile(file4);
 
 		// Create the specifications of the files
-		xlsFile.addColumn("string", StringValue.class);
-		xlsFile.addColumn("float", FloatValue.class);
-		xlsFile.addColumn("int", IntValue.class);
+		xlsFile.addColumnInfo(new ColumnInfo("string", StringValue.class));
+		xlsFile.addColumnInfo(new ColumnInfo("float", FloatValue.class));
+		xlsFile.addColumnInfo(new ColumnInfo("int", IntValue.class));
 
-		xlsxFile.addColumn("string", StringValue.class);
-		xlsxFile.addColumn("float", FloatValue.class);
-		xlsxFile.addColumn("int", IntValue.class);
+		xlsxFile.addColumnInfo(new ColumnInfo("string", StringValue.class));
+		xlsxFile.addColumnInfo(new ColumnInfo("float", FloatValue.class));
+		xlsxFile.addColumnInfo(new ColumnInfo("int", IntValue.class));
 
 		Class<? extends DataValue>[] types = new Class[]{IntValue.class,
 				StringValue.class,

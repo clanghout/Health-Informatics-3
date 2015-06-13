@@ -8,6 +8,10 @@ import model.exceptions.DataFileNotRecognizedException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -204,12 +208,11 @@ public abstract class DataFile {
 	}
 
 	/**
-	 * Adds a new column with given name and type.
-	 * @param name The name of the column
-	 * @param type The type of the column
+	 * Adds ColumnInfo for a new column to the list.
+	 * @param info The ColumnInfo to add
 	 */
-	public void addColumn(String name, Class<? extends DataValue> type) {
-		columns.add(new ColumnInfo(name, type));
+	public void addColumnInfo(ColumnInfo info) {
+		columns.add(info);
 	}
 
 	/**
@@ -316,13 +319,32 @@ public abstract class DataFile {
 			return new TimeValue(null, null, null);
 		} else
 		if (type == DateValue.class) {
-			return new DateValue(null);
+			return new DateValue(null, null, null);
 		}
 		if (type == DateTimeValue.class) {
 			return new DateTimeValue(null, null, null, null, null, null);
 		}
 		throw new UnsupportedOperationException(
 				String.format("type %s not supported", type));
+	}
+
+	protected TimeValue parseLocalTime(String value, String format) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+		LocalTime localTime = LocalTime.parse(value, formatter);
+
+		return new TimeValue(localTime.getHour(),
+				localTime.getMinute(),
+				localTime.getSecond());
+	}
+
+	protected LocalDateTime parseLocalDateTime(String value, String format) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+		return LocalDateTime.from(formatter.parse(value));
+	}
+
+	protected LocalDate parseLocalDate(String value, String format) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+		return LocalDate.parse(value, formatter);
 	}
 
 	/**

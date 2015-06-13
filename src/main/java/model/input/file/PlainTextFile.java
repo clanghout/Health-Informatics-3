@@ -48,7 +48,9 @@ public class PlainTextFile extends DataFile {
 				String headers = scanner.nextLine();
 				String[] sections = headers.split(delimiter);
 				for (int i = 0; i < getColumns().size(); i++) {
-					getColumns().get(i).setName(sections[i]);
+					ColumnInfo column = getColumns().get(i);
+					column.setName(sections[i]);
+					getBuilder().createColumn(column.getName(), column.getType());
 				}
 			} else {
 				for (ColumnInfo column : getColumns()) {
@@ -97,7 +99,7 @@ public class PlainTextFile extends DataFile {
 	}
 	
 	private DataValue[] createValues(String line) {
-		String[] sections = line.split(delimiter);
+		String[] sections = line.split(delimiter, -1);
 		DataValue[] values;
 		if (hasMetaData()) {
 			values = new DataValue[getColumns().size() + 1];
@@ -131,29 +133,17 @@ public class PlainTextFile extends DataFile {
 	 * @return The DataValue
 	 */
 	private DataValue toDataValue(String value, ColumnInfo columnInfo) {
-		if (columnInfo.getType() == DateValue.class) {
-			return new DateValue(parseLocalDateTime(value, columnInfo.getDateFormat()));
+		if (value.isEmpty()) {
+			return createNullValue(columnInfo.getType());
+		} else if (columnInfo.getType() == DateValue.class) {
+			return new DateValue(parseLocalDate(value, columnInfo.getFormat()));
 		} else if (columnInfo.getType() == DateTimeValue.class) {
-			return new DateTimeValue(parseLocalDateTime(value, columnInfo.getDateTimeFormat()));
+			return new DateTimeValue(parseLocalDateTime(value, columnInfo.getFormat()));
 		} else if (columnInfo.getType() == TimeValue.class) {
-			return parseLocalTime(value, columnInfo.getTimeFormat());
+			return parseLocalTime(value, columnInfo.getFormat());
 		} else {
 			return parseSimpleDataValue(value, columnInfo.getType());
 		}
-	}
-
-	private TimeValue parseLocalTime(String value, ColumnInfo columnInfo) {
-		//TODO: implement to parse to a localtime using the columninfo
-		return null;
-	}
-
-	private LocalDateTime parseLocalDateTime(String value, String format) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
-		return LocalDateTime.from(formatter.parse(value));
-	}
-
-	private String getDateFormat() {
-		return null;
 	}
 
 	/**

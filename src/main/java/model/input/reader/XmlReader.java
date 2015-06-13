@@ -1,6 +1,7 @@
 package model.input.reader;
 
 import model.data.value.DataValue;
+import model.input.file.ColumnInfo;
 import model.input.file.DataFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -200,7 +201,7 @@ public class XmlReader {
 			Element columnElement = (Element) columns.item(i);
 			String typeAttribute = columnElement.getAttribute("type");
 			Class columnType = DataFile.getColumnType(typeAttribute);
-			dataFile.addColumn(columnElement.getTextContent(), columnType);
+			dataFile.addColumnInfo(new ColumnInfo(columnElement.getTextContent(), columnType));
 		}
 		return dataFile;
 	}
