@@ -41,7 +41,37 @@ public class PlainTextFileTest {
 
 		DataTable table = textFile.createDataTable();
 		DataRow row0 = table.getRow(0);
+		DataRow row1 = table.getRow(1);
+		DataRow row2 = table.getRow(2);
+		DataRow row3 = table.getRow(3);
+		DataRow row4 = table.getRow(4);
+
 		assertEquals(new StringValue("Hallo"), row0.getValue(table.getColumn("Stringen")));
+		assertTrue(row2.getValue(table.getColumn("Stringen")).isNull());
+		assertEquals(new StringValue("textfile"), row4.getValue(table.getColumn("Stringen")));
+
+		assertEquals(new IntValue(10), row0.getValue(table.getColumn("Integers")));
+		assertTrue(row2.getValue(table.getColumn("Integers")).isNull());
+		assertEquals(new IntValue(20), row4.getValue(table.getColumn("Integers")));
+
+		assertEquals(new FloatValue(-25.5f), row0.getValue(table.getColumn("Floaten")));
+		assertTrue(row1.getValue(table.getColumn("Floaten")).isNull());
+		assertEquals(new FloatValue(13.8f), row2.getValue(table.getColumn("Floaten")));
+		assertEquals(new FloatValue(12.0f), row4.getValue(table.getColumn("Floaten")));
+
+		assertEquals(new DateTimeValue(2008, 8, 8, 8, 8, 8), row0.getValue(table.getColumn("Datumtijden")));
+		assertTrue(row2.getValue(table.getColumn("Datumtijden")).isNull());
+		assertEquals(new DateTimeValue(2010, 9, 8, 5, 8, 25), row3.getValue(table.getColumn("Datumtijden")));
+
+		assertTrue(row0.getValue(table.getColumn("Datums(dd/mm/yy)")).isNull());
+		assertEquals(new DateValue(2012, 12, 12), row1.getValue(table.getColumn("Datums(dd/mm/yy)")));
+		assertEquals(new DateValue(2013, 9, 5), row3.getValue(table.getColumn("Datums(dd/mm/yy)")));
+
+		assertEquals(new TimeValue(8, 0, 0), row1.getValue(table.getColumn("Tijden(hh:mm)")));
+		assertTrue(row2.getValue(table.getColumn("Tijden(hh:mm)")).isNull());
+		assertEquals(new TimeValue(23, 59, 0), row3.getValue(table.getColumn("Tijden(hh:mm)")));
+
+		assertEquals(new StringValue("plaintext2"), row3.getValue(table.getColumn("MetaData")));
 	}
 
 	public void test() throws Exception {

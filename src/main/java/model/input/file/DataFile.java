@@ -198,16 +198,6 @@ public abstract class DataFile {
 	}
 
 	/**
-	 * Adds an array with types of the columns to the list with columns.
-	 * @param type The array with types.
-	 */
-	public void addColumnTypes(Class<? extends DataValue> type[]) {
-		for (Class<? extends DataValue> t : type) {
-			columns.add(new ColumnInfo(null, t));
-		}
-	}
-
-	/**
 	 * Adds ColumnInfo for a new column to the list.
 	 * @param info The ColumnInfo to add
 	 */

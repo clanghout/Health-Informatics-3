@@ -50,17 +50,18 @@ public class ExcelFileTest {
 		xlsxFile.addColumnInfo(new ColumnInfo("float", FloatValue.class));
 		xlsxFile.addColumnInfo(new ColumnInfo("int", IntValue.class));
 
-		Class<? extends DataValue>[] types = new Class[]{IntValue.class,
-				StringValue.class,
-				DateTimeValue.class,
-				FloatValue.class};
-
 		xlsxFile2.setFirstRowAsHeader(true);
 		xlsxFile2.createMetaDataValue("M374D474", "string");
-		xlsxFile2.addColumnTypes(types);
+		xlsxFile2.addColumnInfo(new ColumnInfo(IntValue.class));
+		xlsxFile2.addColumnInfo(new ColumnInfo(StringValue.class));
+		xlsxFile2.addColumnInfo(new ColumnInfo(DateTimeValue.class));
+		xlsxFile2.addColumnInfo(new ColumnInfo(FloatValue.class));
 
 		xlsFile2.setFirstRowAsHeader(true);
-		xlsFile2.addColumnTypes(types);
+		xlsFile2.addColumnInfo(new ColumnInfo(IntValue.class));
+		xlsFile2.addColumnInfo(new ColumnInfo(StringValue.class));
+		xlsFile2.addColumnInfo(new ColumnInfo(DateTimeValue.class));
+		xlsFile2.addColumnInfo(new ColumnInfo(FloatValue.class));
 	}
 
 	@Test

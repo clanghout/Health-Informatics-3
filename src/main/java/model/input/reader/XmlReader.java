@@ -77,6 +77,11 @@ public class XmlReader {
 	 */
 	private static final String METADATA_TAG = "metadata";
 
+	/**
+	 * The name of the dateformat attribute in the xml file.
+	 */
+	private static final String DATE_FORMAT_ATTRIBUTE = "format";
+
 	private Logger log = Logger.getLogger("XmlReader");
 
 	private Document document;
@@ -176,7 +181,13 @@ public class XmlReader {
 
 	private DataFile setColumnTypes(DataFile theDataFile, NodeList columns) {
 		if (theDataFile.hasFirstRowAsHeader()) {
-			theDataFile.addColumnTypes(createTypesArray(columns));
+			for (int i = 0; i < columns.getLength(); i++) {
+				Element columnElement = (Element) columns.item(i);
+				String typeAttribute = columnElement.getAttribute("type");
+				String format = columnElement.getAttribute(DATE_FORMAT_ATTRIBUTE);
+				theDataFile.addColumnInfo(new ColumnInfo(
+						DataFile.getColumnType(typeAttribute), format));
+			}
 		} else {
 			theDataFile = setColumn(columns, theDataFile);
 		}
@@ -200,8 +211,12 @@ public class XmlReader {
 		for (int i = 0; i < columns.getLength(); i++) {
 			Element columnElement = (Element) columns.item(i);
 			String typeAttribute = columnElement.getAttribute("type");
-			Class columnType = DataFile.getColumnType(typeAttribute);
-			dataFile.addColumnInfo(new ColumnInfo(columnElement.getTextContent(), columnType));
+			String format = columnElement.getAttribute(DATE_FORMAT_ATTRIBUTE);
+			Class<? extends DataValue> columnType = DataFile.getColumnType(typeAttribute);
+			dataFile.addColumnInfo(new ColumnInfo(
+					columnElement.getTextContent(),
+					columnType,
+					format));
 		}
 		return dataFile;
 	}
@@ -209,6 +224,7 @@ public class XmlReader {
 	
 	private Class[] createTypesArray(NodeList columns) {
 		Class[] types = new Class[columns.getLength()];
+
 		for (int i = 0; i < columns.getLength(); i++) {
 			Element columnElement = (Element) columns.item(i);
 			String typeAttribute = columnElement.getAttribute("type");

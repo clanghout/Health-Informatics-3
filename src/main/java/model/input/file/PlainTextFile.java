@@ -9,8 +9,6 @@ import model.data.value.TimeValue;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -49,7 +47,7 @@ public class PlainTextFile extends DataFile {
 				String[] sections = headers.split(delimiter);
 				for (int i = 0; i < getColumns().size(); i++) {
 					ColumnInfo column = getColumns().get(i);
-					column.setName(sections[i]);
+					column.setName(sections[i].trim());
 					getBuilder().createColumn(column.getName(), column.getType());
 				}
 			} else {
