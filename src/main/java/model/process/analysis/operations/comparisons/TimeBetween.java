@@ -66,7 +66,7 @@ public class TimeBetween extends DataProcess {
 
 		setInput(builder.build());
 
-		DataTable result = calculateDiff((DataTable) getInput());
+		DataTable result = getVars((DataTable) getInput());
 
 		System.out.println("COLUMN SIZE " + result.getColumns().size());
 
@@ -74,7 +74,7 @@ public class TimeBetween extends DataProcess {
 
 	}
 
-	private DataTable calculateDiff(DataTable table) {
+	private DataTable getVars(DataTable table) {
 		System.out.println("column type " + value.getClass().toString());
 
 		table.getRow(0).setValue(table.getColumn("Difference date"),
@@ -115,31 +115,38 @@ public class TimeBetween extends DataProcess {
 				pretime = (LocalTime) previous.getValue(
 						table.getColumn(dateName)).getValue();
 			}
-
-			boolean negative = false;
-
-			if (!value.getClass().equals(DateValue.class)) {
-				Duration diffTime = Duration.between(pretime, curtime);
-				int timeConvert = 60;
-				hour = (int) diffTime.toHours();
-				min = ((int) diffTime.toMinutes()) - (hour * timeConvert);
-				sec = ((int) diffTime.getSeconds()) - (min * timeConvert)
-						- (hour * timeConvert * timeConvert);
-				negative = checkNegative();
-				DataValue val = new TimeValue(hour, min, sec);
-				current.setValue(table.getColumn("Difference time"), val);
-			}
-
-			if (!value.getClass().equals(TimeValue.class)) {
-				Period diffDate = Period.between(predate, curdate);
-				if (negative) {
-					diffDate = diffDate.minusDays(1);
-				}
-				DataValue value = new PeriodValue(diffDate.getYears(),
-						diffDate.getMonths(), diffDate.getDays());
-				current.setValue(table.getColumn("Difference date"), value);
-			}
+			
+			table = calculate(table, current, previous);
+			
 		}
+		return table;
+	}
+	
+	private DataTable calculate(DataTable table, DataRow current, DataRow previous) {
+		boolean negative = false;
+
+		if (!value.getClass().equals(DateValue.class)) {
+			Duration diffTime = Duration.between(pretime, curtime);
+			int timeConvert = 60;
+			hour = (int) diffTime.toHours();
+			min = ((int) diffTime.toMinutes()) - (hour * timeConvert);
+			sec = ((int) diffTime.getSeconds()) - (min * timeConvert)
+					- (hour * timeConvert * timeConvert);
+			negative = checkNegative();
+			DataValue val = new TimeValue(hour, min, sec);
+			current.setValue(table.getColumn("Difference time"), val);
+		}
+
+		if (!value.getClass().equals(TimeValue.class)) {
+			Period diffDate = Period.between(predate, curdate);
+			if (negative) {
+				diffDate = diffDate.minusDays(1);
+			}
+			DataValue value = new PeriodValue(diffDate.getYears(),
+					diffDate.getMonths(), diffDate.getDays());
+			current.setValue(table.getColumn("Difference date"), value);
+		}
+		
 		return table;
 	}
 
