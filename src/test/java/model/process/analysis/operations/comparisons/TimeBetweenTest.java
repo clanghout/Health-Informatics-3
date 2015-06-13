@@ -59,7 +59,7 @@ public class TimeBetweenTest {
 		assertEquals(compareDate, dateDiff);
 		assertEquals(compareTime, timeDiff);
 		
-		compareDate = new PeriodValue(1, 6, 30);
+		compareDate = new PeriodValue(1, 6, 29);
 		dateDiff = result.getRow(1).getValue(result.getColumn("Difference date"));
 		compareTime = new TimeValue(0, 10, 0);
 		timeDiff = result.getRow(1).getValue(result.getColumn("Difference time"));
