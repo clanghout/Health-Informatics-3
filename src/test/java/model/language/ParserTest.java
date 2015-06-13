@@ -527,4 +527,94 @@ public class ParserTest {
 		assertEquals(new IntValue(10), table.getRow(2).getValue(table.getColumn("value")));
 		assertEquals(new IntValue(11), table.getRow(3).getValue(table.getColumn("value")));
 	}
+
+	@Test
+	public void testJoin() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("test2");
+		builder.createColumn("value", IntValue.class);
+
+		builder.createRow(new IntValue(null));
+		builder.createRow(new IntValue(null));
+		builder.createRow(new IntValue(null));
+		builder.createRow(new IntValue(null));
+
+		DataTable test2 = builder.build();
+		model.add(test2);
+
+		String input = "def join : Join = JOIN test1 WITH test2 AS joined" +
+				" FROM test1.value AND test2.value;" +
+				"join(join)";
+
+		Table result = parseAndProcess(input);
+		assertTrue(result instanceof DataTable);
+
+		DataTable table = (DataTable) result;
+
+		assertEquals(new IntValue(11), table.getRow(0).getValue(table.getColumn("value")));
+		assertEquals(new IntValue(11), table.getRow(1).getValue(table.getColumn("value")));
+		assertEquals(new IntValue(11), table.getRow(2).getValue(table.getColumn("value")));
+		assertEquals(new IntValue(11), table.getRow(3).getValue(table.getColumn("value")));
+		assertEquals(new IntValue(10), table.getRow(4).getValue(table.getColumn("value")));
+		assertEquals(new IntValue(9), table.getRow(8).getValue(table.getColumn("value")));
+		assertEquals(new IntValue(5), table.getRow(12).getValue(table.getColumn("value")));
+	}
+
+	@Test
+	public void testJoinWithConstraint() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("test2");
+		builder.createColumn("value", IntValue.class);
+
+		builder.createRow(new IntValue(11));
+		builder.createRow(new IntValue(10));
+		builder.createRow(new IntValue(5));
+		builder.createRow(new IntValue(3));
+
+		DataTable test2 = builder.build();
+		model.add(test2);
+
+		String input = "def join : Join = JOIN test1 WITH test2 AS joined" +
+				" ON  test1.value = test2.value" +
+				" FROM test1.value AND test2.value;" +
+				"join(join)";
+
+		Table result = parseAndProcess(input);
+		assertTrue(result instanceof DataTable);
+
+		DataTable table = (DataTable) result;
+
+		assertEquals(new IntValue(11), table.getRow(0).getValue(table.getColumn("value")));
+		assertEquals(new IntValue(10), table.getRow(1).getValue(table.getColumn("value")));
+		assertEquals(new IntValue(5), table.getRow(2).getValue(table.getColumn("value")));
+	}
+
+	@Test
+	public void testConnection() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("test2");
+		builder.createColumn("value", IntValue.class);
+
+		builder.createRow(new IntValue(11));
+		builder.createRow(new IntValue(10));
+		builder.createRow(new IntValue(5));
+		builder.createRow(new IntValue(3));
+
+		DataTable test2 = builder.build();
+		model.add(test2);
+
+		String input = "def con : Connection = test1 WITH test2 AS joined" +
+				" FROM test1.value AND test2.value;" +
+				"connection(con)";
+
+		Table result = parseAndProcess(input);
+		assertTrue(result instanceof DataTable);
+
+		DataTable table = (DataTable) result;
+
+		assertEquals(new IntValue(3), table.getRow(0).getValue(table.getColumn("value")));
+		assertEquals(new IntValue(5), table.getRow(1).getValue(table.getColumn("value")));
+		assertEquals(new IntValue(9), table.getRow(3).getValue(table.getColumn("value")));
+		assertEquals(new IntValue(10), table.getRow(4).getValue(table.getColumn("value")));
+	}
 }

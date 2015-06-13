@@ -40,8 +40,7 @@ public class DataModel extends Observable implements Iterable<DataTable> {
 	 */
 	public void add(DataTable table) {
 		insert(table);
-		setChanged();
-		notifyObservers();
+		setUpdated();
 	}
 
 	private void insert(DataTable table) {
@@ -61,8 +60,7 @@ public class DataModel extends Observable implements Iterable<DataTable> {
 	 */
 	public void addAll(Collection<DataTable> tables) {
 		tables.forEach(this::insert);
-		setChanged();
-		notifyObservers();
+		setUpdated();
 	}
 
 	/**
@@ -113,8 +111,13 @@ public class DataModel extends Observable implements Iterable<DataTable> {
 				).findFirst();
 	}
 
+	public void setUpdated() {
+		setChanged();
+		notifyObservers();
+	}
+
 	/**
-	 * Returns a new ObservableList with the DataTables that can be used 
+	 * Returns a new ObservableList with the DataTables that can be used
 	 * by JavaFX components.
 	 * @return The new ObservableList
 	 */
