@@ -2,10 +2,6 @@ package model.input.file;
 
 import model.data.DataTable;
 import model.data.value.*;
-import model.data.value.DataValue;
-import model.data.value.FloatValue;
-import model.data.value.IntValue;
-import model.data.value.StringValue;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
@@ -16,7 +12,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 
 /**
@@ -79,7 +74,9 @@ public abstract class ExcelFile extends DataFile {
 					nullCount++;
 				}
 			}
-			if (nullCount == getColumns().size()) { break; }
+			if (nullCount == getColumns().size()) {
+				break;
+			}
 			if (hasMetaData()) {
 				values[values.length - 1] = getMetaDataValue();
 			}
@@ -91,9 +88,8 @@ public abstract class ExcelFile extends DataFile {
 		switch (cell.getCellType()) {
 			case Cell.CELL_TYPE_STRING:
 				return new StringValue(cell.getStringCellValue());
-			case Cell.CELL_TYPE_NUMERIC: {
+			case Cell.CELL_TYPE_NUMERIC:
 				return parseNumValue(cell, type);
-			}
 			case Cell.CELL_TYPE_BLANK:
 				return createNullValue(type);
 			default:

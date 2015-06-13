@@ -169,8 +169,8 @@ public class XmlReader {
 	private DataFile setMetaData(DataFile theDataFile, NodeList metaData) {
 		Element metaDataElem = ((Element) metaData.item(0));
 
-		if ((metaDataElem != null
-				&& metaDataElem.getAttribute("type") != null)
+		if (metaDataElem != null
+				&& metaDataElem.getAttribute("type") != null
 				&& metaDataElem.getAttribute("name") != null) {
 			String type = metaDataElem.getAttribute("type");
 			String name = metaDataElem.getAttribute("name");
@@ -220,19 +220,7 @@ public class XmlReader {
 		}
 		return dataFile;
 	}
-		
-	
-	private Class[] createTypesArray(NodeList columns) {
-		Class[] types = new Class[columns.getLength()];
 
-		for (int i = 0; i < columns.getLength(); i++) {
-			Element columnElement = (Element) columns.item(i);
-			String typeAttribute = columnElement.getAttribute("type");
-			types[i] = DataFile.getColumnType(typeAttribute);
-		}
-		return types;
-	}
-	
 	/**
 	 * Decorates the constructed DataFile with the start and end line.
 	 * @param dataElement The data element of the file read from xml

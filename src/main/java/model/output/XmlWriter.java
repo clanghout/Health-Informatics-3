@@ -1,6 +1,5 @@
 package model.output;
 
-import model.data.value.DataValue;
 import model.input.file.ColumnInfo;
 import model.input.file.DataFile;
 import org.w3c.dom.Document;
@@ -12,7 +11,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
