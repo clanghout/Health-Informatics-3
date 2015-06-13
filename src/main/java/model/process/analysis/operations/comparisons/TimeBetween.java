@@ -8,18 +8,21 @@ import model.data.DataColumn;
 import model.data.DataRow;
 import model.data.DataTable;
 import model.data.DataTableConversionBuilder;
+import model.data.Table;
 import model.data.value.DataValue;
 import model.data.value.DateTimeValue;
 import model.data.value.DateValue;
 import model.data.value.TimeValue;
 import model.language.Identifier;
+import model.process.DataProcess;
 
 /**
  * This class will determine the time difference between rows.
- * 
+ * This is actually a DataProcess but it's listed under comparisons in the requirements.
+ * ^ The reason why it's located in the analysis package.
  * @author Louis Gosschalk 12-06-2015
  */
-public class TimeBetween {
+public class TimeBetween extends DataProcess {
 
 	private DataTable table;
 	private Identifier<DataColumn> date;
@@ -34,14 +37,18 @@ public class TimeBetween {
 	/**
 	 * Check the type of the given column and call calculation.
 	 */
-	public void process() {
+	@Override
+	public Table doProcess() {
 		DataTableConversionBuilder builder = 
 				new DataTableConversionBuilder(table, table.getName());
 		builder.addColumn(table, 
 				new DateTimeValue(null, null, null, null, null, null), "Difference");
 		
+		table = builder.build();
 		calculateDiff();
-
+		
+		return table;
+		
 	}
 
 	private void calculateDiff() {
