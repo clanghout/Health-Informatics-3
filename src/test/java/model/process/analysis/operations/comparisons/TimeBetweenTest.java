@@ -35,7 +35,7 @@ public class TimeBetweenTest {
 		
 		datetime = new DateTimeValue(2016, 1, 19, 10, 10, 10);
 		date = new DateValue(2019, 7, 4);
-		time = new TimeValue(14, 12, 50);
+		time = new TimeValue(20, 8, 29);
 		builder.createRow(datetime, date, time);
 		
 		table = builder.build();
@@ -43,7 +43,7 @@ public class TimeBetweenTest {
 	}
 	
 	@Test
-	public void testResult() {
+	public void testDateTime() {
 		Identifier<DataColumn> idDateTime = new Identifier<DataColumn>("date time");
 		
 		DataProcess tb = new TimeBetween(idDateTime);
@@ -66,8 +66,46 @@ public class TimeBetweenTest {
 		
 		assertEquals(compareDate, dateDiff);
 		assertEquals(compareTime, timeDiff);
+	}
+	
+	@Test
+	public void testDate() {
+		Identifier<DataColumn> idDate = new Identifier<DataColumn>("date");
 		
+		DataProcess tb = new TimeBetween(idDate);
+		tb.setInput(table);
 		
+		DataTable result = (DataTable) tb.process();
+		
+		DataValue compareDate = new PeriodValue(0, 0, 0);
+		DataValue dateDiff = result.getRow(0).getValue(result.getColumn("Difference date"));
+		
+		assertEquals(compareDate, dateDiff);
+		
+		compareDate = new PeriodValue(0, 0, 25);
+		dateDiff = result.getRow(1).getValue(result.getColumn("Difference date"));
+		
+		assertEquals(compareDate, dateDiff);
+	}
+	
+	@Test
+	public void testTime() {
+		Identifier<DataColumn> idTime = new Identifier<DataColumn>("time");
+		
+		DataProcess tb = new TimeBetween(idTime);
+		tb.setInput(table);
+		
+		DataTable result = (DataTable) tb.process();
+		
+		DataValue compareTime = new TimeValue(0, 0, 0);
+		DataValue timeDiff = result.getRow(0).getValue(result.getColumn("Difference time"));
+		
+		assertEquals(compareTime, timeDiff);
+		
+		compareTime = new TimeValue(5, 55, 39);
+		timeDiff = result.getRow(1).getValue(result.getColumn("Difference time"));
+		
+		assertEquals(compareTime, timeDiff);
 	}
 	
 }
