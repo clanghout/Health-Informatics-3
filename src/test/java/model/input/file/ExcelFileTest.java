@@ -1,19 +1,19 @@
 package model.input.file;
 
-import static org.junit.Assert.*;
-
-import java.io.*;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-
 import model.data.DataColumn;
 import model.data.DataRow;
 import model.data.DataTable;
-import model.data.value.*;
-
+import model.data.value.DateTimeValue;
+import model.data.value.FloatValue;
+import model.data.value.IntValue;
+import model.data.value.StringValue;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * JUnit test for the XlsFile class.

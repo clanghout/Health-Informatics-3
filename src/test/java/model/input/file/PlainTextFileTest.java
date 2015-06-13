@@ -1,16 +1,15 @@
 package model.input.file;
 
-import static org.junit.Assert.*;
-
-import java.io.*;
-import java.util.*;
-
 import model.data.DataColumn;
 import model.data.DataRow;
 import model.data.DataTable;
 import model.data.value.*;
-import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * JUnit test for the PlainTextFile class.
