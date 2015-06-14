@@ -49,6 +49,8 @@
                                        fx:id="columnName"/>
                                <ComboBox
                                        fx:id="columntype"/>
+                               <TextField
+                                       fx:id="columnFormat"/>
                                <Button text="Add column"
                                        onAction="#addColumnRow"/>
                                <Button text="Remove column"

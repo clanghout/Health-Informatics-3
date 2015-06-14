@@ -49,6 +49,7 @@ public class XmlWizardController {
 	@FXML private TextField metacolumnName;
 	@FXML private ComboBox columntype;
 	@FXML private TextField columnName;
+	@FXML private TextField columnFormat;
 	@FXML private TableView datacolumns;
 	@FXML private ListView<DataFile> datafiles;
 	@FXML private Parent root;
@@ -117,6 +118,7 @@ public class XmlWizardController {
 		this.datafiles.getSelectionModel().selectedItemProperty().addListener(listener);
 		datacolumns.getColumns().add(createColumn(0, "Column name"));
 		datacolumns.getColumns().add(createColumn(1, "Type"));
+		datacolumns.getColumns().add(createColumn(2, "Format"));
 
 		metacolumntype.setItems(typesSelect);
 		columntype.setItems(typesSelect);
@@ -229,6 +231,7 @@ public class XmlWizardController {
 			ObservableList<StringProperty> row = FXCollections.observableArrayList();
 			row.add(new SimpleStringProperty(columnInfo.getName()));
 			row.add(new SimpleStringProperty(DataFile.getStringColumnType(columnInfo.getType())));
+			row.add(new SimpleStringProperty(columnInfo.getFormat()));
 			datacolumns.getItems().add(row);
 		}
 	}
@@ -240,15 +243,13 @@ public class XmlWizardController {
 	@FXML
 	public void addColumnRow(ActionEvent actionEvent) {
 		if (selectedFile != null) {
-			ObservableList<StringProperty> row = FXCollections.observableArrayList();
 
 			String colName = columnName.getText();
 			String colType = (String) columntype.getValue();
+			String format = columnFormat.getText();
 
-			row.add(new SimpleStringProperty(colName));
-			row.add(new SimpleStringProperty(colType));
-
-			selectedFile.addColumnInfo(new ColumnInfo(colName, DataFile.getColumnType(colType)));
+			selectedFile.addColumnInfo(
+					new ColumnInfo(colName, DataFile.getColumnType(colType), format));
 			updateColumnsView();
 		}
 	}
@@ -301,11 +302,10 @@ public class XmlWizardController {
 	 */
 	@FXML
 	public void removeColumnRow(ActionEvent actionEvent) {
-		String selectedColumn =
-				((ObservableList<StringProperty>) datacolumns.
-						getSelectionModel().getSelectedItem()).get(0).getValue();
+		int selectedIndex = datacolumns.getItems().indexOf(
+				datacolumns.getSelectionModel().getSelectedItem());
 
-		selectedFile.getColumns().remove(selectedColumn);
+		selectedFile.getColumns().remove(selectedIndex);
 		updateColumnsView();
 	}
 
