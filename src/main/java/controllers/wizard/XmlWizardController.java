@@ -14,6 +14,7 @@ import javafx.stage.FileChooser;
 import model.data.DataModel;
 import model.data.value.DataValue;
 import model.exceptions.DataFileNotRecognizedException;
+import model.input.file.ColumnInfo;
 import model.input.file.DataFile;
 import model.input.reader.XmlReader;
 import model.output.XmlWriter;
@@ -222,12 +223,12 @@ public class XmlWizardController {
 
 	private void updateColumnsView() {
 		datacolumns.getItems().clear();
-		Map<String, Class<? extends DataValue>> columns = selectedFile.getColumns();
+		List<ColumnInfo> columns = selectedFile.getColumns();
 
-		for (Map.Entry<String, Class<? extends DataValue>> entry : columns.entrySet()) {
+		for (ColumnInfo columnInfo : columns) {
 			ObservableList<StringProperty> row = FXCollections.observableArrayList();
-			row.add(new SimpleStringProperty(entry.getKey()));
-			row.add(new SimpleStringProperty(DataFile.getStringColumnType(entry.getValue())));
+			row.add(new SimpleStringProperty(columnInfo.getName()));
+			row.add(new SimpleStringProperty(DataFile.getStringColumnType(columnInfo.getType())));
 			datacolumns.getItems().add(row);
 		}
 	}
@@ -247,7 +248,7 @@ public class XmlWizardController {
 			row.add(new SimpleStringProperty(colName));
 			row.add(new SimpleStringProperty(colType));
 
-			selectedFile.getColumns().put(colName, DataFile.getColumnType(colType));
+			selectedFile.addColumnInfo(new ColumnInfo(colName, DataFile.getColumnType(colType)));
 			updateColumnsView();
 		}
 	}

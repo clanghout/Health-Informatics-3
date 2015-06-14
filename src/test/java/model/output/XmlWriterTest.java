@@ -38,6 +38,7 @@ public class XmlWriterTest {
 
 		when(textFile.getFile()).thenReturn(new File("/path/to/Prettyname.txt"));
 		when(textFile.hasFirstRowAsHeader()).thenReturn(false);
+		when(textFile.hasMetaData()).thenReturn(true);
 		when(textFile.getMetaDataColumnName()).thenReturn("metaldata");
 		Class metaDataType = StringValue.class;
 		when(textFile.getMetaDataType()).thenReturn(metaDataType);

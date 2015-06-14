@@ -242,6 +242,14 @@ public abstract class DataFile {
 	}
 
 	/**
+	 * Sets if the datafile has metadata.
+	 * @param hasMetaData True if the datafile contains metadata
+	 */
+	public void setHasMetaData(boolean hasMetaData) {
+		this.hasMetaData = hasMetaData;
+	}
+
+	/**
 	 * Sets the class for the metadata column.
 	 * @param metaDataType The class for the metadata
 	 */
