@@ -2,17 +2,17 @@ package model.input.file;
 
 import model.data.DataTable;
 import model.data.value.DataValue;
-import model.data.value.FloatValue;
-import model.data.value.IntValue;
-import model.data.value.StringValue;
+import model.data.value.DateTimeValue;
+import model.data.value.DateValue;
+import model.data.value.TimeValue;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 /**
  * Class to specify a .txt file.
@@ -20,6 +20,8 @@ import java.util.Scanner;
  * @author Paul
  */
 public class PlainTextFile extends DataFile {
+
+	private Logger logger = Logger.getLogger("PlainTextFile");
 
 	private int counter;
 	private String delimiter = ",";
@@ -43,15 +45,14 @@ public class PlainTextFile extends DataFile {
 			if (hasFirstRowAsHeader()) {
 				String headers = scanner.nextLine();
 				String[] sections = headers.split(delimiter);
-				for (int i = 0; i < getColumnTypes().length; i++) {
-					getColumns().put(sections[i], getColumnTypes()[i]);
+				for (int i = 0; i < getColumns().size(); i++) {
+					ColumnInfo column = getColumns().get(i);
+					column.setName(sections[i].trim());
+					getBuilder().createColumn(column.getName(), column.getType());
 				}
 			} else {
-				for (Map.Entry<
-						String,
-						Class<? extends DataValue>
-						> entry : getColumns().entrySet()) {
-					getBuilder().createColumn(entry.getKey(), entry.getValue());
+				for (ColumnInfo column : getColumns()) {
+					getBuilder().createColumn(column.getName(), column.getType());
 				}
 			}
 			if (hasMetaData()) {
@@ -90,7 +91,7 @@ public class PlainTextFile extends DataFile {
 	 * @param scanner The scanner
 	 * @return The list containing all lines read from the start line
 	 */
-	private ArrayList readLines(Scanner scanner) {
+	private ArrayList<String> readLines(Scanner scanner) {
 		ArrayList<String> result = new ArrayList<>();
 		while (scanner.hasNextLine()) {
 			String line = scanner.nextLine();
@@ -100,8 +101,7 @@ public class PlainTextFile extends DataFile {
 	}
 	
 	private DataValue[] createValues(String line) {
-		String[] sections = line.split(delimiter);
-		List<Class<? extends DataValue>> columns = getColumnList();
+		String[] sections = line.split(delimiter, -1);
 		DataValue[] values;
 		if (hasMetaData()) {
 			values = new DataValue[getColumns().size() + 1];
@@ -109,7 +109,7 @@ public class PlainTextFile extends DataFile {
 			values = new DataValue[getColumns().size()];
 		}
 		for (int i = 0; i < getColumns().size(); i++) {
-			values[i] = toDataValue(sections[i].trim(), columns.get(i));
+			values[i] = toDataValue(sections[i].trim(), getColumns().get(i));
 		}
 		if (hasMetaData()) {
 			values[values.length - 1] = getMetaDataValue();
@@ -131,30 +131,20 @@ public class PlainTextFile extends DataFile {
 	/**
 	 * Creates a DataValue from a string.
 	 * @param value The string that will be converted
-	 * @param type The type of the column in which the value will be inserted.
+	 * @param columnInfo The info of the column to which the DataValue will be inserted
 	 * @return The DataValue
 	 */
-	private DataValue toDataValue(String value, Class<? extends DataValue> type) {
-		if (type.equals(StringValue.class)) {
-			return new StringValue(value);
-		} else if (type.equals(IntValue.class)) {
-			if (tryParseInt(value)) {
-				return new IntValue(Integer.parseInt(value));
-			} else {
-				// TODO: throw appropriate exception
-				return null;
-			}
-		} else if (type.equals(FloatValue.class)) {
-			if (tryParseFloat(value)) {
-				return new FloatValue(Float.parseFloat(value));
-			} else {
-				// TODO: throw appropriate exception
-				return null;
-			}
+	private DataValue toDataValue(String value, ColumnInfo columnInfo) {
+		if (value.isEmpty()) {
+			return createNullValue(columnInfo.getType());
+		} else if (columnInfo.getType() == DateValue.class) {
+			return new DateValue(parseLocalDate(value, columnInfo.getFormat()));
+		} else if (columnInfo.getType() == DateTimeValue.class) {
+			return new DateTimeValue(parseLocalDateTime(value, columnInfo.getFormat()));
+		} else if (columnInfo.getType() == TimeValue.class) {
+			return parseLocalTime(value, columnInfo.getFormat());
 		} else {
-			throw new UnsupportedOperationException(
-					String.format("Class %s not yet supported", type)
-			);
+			return parseSimpleDataValue(value, columnInfo.getType());
 		}
 	}
 
