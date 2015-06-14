@@ -115,7 +115,7 @@ public class XmlWriter {
 	private Node createPathElement(DataFile dataFile) throws FileNotFoundException {
 		Element path = document.createElement("path");
 		String fullPath = dataFile.getFile().getPath();
-		path.setTextContent(fullPath.substring(0, fullPath.lastIndexOf("/")));
+		path.setTextContent(fullPath.substring(0, fullPath.lastIndexOf(File.separator)));
 		return path;
 	}
 

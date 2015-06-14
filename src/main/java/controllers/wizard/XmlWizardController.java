@@ -198,8 +198,11 @@ public class XmlWizardController {
 
 		File file = fileChooser.showOpenDialog(root.getScene().getWindow());
 		if (file != null) {
+			int startExt = file.getName().lastIndexOf(".");
+			int endExt = file.getName().length();
 			String type = getTypeByExtension(
-					fileChooser.getSelectedExtensionFilter().getExtensions().get(0));
+					file.getName().substring(
+							startExt, endExt));
 			addDataFile(file.getPath(), type);
 			fileselectfield.setText(file.getPath());
 		}
@@ -207,11 +210,11 @@ public class XmlWizardController {
 
 	private String getTypeByExtension(String extension) {
 		switch (extension) {
-			case "*.txt":
+			case ".txt":
 				return "plaintext";
-			case "*.xls":
+			case ".xls":
 				return "xls";
-			case "*.xlsx":
+			case ".xlsx":
 				return "xlsx";
 			default: throw new DataFileNotRecognizedException(
 					"The selected extension is not recognized");
