@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,7 +13,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import model.data.DataModel;
-import model.data.value.DataValue;
 import model.exceptions.DataFileNotRecognizedException;
 import model.input.file.ColumnInfo;
 import model.input.file.DataFile;
@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,7 +39,7 @@ public class XmlWizardController {
 
 	private Logger logger = Logger.getLogger("XmlWizardController");
 
-	@FXML private Button metaApply;
+	@FXML private Button apply;
 	@FXML private CheckBox addmetacheck;
 	@FXML private TextField endLine;
 	@FXML private TextField startLine;
@@ -55,6 +54,11 @@ public class XmlWizardController {
 	@FXML private Parent root;
 	@FXML private TextField fileselectfield;
 
+	private TableColumn[] columns =
+			{createColumn(0, "Column name"),
+			createColumn(1, "Type"),
+			createColumn(2, "Format")};
+
 	private Dialog dialog;
 	private MainUIController mainUIcontroller;
 
@@ -67,31 +71,44 @@ public class XmlWizardController {
 	private final ChangeListener<DataFile> listener = (ov, oldValue, newValue) -> {
 		if (!(newValue == null)) {
 			selectedFile = newValue;
+			disableAll(false);
 			fillElements();
+		} else {
+			disableAll(true);
 		}
 	};
 
 	private final ChangeListener<String> startLineChangeListener = (ov, oldValue, newValue) -> {
 		if (newValue != null && selectedFile != null) {
-			selectedFile.setStartLine(Integer.parseInt(newValue));
+			if (!(newValue.equals(String.valueOf(selectedFile.getStartLine())))) {
+				apply.setDisable(false);
+			} else {
+				apply.setDisable(true);
+			}
 		}
 	};
 
 	private final ChangeListener<String> endLineChangeListener = (ov, oldValue, newValue) -> {
 		if (newValue != null && selectedFile != null) {
-			selectedFile.setEndLine(Integer.parseInt(newValue));
+			if (!(newValue.equals(String.valueOf(selectedFile.getEndLine())))) {
+				apply.setDisable(false);
+			} else {
+				apply.setDisable(true);
+			}
 		}
 	};
+
 	private final ChangeListener<String> metacolumnNameListener = (ov, oldValue, newValue) -> {
 		if (newValue != null
 				&& selectedFile != null
 				&& !(newValue.equals(selectedFile.getMetaDataColumnName()))) {
 
-			metaApply.setDisable(false);
+			apply.setDisable(false);
 		} else {
-			metaApply.setDisable(true);
+			apply.setDisable(true);
 		}
 	};
+
 	private final ChangeListener<String> metacolumntypeListener = (ov, oldValue, newValue) -> {
 		if (newValue != null
 				&& selectedFile != null
@@ -99,7 +116,35 @@ public class XmlWizardController {
 				&& !(newValue.equals(DataFile.getStringColumnType(
 					selectedFile.getMetaDataType())))) {
 
-			metaApply.setDisable(false);
+			apply.setDisable(false);
+		}
+	};
+
+	private final ChangeListener<String> columnTypeListener = ((observable, oldValue, newValue) -> {
+		logger.info("Column type selected: " + newValue);
+		if (selectedFile != null) {
+			if (newValue.equals("date")
+					|| newValue.equals("datetime")
+					|| newValue.equals("time")) {
+				columnFormat.setDisable(false);
+			}
+			else {
+				columnFormat.setText("");
+				columnFormat.setDisable(true);
+			}
+		}
+	});
+	private ListChangeListener datacolumnsListener = new ListChangeListener() {
+		boolean suspended;
+
+		@Override
+		public void onChanged(Change c) {
+			c.next();
+			if (c.wasReplaced() && !suspended) {
+				suspended = true;
+				datacolumns.getColumns().setAll(columns);
+				suspended = false;
+			}
 		}
 	};
 
@@ -110,15 +155,13 @@ public class XmlWizardController {
 		startLine.textProperty().addListener(startLineChangeListener);
 		endLine.textProperty().addListener(endLineChangeListener);
 		metacolumntype.getSelectionModel().select("string");
-		metacolumnName.setDisable(true);
-		metacolumntype.setDisable(true);
-		metaApply.setDisable(true);
+		columntype.valueProperty().addListener(columnTypeListener);
+		datacolumns.getColumns().addListener(datacolumnsListener);
+		disableAll(true);
 		metacolumnName.textProperty().addListener(metacolumnNameListener);
 		metacolumntype.valueProperty().addListener(metacolumntypeListener);
 		this.datafiles.getSelectionModel().selectedItemProperty().addListener(listener);
-		datacolumns.getColumns().add(createColumn(0, "Column name"));
-		datacolumns.getColumns().add(createColumn(1, "Type"));
-		datacolumns.getColumns().add(createColumn(2, "Format"));
+		datacolumns.getColumns().setAll(columns);
 
 		metacolumntype.setItems(typesSelect);
 		columntype.setItems(typesSelect);
@@ -204,7 +247,7 @@ public class XmlWizardController {
 			metacolumnName.setDisable(true);
 			metacolumnName.setText("");
 			metacolumntype.setDisable(true);
-			metaApply.setDisable(true);
+			apply.setDisable(true);
 		}
 	}
 
@@ -302,11 +345,12 @@ public class XmlWizardController {
 	 */
 	@FXML
 	public void removeColumnRow(ActionEvent actionEvent) {
-		int selectedIndex = datacolumns.getItems().indexOf(
-				datacolumns.getSelectionModel().getSelectedItem());
-
-		selectedFile.getColumns().remove(selectedIndex);
-		updateColumnsView();
+		if (selectedFile != null) {
+			int selectedIndex = datacolumns.getItems().indexOf(
+					datacolumns.getSelectionModel().getSelectedItem());
+			selectedFile.getColumns().remove(selectedIndex);
+			updateColumnsView();
+		}
 	}
 
 	/**
@@ -328,7 +372,16 @@ public class XmlWizardController {
 	@FXML
 	public void handleFirstRowHeaderCheckbox(ActionEvent actionEvent) {
 		if (selectedFile != null) {
-			selectedFile.setFirstRowAsHeader(hasFirstRowHeader.isSelected());
+			if (hasFirstRowHeader.isSelected()) {
+				selectedFile.setFirstRowAsHeader(true);
+				columnName.setDisable(true);
+				((TableColumn) datacolumns.getColumns().get(0)).setVisible(false);
+			} else {
+				selectedFile.setFirstRowAsHeader(false);
+				columnName.setDisable(false);
+				((TableColumn) datacolumns.getColumns().get(0)).setVisible(true);
+			}
+
 		}
 	}
 
@@ -372,20 +425,16 @@ public class XmlWizardController {
 			selectedFile.setHasMetaData(false);
 			metacolumnName.setDisable(true);
 			metacolumntype.setDisable(true);
-			metaApply.setDisable(true);
 		}
 	}
 
 	/**
 	 * Sets the metadata values of the file.
-	 * @param actionEvent JavaFX event
 	 */
-	@FXML
-	public void setMetaData(ActionEvent actionEvent) {
+	public void setMetaData() {
 		selectedFile.setMetaDataColumnName(metacolumnName.getText());
 		selectedFile.setMetaDataType(DataFile.getColumnType(
 				(String) metacolumntype.getSelectionModel().getSelectedItem()));
-		metaApply.setDisable(true);
 	}
 
 	/**
@@ -395,5 +444,31 @@ public class XmlWizardController {
 	@FXML
 	public void handleCancelButton(ActionEvent actionEvent) {
 		dialog.close();
+	}
+
+	/**
+	 * Applies the changes of the fields to the selected datafile.
+	 * @param actionEvent JavaFx event
+	 */
+	@FXML
+	public void applyChanges(ActionEvent actionEvent) {
+		setMetaData();
+		selectedFile.setStartLine(Integer.parseInt(startLine.getText()));
+		selectedFile.setEndLine(Integer.parseInt(endLine.getText()));
+		apply.setDisable(true);
+	}
+
+	private void disableAll(boolean value) {
+		datacolumns.setDisable(value);
+		columnName.setDisable(value);
+		columntype.setDisable(value);
+		columnFormat.setDisable(value);
+		hasFirstRowHeader.setDisable(value);
+		startLine.setDisable(value);
+		endLine.setDisable(value);
+		addmetacheck.setDisable(value);
+		metacolumnName.setDisable(value);
+		metacolumntype.setDisable(value);
+		apply.setDisable(value);
 	}
 }

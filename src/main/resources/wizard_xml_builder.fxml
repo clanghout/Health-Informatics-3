@@ -93,9 +93,9 @@
                                         <ComboBox
                                                 fx:id="metacolumntype" />
                                     </VBox>
-                                    <Button fx:id="metaApply"
+                                    <Button fx:id="apply"
                                             text="Apply"
-                                            onAction="#setMetaData" />
+                                            onAction="#applyChanges" />
 
                                 </HBox>
                             </VBox>

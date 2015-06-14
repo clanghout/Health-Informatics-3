@@ -264,7 +264,7 @@ public abstract class DataFile {
 	 */
 	@Override
 	public String toString() {
-		return "[" + path + "]";
+		return path;
 	}
 
 	/**

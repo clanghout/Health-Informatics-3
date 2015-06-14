@@ -56,17 +56,17 @@ public class XmlReader {
 	 * The name of the endtag in the xml file.
 	 */
 	private static final String END_TAG = "end";
-	
+
 	/**
 	 * The name of the column tag in the xml file.
 	 */
 	private static final String COLUMN_TAG = "column";
-	
+
 	/**
 	 * The name of the columns tag in the xml file.
 	 */
 	private static final String COLUMNS_TAG = "columns";
-	
+
 	/**
 	 * The name of the firstrowheader tag in the xml file.
 	 */
@@ -105,10 +105,10 @@ public class XmlReader {
 	public Document read(File file)
 			throws ParserConfigurationException, SAXException, IOException {
 		try (FileInputStream stream = new FileInputStream(file)) {
-			return read(stream, file.getParent());
+			return read(stream);
 		}
 	}
-	
+
 	/**
 	 * Reads the xml from an InputStream and returns a Document that can be used
 	 * to extract data from the xml file.
@@ -118,36 +118,35 @@ public class XmlReader {
 	 * @throws IOException If an IO error occurs
 	 * @throws SAXException Thrown by the SAX parser if the document can not be parsed
 	 */
-	public Document read(InputStream stream, String parentDir)
+	public Document read(InputStream stream)
 			throws ParserConfigurationException, SAXException, IOException {
-		
+
 		dataFiles = new ArrayList<DataFile>();
-		
+
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = dbf.newDocumentBuilder();
 		document = builder.parse(stream);
 		document.normalize();
 		Element root = document.getDocumentElement();
 		filesList = root.getElementsByTagName(FILE_TAG);
-		
+
 		for (int i = 0; i < filesList.getLength(); i++) {
 			Element elem = getFileElement(i);
-			dataFiles.add(createDataFile(elem, parentDir));
+			dataFiles.add(createDataFile(elem));
 		}
-		
+
 		return document;
 	}
-	
+
 	/**
 	 * Creates a DataFile from a file Element.
 	 * @return a new DataFile
 	 * @param elem The file element read from the xml file
-	 * @param parentDir The parent of the file
 	 * @throws FileNotFoundException When the file can not be found
 	 */
-	public DataFile createDataFile(Element elem, String parentDir) throws FileNotFoundException {
+	public DataFile createDataFile(Element elem) throws FileNotFoundException {
 		String type = elem.getElementsByTagName(TYPE_TAG).item(0).getTextContent();
-		String completePath = createPath(elem, parentDir);
+		String completePath = createPath(elem);
 		DataFile theDataFile = DataFile.createDataFile(completePath, type);
 
 		Element columnsElement = (Element) elem.getElementsByTagName(COLUMNS_TAG).item(0);
@@ -157,7 +156,7 @@ public class XmlReader {
 		if (firstRowHeader != null && firstRowHeader.equals("true")) {
 			theDataFile.setFirstRowAsHeader(true);
 		}
-		
+
 		NodeList columns = columnsElement.getElementsByTagName(COLUMN_TAG);
 		setColumnTypes(theDataFile, columns);
 		NodeList metaData = elem.getElementsByTagName(METADATA_TAG);
@@ -193,18 +192,12 @@ public class XmlReader {
 		}
 		return theDataFile;
 	}
-	
-	private String createPath(Element elem, String parentDir) {
+
+	private String createPath(Element elem) {
 		String fileName  = elem.getAttribute(NAME_ATTRIBUTE);
 		Element pathElement = (Element) elem.getElementsByTagName(PATH_TAG).item(0);
-		String completePath;
-		if (pathElement != null) {
-			String path  = elem.getElementsByTagName(PATH_TAG).item(0).getTextContent();
-			completePath = parentDir + File.separator + path + File.separator + fileName;
-		} else {
-			completePath = fileName;
-		}
-		return completePath;
+		String pathToFile = pathElement.getTextContent();
+		return pathToFile + File.separator + fileName;
 	}
 
 	private DataFile setColumn(NodeList columns, DataFile dataFile) {

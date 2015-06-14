@@ -151,15 +151,19 @@ public class XmlWriter {
 
 		List<ColumnInfo> columns = dataFile.getColumns();
 		for (ColumnInfo column : columns) {
-			res.appendChild(createColumnElements(column.getName(), column.getType()));
+			res.appendChild(
+					createColumnElements(column.getName(),
+							column.getType(),
+							column.getFormat()));
 		}
 
 		return res;
 	}
 
-	private Node createColumnElements(String columnName, Class type) {
+	private Node createColumnElements(String columnName, Class type, String format) {
 		Element res = document.createElement("column");
 		res.setAttribute("type", DataFile.getStringColumnType(type));
+		res.setAttribute("format", format);
 		res.setTextContent(columnName);
 
 		return res;

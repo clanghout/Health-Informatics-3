@@ -86,8 +86,7 @@ public class XmlReaderTest {
 		String parentDir = file.getParent();
 		reader.read(file);
 		DataFile dataFile = reader.createDataFile(
-				reader.getFileElement(1),
-				parentDir
+				reader.getFileElement(1)
 		);
 		String relativePath = new File(parentDir).toURI().relativize(
 				dataFile.getFile().toURI()).getPath();
