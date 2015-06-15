@@ -3,7 +3,6 @@ package model.process.functions;
 import model.data.DataTable;
 import model.data.describer.DataDescriber;
 import model.data.value.FloatValue;
-import model.data.value.IntValue;
 import model.data.value.NumberValue;
 
 /**
@@ -13,7 +12,8 @@ import model.data.value.NumberValue;
  */
 public class StandardDeviation extends Function {
 
-	public StandardDeviation(DataTable table, DataDescriber<NumberValue> argument) {
+	public StandardDeviation(DataTable table,
+			DataDescriber<NumberValue> argument) {
 		super(table, argument);
 	}
 
@@ -25,7 +25,8 @@ public class StandardDeviation extends Function {
 		if (!initialize()) {
 			return new FloatValue(0f);
 		}
-		float average = new Average(getTable(), getArgument()).calculate().getValue();
+		float average = new Average(getTable(), getArgument()).calculate()
+				.getValue();
 		float variance = variance(average);
 		float deviation = (float) Math.sqrt((double) variance);
 		FloatValue result = new FloatValue(deviation);
