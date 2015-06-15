@@ -21,7 +21,7 @@ public class StandardDeviation extends Function {
 	 * Calculate average, variance and finally the (standard) deviation.
 	 */
 	@Override
-	public NumberValue calculate() {
+	public FloatValue calculate() {
 		if (!initialize()) {
 			return new FloatValue(0f);
 		}
@@ -29,9 +29,6 @@ public class StandardDeviation extends Function {
 		float variance = variance(average);
 		float deviation = (float) Math.sqrt((double) variance);
 		FloatValue result = new FloatValue(deviation);
-		if (isInt()) {
-			return new IntValue((int) deviation);
-		}
 		return result;
 	}
 
