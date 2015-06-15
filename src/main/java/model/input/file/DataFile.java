@@ -287,10 +287,16 @@ public abstract class DataFile {
 		if (type == StringValue.class) {
 			return new StringValue(value);
 		} else {
-			throw new RuntimeException("Class has not yet implemented");
+			throw new RuntimeException("Class has not yet been implemented");
 		}
 	}
 
+	/**
+	 * Parses a string representing a localtime using the given format.
+	 * @param value The value to parse
+	 * @param format The format used to parse
+	 * @return The new created TimeValue
+	 */
 	protected TimeValue parseLocalTime(String value, String format) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
 		LocalTime localTime = LocalTime.parse(value, formatter);
@@ -300,14 +306,56 @@ public abstract class DataFile {
 				localTime.getSecond());
 	}
 
+	/**
+	 * Parses a String representing a LocalDateTime using a given format.
+	 * @param value The value to parse
+	 * @param format The format used to parse
+	 * @return The new created LocalDateTime
+	 */
 	protected LocalDateTime parseLocalDateTime(String value, String format) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
 		return LocalDateTime.from(formatter.parse(value));
 	}
 
+	/**
+	 * Parses a String representing a LocalDate using a given format.
+	 * @param value The value to parse
+	 * @param format The format used to parse
+	 * @return The new created LocalDate
+	 */
 	protected LocalDate parseLocalDate(String value, String format) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
 		return LocalDate.parse(value, formatter);
+	}
+
+	/**
+	 * Parses a String representing a TemporalValue using given parse information.
+	 * @param value The value to parse
+	 * @param columnInfo The information used to parse the TemporalValue
+	 * @return The new created TemporalValue
+	 */
+	protected TemporalValue parseTemporalValue(String value, ColumnInfo columnInfo) {
+		if (columnInfo.getType() == DateValue.class) {
+			return new DateValue(parseLocalDate(value, columnInfo.getFormat()));
+		} else if (columnInfo.getType() == DateTimeValue.class) {
+			return new DateTimeValue(parseLocalDateTime(value, columnInfo.getFormat()));
+		} else if (columnInfo.getType() == TimeValue.class) {
+			return parseLocalTime(value, columnInfo.getFormat());
+		}
+		throw new RuntimeException("Type of TemporalValue : "
+				+ columnInfo.getType()
+				+ " is not recognized");
+	}
+
+	/**
+	 * Returns true if a type is a TemporalValue.
+	 * @param type The type to check
+	 * @return True if type is a TemporalValue
+	 */
+	protected boolean isTemporalValue(Class<? extends DataValue> type) {
+		return type == DateTimeValue.class
+				|| type == DateValue.class
+				|| type == TimeValue.class;
 	}
 
 	/**

@@ -69,7 +69,7 @@ public abstract class ExcelFile extends DataFile {
 			int nullCount = 0;
 			for (int i = 0; i < getColumns().size(); i++) {
 				Cell cell = row.getCell(i, Row.CREATE_NULL_AS_BLANK);
-				values[i] = toDataValue(cell, getColumns().get(i).getType());
+				values[i] = toDataValue(cell, getColumns().get(i));
 				if (values[i].isNull()) {
 					nullCount++;
 				}
@@ -84,33 +84,46 @@ public abstract class ExcelFile extends DataFile {
 		}
 	}
 
-	private DataValue toDataValue(Cell cell, Class<? extends DataValue> type) {
+	private DataValue toDataValue(Cell cell, ColumnInfo columnInfo) {
 		switch (cell.getCellType()) {
-			case Cell.CELL_TYPE_STRING:
-				return new StringValue(cell.getStringCellValue());
-			case Cell.CELL_TYPE_NUMERIC:
-				return parseNumValue(cell, type);
 			case Cell.CELL_TYPE_BLANK:
-				return DataValue.getNullInstance(type);
+				return DataValue.getNullInstance(columnInfo.getType());
+			case Cell.CELL_TYPE_NUMERIC:
+				return parseNumValue(cell, columnInfo);
+			case Cell.CELL_TYPE_STRING:
+				return parseStringValue(cell, columnInfo);
 			default:
 				throw new UnsupportedOperationException(
 						String.format("Cell type %s not supported", cell.getCellType()));
 		}
 	}
 
-	private DataValue parseNumValue(Cell cell, Class<? extends DataValue> type) {
-		if (DateUtil.isCellDateFormatted(cell)) {
-			return parseDateCellValue(cell, type);
+	private DataValue parseStringValue(Cell cell, ColumnInfo columnInfo) {
+		if (isTemporalValue(columnInfo.getType())) {
+			return parseTemporalValue(cell.getStringCellValue(), columnInfo);
+		} else {
+			return new StringValue(cell.getStringCellValue());
+		}
+	}
+
+	private DataValue parseNumValue(Cell cell, ColumnInfo columnInfo) {
+		if (isTemporalValue(columnInfo.getType())) {
+			if (DateUtil.isCellDateFormatted(cell)) {
+				return parseDateCellValue(cell, columnInfo.getType());
+			} else {
+				return parseTemporalValue(
+						String.valueOf(cell.getNumericCellValue()), columnInfo);
+			}
 		}
 		double cellValue = cell.getNumericCellValue();
-		if (type == IntValue.class) {
+		if (columnInfo.getType() == IntValue.class) {
 			return new IntValue((int) cellValue);
 		} else
-		if (type == FloatValue.class) {
+		if (columnInfo.getType() == FloatValue.class) {
 			return new FloatValue((float) cellValue);
 		} else {
 			throw new UnsupportedOperationException(
-				String.format("type %s not supported", type));
+				String.format("type %s not supported", columnInfo.getType()));
 		}
 	}
 

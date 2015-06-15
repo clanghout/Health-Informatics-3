@@ -1,10 +1,7 @@
 package model.input.file;
 
 import model.data.DataTable;
-import model.data.value.DataValue;
-import model.data.value.DateTimeValue;
-import model.data.value.DateValue;
-import model.data.value.TimeValue;
+import model.data.value.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -141,12 +138,8 @@ public class PlainTextFile extends DataFile {
 	private DataValue toDataValue(String value, ColumnInfo columnInfo) {
 		if (value.isEmpty()) {
 			return DataValue.getNullInstance(columnInfo.getType());
-		} else if (columnInfo.getType() == DateValue.class) {
-			return new DateValue(parseLocalDate(value, columnInfo.getFormat()));
-		} else if (columnInfo.getType() == DateTimeValue.class) {
-			return new DateTimeValue(parseLocalDateTime(value, columnInfo.getFormat()));
-		} else if (columnInfo.getType() == TimeValue.class) {
-			return parseLocalTime(value, columnInfo.getFormat());
+		} else if (isTemporalValue(columnInfo.getType())) {
+			return parseTemporalValue(value, columnInfo);
 		} else {
 			return parseSimpleDataValue(value, columnInfo.getType());
 		}
