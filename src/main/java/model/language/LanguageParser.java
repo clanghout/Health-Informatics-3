@@ -8,6 +8,7 @@ import org.parboiled.Context;
 import org.parboiled.Rule;
 import org.parboiled.support.Var;
 
+import java.beans.Expression;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -952,6 +953,42 @@ class LanguageParser extends BaseParser<Object> {
 				"ON",
 				SomeWhiteSpace(),
 				BooleanExpression()
+		);
+	}
+
+	/**
+	 * first adds all the columns from the input table to the result
+	 * computation(name INLUDE EXISTING SET COLUMN col1 AS input.c1 + input.c2, col2 AS "never gonna")
+	 * dont add all the columns from the input table
+	 * computation(name NEW SET COLUMN col1 AS input.c3, col2 AS "give you up")
+	 *
+	 */
+	Rule ColumnComputation() {
+		return Sequence(
+				Identifier(),
+				SomeWhiteSpace(),
+				ColumnComutationType(),
+				"SET COLUMNS",
+				SomeWhiteSpace(),
+				ZeroOrMore(
+						Sequence(
+								Identifier(),
+								SomeWhiteSpace(),
+								"as",
+								SomeWhiteSpace(),
+								Expression(); //no idea what should go here
+						)
+				)
+		);
+	}
+
+	Rule ColumnComutationType() {
+		return Sequence(
+				FirstOf(
+						"INCLUDE EXISTING",
+						"NEW"
+				),
+				push(match())
 		);
 	}
 }
