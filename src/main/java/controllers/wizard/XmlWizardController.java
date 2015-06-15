@@ -324,6 +324,7 @@ public class XmlWizardController {
 		writeXmlToFile(file);
 		try {
 			mainUIcontroller.setModel(createModel());
+			dialog.close();
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Error creating datamodel " + e.getMessage());
 		}

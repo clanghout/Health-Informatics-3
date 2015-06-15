@@ -8,6 +8,7 @@ import javafx.stage.FileChooser;
 import model.data.DataModel;
 import model.data.DataTable;
 import model.input.reader.DataReader;
+import model.input.reader.XmlReader;
 import model.output.DataTableWriter;
 
 import java.io.File;
@@ -68,7 +69,8 @@ public class DataController {
 
 	private void read() {
 		try {
-			DataReader reader = new DataReader(file);
+			DataReader reader = new DataReader(new XmlReader());
+			reader.read(file);
 			DataModel model = reader.createDataModel();
 			mainUIController.setModel(model);
 			
