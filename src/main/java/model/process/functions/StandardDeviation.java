@@ -3,6 +3,7 @@ package model.process.functions;
 import model.data.DataTable;
 import model.data.describer.DataDescriber;
 import model.data.value.FloatValue;
+import model.data.value.IntValue;
 import model.data.value.NumberValue;
 
 /**
@@ -20,14 +21,22 @@ public class StandardDeviation extends Function {
 	 * Calculate average, variance and finally the (standard) deviation.
 	 */
 	@Override
-	public FloatValue calculate() {
+	public NumberValue calculate() {
 		if (!initialize()) {
 			return new FloatValue(0f);
 		}
-		float average = new Average(getTable(), getArgument()).calculate().getValue();
+		float average;
+		if (isInt()) {
+			average = (float) ((IntValue) new Average(getTable(), getArgument()).calculate()).getValue();
+		} else {
+			average = ((FloatValue) new Average(getTable(), getArgument()).calculate()).getValue();
+		}
 		float variance = variance(average);
 		float deviation = (float) Math.sqrt((double) variance);
 		FloatValue result = new FloatValue(deviation);
+		if (isInt()) {
+			return new IntValue((int) deviation);
+		}
 		return result;
 	}
 
