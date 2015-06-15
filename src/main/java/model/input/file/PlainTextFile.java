@@ -1,10 +1,7 @@
 package model.input.file;
 
 import model.data.DataTable;
-import model.data.value.DataValue;
-import model.data.value.DateTimeValue;
-import model.data.value.DateValue;
-import model.data.value.TimeValue;
+import model.data.value.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -42,22 +39,20 @@ public class PlainTextFile extends DataFile {
 		Scanner scanner = new Scanner(stream, "UTF-8");
 			scanner.useDelimiter("\\A");
 			skipToStartLine(scanner);
+
 			if (hasFirstRowAsHeader()) {
-				String headers = scanner.nextLine();
-				String[] sections = headers.split(delimiter);
-				for (int i = 0; i < getColumns().size(); i++) {
-					ColumnInfo column = getColumns().get(i);
-					column.setName(sections[i].trim());
-					getBuilder().createColumn(column.getName(), column.getType());
-				}
+				handleFirstRowHeader(scanner);
+
 			} else {
 				for (ColumnInfo column : getColumns()) {
 					getBuilder().createColumn(column.getName(), column.getType());
 				}
 			}
+
 			if (hasMetaData()) {
 				getBuilder().createColumn(getMetaDataColumnName(), getMetaDataType());
 			}
+
 			List<String> lines = readLines(scanner);
 			addRowsToBuilder(filterLastRows(lines));
 
@@ -67,6 +62,16 @@ public class PlainTextFile extends DataFile {
 	@Override
 	public String getFileTypeAsString() {
 		return "plaintext";
+	}
+
+	private void handleFirstRowHeader(Scanner scanner) {
+		String headers = scanner.nextLine();
+		String[] sections = headers.split(delimiter);
+		for (int i = 0; i < getColumns().size(); i++) {
+			ColumnInfo column = getColumns().get(i);
+			column.setName(sections[i].trim());
+			getBuilder().createColumn(column.getName(), column.getType());
+		}
 	}
 
 	/**
@@ -136,13 +141,9 @@ public class PlainTextFile extends DataFile {
 	 */
 	private DataValue toDataValue(String value, ColumnInfo columnInfo) {
 		if (value.isEmpty()) {
-			return createNullValue(columnInfo.getType());
-		} else if (columnInfo.getType() == DateValue.class) {
-			return new DateValue(parseLocalDate(value, columnInfo.getFormat()));
-		} else if (columnInfo.getType() == DateTimeValue.class) {
-			return new DateTimeValue(parseLocalDateTime(value, columnInfo.getFormat()));
-		} else if (columnInfo.getType() == TimeValue.class) {
-			return parseLocalTime(value, columnInfo.getFormat());
+			return DataValue.getNullInstance(columnInfo.getType());
+		} else if (isTemporalValue(columnInfo.getType())) {
+			return parseTemporalValue(value, columnInfo);
 		} else {
 			return parseSimpleDataValue(value, columnInfo.getType());
 		}

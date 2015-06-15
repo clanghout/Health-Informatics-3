@@ -21,6 +21,8 @@ import java.util.Iterator;
  */
 public abstract class ExcelFile extends DataFile {
 
+	private static final String EXCEL_DATE = "exceldate";
+
 	/**
 	 * Creates a new ExcelFile.
 	 * @param path The path to the Excel file
@@ -69,7 +71,7 @@ public abstract class ExcelFile extends DataFile {
 			int nullCount = 0;
 			for (int i = 0; i < getColumns().size(); i++) {
 				Cell cell = row.getCell(i, Row.CREATE_NULL_AS_BLANK);
-				values[i] = toDataValue(cell, getColumns().get(i).getType());
+				values[i] = toDataValue(cell, getColumns().get(i));
 				if (values[i].isNull()) {
 					nullCount++;
 				}
@@ -84,47 +86,71 @@ public abstract class ExcelFile extends DataFile {
 		}
 	}
 
-	private DataValue toDataValue(Cell cell, Class<? extends DataValue> type) {
+	private DataValue toDataValue(Cell cell, ColumnInfo columnInfo) {
 		switch (cell.getCellType()) {
-			case Cell.CELL_TYPE_STRING:
-				return new StringValue(cell.getStringCellValue());
-			case Cell.CELL_TYPE_NUMERIC:
-				return parseNumValue(cell, type);
 			case Cell.CELL_TYPE_BLANK:
-				return createNullValue(type);
+				return DataValue.getNullInstance(columnInfo.getType());
+			case Cell.CELL_TYPE_NUMERIC:
+				return parseNumValue(cell, columnInfo);
+			case Cell.CELL_TYPE_STRING:
+				return parseStringValue(cell, columnInfo);
 			default:
 				throw new UnsupportedOperationException(
 						String.format("Cell type %s not supported", cell.getCellType()));
 		}
 	}
 
-	private DataValue parseNumValue(Cell cell, Class<? extends DataValue> type) {
-		if (DateUtil.isCellDateFormatted(cell)) {
-			return parseDateCellValue(cell, type);
-		}
-		double cellValue = cell.getNumericCellValue();
-		if (type == IntValue.class) {
-			return new IntValue((int) cellValue);
-		} else
-		if (type == FloatValue.class) {
-			return new FloatValue((float) cellValue);
+	private DataValue parseStringValue(Cell cell, ColumnInfo columnInfo) {
+		if (isTemporalValue(columnInfo.getType())) {
+			return parseTemporalValue(cell.getStringCellValue(), columnInfo);
 		} else {
-			throw new UnsupportedOperationException(
-				String.format("type %s not supported", type));
+			return new StringValue(cell.getStringCellValue());
 		}
 	}
 
-	private DataValue parseDateCellValue(Cell cell, Class<? extends DataValue> type) {
-		Date date = cell.getDateCellValue();
+	private DataValue parseNumValue(Cell cell, ColumnInfo columnInfo) {
+		if (isTemporalValue(columnInfo.getType())) {
+			return parseExcelDateCell(cell, columnInfo);
+		}
+		
+		double cellValue = cell.getNumericCellValue();
+		
+		if (columnInfo.getType() == IntValue.class) {
+			return new IntValue((int) cellValue);
+		} else if (columnInfo.getType() == FloatValue.class) {
+			return new FloatValue((float) cellValue);
+		} else {
+			throw new UnsupportedOperationException(
+				String.format("type %s not supported", columnInfo.getType()));
+		}
+	}
+
+	private DataValue parseExcelDateCell(Cell cell, ColumnInfo columnInfo) {
+		if (DateUtil.isCellDateFormatted(cell)) {
+			Date date = cell.getDateCellValue();
+			return parseDateCellValue(date, columnInfo.getType());
+	
+		} else {
+			if (columnInfo.getFormat().equals(EXCEL_DATE)) {
+				Date javaDate = DateUtil.getJavaDate(cell.getNumericCellValue());
+				return parseDateCellValue(javaDate, columnInfo.getType());
+			} else {
+				return parseTemporalValue(
+						String.valueOf(cell.getNumericCellValue()), columnInfo);
+			}
+		}
+	}
+
+	private DataValue parseDateCellValue(Date date, Class<? extends DataValue> type) {
 		if (type == DateTimeValue.class) {
 			Instant instant = Instant.ofEpochMilli(date.getTime());
 			return new DateTimeValue(LocalDateTime.ofInstant(instant, ZoneId.systemDefault()));
-		} else
-		if (type == DateValue.class) {
+
+		} else if (type == DateValue.class) {
 			Instant instant = Instant.ofEpochMilli(date.getTime());
 			return new DateValue(LocalDateTime.ofInstant(instant, ZoneId.systemDefault()));
-		} else
-		if (type == TimeValue.class) {
+
+		} else if (type == TimeValue.class) {
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(date);
 			return new TimeValue(calendar.get(Calendar.HOUR_OF_DAY),

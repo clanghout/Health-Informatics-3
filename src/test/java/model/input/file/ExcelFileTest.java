@@ -3,10 +3,7 @@ package model.input.file;
 import model.data.DataColumn;
 import model.data.DataRow;
 import model.data.DataTable;
-import model.data.value.DateTimeValue;
-import model.data.value.FloatValue;
-import model.data.value.IntValue;
-import model.data.value.StringValue;
+import model.data.value.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -56,12 +53,14 @@ public class ExcelFileTest {
 		xlsxFile2.addColumnInfo(new ColumnInfo(StringValue.class));
 		xlsxFile2.addColumnInfo(new ColumnInfo(DateTimeValue.class));
 		xlsxFile2.addColumnInfo(new ColumnInfo(FloatValue.class));
+		xlsxFile2.addColumnInfo(new ColumnInfo(DateValue.class, "exceldate"));
 
 		xlsFile2.setFirstRowAsHeader(true);
 		xlsFile2.addColumnInfo(new ColumnInfo(IntValue.class));
 		xlsFile2.addColumnInfo(new ColumnInfo(StringValue.class));
 		xlsFile2.addColumnInfo(new ColumnInfo(DateTimeValue.class));
 		xlsFile2.addColumnInfo(new ColumnInfo(FloatValue.class));
+		xlsFile2.addColumnInfo(new ColumnInfo(DateValue.class, "exceldate"));
 	}
 
 	@Test
@@ -89,7 +88,8 @@ public class ExcelFileTest {
 		assertEquals(StringValue.class, columns.get(1).getType());
 		assertEquals(DateTimeValue.class, columns.get(2).getType());
 		assertEquals(FloatValue.class, columns.get(3).getType());
-		assertEquals(StringValue.class, columns.get(4).getType());
+		assertEquals(DateValue.class, columns.get(4).getType());
+		assertEquals(StringValue.class, columns.get(5).getType());
 
 		assertEquals(3, table.getRowCount());
 		DataRow row0 = table.getRow(0);
@@ -114,7 +114,12 @@ public class ExcelFileTest {
 		assertEquals(new FloatValue(13.13f), row1.getValue(table.getColumn("Floots")));
 		assertEquals(new FloatValue(21.21f), row2.getValue(table.getColumn("Floots")));
 
+		assertEquals(new DateValue(2012, 6, 20), row0.getValue(table.getColumn("lelijke_excel_dates")));
+		assertEquals(new DateValue(2012, 6, 21), row2.getValue(table.getColumn("lelijke_excel_dates")));
+
 		assertEquals(new StringValue("xlsx2"), row1.getValue(table.getColumn("M374D474")));
+
+
 	}
 
 	@Test
@@ -149,6 +154,9 @@ public class ExcelFileTest {
 		assertEquals(new FloatValue(0.8f), row0.getValue(table.getColumn("Floots")));
 		assertEquals(new FloatValue(13.13f), row1.getValue(table.getColumn("Floots")));
 		assertEquals(new FloatValue(21.21f), row2.getValue(table.getColumn("Floots")));
+
+		assertEquals(new DateValue(2012, 6, 20), row0.getValue(table.getColumn("lelijke_excel_dates")));
+		assertEquals(new DateValue(2012, 6, 21), row2.getValue(table.getColumn("lelijke_excel_dates")));
 	}
 
 	@Test
