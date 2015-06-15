@@ -4,6 +4,8 @@ import model.exceptions.FunctionInputMismatchException;
 import model.data.describer.RowValueDescriber;
 import model.data.value.DataValue;
 import model.data.value.FloatValue;
+import model.data.value.IntValue;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -34,7 +36,7 @@ public class MinimumTest extends FunctionTest {
 	@Test
 	public void testIntMinimum() throws Exception {
 		DataValue min = new Minimum(table, new RowValueDescriber<>(intColumn)).calculate();
-		assertEquals(new FloatValue(3.0f), min);
+		assertEquals(new IntValue(3), min);
 	}
 
 	@Test
@@ -54,7 +56,7 @@ public class MinimumTest extends FunctionTest {
 	@Test
 	public void testIntMultipleMinimum() throws Exception {
 		DataValue min = new Minimum(table, new RowValueDescriber<>(intsColumn)).calculate();
-		FloatValue f = new FloatValue(3.0f);
+		IntValue f = new IntValue(3);
 		assertEquals(f, min);
 	}
 }
