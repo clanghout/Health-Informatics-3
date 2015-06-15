@@ -1,10 +1,14 @@
 package model.process.analysis.operations;
 
+import model.data.DataColumn;
 import model.data.DataTableBuilder;
 import model.data.Row;
 import model.data.Table;
 import model.data.describer.DataDescriber;
+import model.data.describer.TableValueDescriber;
 import model.data.value.DataValue;
+import model.language.ColumnIdentifier;
+import model.language.Identifier;
 import model.process.DataProcess;
 
 import java.util.Iterator;
@@ -21,15 +25,19 @@ public class ColumnComputation extends DataProcess {
 
 	private String name;
 	private LinkedHashMap<String, DataDescriber<? extends DataValue>> describers;
+	private boolean addAllColumns;
 
 	/**
 	 * Create a columnComputation object.
 	 * Specify the name of the new table.
 	 * @param name name of the new table.
+	 * @param addAllColumns true if all the columns of the input table
+	 *                         should be added to the result.
 	 */
-	public ColumnComputation(String name) {
+	public ColumnComputation(String name, boolean addAllColumns) {
 		this.describers = new LinkedHashMap<>();
 		this.name = name;
+		this.addAllColumns = addAllColumns;
 	}
 
 	/**
@@ -49,6 +57,8 @@ public class ColumnComputation extends DataProcess {
 	@Override
 	protected Table doProcess() {
 		Table input = getInput();
+		processColumns();
+
 		Iterator<? extends Row> iterator = input.iterator();
 		if (!iterator.hasNext()) {
 			throw new IllegalStateException("Table has no rows");
@@ -63,6 +73,26 @@ public class ColumnComputation extends DataProcess {
 		}
 
 		return builder.build();
+	}
+
+	/**
+	 * Add all the existing columns to the result table.
+	 */
+	private void processColumns() {
+		if (addAllColumns) {
+			LinkedHashMap<String, DataDescriber<? extends DataValue>> col = new LinkedHashMap<>();
+			for (DataColumn column : getInput().getColumns()) {
+				col.put(column.getName(),
+						new TableValueDescriber<>(
+								getDataModel(),
+								new ColumnIdentifier(
+										new Identifier(column.getTable().getName()),
+										new Identifier(column.getName()))));
+
+			}
+			col.putAll(describers);
+			describers = col;
+		}
 	}
 
 	/**
