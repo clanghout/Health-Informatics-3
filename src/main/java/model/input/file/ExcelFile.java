@@ -94,6 +94,8 @@ public abstract class ExcelFile extends DataFile {
 				return parseStringValue(cell, columnInfo);
 			case Cell.CELL_TYPE_NUMERIC:
 				return parseNumValue(cell, columnInfo);
+			case Cell.CELL_TYPE_BOOLEAN:
+				return new BoolValue(cell.getBooleanCellValue());
 			default:
 				throw new UnsupportedOperationException(
 						String.format("Cell type %s not supported", cell.getCellType()));

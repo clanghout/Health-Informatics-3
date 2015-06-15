@@ -280,12 +280,12 @@ public abstract class DataFile {
 	protected DataValue parseSimpleDataValue(String value, Class<? extends DataValue> type) {
 		if (type == IntValue.class) {
 			return new IntValue(Integer.parseInt(value));
-		} else
-		if (type == FloatValue.class) {
+		} else if (type == FloatValue.class) {
 			return new FloatValue(Float.parseFloat(value));
-		} else
-		if (type == StringValue.class) {
+		} else if (type == StringValue.class) {
 			return new StringValue(value);
+		} else if (type == BoolValue.class) {
+			return new BoolValue(Boolean.parseBoolean(value));
 		} else {
 			throw new RuntimeException("Class has not yet been implemented");
 		}
