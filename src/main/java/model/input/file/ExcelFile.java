@@ -21,6 +21,8 @@ import java.util.Iterator;
  */
 public abstract class ExcelFile extends DataFile {
 
+	private static final String EXCEL_DATE = "exceldate";
+
 	/**
 	 * Creates a new ExcelFile.
 	 * @param path The path to the Excel file
@@ -108,18 +110,14 @@ public abstract class ExcelFile extends DataFile {
 
 	private DataValue parseNumValue(Cell cell, ColumnInfo columnInfo) {
 		if (isTemporalValue(columnInfo.getType())) {
-			if (DateUtil.isCellDateFormatted(cell)) {
-				return parseDateCellValue(cell, columnInfo.getType());
-			} else {
-				return parseTemporalValue(
-						String.valueOf(cell.getNumericCellValue()), columnInfo);
-			}
+			return parseExcelDateCell(cell, columnInfo);
 		}
+		
 		double cellValue = cell.getNumericCellValue();
+		
 		if (columnInfo.getType() == IntValue.class) {
 			return new IntValue((int) cellValue);
-		} else
-		if (columnInfo.getType() == FloatValue.class) {
+		} else if (columnInfo.getType() == FloatValue.class) {
 			return new FloatValue((float) cellValue);
 		} else {
 			throw new UnsupportedOperationException(
@@ -127,8 +125,23 @@ public abstract class ExcelFile extends DataFile {
 		}
 	}
 
-	private DataValue parseDateCellValue(Cell cell, Class<? extends DataValue> type) {
-		Date date = cell.getDateCellValue();
+	private DataValue parseExcelDateCell(Cell cell, ColumnInfo columnInfo) {
+		if (DateUtil.isCellDateFormatted(cell)) {
+			Date date = cell.getDateCellValue();
+			return parseDateCellValue(date, columnInfo.getType());
+	
+		} else {
+			if (columnInfo.getFormat().equals(EXCEL_DATE)) {
+				Date javaDate = DateUtil.getJavaDate(cell.getNumericCellValue());
+				return parseDateCellValue(javaDate, columnInfo.getType());
+			} else {
+				return parseTemporalValue(
+						String.valueOf(cell.getNumericCellValue()), columnInfo);
+			}
+		}
+	}
+
+	private DataValue parseDateCellValue(Date date, Class<? extends DataValue> type) {
 		if (type == DateTimeValue.class) {
 			Instant instant = Instant.ofEpochMilli(date.getTime());
 			return new DateTimeValue(LocalDateTime.ofInstant(instant, ZoneId.systemDefault()));
