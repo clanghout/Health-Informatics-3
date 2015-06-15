@@ -132,7 +132,7 @@ public class PlainTextFile extends DataFile {
 	 */
 	private DataValue toDataValue(String value, ColumnInfo columnInfo) {
 		if (value.isEmpty()) {
-			return createNullValue(columnInfo.getType());
+			return DataValue.getNullInstance(columnInfo.getType());
 		} else if (columnInfo.getType() == DateValue.class) {
 			return new DateValue(parseLocalDate(value, columnInfo.getFormat()));
 		} else if (columnInfo.getType() == DateTimeValue.class) {

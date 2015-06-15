@@ -287,37 +287,6 @@ public abstract class DataFile {
 		}
 	}
 
-	/**
-	 * Creates a DataValue representing a null of a given type.
-	 * @param type The type to create a null value of
-	 * @return The DataValue representing the null
-	 */
-	public static DataValue createNullValue(Class<? extends DataValue> type) {
-		if (type == StringValue.class) {
-			return new StringValue(null);
-		} else
-		if (type == BoolValue.class) {
-			return new BoolValue(null);
-		} else
-		if (type == IntValue.class) {
-			return new IntValue(null);
-		} else
-		if (type == FloatValue.class) {
-			return new FloatValue(null);
-		} else
-		if (type == TimeValue.class) {
-			return new TimeValue(null, null, null);
-		} else
-		if (type == DateValue.class) {
-			return new DateValue(null, null, null);
-		}
-		if (type == DateTimeValue.class) {
-			return new DateTimeValue(null, null, null, null, null, null);
-		}
-		throw new UnsupportedOperationException(
-				String.format("type %s not supported", type));
-	}
-
 	protected TimeValue parseLocalTime(String value, String format) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
 		LocalTime localTime = LocalTime.parse(value, formatter);

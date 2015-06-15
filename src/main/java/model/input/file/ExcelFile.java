@@ -91,7 +91,7 @@ public abstract class ExcelFile extends DataFile {
 			case Cell.CELL_TYPE_NUMERIC:
 				return parseNumValue(cell, type);
 			case Cell.CELL_TYPE_BLANK:
-				return createNullValue(type);
+				return DataValue.getNullInstance(type);
 			default:
 				throw new UnsupportedOperationException(
 						String.format("Cell type %s not supported", cell.getCellType()));
