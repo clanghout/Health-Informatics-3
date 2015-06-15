@@ -28,7 +28,7 @@ public class DataTableConversionBuilder extends DataTableBuilder {
 	}
 	
 	/**
-	 * Adds a column to an existing table and sets the given DataValue as its value.
+	 * Adds a column to an existing table and sets a default DataValue as its value.
 	 * 
 	 * @param table the table to add the column to
 	 * @param type the DataValue to fill in the new column
