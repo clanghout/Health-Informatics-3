@@ -66,7 +66,7 @@ public class XmlWriterTest {
 		Element fileElem = (Element) root.getElementsByTagName("file").item(0);
 		Element path = (Element) fileElem.getElementsByTagName("path").item(0);
 		Element meta = (Element) fileElem.getElementsByTagName("metadata").item(0);
-		assertEquals("/path/to", path.getTextContent());
+		assertEquals(File.separator + "path" + File.separator + "to", path.getTextContent());
 		assertEquals("Prettyname.txt", fileElem.getAttribute("name"));
 		assertEquals("metaldata", meta.getAttribute("name"));
 		assertEquals("string", meta.getAttribute("type"));
