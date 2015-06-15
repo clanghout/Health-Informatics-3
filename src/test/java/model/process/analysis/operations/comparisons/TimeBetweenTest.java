@@ -30,7 +30,7 @@ public class TimeBetweenTest {
 		
 		DataValue datetime = new DateTimeValue(2014, 6, 20, 10, 20, 10);
 		DataValue date = new DateValue(2019, 6, 9);
-		DataValue time = new TimeValue(14, 12, 50);
+		DataValue time = new TimeValue(21, 12, 50);
 		builder.createRow(datetime, date, time);
 		
 		datetime = new DateTimeValue(2016, 1, 19, 10, 10, 10);
@@ -51,6 +51,8 @@ public class TimeBetweenTest {
 		
 		DataTable result = (DataTable) tb.process();
 		
+		assertEquals(result.getRowCount(), 2);
+		
 		DataValue compareDate = new PeriodValue(0, 0, 0);
 		DataValue dateDiff = result.getRow(0).getValue(result.getColumn("Difference date"));
 		DataValue compareTime = new TimeValue(0, 0, 0);
@@ -61,7 +63,7 @@ public class TimeBetweenTest {
 		
 		compareDate = new PeriodValue(1, 6, 29);
 		dateDiff = result.getRow(1).getValue(result.getColumn("Difference date"));
-		compareTime = new TimeValue(0, 10, 0);
+		compareTime = new TimeValue(23, 50, 0);
 		timeDiff = result.getRow(1).getValue(result.getColumn("Difference time"));
 		
 		assertEquals(compareDate, dateDiff);
@@ -76,6 +78,8 @@ public class TimeBetweenTest {
 		tb.setInput(table);
 		
 		DataTable result = (DataTable) tb.process();
+		
+		assertEquals(result.getRowCount(), 2);
 		
 		DataValue compareDate = new PeriodValue(0, 0, 0);
 		DataValue dateDiff = result.getRow(0).getValue(result.getColumn("Difference date"));
@@ -97,12 +101,14 @@ public class TimeBetweenTest {
 		
 		DataTable result = (DataTable) tb.process();
 		
+		assertEquals(result.getRowCount(), 2);
+		
 		DataValue compareTime = new TimeValue(0, 0, 0);
 		DataValue timeDiff = result.getRow(0).getValue(result.getColumn("Difference time"));
 		
 		assertEquals(compareTime, timeDiff);
 		
-		compareTime = new TimeValue(5, 55, 39);
+		compareTime = new TimeValue(22, 55, 39);
 		timeDiff = result.getRow(1).getValue(result.getColumn("Difference time"));
 		
 		assertEquals(compareTime, timeDiff);
