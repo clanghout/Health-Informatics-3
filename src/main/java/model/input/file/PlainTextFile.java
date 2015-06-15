@@ -42,27 +42,35 @@ public class PlainTextFile extends DataFile {
 		try (Scanner scanner = new Scanner(stream, "UTF-8")) {
 			scanner.useDelimiter("\\A");
 			skipToStartLine(scanner);
+
 			if (hasFirstRowAsHeader()) {
-				String headers = scanner.nextLine();
-				String[] sections = headers.split(delimiter);
-				for (int i = 0; i < getColumns().size(); i++) {
-					ColumnInfo column = getColumns().get(i);
-					column.setName(sections[i].trim());
-					getBuilder().createColumn(column.getName(), column.getType());
-				}
+				handleFirstRowHeader(scanner);
+
 			} else {
 				for (ColumnInfo column : getColumns()) {
 					getBuilder().createColumn(column.getName(), column.getType());
 				}
 			}
+
 			if (hasMetaData()) {
 				getBuilder().createColumn(getMetaDataColumnName(), getMetaDataType());
 			}
+
 			List<String> lines = readLines(scanner);
 			addRowsToBuilder(filterLastRows(lines));
 		}
 
 		return getBuilder().build();
+	}
+
+	private void handleFirstRowHeader(Scanner scanner) {
+		String headers = scanner.nextLine();
+		String[] sections = headers.split(delimiter);
+		for (int i = 0; i < getColumns().size(); i++) {
+			ColumnInfo column = getColumns().get(i);
+			column.setName(sections[i].trim());
+			getBuilder().createColumn(column.getName(), column.getType());
+		}
 	}
 
 	/**

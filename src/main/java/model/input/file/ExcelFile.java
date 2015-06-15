@@ -119,12 +119,12 @@ public abstract class ExcelFile extends DataFile {
 		if (type == DateTimeValue.class) {
 			Instant instant = Instant.ofEpochMilli(date.getTime());
 			return new DateTimeValue(LocalDateTime.ofInstant(instant, ZoneId.systemDefault()));
-		} else
-		if (type == DateValue.class) {
+
+		} else if (type == DateValue.class) {
 			Instant instant = Instant.ofEpochMilli(date.getTime());
 			return new DateValue(LocalDateTime.ofInstant(instant, ZoneId.systemDefault()));
-		} else
-		if (type == TimeValue.class) {
+
+		} else if (type == TimeValue.class) {
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(date);
 			return new TimeValue(calendar.get(Calendar.HOUR_OF_DAY),
