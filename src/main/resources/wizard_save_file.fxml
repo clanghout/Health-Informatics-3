@@ -5,8 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox styleClass="main-box-save" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-	  fx:controller="controllers.SaveWizardController" fx:id="root">
+<VBox fx:id="root" styleClass="main-box-save" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SaveWizardController">
 	<children>
 		<HBox styleClass="save-box">
 			<!--main top box-->
@@ -22,7 +21,7 @@
 								<RadioButton fx:id="extensionCsv">.csv</RadioButton>
 							</children>
 						</VBox>
-						<VBox>
+						<VBox maxWidth="Infinity">
 							<!--select delimiter-->
 							<children>
 								<Label>(only for .txt extension)</Label>
@@ -32,29 +31,58 @@
 								<RadioButton fx:id="delimiterSpace">Space</RadioButton>
 							</children>
 						</VBox>
+						<VBox>
+							<!--select date format-->
+							<children>
+								<Label>Select date format for save</Label>
+								<RadioButton fx:id="dateUnix">Unix timestamp</RadioButton>
+								<RadioButton fx:id="dateExcel">Excel timestamp</RadioButton>
+								<RadioButton fx:id="dateSelf">Custom date format</RadioButton>
+							</children>
+						</VBox>
 					</children>
 				</VBox>
 				<VBox styleClass="inner-box">
 					<!--tables to save-->
 					<children>
-						<Label>Select the tables you want to save:</Label>
-						<VBox fx:id="tablesBox"/>
+						<Label fx:id="tableSaveLabel">Select the tables you want to save:</Label>
+						<VBox fx:id="tablesBox" />
+					</children>
+				</VBox>
+				<VBox styleClass="inner-box">
+					<!--column 3-->
+					<children>
+						<VBox>
+							<!--select save style-->
+							<children>
+								<Label>Naming of the save files:</Label>
+								<RadioButton fx:id="saveNames">Save only table names</RadioButton>
+								<RadioButton fx:id="saveNew" text="Save as inputName_tableName.extension"/>
+							</children>
+						</VBox>
+						<VBox>
+							<!--select null style-->
+							<children>
+								<Label>How to save null values?</Label>
+								<RadioButton fx:id="nullLower">null</RadioButton>
+								<RadioButton fx:id="nullUpper">NULL</RadioButton>
+								<RadioButton fx:id="nullEmpty">"" (empty)</RadioButton>
+							</children>
+						</VBox>
+						<Label fx:id="saveMessage" />
+						<HBox alignment="BOTTOM_LEFT" styleClass="spaced-box">
+							<!--buttons-->
+							<children>
+								<Button onAction="#handleSaveButton" text="Save" />
+								<Button onAction="#handleCancelButton" text="Cancel" />
+							</children>
+						</HBox>
 					</children>
 				</VBox>
 			</children>
 		</HBox>
-		<Label fx:id="saveMessage"/>
-		<HBox alignment="BOTTOM_LEFT" styleClass="spaced-box">
-			<!--buttons-->
-			<children>
-				<Button text="Save"
-						onAction="#handleSaveButton"/>
-				<Button text="Cancel"
-						onAction="#handleCancelButton"/>
-			</children>
-		</HBox>
 	</children>
 	<stylesheets>
-		<URL value="@wizard.css"/>
+		<URL value="@wizard.css" />
 	</stylesheets>
 </VBox>

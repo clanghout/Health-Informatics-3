@@ -38,6 +38,8 @@ public class SaveWizardController {
 	private Label saveMessage;
 	@FXML
 	private Parent root;
+	@FXML
+	private Label tableSaveLabel;
 
 	private DataModel model;
 	private Dialog dialog;
@@ -148,27 +150,36 @@ public class SaveWizardController {
 	 */
 	@FXML
 	protected void handleSaveButton() {
+		tableSaveLabel.setTextFill(Color.BLACK);
 		List<String> tables = getSelectedTables();
 		String selectedExtension = extension.getSelectedToggle().getUserData().toString();
 		String delimitSymbol = getSelectedDelimiter();
 		if (!tables.isEmpty()) {
 			File temp = selectSaveLocation(selectedExtension);
-			String tempPath = temp.getAbsolutePath();
-			if (tempPath.endsWith(selectedExtension)) {
-				temp = new File(tempPath.substring(
-						0, tempPath.length() - EXTENSION_SIZE));
+			try {
+				String tempPath = temp.getAbsolutePath();
+				if (tempPath.endsWith(selectedExtension)) {
+					temp = new File(tempPath.substring(
+							0, tempPath.length() - EXTENSION_SIZE));
+				}
+				writeTables(tables, temp, selectedExtension, delimitSymbol);
+			} catch (NullPointerException e) {
+				logger.log(Level.SEVERE, "Error saving; no file selected");
+				saveMessage.setText(
+						"Data not saved! No file location selected.");
 			}
-			writeTables(tables, temp, selectedExtension, delimitSymbol);
 		} else {
 			logger.log(Level.INFO, "No table selected thus no save");
+			tableSaveLabel.setTextFill(Color.RED);
 			saveMessage.setText("Please select one or more tables to save.");
 		}
 	}
 
 	/**
 	 * Write the selected tables to file.
-	 * @param tables the names of the tables to write.
-	 * @param location the location where to save.
+	 *
+	 * @param tables    the names of the tables to write.
+	 * @param location  the location where to save.
 	 * @param extension the extension for the save.
 	 * @param delimiter the delimiter to use in the file.
 	 */
