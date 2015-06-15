@@ -37,9 +37,8 @@ public class TimeBetween extends DataProcess {
 	private LocalTime curtime;
 	private LocalDate predate;
 	private LocalTime pretime;
-	private int hour;
-	private int min;
-	private int sec;
+	
+	private static final int MINSEC = 60;
 
 	public TimeBetween(Identifier<DataColumn> date) {
 		this.dateName = date.getName();
@@ -70,7 +69,7 @@ public class TimeBetween extends DataProcess {
 	}
 
 	private DataTable getVars(DataTable table) {
-		
+
 		if (!value.getClass().equals(TimeValue.class)) {
 			table.getRow(0).setValue(table.getColumn("Difference date"),
 					new PeriodValue(0, 0, 0));
@@ -83,8 +82,7 @@ public class TimeBetween extends DataProcess {
 		for (int i = 1; i < table.getRowCount(); i++) {
 			DataRow current = table.getRow(i);
 			DataRow previous = table.getRow(i - 1);
-			
-			
+
 			if (value.getClass().equals(DateTimeValue.class)) {
 				LocalDateTime cur = (LocalDateTime) current.getValue(
 						table.getColumn(dateName)).getValue();
@@ -108,36 +106,41 @@ public class TimeBetween extends DataProcess {
 				pretime = (LocalTime) previous.getValue(
 						table.getColumn(dateName)).getValue();
 			}
-			
+
 			table = calculate(table, current);
-			
+
 		}
 		return table;
 	}
-	
+
+	/**
+	 * Do the actual calculating.
+	 * 
+	 * @param table
+	 *            The table to set the calculated value in
+	 * @param current
+	 *            The row to set the calculated value in
+	 * @return
+	 */
 	private DataTable calculate(DataTable table, DataRow current) {
 		boolean negative = false;
 
 		if (!value.getClass().equals(DateValue.class)) {
 			Duration diffTime = Duration.between(pretime, curtime);
-			
+
 			negative = diffTime.isNegative();
-			
+
 			if (diffTime.isNegative()) {
 				diffTime = diffTime.negated();
 				diffTime = diffTime.minusDays(1);
 				diffTime = diffTime.negated();
 			}
-			
-			int timeConvert = 60;
-			hour = (int) diffTime.toHours();
-			min = ((int) diffTime.toMinutes()) - (hour * timeConvert);
-			sec = ((int) diffTime.getSeconds()) - (min * timeConvert)
-					- (hour * timeConvert * timeConvert);
-			
-			
-			
-			
+
+			int hour = (int) diffTime.toHours();
+			int min = ((int) diffTime.toMinutes()) - (hour * MINSEC);
+			int sec = ((int) diffTime.getSeconds()) - (min * MINSEC)
+					- (hour * MINSEC * MINSEC);
+
 			DataValue val = new TimeValue(hour, min, sec);
 			current.setValue(table.getColumn("Difference time"), val);
 		}
@@ -151,30 +154,7 @@ public class TimeBetween extends DataProcess {
 					diffDate.getMonths(), diffDate.getDays());
 			current.setValue(table.getColumn("Difference date"), value);
 		}
-		
+
 		return table;
-	}
-
-	private boolean checkNegative() {
-
-		if (hour < 0 || min < 0 || sec < 0) {
-			
-			
-			if (hour < 0) {
-				hour *= -1;
-			}
-			if (min < 0) {
-				min *= -1;
-			}
-			if (sec < 0) {
-				sec *= -1;
-			}
-			return true;
-		} else if ((hour < 0 || min < 0 || sec < 0)
-				&& !(Period.between(predate, curdate).getDays() > 0)) {
-			throw new InputMismatchException(
-					"Input table is not chronologically sorted.");
-		}
-		return false;
 	}
 }
