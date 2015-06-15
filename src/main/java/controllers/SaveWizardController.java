@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import model.data.DataModel;
 import model.data.DataTable;
@@ -150,8 +151,8 @@ public class SaveWizardController {
 		//TODO: let user specify date format;
 		dateSelf.setUserData("TBD");
 
-		saveNames.setUserData("name");
-		saveNew.setUserData("new");
+		saveNames.setUserData(false);
+		saveNew.setUserData(true);
 
 		nullEmpty.setUserData("empty");
 		nullLower.setUserData("lower");
@@ -196,14 +197,21 @@ public class SaveWizardController {
 		String selectedExtension = extension.getSelectedToggle().getUserData().toString();
 		String delimitSymbol = getSelectedDelimiter();
 		if (!tables.isEmpty()) {
-			File temp = selectSaveLocation(selectedExtension);
+			File temp;
+			boolean newSave = (boolean) saveName.getSelectedToggle().getUserData();
 			try {
-				String tempPath = temp.getAbsolutePath();
-				if (tempPath.endsWith(selectedExtension)) {
-					temp = new File(tempPath.substring(
-							0, tempPath.length() - EXTENSION_SIZE));
+				if (newSave) {
+					temp = selectNewFileLocation(selectedExtension);
+					String tempPath = temp.getAbsolutePath();
+					if (tempPath.endsWith(selectedExtension)) {
+						temp = new File(tempPath.substring(
+								0, tempPath.length() - EXTENSION_SIZE));
+					}
+				} else {
+					temp = selectFolderLocation();
 				}
-				writeTables(tables, temp, selectedExtension, delimitSymbol);
+
+				writeTables(tables, temp, selectedExtension, delimitSymbol, newSave);
 			} catch (NullPointerException e) {
 				logger.log(Level.SEVERE, "Error saving; no file selected");
 				saveMessage.setText(
@@ -227,14 +235,22 @@ public class SaveWizardController {
 	private void writeTables(List<String> tables,
 	                         File location,
 	                         String extension,
-	                         String delimiter) {
+	                         String delimiter,
+	                         boolean underScore) {
 		DataTableWriter dataTableWriter = new DataTableWriter();
 		try {
 			for (String tableName : tables) {
 				DataTable table = model.getByName(tableName).get();
-				File saveLocation = new File(
-						location.getPath() + "_" + table.getName()
-								+ "." + extension);
+				File saveLocation;
+				if (underScore) {
+					saveLocation = new File(
+							location.getPath() + "_" + table.getName()
+									+ "." + extension);
+				} else {
+					saveLocation = new File(
+							location.getPath() + File.separator + table.getName()
+									+ "." + extension);
+				}
 				dataTableWriter.write(table, saveLocation, delimiter);
 			}
 			dialog.close();
@@ -251,10 +267,10 @@ public class SaveWizardController {
 	 * @param extension the selected extension
 	 * @return picked location to save the file.
 	 */
-	private File selectSaveLocation(String extension) {
+	private File selectNewFileLocation(String extension) {
 		FileChooser fileChooser = new FileChooser();
 
-		fileChooser.setTitle("Select location to save output");
+		fileChooser.setTitle("Select name to save the data");
 		fileChooser.setInitialDirectory(
 				new File(System.getProperty("user.home"))
 		);
@@ -263,6 +279,15 @@ public class SaveWizardController {
 						extension.toUpperCase(), "*." + extension)
 		);
 		return fileChooser.showSaveDialog(root.getScene().getWindow());
+	}
+
+	private File selectFolderLocation() {
+		DirectoryChooser directoryChooser = new DirectoryChooser();
+		directoryChooser.setTitle("Select location to save output");
+		directoryChooser.setInitialDirectory(
+				new File(System.getProperty("user.home"))
+		);
+		return directoryChooser.showDialog(root.getScene().getWindow());
 	}
 
 	/**
