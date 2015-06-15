@@ -110,6 +110,8 @@ public class ExcelFileTest {
 				row1.getValue(table.getColumn("Datums")));
 		assertTrue(row2.getValue(table.getColumn("Datums")).isNull());
 
+		assertTrue(row2.getValue(table.getColumn("Datums")).isNull());
+
 		assertEquals(new FloatValue(0.8f), row0.getValue(table.getColumn("Floots")));
 		assertEquals(new FloatValue(13.13f), row1.getValue(table.getColumn("Floots")));
 		assertEquals(new FloatValue(21.21f), row2.getValue(table.getColumn("Floots")));
@@ -149,6 +151,8 @@ public class ExcelFileTest {
 				row0.getValue(table.getColumn("Datums")));
 		assertEquals(new DateTimeValue(1995, 12, 9, 13, 13, 13),
 				row1.getValue(table.getColumn("Datums")));
+		assertTrue(row2.getValue(table.getColumn("Datums")).isNull());
+
 		assertTrue(row2.getValue(table.getColumn("Datums")).isNull());
 
 		assertEquals(new FloatValue(0.8f), row0.getValue(table.getColumn("Floots")));

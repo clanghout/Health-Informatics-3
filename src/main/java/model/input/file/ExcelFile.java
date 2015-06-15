@@ -90,10 +90,10 @@ public abstract class ExcelFile extends DataFile {
 		switch (cell.getCellType()) {
 			case Cell.CELL_TYPE_BLANK:
 				return DataValue.getNullInstance(columnInfo.getType());
-			case Cell.CELL_TYPE_NUMERIC:
-				return parseNumValue(cell, columnInfo);
 			case Cell.CELL_TYPE_STRING:
 				return parseStringValue(cell, columnInfo);
+			case Cell.CELL_TYPE_NUMERIC:
+				return parseNumValue(cell, columnInfo);
 			default:
 				throw new UnsupportedOperationException(
 						String.format("Cell type %s not supported", cell.getCellType()));
@@ -101,7 +101,9 @@ public abstract class ExcelFile extends DataFile {
 	}
 
 	private DataValue parseStringValue(Cell cell, ColumnInfo columnInfo) {
-		if (isTemporalValue(columnInfo.getType())) {
+		if (cell.getStringCellValue().equals("NULL")) {
+			return DataValue.getNullInstance(columnInfo.getType());
+		} else if (isTemporalValue(columnInfo.getType())) {
 			return parseTemporalValue(cell.getStringCellValue(), columnInfo);
 		} else {
 			return new StringValue(cell.getStringCellValue());

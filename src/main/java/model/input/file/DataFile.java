@@ -277,7 +277,7 @@ public abstract class DataFile {
 	 * @param type The type of DataValue to parse to
 	 * @return The new created DataValue
 	 */
-	public static DataValue parseSimpleDataValue(String value, Class<? extends DataValue> type) {
+	protected DataValue parseSimpleDataValue(String value, Class<? extends DataValue> type) {
 		if (type == IntValue.class) {
 			return new IntValue(Integer.parseInt(value));
 		} else

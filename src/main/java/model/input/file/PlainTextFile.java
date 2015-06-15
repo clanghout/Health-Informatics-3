@@ -136,7 +136,7 @@ public class PlainTextFile extends DataFile {
 	 * @return The DataValue
 	 */
 	private DataValue toDataValue(String value, ColumnInfo columnInfo) {
-		if (value.isEmpty()) {
+		if (value.isEmpty() || value.equals("NULL")) {
 			return DataValue.getNullInstance(columnInfo.getType());
 		} else if (isTemporalValue(columnInfo.getType())) {
 			return parseTemporalValue(value, columnInfo);

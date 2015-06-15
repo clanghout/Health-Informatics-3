@@ -61,6 +61,8 @@ public class PlainTextFileTest {
 		assertEquals(new DateTimeValue(2008, 8, 8, 8, 8, 8), row0.getValue(table.getColumn("Datumtijden")));
 		assertTrue(row2.getValue(table.getColumn("Datumtijden")).isNull());
 		assertEquals(new DateTimeValue(2010, 9, 8, 5, 8, 25), row3.getValue(table.getColumn("Datumtijden")));
+		assertTrue(row4.getValue(table.getColumn("Datumtijden")).isNull());
+
 
 		assertTrue(row0.getValue(table.getColumn("Datums(dd/mm/yy)")).isNull());
 		assertEquals(new DateValue(2012, 12, 12), row1.getValue(table.getColumn("Datums(dd/mm/yy)")));
