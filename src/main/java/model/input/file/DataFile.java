@@ -153,6 +153,8 @@ public abstract class DataFile {
 				return TimeValue.class;
 			case "datetime" :
 				return DateTimeValue.class;
+			case "bool" :
+				return BoolValue.class;
 			default:
 				throw new RuntimeException("The specified type of data is not supported");
 		}
@@ -176,6 +178,8 @@ public abstract class DataFile {
 			return "time";
 		} else if (type == DateTimeValue.class) {
 			return "datetime";
+		} else if (type == BoolValue.class) {
+			return "bool";
 		} else {
 			throw new RuntimeException("The specified type of data is not supported");
 		}
