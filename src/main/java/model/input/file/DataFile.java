@@ -210,10 +210,17 @@ public abstract class DataFile {
 	}
 
 	/**
-	 * Adds ColumnInfo for a new column to the list.
+	 * Adds ColumnInfo for a new column to the list if it does not exist yet.
+	 * Otherwise the existing ColumnInfo will be overwritten.
 	 * @param info The ColumnInfo to add
 	 */
 	public void addColumnInfo(ColumnInfo info) {
+		for (int i = 0; i < columns.size(); i++) {
+			if (columns.get(i).equals(info)) {
+				columns.set(i, info);
+				return;
+			}
+		}
 		columns.add(info);
 	}
 
