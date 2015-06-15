@@ -18,7 +18,7 @@ public abstract class Function {
 	private DataRow row;
 	private DataTable table;
 	private DataDescriber<NumberValue> argument;
-	protected boolean isInt;
+	private boolean isInt;
 
 	public Function(DataTable table, DataDescriber<NumberValue> argument) {
 		this.table = table;
