@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Period;
+import java.time.chrono.ChronoLocalDateTime;
 import java.util.InputMismatchException;
 
 import model.data.DataColumn;
@@ -16,6 +17,7 @@ import model.data.value.DataValue;
 import model.data.value.DateTimeValue;
 import model.data.value.DateValue;
 import model.data.value.PeriodValue;
+import model.data.value.TemporalValue;
 import model.data.value.TimeValue;
 import model.language.Identifier;
 import model.process.DataProcess;
@@ -64,12 +66,7 @@ public class TimeBetween extends DataProcess {
 					null), "Difference time");
 		}
 
-		setInput(builder.build());
-
-		DataTable result = getVars((DataTable) getInput());
-
-		return result;
-
+		return getVars(builder.build());
 	}
 
 	private DataTable getVars(DataTable table) {
@@ -86,7 +83,8 @@ public class TimeBetween extends DataProcess {
 		for (int i = 1; i < table.getRowCount(); i++) {
 			DataRow current = table.getRow(i);
 			DataRow previous = table.getRow(i - 1);
-
+			
+			
 			if (value.getClass().equals(DateTimeValue.class)) {
 				LocalDateTime cur = (LocalDateTime) current.getValue(
 						table.getColumn(dateName)).getValue();
@@ -122,12 +120,24 @@ public class TimeBetween extends DataProcess {
 
 		if (!value.getClass().equals(DateValue.class)) {
 			Duration diffTime = Duration.between(pretime, curtime);
+			
+			negative = diffTime.isNegative();
+			
+			if (diffTime.isNegative()) {
+				diffTime = diffTime.negated();
+				diffTime = diffTime.minusDays(1);
+				diffTime = diffTime.negated();
+			}
+			
 			int timeConvert = 60;
 			hour = (int) diffTime.toHours();
 			min = ((int) diffTime.toMinutes()) - (hour * timeConvert);
 			sec = ((int) diffTime.getSeconds()) - (min * timeConvert)
 					- (hour * timeConvert * timeConvert);
-			negative = checkNegative();
+			
+			
+			
+			
 			DataValue val = new TimeValue(hour, min, sec);
 			current.setValue(table.getColumn("Difference time"), val);
 		}
@@ -148,6 +158,8 @@ public class TimeBetween extends DataProcess {
 	private boolean checkNegative() {
 
 		if (hour < 0 || min < 0 || sec < 0) {
+			
+			
 			if (hour < 0) {
 				hour *= -1;
 			}
