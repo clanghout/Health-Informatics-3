@@ -34,20 +34,20 @@ public class DataTableWriter {
 	 * @param file      The file you want to write to.
 	 * @param delimiter The delimiter you want to use between fields.
 	 */
-	public void write(DataTable dataTable, File file, String delimiter) throws IOException {
+	public void write(DataTable dataTable, File file, String delimiter, String nullVal) throws IOException {
 		this.delimiter = delimiter;
 		List<DataColumn> columns = readColumns(dataTable);
 		List<DataRow> rows = dataTable.getRows();
 		try (PrintWriter writer = new PrintWriter(file, "UTF-8")) {
 			for (DataRow row : rows) {
 				if (columns.size() > 0) {
-					print(writer, row, columns.get(0), "");
+					print(writer, row, columns.get(0), "", nullVal);
 				} else {
 					logger.warning("Zero columns specified");
 				}
 				for (int i = 1; i < columns.size(); i++) {
 					DataColumn col = columns.get(i);
-					print(writer, row, col, delimiter);
+					print(writer, row, col, delimiter, nullVal);
 				}
 				writer.println();
 			}
@@ -70,13 +70,18 @@ public class DataTableWriter {
 	private void print(PrintWriter writer,
 	                   DataRow row,
 	                   DataColumn col,
-	                   String delimiter) {
+	                   String delimiter,
+	                   String nullVal) {
 		String value = delimiter;
 		DataValue dataValue = row.getValue(col);
-		if (quotationMarks) {
-			value += addQuotes(dataValue);
+		if (dataValue.isNull()) {
+			value += nullVal;
 		} else {
-			value += dataValue.toString();
+			if (quotationMarks) {
+				value += addQuotes(dataValue);
+			} else {
+				value += dataValue.toString();
+			}
 		}
 		writer.print(value);
 	}

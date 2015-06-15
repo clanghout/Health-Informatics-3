@@ -5,7 +5,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="root" styleClass="main-box-save" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SaveWizardController">
+<VBox fx:id="root" styleClass="main-box-save" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	  fx:controller="controllers.SaveWizardController">
 	<children>
 		<HBox styleClass="save-box">
 			<!--main top box-->
@@ -37,7 +38,12 @@
 								<Label>Select date format for save</Label>
 								<RadioButton fx:id="dateUnix">Unix timestamp</RadioButton>
 								<RadioButton fx:id="dateExcel">Excel timestamp</RadioButton>
-								<RadioButton fx:id="dateSelf">Custom date format</RadioButton>
+								<RadioButton fx:id="dateSelf">Custom dateFormat:</RadioButton>
+								<HBox styleClass="right-padding">
+									<children>
+										<TextField fx:id="formatInput" promptText="YY-mm-dd"/>
+									</children>
+								</HBox>
 							</children>
 						</VBox>
 					</children>
@@ -46,7 +52,7 @@
 					<!--tables to save-->
 					<children>
 						<Label fx:id="tableSaveLabel">Select the tables you want to save:</Label>
-						<VBox fx:id="tablesBox" />
+						<VBox fx:id="tablesBox"/>
 					</children>
 				</VBox>
 				<VBox styleClass="inner-box">
@@ -69,12 +75,12 @@
 								<RadioButton fx:id="nullEmpty">"" (empty)</RadioButton>
 							</children>
 						</VBox>
-						<Label fx:id="saveMessage" />
+						<Label fx:id="saveMessage"/>
 						<HBox alignment="BOTTOM_LEFT" styleClass="spaced-box">
 							<!--buttons-->
 							<children>
-								<Button onAction="#handleSaveButton" text="Save" />
-								<Button onAction="#handleCancelButton" text="Cancel" />
+								<Button onAction="#handleSaveButton" text="Save"/>
+								<Button onAction="#handleCancelButton" text="Cancel"/>
 							</children>
 						</HBox>
 					</children>
@@ -83,6 +89,6 @@
 		</HBox>
 	</children>
 	<stylesheets>
-		<URL value="@wizard.css" />
+		<URL value="@wizard.css"/>
 	</stylesheets>
 </VBox>

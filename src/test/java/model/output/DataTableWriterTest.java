@@ -71,7 +71,7 @@ public class DataTableWriterTest {
 		when(dataTable.getColumns()).thenReturn(columnsMap);
 
 		DataTableWriter writer = new DataTableWriter();
-		writer.write(dataTable, testFile, ",");
+		writer.write(dataTable, testFile, ",", "");
 		BufferedReader reader = new BufferedReader(new FileReader(testFile));
 		String firstLine = reader.readLine();
 		assertEquals(firstLine, "value1,value2,value3");
@@ -102,11 +102,11 @@ public class DataTableWriterTest {
 		when(dataTable.getColumns()).thenReturn(columnsMap);
 
 		DataTableWriter writer = new DataTableWriter();
-		writer.write(dataTable, testFile, "\t");
+		writer.write(dataTable, testFile, "\t", "");
 		BufferedReader reader = new BufferedReader(new FileReader(testFile));
 		String firstLine = reader.readLine();
 		assertEquals(firstLine, "value1\tvalue2\tvalue3");
-		writer.write(dataTable, testFile, " ");
+		writer.write(dataTable, testFile, " ", "");
 		reader = new BufferedReader(new FileReader(testFile));
 		firstLine = reader.readLine();
 		assertEquals(firstLine, "value1 value2 value3");

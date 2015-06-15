@@ -3,16 +3,13 @@ package controllers;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import model.data.DataModel;
 import model.data.DataTable;
-import javafx.scene.control.RadioButton;
 import model.output.DataTableWriter;
 import view.Dialog;
 import view.SaveDialog;
@@ -47,6 +44,8 @@ public class SaveWizardController {
 	private Parent root;
 	@FXML
 	private Label tableSaveLabel;
+	@FXML
+	private TextField formatInput;
 
 	private DataModel model;
 	private Dialog dialog;
@@ -79,6 +78,7 @@ public class SaveWizardController {
 		this.dialog = dialog;
 		this.model = model;
 		saveMessage.setTextFill(Color.RED);
+		formatInput.setDisable(true);
 
 		setToggleGroups();
 		setUserData();
@@ -118,8 +118,8 @@ public class SaveWizardController {
 		dateExcel.setToggleGroup(dateFormat);
 		dateUnix.setToggleGroup(dateFormat);
 		dateSelf.setToggleGroup(dateFormat);
-		dateSelf.setDisable(true);
 		dateUnix.setSelected(true);
+		addDateListener();
 
 		saveName = new ToggleGroup();
 		saveNames.setToggleGroup(saveName);
@@ -131,6 +131,19 @@ public class SaveWizardController {
 		nullUpper.setToggleGroup(nullSave);
 		nullEmpty.setToggleGroup(nullSave);
 		nullUpper.setSelected(true);
+	}
+
+	/**
+	 * Set the Listener for the date format radioButtons so that the user input box is enabled.
+	 */
+	private void addDateListener() {
+		dateFormat.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue.equals(dateSelf)) {
+				formatInput.setDisable(false);
+			} else {
+				formatInput.setDisable(true);
+			}
+		});
 	}
 
 	/**
@@ -148,16 +161,14 @@ public class SaveWizardController {
 
 		dateUnix.setUserData("unix");
 		dateExcel.setUserData("excel");
-		//TODO: let user specify date format;
-		dateSelf.setUserData("TBD");
+		dateSelf.setUserData("user");
 
 		saveNames.setUserData(false);
 		saveNew.setUserData(true);
 
-		nullEmpty.setUserData("empty");
-		nullLower.setUserData("lower");
-		nullUpper.setUserData("upper");
-
+		nullEmpty.setUserData("");
+		nullLower.setUserData("null");
+		nullUpper.setUserData("NULL");
 	}
 
 	/**
@@ -252,7 +263,8 @@ public class SaveWizardController {
 							location.getPath() + File.separator + table.getName()
 									+ "." + extension);
 				}
-				dataTableWriter.write(table, saveLocation, delimiter);
+				dataTableWriter.write(table, saveLocation, delimiter,
+						nullSave.getSelectedToggle().getUserData().toString());
 			}
 			dialog.close();
 		} catch (IOException e) {
