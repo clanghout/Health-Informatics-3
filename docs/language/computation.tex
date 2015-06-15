@@ -1,3 +1,5 @@
 We should support basic operations such as $+, -, *, /, pow(), sqrt()$.
 
-We should also feature some way to do time operations, such as time intervals etc. $+, -, days, min, hours$ etc.
+For time operations we have the ADD and MIN operation to add or subtract time. An example would be $table.date MIN \#1 DAYS\#$, which does exactly what you'd expect.
+
+We also support the RELATIVE operation. This calculates the differences between 2 dates in the given unit. So $RELATIVE(\#1995-01-17\#, \#1995-01-18\#, DAYS)$ results in 1. Since this is an integer, you can then apply the other computations to it.

@@ -26,35 +26,32 @@ We've opted to name her SUGAR, which stands for Simple Usable Great Analysis Rea
 \section{Basic Idea}
 We like the BASH approach to piping input from one process to another, so we'll be borrowing the pipe $|$ command. Don't worry, we'll give it back. Parentheses are great to use for grouping things like parameters and the ; is great for closing things.
 
-\section{Examples}
+\section{Example}
 Let's start with something like:\\
 
-$from(statSensor)|constraints(idCheck)|is(person1)|save("person1.txt");$\\
+$def\ idCheck : Constraint = statSensor.id = 170;$ \\
+$from(statSensor)|constraints(idCheck)|is(person1)$\\
 
-Here we run into a couple of things, first of all we have our commands (from, constraints etc.). These are straight forward and should pose no issues. They always have their parameters between parentheses (if they have no parameters parentheses are still required). 
+Here we run into a couple of things, first of all we have our processes (from, constraints etc.). These are straight forward and should pose no issues. They always have their parameters between parentheses (if they have no parameters parentheses are still required). 
 
-Next we have our pipes, which we have described in the previous section. 
+Next we have our pipes, which we have described in the previous section. They basically let the output of the one process be the input of the next.
 
-We also have some identifiers: statSensor, idCheck etc. these should pose any problems either as long as they don't contain symbols such as parentheses or spaces. We do find the need to describe the contraints for the constraints analysis, so will be declaring macros later on.
+We also encounter a macro, this will be discussed in the next section.
 
-Furthermore we find the string literal, which should be trivial.
-
-Last of all we have a closing ;.
 
 \section{Macros}
-Macros will be useful to describe variables and other things. This will simplify the life of the user, since things like constraints, which could take a couple of lines to declare, won't be mixed with the processing chain.
+Macros are a way of splitting the processes you want to perform on the data (your process chain) and exactly what that process should do.
 
 Let's begin with another example: \\
 
-$def\ idCheck(measurement) : Constraint = measurement.id = 1\ AND\ (measurement.level > 5)\ OR\ NOT(true)\ AND\ (measurement.level > measurement.value);$
+$def\ idCheck : Constraint = measurement.id = 1\ AND\ (measurement.level > 5)\ OR\ NOT(true)\ AND\ (measurement.level > measurement.value);$
 
-Let's say all macros start with def. This will simplify all our lives.
+All macros start with the word def. It is followed by the identifier for the macro (which can then be used in a process chain). In this case the identifier is idCheck. After this we see the type. We currently have several types in our language: Constraint, GroupByColumn, GroupByConstraint, Join and Connection. We plan on implementing a few more.
 
-Next we declare the identifier, which in this case is idCheck.
+After the type, we require an = to specify the actual content of the macro. The actual working depends on the type of macro. We close the macro with an ;.
 
-Then we declare the type of macro, in this case it is Constraint, although we expect things like Process, Chunk, what have you. This is seperated by a =.
-
-Next we have our constraint, which is a subject for another section.
+\section{Literals}
+\input{literal}
 
 \section{Constraints}
 Constraints can be somewhat complicated and rightfully so, therefore the declaration should be powerfull, but not overly complicated.
@@ -69,6 +66,8 @@ With $table.column <= 2$ and $table.column >= 2$ we declare that the table's col
 
 Next we have the AND, OR and NOT statement. With AND we declare that both constrains should hold. For example when we have $table.id > 2\ AND\ table.id < 4$, than the $id$ should be larger than 2 and less than 4.
 With OR we declare that one or more constrains should hold. So when we have $table.name = "Matthijs"\ OR\ table.name = "Bob"$, than name must be "Matthijs" or the name must be "Bob".
+
+For dates we have the BEFORE and AFTER commands, which do exactly what you'd expect. For example $\#1995-01-17\#\ BEFORE\ \#1994-01-17\#$ returns true.
 
 \section{Computation}
 \input{computation}
