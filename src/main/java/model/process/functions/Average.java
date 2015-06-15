@@ -32,7 +32,12 @@ public class Average extends Function {
 		if (!initialize()) {
 			return new FloatValue(0f);
 		}
-		FloatValue sum = new Sum(getTable(), getArgument()).calculate();
+		FloatValue sum;
+		if (isInt()) {
+			sum = new FloatValue((float) new Sum(getTable(), getArgument()).calculate().getValue());
+		} else {
+			sum = (FloatValue) new Sum(getTable(), getArgument()).calculate();
+		}
 		float total = sum.getValue();
 		total = total / getTable().getRowCount();
 		return new FloatValue(total);

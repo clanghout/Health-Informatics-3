@@ -25,12 +25,7 @@ public class StandardDeviation extends Function {
 		if (!initialize()) {
 			return new FloatValue(0f);
 		}
-		float average;
-		if (isInt()) {
-			average = (float) ((IntValue) new Average(getTable(), getArgument()).calculate()).getValue();
-		} else {
-			average = ((FloatValue) new Average(getTable(), getArgument()).calculate()).getValue();
-		}
+		float average = new Average(getTable(), getArgument()).calculate().getValue();
 		float variance = variance(average);
 		float deviation = (float) Math.sqrt((double) variance);
 		FloatValue result = new FloatValue(deviation);
