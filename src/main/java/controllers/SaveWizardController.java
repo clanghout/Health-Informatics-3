@@ -35,6 +35,12 @@ public class SaveWizardController {
 	@FXML
 	private RadioButton delimiterComma, delimiterTab, delimiterSpace;
 	@FXML
+	private RadioButton dateUnix, dateExcel, dateSelf;
+	@FXML
+	private RadioButton saveNames, saveNew;
+	@FXML
+	private RadioButton nullLower, nullUpper, nullEmpty;
+	@FXML
 	private Label saveMessage;
 	@FXML
 	private Parent root;
@@ -45,6 +51,9 @@ public class SaveWizardController {
 	private Dialog dialog;
 	private ToggleGroup extension;
 	private ToggleGroup delimiter;
+	private ToggleGroup dateFormat;
+	private ToggleGroup saveName;
+	private ToggleGroup nullSave;
 
 	private Logger logger = Logger.getLogger("SaveWizardController");
 
@@ -103,6 +112,24 @@ public class SaveWizardController {
 		delimiterSpace.setToggleGroup(delimiter);
 		delimiterTab.setToggleGroup(delimiter);
 		delimiterComma.setSelected(true);
+
+		dateFormat = new ToggleGroup();
+		dateExcel.setToggleGroup(dateFormat);
+		dateUnix.setToggleGroup(dateFormat);
+		dateSelf.setToggleGroup(dateFormat);
+		dateSelf.setDisable(true);
+		dateUnix.setSelected(true);
+
+		saveName = new ToggleGroup();
+		saveNames.setToggleGroup(saveName);
+		saveNew.setToggleGroup(saveName);
+		saveNew.setSelected(true);
+
+		nullSave = new ToggleGroup();
+		nullLower.setToggleGroup(nullSave);
+		nullUpper.setToggleGroup(nullSave);
+		nullEmpty.setToggleGroup(nullSave);
+		nullUpper.setSelected(true);
 	}
 
 	/**
@@ -113,9 +140,23 @@ public class SaveWizardController {
 	private void setUserData() {
 		extensionTxt.setUserData("txt");
 		extensionCsv.setUserData("csv");
+
 		delimiterComma.setUserData("comma");
 		delimiterSpace.setUserData("space");
 		delimiterTab.setUserData("tab");
+
+		dateUnix.setUserData("unix");
+		dateExcel.setUserData("excel");
+		//TODO: let user specify date format;
+		dateSelf.setUserData("TBD");
+
+		saveNames.setUserData("name");
+		saveNew.setUserData("new");
+
+		nullEmpty.setUserData("empty");
+		nullLower.setUserData("lower");
+		nullUpper.setUserData("upper");
+
 	}
 
 	/**
