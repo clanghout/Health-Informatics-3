@@ -127,15 +127,14 @@ public class XmlWizardController {
 					|| newValue.equals("datetime")
 					|| newValue.equals("time")) {
 				columnFormat.setDisable(false);
-			}
-			else {
+			} else {
 				columnFormat.setText("");
 				columnFormat.setDisable(true);
 			}
 		}
 	});
 	private ListChangeListener datacolumnsListener = new ListChangeListener() {
-		boolean suspended;
+		private boolean suspended;
 
 		@Override
 		public void onChanged(Change c) {
