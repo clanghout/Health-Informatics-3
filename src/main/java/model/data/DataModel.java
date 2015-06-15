@@ -40,8 +40,7 @@ public class DataModel extends Observable implements Iterable<DataTable> {
 	 */
 	public void add(DataTable table) {
 		insert(table);
-		setChanged();
-		notifyObservers();
+		setUpdated();
 	}
 
 	private void insert(DataTable table) {
@@ -61,8 +60,7 @@ public class DataModel extends Observable implements Iterable<DataTable> {
 	 */
 	public void addAll(Collection<DataTable> tables) {
 		tables.forEach(this::insert);
-		setChanged();
-		notifyObservers();
+		setUpdated();
 	}
 
 	/**
@@ -111,6 +109,11 @@ public class DataModel extends Observable implements Iterable<DataTable> {
 				.filter(
 						x -> x.getName().equals(name)
 				).findFirst();
+	}
+
+	public void setUpdated() {
+		setChanged();
+		notifyObservers();
 	}
 
 	/**

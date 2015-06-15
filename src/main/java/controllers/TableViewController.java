@@ -6,15 +6,10 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import model.data.DataColumn;
-import model.data.DataModel;
-import model.data.DataRow;
-import model.data.DataTable;
-import model.data.Row;
+import model.data.*;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -27,6 +22,7 @@ import java.util.stream.Collectors;
  */
 public class TableViewController implements Observer {
 
+	private static final String CODE_COLUMN_NAME = "Code";
 	private Logger logger = Logger.getLogger("TabViewController");
 
 	@FXML
@@ -72,16 +68,24 @@ public class TableViewController implements Observer {
 		List<DataColumn> columns = table.getColumns();
 		Iterator<DataRow> rowIterator = table.iterator();
 
-		tableView.setPlaceholder(new Label("Loading..."));
 		fillTableHeaders(columns);
 
 		while (rowIterator.hasNext()) {
+			StringBuilder codesBuilder = new StringBuilder();
 			Row currentRow = rowIterator.next();
 			ObservableList<StringProperty> row = FXCollections.observableArrayList();
-			for (int i = 0; i < columns.size(); i++) {
-				String val = currentRow.getValue(columns.get(i)).toString();
+			if (!currentRow.getCodes().isEmpty()) {
+				Set<String> codes = currentRow.getCodes();
+				logger.info("Row has codes " + codes);
+				for (String code : codes) {
+					codesBuilder.append(code).append("\n");
+				}
+			}
+			for (DataColumn column : columns) {
+				String val = currentRow.getValue(column).toString();
 				row.add(new SimpleStringProperty(val));
 			}
+			row.add(new SimpleStringProperty(codesBuilder.toString()));
 			tableView.getItems().add(row);
 		}
 	}
@@ -92,12 +96,25 @@ public class TableViewController implements Observer {
 	 * @param columns A List containing the DataColumns
 	 */
 	private void fillTableHeaders(List<DataColumn> columns) {
-		for (int i = 0; i < columns.size(); i++) {
+		int i = 0;
+		while (i < columns.size()) {
 			TableColumn<ObservableList<StringProperty>, String> fxColumn
 					= createColumn(i, columns.get(i).getName());
 			fxColumn.getStyleClass().add("table-column");
 			tableView.getColumns().add(fxColumn);
+			i++;
 		}
+		addCodesColumn(i);
+	}
+
+	/**
+	 * Adds a column for the codes into the tableview.
+	 */
+	private void addCodesColumn(int index) {
+		TableColumn<ObservableList<StringProperty>, String> fxColumn
+				= new TableColumn<>(CODE_COLUMN_NAME);
+		fxColumn.setCellValueFactory(code -> code.getValue().get(index));
+		tableView.getColumns().add(fxColumn);
 	}
 
 	/**
@@ -141,6 +158,7 @@ public class TableViewController implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		if (o instanceof DataModel) {
+			logger.info("Model changed");
 			updateList();
 			fillTable(currentTable);
 		}
