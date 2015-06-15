@@ -238,6 +238,7 @@ public class SaveWizardController {
 	                         String delimiter,
 	                         boolean underScore) {
 		DataTableWriter dataTableWriter = new DataTableWriter();
+		dataTableWriter.setQuotationMarks(true);
 		try {
 			for (String tableName : tables) {
 				DataTable table = model.getByName(tableName).get();

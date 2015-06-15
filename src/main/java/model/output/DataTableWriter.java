@@ -18,7 +18,8 @@ public class DataTableWriter {
 	private Logger logger = Logger.getLogger("DataTableWriter");
 
 	// Options for user
-	private boolean quotationmarks;
+	private boolean quotationMarks;
+	private String delimiter;
 
 	/**
 	 * Constructor for DataTableWriter.
@@ -30,27 +31,23 @@ public class DataTableWriter {
 	 * Creates a PrintWriter that prints the DataTable to a file.
 	 *
 	 * @param dataTable The table you want to output.
-	 * @param file The file you want to write to.
+	 * @param file      The file you want to write to.
 	 * @param delimiter The delimiter you want to use between fields.
 	 */
 	public void write(DataTable dataTable, File file, String delimiter) throws IOException {
+		this.delimiter = delimiter;
 		List<DataColumn> columns = readColumns(dataTable);
 		List<DataRow> rows = dataTable.getRows();
 		try (PrintWriter writer = new PrintWriter(file, "UTF-8")) {
 			for (DataRow row : rows) {
 				if (columns.size() > 0) {
-					writer.print(row.getValue(columns.get(0)).toString());
+					print(writer, row, columns.get(0), "");
 				} else {
 					logger.warning("Zero columns specified");
 				}
 				for (int i = 1; i < columns.size(); i++) {
 					DataColumn col = columns.get(i);
-					if (quotationmarks) {
-						String value = addQuotes(row.getValue(col));
-						writer.print(delimiter + value);
-					} else {
-						writer.print(delimiter + row.getValue(col).toString());
-					}
+					print(writer, row, col, delimiter);
 				}
 				writer.println();
 			}
@@ -59,6 +56,29 @@ public class DataTableWriter {
 			logger.log(Level.SEVERE, "Error writing file", e);
 			throw e;
 		}
+	}
+
+	/**
+	 * print the value to the file.
+	 * all the properties can be set here.
+	 *
+	 * @param writer    the file writer
+	 * @param row       the row currently printing
+	 * @param col       the column of the row
+	 * @param delimiter the delimiter to use
+	 */
+	private void print(PrintWriter writer,
+	                   DataRow row,
+	                   DataColumn col,
+	                   String delimiter) {
+		String value = delimiter;
+		DataValue dataValue = row.getValue(col);
+		if (quotationMarks) {
+			value += addQuotes(dataValue);
+		} else {
+			value += dataValue.toString();
+		}
+		writer.print(value);
 	}
 
 	public List<DataColumn> readColumns(DataTable in) {
@@ -72,6 +92,10 @@ public class DataTableWriter {
 		} else {
 			return val;
 		}
+	}
+
+	public void setQuotationMarks(boolean quotationMarks) {
+		this.quotationMarks = quotationMarks;
 	}
 }
 
