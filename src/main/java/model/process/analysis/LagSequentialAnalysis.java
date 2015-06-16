@@ -16,6 +16,7 @@ public class LagSequentialAnalysis extends DataAnalysis {
 	private Identifier<DataTable> tableB;
 	private Identifier<DataColumn> dateA;
 	private Identifier<DataColumn> dateB;
+	private String name;
 
 	/**
 	 * Construct a new Lag Sequential analysis to show chronological occurrence
@@ -39,10 +40,21 @@ public class LagSequentialAnalysis extends DataAnalysis {
 			left = getDataModel().getByName(tableA.getName()).get();
 			right = getDataModel().getByName(tableB.getName()).get();
 		} else {
-			throw new NullPointerException("One of the tables has not been set.");
+			throw new NullPointerException(
+					"One of the tables has not been set.");
 		}
-		LagSequential lsa = new LagSequential(left, dateA, right, dateB);
-		input = lsa.getResult();
-		return input;
+		LagSequential lsa = new LagSequential(left, dateA, right, dateB,
+				name);
+		return lsa.getResult();
+	}
+
+	/**
+	 * Set the name of the result.
+	 * 
+	 * @param name
+	 *            the name
+	 */
+	public void setName(String name) {
+		this.name = name;
 	}
 }

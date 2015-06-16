@@ -109,7 +109,7 @@ public class LagSequentialTest {
 	@Test
 	public void testLSA() throws Exception {
 		LagSequential lsa = new LagSequential(table1, datedesc, table2,
-				datedesc2);
+				datedesc2, "lsa");
 		DataTable result = lsa.getResult();
 		assertEquals(table1.getRowCount(), 2);
 		assertEquals(table2.getRowCount(), 2);
@@ -140,6 +140,6 @@ public class LagSequentialTest {
 	@Test(expected = NullPointerException.class)
 	public void testEmptyTable() throws Exception {
 		LagSequential lsa = new LagSequential(table3, datedesc3, table2,
-				datedesc2);
+				datedesc2, "lsa");
 	}
 }

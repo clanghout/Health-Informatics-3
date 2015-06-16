@@ -48,7 +48,7 @@ public class LagSequential {
 	 * @return
 	 */
 	public LagSequential(DataTable tableA, Identifier<DataColumn> dateA,
-			DataTable tableB, Identifier<DataColumn> dateB) {
+			DataTable tableB, Identifier<DataColumn> dateB, String name) {
 		this.tableA = tableA;
 		this.colA = dateA;
 		this.colB = dateB;
@@ -60,7 +60,7 @@ public class LagSequential {
 		model.add(tableA);
 		model.add(tableB);
 
-		Connection con = new Connection("con", a, columnid, a2, columnid2);
+		Connection con = new Connection(name, a, columnid, a2, columnid2);
 		con.setDataModel(model);
 		result = (DataTable) con.process();
 
