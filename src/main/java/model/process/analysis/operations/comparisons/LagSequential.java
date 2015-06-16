@@ -119,6 +119,7 @@ public class LagSequential {
 		}
 
 		SortProcess sort = new SortProcess(datadesc, order);
+		sort.setDataModel(model);
 		sort.setInput(table);
 		table = (DataTable) sort.process();
 
