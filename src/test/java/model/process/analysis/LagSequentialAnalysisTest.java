@@ -14,34 +14,34 @@ import model.data.value.DataValue;
 import model.data.value.DateTimeValue;
 import model.data.value.IntValue;
 import model.language.Identifier;
-import model.process.analysis.operations.Event;
 import model.process.analysis.operations.constraints.GreaterThanCheck;
 
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * This test creates an event.
+ * This test creates an table.
  *
  * @author Louis Gosschalk 28-05-2015
  */
 public class LagSequentialAnalysisTest {
 
-	private Event event;
-	private Event event2;
+	private Identifier<DataTable> table1;
+	private Identifier<DataTable> table2;
 	private DataColumn datecol;
 	private DataColumn datecol2;
 	private Identifier<DataColumn> datedesc;
 	private Identifier<DataColumn> datedesc2;
+	private DataModel model;
 
 	/**
-	 * simulate two events.
+	 * simulate two tables.
 	 * 
 	 * @throws Exception
 	 */
 	@Before
-	public void setUpEvents() {
-		DataModel model = new DataModel();
+	public void setUptables() {
+		model = new DataModel();
 
 		DataTableBuilder builder = new DataTableBuilder();
 		builder.setName("Table 1");
@@ -61,12 +61,7 @@ public class LagSequentialAnalysisTest {
 
 		DataTable table = builder.build();
 
-		DataDescriber<BoolValue> greater = new ConstraintDescriber(
-				new GreaterThanCheck<>(new RowValueDescriber<>(
-						table.getColumn("measurement")),
-						new ConstantDescriber<>(new IntValue(0))));
-
-		event = new Event(table, greater);
+		table1 = new Identifier<DataTable>(table.getName());
 
 		model.add(table);
 
@@ -92,23 +87,21 @@ public class LagSequentialAnalysisTest {
 
 		table = builder.build();
 
-		greater = new ConstraintDescriber(new GreaterThanCheck<>(
-				new RowValueDescriber<>(table.getColumn("measurement2")),
-				new ConstantDescriber<>(new IntValue(0))));
-
-		event2 = new Event(table, greater);
+		table2 = new Identifier<DataTable>(table.getName());
 
 		model.add(table);
 	}
 
 	/**
-	 * Call LSA on the created events.
+	 * Call LSA on the created tables.
 	 * 
 	 * @throws Exception
 	 */
 	@Test
 	public void testLSA() throws Exception {
-		DataAnalysis anal = new LagSequentialAnalysis(event, datedesc, event2, datedesc2);
+		LagSequentialAnalysis anal = new LagSequentialAnalysis(table1, datedesc, table2, datedesc2);
+		anal.setDataModel(model);
+		anal.setName("LSA");
 		DataTable result = (DataTable) anal.process();
 
 		assertEquals(result.getRowCount(), 4);
