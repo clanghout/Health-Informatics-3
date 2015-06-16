@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox styleClass="main-box-save" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	  fx:controller="controllers.SaveWizardController" fx:id="root">
+	<children>
+		<HBox styleClass="save-box">
+			<!--main top box-->
+			<children>
+				<VBox styleClass="inner-box">
+					<!--leftside-->
+					<children>
+						<VBox>
+							<!--extension type-->
+							<children>
+								<Label>Save as:</Label>
+								<RadioButton fx:id="extensionTxt">.txt</RadioButton>
+								<RadioButton fx:id="extensionCsv">.csv</RadioButton>
+							</children>
+						</VBox>
+						<VBox>
+							<!--select delimiter-->
+							<children>
+								<Label>(only for .txt extension)</Label>
+								<Label>Delimiter to use:</Label>
+								<RadioButton fx:id="delimiterComma">Comma</RadioButton>
+								<RadioButton fx:id="delimiterTab">Tab</RadioButton>
+								<RadioButton fx:id="delimiterSpace">Space</RadioButton>
+							</children>
+						</VBox>
+					</children>
+				</VBox>
+				<VBox styleClass="inner-box">
+					<!--tables to save-->
+					<children>
+						<Label>Select the tables you want to save:</Label>
+						<VBox fx:id="tablesBox"/>
+					</children>
+				</VBox>
+			</children>
+		</HBox>
+		<Label fx:id="saveMessage"/>
+		<HBox alignment="BOTTOM_LEFT" styleClass="spaced-box">
+			<!--buttons-->
+			<children>
+				<Button text="Save"
+						onAction="#handleSaveButton"/>
+				<Button text="Cancel"
+						onAction="#handleCancelButton"/>
+			</children>
+		</HBox>
+	</children>
+	<stylesheets>
+		<URL value="@wizard.css"/>
+	</stylesheets>
+</VBox>

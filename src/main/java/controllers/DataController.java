@@ -1,15 +1,16 @@
 package controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import model.data.DataModel;
-import model.data.DataTable;
 import model.input.reader.DataReader;
 import model.input.reader.XmlReader;
-import model.output.DataTableWriter;
+import view.SaveDialog;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,26 +29,61 @@ public class DataController {
 	
 	@FXML
 	private Parent root;
-	
+
+	@FXML
+	private Button saveButton;
+
+	@FXML
+	private Label errorLabel;
+
 	private MainUIController mainUIController;
 	
 	private Logger logger = Logger.getLogger("DataController");
 
 	private File file;
-	private DataTable out;
+	private DataModel model;
 	
 	/**
 	 * Creates a new TableViewController.
 	 */
 	public DataController() {
 	}
-	
+
+	/**
+	 * Initialization of the controller.
+	 * @param mainUIController the main UI controller.
+	 */
 	public void initialize(MainUIController mainUIController) {
 		this.mainUIController = mainUIController;
+		saveButton.setDisable(true);
+		errorLabel.setText("Import data");
 	}
-	
+
+	/**
+	 * Handler for the import button.
+	 * Select a file and read it.
+	 */
 	@FXML
-	protected void handleImportButtonAction(ActionEvent event) {
+	protected void handleImportButtonAction() {
+		errorLabel.setText("");
+		file = chooseFile();
+		if (file == null) {
+			errorLabel.setTextFill(Color.RED);
+			errorLabel.setText("ERROR: No file selected for import.");
+		} else {
+			fileNameField.setText(file.getAbsolutePath());
+			read();
+			errorLabel.setTextFill(Color.BLACK);
+			errorLabel.setText("File Selected:");
+			saveButton.setDisable(false);
+		}
+	}
+
+	/**
+	 * Open a fileChooser to select the location of the xml file.
+	 * @return File object containing the xml file.
+	 */
+	private File chooseFile() {
 		FileChooser fileChooser = new FileChooser();
 
 		fileChooser.setTitle("Select Data Descriptor File");
@@ -58,48 +94,42 @@ public class DataController {
 				new FileChooser.ExtensionFilter("XML", "*.xml")
 		);
 
-		file = fileChooser.showOpenDialog(root.getScene().getWindow());
-		if (file == null) {
-			// TODO: Handle no file selected with message.
-		} else {
-			fileNameField.setText(file.getAbsolutePath());
-			read();
-		}
+		return fileChooser.showOpenDialog(root.getScene().getWindow());
 	}
 
+	/**
+	 * Read the data and set the model in the mainUIController.
+	 */
 	private void read() {
 		try {
 			DataReader reader = new DataReader(new XmlReader());
 			reader.read(file);
-			DataModel model = reader.createDataModel();
+			model = reader.createDataModel();
 			mainUIController.setModel(model);
 			
 		} catch (Exception e) {
-			logger.log(Level.WARNING, "Error reading the file", e);
+			logger.log(Level.WARNING, "An error occurred while reading the file", e);
 		}
 	}
 
+	/**
+	 * Handle the save button.
+	 * Opens a save Dialog.
+	 */
 	@FXML
-	protected void handleSaveButtonAction(ActionEvent event) {
-		if (out != null) {
-			FileChooser fileChooser = new FileChooser();
+	protected void handleSaveButtonAction() {
+		SaveDialog saveDialog;
+		try {
+			saveDialog = new SaveDialog();
+			saveDialog.show();
+			SaveWizardController saveWizardController
+					= saveDialog.getFxml().getController();
+			saveWizardController.initializeView(model, saveDialog);
 
-			fileChooser.setTitle("Select location to save output");
-			fileChooser.setInitialDirectory(
-					new File(System.getProperty("user.home"))
-			);
-			fileChooser.getExtensionFilters().add(
-					new FileChooser.ExtensionFilter("TXT", "*.txt")
-			);
-			File temp = fileChooser.showSaveDialog(root.getScene().getWindow());
-
-			DataTableWriter dmw = new DataTableWriter();
-			try {
-				dmw.write(out, temp, "\t");
-			} catch (IOException e) {
-				logger.log(Level.SEVERE, "Error saving", e);
-				// TODO: Show the error to the user.
-			}
+		} catch (IOException e) {
+			errorLabel.setText("ERROR: popup file is missing.");
 		}
+
+
 	}
 }

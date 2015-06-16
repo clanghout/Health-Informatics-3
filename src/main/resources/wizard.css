@@ -44,3 +44,12 @@
 .colheader-checkbox {
     -fx-padding: 0px 0px 10px 10px;
 }
+
+.save-box {
+	-fx-padding: 15px;
+	-fx-spacing: 5px;
+}
+
+.inner-box {
+	-fx-spacing: 5px;
+}
