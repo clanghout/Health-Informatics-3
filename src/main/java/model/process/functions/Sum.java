@@ -3,6 +3,7 @@ package model.process.functions;
 import model.data.DataTable;
 import model.data.describer.DataDescriber;
 import model.data.value.FloatValue;
+import model.data.value.IntValue;
 import model.data.value.NumberValue;
 
 /**
@@ -20,8 +21,7 @@ public class Sum extends Function {
 	 * This function calculates the sum of a column.
 	 */
 	@Override
-	public FloatValue calculate() {
-		//TODO decide if this must become default and move to parrent.
+	public NumberValue calculate() {
 		if (!initialize()) {
 			return new FloatValue(0f);
 		}
@@ -31,6 +31,9 @@ public class Sum extends Function {
 			value = intOrFloat(getArgument(), getTable().getRow(i));
 			total += value;
 		}
+		if (isInt()) {
+			return new IntValue((int) total);
+		} 
 		return new FloatValue(total);
 	}
 }
