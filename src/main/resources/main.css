@@ -64,3 +64,12 @@
 .outsidebox {
 	-fx-padding: 10px;
 }
+
+.full-box {
+	-fx-padding: 15px;
+	-fx-spacing: 10px;
+}
+
+.space {
+	-fx-spacing: 5px;
+}

@@ -5,6 +5,7 @@ import model.data.DataModel;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.describer.ComputationDescriber;
+import model.data.describer.ConstantDescriber;
 import model.data.describer.TableValueDescriber;
 import model.data.value.FloatValue;
 import model.data.value.IntValue;
@@ -66,7 +67,7 @@ public class ColumnComputationTest {
 
 		DataTable expected = builder.build();
 
-		ColumnComputation col = new ColumnComputation("res");
+		ColumnComputation col = new ColumnComputation("res", false);
 		col.addColumn(
 				new TableValueDescriber<>(model,
 						new ColumnIdentifier(new Identifier("table1"), new Identifier("int"))),
@@ -105,7 +106,7 @@ public class ColumnComputationTest {
 
 		DataTable expected = builder.build();
 
-		ColumnComputation col = new ColumnComputation("res");
+		ColumnComputation col = new ColumnComputation("res", false);
 		col.addColumn(
 				new TableValueDescriber<>(model,
 						new ColumnIdentifier(new Identifier("table1"), new Identifier("int"))),
@@ -145,7 +146,7 @@ public class ColumnComputationTest {
 
 		DataTable expected = builder.build();
 
-		ColumnComputation col = new ColumnComputation("res");
+		ColumnComputation col = new ColumnComputation("res", false);
 		col.addColumn(
 				new TableValueDescriber<>(model,
 						new ColumnIdentifier(new Identifier("table1"), new Identifier("int"))),
@@ -173,12 +174,48 @@ public class ColumnComputationTest {
 	@Test(expected = IllegalStateException.class)
 	public void testDoProcessException() throws Exception {
 
-		ColumnComputation col = new ColumnComputation("res");
+		ColumnComputation col = new ColumnComputation("res",  false);
 
 		col.setDataModel(model);
 		col.setInput(new DataTable());
 		DataTable res = (DataTable) col.process();
 
 	}
+
+
+	@Test
+	public void testDoProcessComputationAddAllColumns() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("res");
+		builder.createColumn("int", IntValue.class);
+		builder.createColumn("value", StringValue.class);
+		builder.createColumn("intneg", IntValue.class);
+		builder.createColumn("intRes", IntValue.class);
+		builder.createRow(new IntValue(2), new StringValue("1"), new IntValue(-2), new IntValue(3));
+		builder.createRow(new IntValue(5), new StringValue("5"), new IntValue(-5), new IntValue(6));
+		builder.createRow(new IntValue(4), new StringValue("3"), new IntValue(-4), new IntValue(5));
+		builder.createRow(new IntValue(6), new StringValue("6"), new IntValue(-6), new IntValue(7));
+
+		DataTable expected = builder.build();
+
+		ColumnComputation col = new ColumnComputation("res", true);
+		col.addColumn( new ComputationDescriber<>(
+						new Addition(
+								new TableValueDescriber<>(model,
+										new ColumnIdentifier(new Identifier("table1"), new Identifier("int"))),
+								new ConstantDescriber(
+										new IntValue(1))
+								)), "intRes");
+
+
+		col.setDataModel(model);
+		col.setInput(table1);
+		DataTable res = (DataTable) col.process();
+
+		assertTrue(expected.equalsSoft(res));
+
+	}
+
+
 
 }

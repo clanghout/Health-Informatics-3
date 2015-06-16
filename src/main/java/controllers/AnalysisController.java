@@ -36,6 +36,7 @@ public class AnalysisController {
 		try {
 			DataProcess process = parser.parse(userscript.getText(), model);
 			process.process();
+			model.setUpdated();
 		} catch (ParseException e) {
 
 		}
