@@ -238,6 +238,13 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
+	Rule TimeExpression() {
+		return FirstOf(
+				TimeLiteral(),
+				DateColumn()
+		);
+	}
+
 	Rule DateTerm() {
 		return FirstOf(
 				DateTimeLiteral(),
@@ -332,6 +339,20 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
+	Rule TimeLiteral() {
+		return Sequence(
+				"#",
+				TimeBody(),
+				"#",
+				swap3(),
+				push(new TimeNode(
+						(ValueNode<IntValue>) pop(),
+						(ValueNode<IntValue>) pop(),
+						(ValueNode<IntValue>) pop()
+				))
+		);
+	}
+
 	Rule DateBody() {
 		return Sequence(
 				IntLiteralOfN(4),
@@ -342,16 +363,16 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
-	Rule DateComparison() {
+	Rule TemporalComparison(Rule expression) {
 		return Sequence(
-				DateExpression(),
+				expression,
 				SomeWhiteSpace(),
 				Sequence(
 						FirstOf("AFTER", "BEFORE"),
 						push(match())
 				),
 				SomeWhiteSpace(),
-				DateExpression(),
+				expression,
 				swap3(),
 				push(new DateCompareNode(
 								(ValueNode<? extends TemporalValue<?>>) pop(),
@@ -360,6 +381,14 @@ class LanguageParser extends BaseParser<Object> {
 						)
 				)
 		);
+	}
+
+	Rule DateComparison() {
+		return TemporalComparison(DateExpression());
+	}
+
+	Rule TimeComparison() {
+		return TemporalComparison(TimeExpression());
 	}
 
 	Rule TimeBody() {
@@ -525,6 +554,7 @@ class LanguageParser extends BaseParser<Object> {
 	Rule Comparison() {
 		return FirstOf(
 				DateComparison(),
+				TimeComparison(),
 				NumberComparison()
 		);
 	}
