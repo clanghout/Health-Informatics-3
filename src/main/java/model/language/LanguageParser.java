@@ -697,9 +697,10 @@ class LanguageParser extends BaseParser<Object> {
 	 */
 	Rule Sugar() {
 		return Sequence(
-				ZeroOrMore(Macro()),
+				ZeroOrMore(Sequence(WhiteSpace(), Macro(), WhiteSpace())),
 				WhiteSpace(),
-				Pipe()
+				Pipe(),
+				ZeroOrMore(Sequence(WhiteSpace(), Macro(), WhiteSpace()))
 		);
 	}
 
