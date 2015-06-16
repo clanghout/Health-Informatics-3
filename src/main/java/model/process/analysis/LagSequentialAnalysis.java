@@ -4,7 +4,6 @@ import model.data.DataColumn;
 import model.data.DataTable;
 import model.data.Table;
 import model.language.Identifier;
-import model.process.analysis.operations.Event;
 import model.process.analysis.operations.comparisons.LagSequential;
 
 /**

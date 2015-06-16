@@ -12,9 +12,7 @@ import model.language.ColumnIdentifier;
 import model.language.Identifier;
 import model.process.SortProcess;
 import model.process.SortProcess.Order;
-import model.process.analysis.LagSequentialAnalysis;
 import model.process.analysis.operations.Connection;
-import model.process.analysis.operations.Event;
 
 /**
  * This class will determine a relation between events. Relation will be shown
@@ -33,11 +31,11 @@ public class LagSequential {
 	private Identifier<DataColumn> colA;
 	private Identifier<DataColumn> colB;
 
-	Identifier<DataTable> a;
-	Identifier<DataTable> a2;
+	private Identifier<DataTable> a;
+	private Identifier<DataTable> a2;
 
-	ColumnIdentifier columnid;
-	ColumnIdentifier columnid2;
+	private ColumnIdentifier columnid;
+	private ColumnIdentifier columnid2;
 
 	/**
 	 * Construct LSA resulting combined table of events sorted chronologically.
@@ -70,24 +68,6 @@ public class LagSequential {
 		con.setDataModel(model);
 		result = (DataTable) con.process();
 
-	}
-
-	/**
-	 * Make sure input is a datatable.
-	 * 
-	 * @param table
-	 * @return the datatable
-	 */
-	private DataTable checkTable(Table table) {
-		if (!(table instanceof DataTable)) {
-			throw new InputMismatchException(
-					"Table should be instance of DataTable");
-		}
-		DataTable result = (DataTable) table;
-		if (result.getRowCount() == 0) {
-			throw new InputMismatchException("Empty event input.");
-		}
-		return result;
 	}
 
 	/**
