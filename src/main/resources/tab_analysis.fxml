@@ -30,10 +30,10 @@
 										<TextArea styleClass="analysis-text" fx:id="userscript"/>
 									</children>
 								</TextFlow>
-								<VBox>
+								<VBox styleClass="labels">
 									<children>
-										<Label fx:id="errorLabel" styleClass="error-message"/>
-										<Label fx:id="errorLabelExtra" styleClass="error-message"/>
+										<Label fx:id="errorLabel"/>
+										<VBox fx:id="errorBox" styleClass="labels"/>
 									</children>
 								</VBox>
 							</children>

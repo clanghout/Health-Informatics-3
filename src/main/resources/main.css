@@ -12,7 +12,7 @@
 	-fx-spacing: 15px;
 }
 
-.error-message {
+.labels > Label {
     -fx-max-width: 640px;
     -fx-pref-height: 25px;
     -fx-padding: 0 0 0 15px;
