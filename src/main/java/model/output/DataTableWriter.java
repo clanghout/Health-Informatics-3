@@ -103,21 +103,30 @@ public class DataTableWriter {
 					date.getMonthValue(),
 					date.getDayOfMonth()).toString();
 		} else if (value instanceof DateTimeValue) {
-			DateTimeValue dateValue = (DateTimeValue) value;
-			LocalDateTime date = dateValue.getValue();
-			StringBuilder builder = writeDate(date.getYear(),
-					date.getMonthValue(),
-					date.getDayOfMonth());
-			builder.append(" ");
-			builder.append(date.getHour());
-			builder.append(':');
-			builder.append(date.getMinute());
-			builder.append(':');
-			builder.append(date.getSecond());
-			return builder.toString();
+			return buildDateTime((DateTimeValue) value);
+
 		} else {
 			return val;
 		}
+	}
+
+	/**
+	 * Build a string for the dateTimeValue
+	 * @param dateValue values
+	 * @return formatted string
+	 */
+	private String buildDateTime(DateTimeValue dateValue) {
+		LocalDateTime date = dateValue.getValue();
+		StringBuilder builder = writeDate(date.getYear(),
+				date.getMonthValue(),
+				date.getDayOfMonth());
+		builder.append(" ");
+		builder.append(date.getHour());
+		builder.append(':');
+		builder.append(date.getMinute());
+		builder.append(':');
+		builder.append(date.getSecond());
+		return builder.toString();
 	}
 
 	/**
