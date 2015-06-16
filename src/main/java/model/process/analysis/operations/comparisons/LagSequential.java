@@ -3,11 +3,9 @@ package model.process.analysis.operations.comparisons;
 import model.data.DataColumn;
 import model.data.DataModel;
 import model.data.DataTable;
-import model.data.Table;
 import model.data.describer.DataDescriber;
 import model.data.describer.TableValueDescriber;
 import model.data.value.DataValue;
-import model.exceptions.InputMismatchException;
 import model.language.ColumnIdentifier;
 import model.language.Identifier;
 import model.process.SortProcess;
@@ -23,7 +21,6 @@ import model.process.analysis.operations.Connection;
 public class LagSequential {
 
 	private DataTable tableA;
-	private DataTable tableB;
 	private DataTable result;
 
 	private DataModel model;
@@ -53,7 +50,6 @@ public class LagSequential {
 	public LagSequential(DataTable tableA, Identifier<DataColumn> dateA,
 			DataTable tableB, Identifier<DataColumn> dateB) {
 		this.tableA = tableA;
-		this.tableB = tableB;
 		this.colA = dateA;
 		this.colB = dateB;
 		this.model = new DataModel();
