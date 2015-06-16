@@ -102,8 +102,10 @@ public abstract class ExcelFile extends DataFile {
 		} else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
 			return parseNumValue(cell, columnInfo);
 
-		} else throw new UnsupportedOperationException(
-				String.format("Type %s is not recognized", columnInfo.getType()));
+		} else {
+			throw new UnsupportedOperationException(
+					String.format("Type %s is not recognized", columnInfo.getType()));
+		}
 	}
 
 	private BoolValue parseBoolValue(Cell cell) {
@@ -129,8 +131,11 @@ public abstract class ExcelFile extends DataFile {
 		} else if (cell.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
 			return new StringValue(String.valueOf(cell.getBooleanCellValue()));
 
-		} else throw new UnsupportedOperationException(
-				String.format("Type String is not compatible with Excel cell type %s", cell.getCellType()));
+		} else {
+			throw new UnsupportedOperationException(
+					String.format("Type String is not compatible with Excel cell type %s",
+							cell.getCellType()));
+		}
 	}
 
 	private DataValue parseNumValue(Cell cell, ColumnInfo columnInfo) {
@@ -164,9 +169,11 @@ public abstract class ExcelFile extends DataFile {
 		} else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
 			return parseTemporalValue(cell.getStringCellValue(), columnInfo);
 
-		} else throw new UnsupportedOperationException(
-				String.format("Type %s is not compatible with Excel cell type %s",
-						columnInfo.getType(), cell.getCellType()));
+		} else {
+			throw new UnsupportedOperationException(
+					String.format("Type %s is not compatible with Excel cell type %s",
+							columnInfo.getType(), cell.getCellType()));
+		}
 	}
 
 	private DataValue parseDateCellValue(Date date, Class<? extends DataValue> type) {
