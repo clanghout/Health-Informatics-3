@@ -169,11 +169,14 @@ public class XmlReader {
 		Element metaDataElem = ((Element) metaData.item(0));
 
 		if (metaDataElem != null
-				&& metaDataElem.getAttribute("type") != null
-				&& metaDataElem.getAttribute("name") != null) {
+				&& metaDataElem.getAttribute("name") != null
+				&& metaDataElem.getAttribute("type") != null) {
+			String value = metaDataElem.getAttribute("value");
 			String type = metaDataElem.getAttribute("type");
 			String name = metaDataElem.getAttribute("name");
-			theDataFile.createMetaDataValue(name, type);
+			String format = metaDataElem.getAttribute("format");
+			ColumnInfo columnInfo = new ColumnInfo(name, DataFile.getColumnType(type), format);
+			theDataFile.createMetaDataValue(value, columnInfo);
 		}
 		return theDataFile;
 	}

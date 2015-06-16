@@ -32,9 +32,9 @@ public class PlainTextFileTest {
 		textFile.addColumnInfo(new ColumnInfo(DateTimeValue.class, "dd/MM/yy HH:mm:ss"));
 		textFile.addColumnInfo(new ColumnInfo(DateValue.class, "dd/MM/yy"));
 		textFile.addColumnInfo(new ColumnInfo(TimeValue.class, "HH:mm"));
-		textFile.addColumnInfo(new ColumnInfo(StringValue.class));
+		textFile.addColumnInfo(new ColumnInfo(BoolValue.class));
 
-		textFile.createMetaDataValue("MetaData", "string");
+		textFile.createMetaDataValue("somekeyvalue", new ColumnInfo("MetaData", StringValue.class));
 		textFile.setStartLine(6);
 		textFile.setEndLine(2);
 
@@ -61,6 +61,8 @@ public class PlainTextFileTest {
 		assertEquals(new DateTimeValue(2008, 8, 8, 8, 8, 8), row0.getValue(table.getColumn("Datumtijden")));
 		assertTrue(row2.getValue(table.getColumn("Datumtijden")).isNull());
 		assertEquals(new DateTimeValue(2010, 9, 8, 5, 8, 25), row3.getValue(table.getColumn("Datumtijden")));
+		assertTrue(row4.getValue(table.getColumn("Datumtijden")).isNull());
+
 
 		assertTrue(row0.getValue(table.getColumn("Datums(dd/mm/yy)")).isNull());
 		assertEquals(new DateValue(2012, 12, 12), row1.getValue(table.getColumn("Datums(dd/mm/yy)")));
@@ -70,7 +72,11 @@ public class PlainTextFileTest {
 		assertTrue(row2.getValue(table.getColumn("Tijden(hh:mm)")).isNull());
 		assertEquals(new TimeValue(23, 59, 0), row3.getValue(table.getColumn("Tijden(hh:mm)")));
 
-		assertEquals(new StringValue("plaintext2"), row3.getValue(table.getColumn("MetaData")));
+		assertEquals(new StringValue("somekeyvalue"), row3.getValue(table.getColumn("MetaData")));
+
+		assertEquals(new BoolValue(true), row0.getValue(table.getColumn("Booleanen")));
+		assertEquals(new BoolValue(false), row1.getValue(table.getColumn("Booleanen")));
+		assertTrue(row2.getValue(table.getColumn("Booleanen")).isNull());
 	}
 
 	public void test() throws Exception {
