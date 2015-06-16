@@ -68,17 +68,12 @@ public abstract class Function {
 		row = table.getRow(0);
 		DataValue value = argument.resolve(row);
 
-<<<<<<< HEAD
-		if (!(value instanceof FloatValue) && !(value instanceof IntValue)) {
-			throw new InputMismatchException("Specified column is neither float nor int");
-=======
 		if (value instanceof IntValue) {
 			setInt(true);
 		} else if (value instanceof FloatValue) {
 			setInt(false);
 		} else {
-			throw new FunctionInputMismatchException("Specified column is neither float nor int");
->>>>>>> master
+			throw new InputMismatchException("Specified column is neither float nor int");
 		}
 
 		return true;
