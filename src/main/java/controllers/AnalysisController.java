@@ -2,6 +2,7 @@ package controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import model.exceptions.ParseException;
 import model.language.Parser;
@@ -20,6 +21,8 @@ public class AnalysisController {
 
 	@FXML
 	private TextArea userscript;
+	@FXML
+	private Label errorLabel, errorLabelExtra;
 
 	/**
 	 * Sets the model that will be observed.
@@ -32,13 +35,29 @@ public class AnalysisController {
 	@FXML
 	protected void handleExecuteButtonAction(ActionEvent event) {
 		Parser parser = new Parser();
+		emptyLabels();
 
 		try {
 			DataProcess process = parser.parse(userscript.getText(), model);
 			process.process();
 			model.setUpdated();
+		} catch (IllegalArgumentException e) {
+			errorLabel.setText("ERROR: " + e.getMessage());
+			errorLabelExtra.setText(e.toString());
 		} catch (ParseException e) {
-
+			errorLabel.setText("");
+			errorLabelExtra.setText(e.toString());
+		} catch (UnsupportedOperationException e) {
+			errorLabel.setText("ERROR: you are using an invalid operation");
+			errorLabelExtra.setText(e.toString());
+		} catch (RuntimeException e) {
+			errorLabel.setText("Runtime exception occured");
+			errorLabelExtra.setText(e.toString());
 		}
+	}
+
+	private void emptyLabels() {
+		errorLabel.setText("");
+		errorLabelExtra.setText("");
 	}
 }
