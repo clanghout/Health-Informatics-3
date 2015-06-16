@@ -11,6 +11,7 @@ import model.process.DataProcess;
 import model.process.analysis.ConstraintAnalysis;
 import model.process.analysis.GroupByColumn;
 import model.process.analysis.GroupByConstraint;
+import model.process.analysis.LagSequentialAnalysis;
 import model.process.analysis.operations.Connection;
 import model.process.functions.Function;
 import model.process.setOperations.FullJoin;
@@ -67,7 +68,16 @@ class MacroType {
 			ColumnIdentifier firstColumn = (ColumnIdentifier) result.valueStack.pop();
 			ColumnIdentifier secondColumn = (ColumnIdentifier) result.valueStack.pop();
 
+			LagSequentialAnalysis analysis = new LagSequentialAnalysis(
+					leftTable,
+					new Identifier<>(firstColumn.getColumn()),
+					rightTable,
+					new Identifier<>(secondColumn.getColumn())
+			);
 
+			analysis.setName(resultName.getName());
+
+			return analysis;
 		} else {
 			throw new ParseException("Failed to parse Comparison", result.parseErrors);
 		}
