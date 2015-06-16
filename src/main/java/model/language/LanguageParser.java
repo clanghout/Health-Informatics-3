@@ -294,6 +294,7 @@ class LanguageParser extends BaseParser<Object> {
 						new DateFunctionNode(
 								(ValueNode<TemporalValue<?>>) pop(),
 								(ValueNode<TemporalValue<?>>) pop(),
+								(String) pop(),
 								(String) pop()
 						)
 				)
@@ -1000,9 +1001,11 @@ class LanguageParser extends BaseParser<Object> {
 				Identifier(),
 				SomeWhiteSpace(),
 				ColumnComutationType(),
+				SomeWhiteSpace(),
 				"SET COLUMNS",
 				SomeWhiteSpace(),
-				ColumnComputationColumns()
+				ColumnComputationColumns(),
+				swap4()
 		);
 	}
 
@@ -1026,20 +1029,20 @@ class LanguageParser extends BaseParser<Object> {
 						columnIdentifiers.get().add((Identifier) pop())
 				),
 				ColumnComputationColumn(),
-				values.get().add((ValueNode<DataValue>) pop()),
 				columnIdentifiers.get().add((Identifier) pop()),
-				push(values),
-				push(columnIdentifiers)
+				values.get().add((ValueNode<DataValue>) pop()),
+				push(values.get()),
+				push(columnIdentifiers.get())
 		);
 	}
 
 	Rule ColumnComputationColumn() {
 		return Sequence(
-				Identifier(),
+				AnyValue(),
 				SomeWhiteSpace(),
 				"AS",
 				SomeWhiteSpace(),
-				AnyValue() //no idea what should go here
+				Identifier()
 		);
 	}
 

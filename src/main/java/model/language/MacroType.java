@@ -4,6 +4,7 @@ import model.data.DataModel;
 import model.data.DataTable;
 import model.data.describer.DataDescriber;
 import model.data.value.BoolValue;
+import model.data.value.DataValue;
 import model.exceptions.ParseException;
 import model.language.nodes.FunctionNode;
 import model.language.nodes.ValueNode;
@@ -11,6 +12,7 @@ import model.process.DataProcess;
 import model.process.analysis.ConstraintAnalysis;
 import model.process.analysis.GroupByColumn;
 import model.process.analysis.GroupByConstraint;
+import model.process.analysis.operations.ColumnComputation;
 import model.process.analysis.operations.Connection;
 import model.process.functions.Function;
 import model.process.setOperations.FullJoin;
@@ -48,8 +50,37 @@ class MacroType {
 				return parseJoin(body, model, parser);
 			case "Connection":
 				return parseConnection(body, model, parser);
+			case "Computation":
+				return parseComputation(body, model, parser);
 			default:
 				throw new ParseException(String.format("Macro type %s isn't supported", type));
+		}
+	}
+
+	private DataProcess parseComputation(String body, DataModel model, LanguageParser parser)
+			throws ParseException {
+		ReportingParseRunner runner = new ReportingParseRunner(parser.ColumnComputation());
+		ParsingResult result = runner.run(body);
+
+		if (result.matched) {
+			Identifier<DataTable> name = (Identifier<DataTable>) result.valueStack.pop();
+			String columnCompType = (String) result.valueStack.pop();
+			List<ValueNode<DataValue>> values = (List<ValueNode<DataValue>>)
+					result.valueStack.pop();
+			List<Identifier> identifiers = (List<Identifier>) result.valueStack.pop();
+
+			ColumnComputation comp = new ColumnComputation(
+					name.getName(),
+					columnCompType.equals("INCLUDE EXISTING")
+			);
+
+			for (int i = 0; i < identifiers.size(); i++) {
+				comp.addColumn(values.get(i).resolve(model), identifiers.get(i).getName());
+			}
+
+			return comp;
+		} else {
+			throw new ParseException("Couldn't parse Computation", result.parseErrors);
 		}
 	}
 

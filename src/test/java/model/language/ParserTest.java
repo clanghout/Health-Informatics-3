@@ -645,4 +645,20 @@ public class ParserTest {
 		assertEquals(new IntValue(9), table.getRow(3).getValue(table.getColumn("value")));
 		assertEquals(new IntValue(10), table.getRow(4).getValue(table.getColumn("value")));
 	}
+
+	@Test
+	public void testComputation() throws Exception {
+		String input = "def comp : Computation = relativeDates NEW SET COLUMNS " +
+				"RELATIVE(#1995-01-17 00:00#, test1.date, DAYS) AS value;" +
+				"from(test1)|computation(comp)";
+
+		Table result = parseAndProcess(input);
+		assertTrue(result instanceof DataTable);
+
+		DataTable table = (DataTable) result;
+		assertEquals(new IntValue(0), table.getRow(0).getValue(table.getColumn("value")));
+		assertEquals(new IntValue(731), table.getRow(1).getValue(table.getColumn("value")));
+		assertEquals(new IntValue(0), table.getRow(2).getValue(table.getColumn("value")));
+		assertEquals(new IntValue(731), table.getRow(3).getValue(table.getColumn("value")));
+	}
 }
