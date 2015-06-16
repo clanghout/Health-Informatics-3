@@ -99,8 +99,9 @@ public class LagSequentialAnalysisTest {
 	 */
 	@Test
 	public void testLSA() throws Exception {
-		DataAnalysis anal = new LagSequentialAnalysis(table1, datedesc, table2, datedesc2);
+		LagSequentialAnalysis anal = new LagSequentialAnalysis(table1, datedesc, table2, datedesc2);
 		anal.setDataModel(model);
+		anal.setName("LSA");
 		DataTable result = (DataTable) anal.process();
 
 		assertEquals(result.getRowCount(), 4);
