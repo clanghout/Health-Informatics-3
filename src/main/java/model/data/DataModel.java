@@ -124,4 +124,12 @@ public class DataModel extends Observable implements Iterable<DataTable> {
 	public ObservableList<DataTable> getObservableList() {
 		return FXCollections.observableList(tables);
 	}
+
+	/**
+	 * Get the tables contained in this model as a list.
+	 * @return The tables in this list.
+	 */
+	public List<DataTable> getTables() {
+		return Collections.unmodifiableList(tables);
+	}
 }

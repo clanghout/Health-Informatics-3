@@ -453,10 +453,10 @@ public class ParserTest {
 		DataTable table = (DataTable) result;
 
 		assertEquals(new StringValue("22"), table.getRow(0).getValue(table.getColumn("Chunk")));
-		assertEquals(new FloatValue(10f), table.getRow(0).getValue(table.getColumn("max")));
+		assertEquals(new IntValue(10), table.getRow(0).getValue(table.getColumn("max")));
 		assertEquals(new FloatValue(7.5f), table.getRow(0).getValue(table.getColumn("avg")));
 
-		assertEquals(new FloatValue(3f), table.getRow(1).getValue(table.getColumn("max")));
+		assertEquals(new IntValue(3), table.getRow(1).getValue(table.getColumn("max")));
 		assertEquals(new FloatValue(3f), table.getRow(1).getValue(table.getColumn("avg")));
 	}
 
@@ -487,11 +487,11 @@ public class ParserTest {
 		DataTable table = (DataTable) result;
 
 		assertEquals(new StringValue("first"), table.getRow(0).getValue(table.getColumn("Chunk")));
-		assertEquals(new FloatValue(3f), table.getRow(0).getValue(table.getColumn("max")));
+		assertEquals(new IntValue(3), table.getRow(0).getValue(table.getColumn("max")));
 		assertEquals(new FloatValue(3f), table.getRow(0).getValue(table.getColumn("avg")));
 
 		assertEquals(new StringValue("second"), table.getRow(1).getValue(table.getColumn("Chunk")));
-		assertEquals(new FloatValue(10f), table.getRow(1).getValue(table.getColumn("max")));
+		assertEquals(new IntValue(10), table.getRow(1).getValue(table.getColumn("max")));
 		assertEquals(new FloatValue(7.5f), table.getRow(1).getValue(table.getColumn("avg")));
 	}
 

@@ -18,6 +18,7 @@ public abstract class Function {
 	private DataRow row;
 	private DataTable table;
 	private DataDescriber<NumberValue> argument;
+	private boolean isInt;
 
 	public Function(DataTable table, DataDescriber<NumberValue> argument) {
 		this.table = table;
@@ -31,6 +32,7 @@ public abstract class Function {
 	public DataTable getTable() {
 		return table;
 	}
+	
 
 	/**
 	 * Return the DataDescriber for the function.
@@ -66,9 +68,19 @@ public abstract class Function {
 		row = table.getRow(0);
 		DataValue value = argument.resolve(row);
 
+<<<<<<< HEAD
 		if (!(value instanceof FloatValue) && !(value instanceof IntValue)) {
 			throw new InputMismatchException("Specified column is neither float nor int");
+=======
+		if (value instanceof IntValue) {
+			setInt(true);
+		} else if (value instanceof FloatValue) {
+			setInt(false);
+		} else {
+			throw new FunctionInputMismatchException("Specified column is neither float nor int");
+>>>>>>> master
 		}
+
 		return true;
 	}
 
@@ -86,10 +98,28 @@ public abstract class Function {
 		float result = 0.0f;
 		if (arg.resolve(line) instanceof FloatValue) {
 			result = (Float) argument.resolve(line).getValue();
+			setInt(false);
 		} else {
 			result = (float) ((int) argument.resolve(line).getValue());
+			setInt(true);
 		}
 		return result;
+	}
+	
+	/**
+	 * If the input is an integer this is true.
+	 * @param set
+	 */
+	protected void setInt(boolean set) {
+		isInt = set;
+	}
+	
+	/**
+	 * Checks whether or not the input is an integer.
+	 * @return
+	 */
+	protected boolean isInt() {
+		return isInt;
 	}
 
 }

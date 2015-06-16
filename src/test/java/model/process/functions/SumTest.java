@@ -4,6 +4,8 @@ import model.exceptions.InputMismatchException;
 import model.data.describer.RowValueDescriber;
 import model.data.value.DataValue;
 import model.data.value.FloatValue;
+import model.data.value.IntValue;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -34,7 +36,7 @@ public class SumTest extends FunctionTest {
 	@Test
 	public void testIntsum() throws Exception {
 		DataValue sm = new Sum(table, new RowValueDescriber<>(intColumn)).calculate();
-		assertEquals(new FloatValue(27f), sm);
+		assertEquals(new IntValue(27), sm);
 	}
 
 	@Test
@@ -54,7 +56,7 @@ public class SumTest extends FunctionTest {
 	@Test
 	public void testIntSum2() throws Exception {
 		DataValue sm = new Sum(table, new RowValueDescriber<>(intsColumn)).calculate();
-		FloatValue f = new FloatValue(37.0f);
+		IntValue f = new IntValue(37);
 		assertEquals(f, sm);
 	}
 }
