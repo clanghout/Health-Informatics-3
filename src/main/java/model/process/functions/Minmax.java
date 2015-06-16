@@ -3,6 +3,7 @@ package model.process.functions;
 import model.data.DataTable;
 import model.data.describer.DataDescriber;
 import model.data.value.FloatValue;
+import model.data.value.IntValue;
 import model.data.value.NumberValue;
 
 /**
@@ -22,7 +23,7 @@ abstract class Minmax extends Function {
 	 * @return List<DataRow> the rows containing the minimum
 	 */
 	@Override
-	public FloatValue calculate() {
+	public NumberValue calculate() {
 		if (!initialize()) {
 			return new FloatValue(0f);
 		}
@@ -34,7 +35,7 @@ abstract class Minmax extends Function {
 	 * 
 	 * @return List<DataRow> a list of DataRows
 	 */
-	public FloatValue compare() {
+	public NumberValue compare() {
 		float current = 0.0f;
 		current = intOrFloat(getArgument(), getTable().getRow(0));
 		for (int i = 1; i < getTable().getRowCount(); i++) {
@@ -44,6 +45,9 @@ abstract class Minmax extends Function {
 			if (check(comparison)) {
 				current = compare;
 			}
+		}
+		if (isInt()) {
+			return new IntValue((int) current);
 		}
 		return new FloatValue(current);
 	}
