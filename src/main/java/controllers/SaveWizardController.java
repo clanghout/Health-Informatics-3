@@ -33,8 +33,6 @@ public class SaveWizardController {
 	@FXML
 	private RadioButton delimiterComma, delimiterTab, delimiterSpace;
 	@FXML
-	private RadioButton dateUnix, dateExcel, dateSelf;
-	@FXML
 	private RadioButton saveNames, saveNew;
 	@FXML
 	private RadioButton nullLower, nullUpper, nullEmpty;
@@ -46,12 +44,13 @@ public class SaveWizardController {
 	private Label tableSaveLabel;
 	@FXML
 	private TextField formatInput;
+	@FXML
+	private CheckBox quotes;
 
 	private DataModel model;
 	private Dialog dialog;
 	private ToggleGroup extension;
 	private ToggleGroup delimiter;
-	private ToggleGroup dateFormat;
 	private ToggleGroup saveName;
 	private ToggleGroup nullSave;
 
@@ -114,13 +113,6 @@ public class SaveWizardController {
 		delimiterTab.setToggleGroup(delimiter);
 		delimiterComma.setSelected(true);
 
-		dateFormat = new ToggleGroup();
-		dateExcel.setToggleGroup(dateFormat);
-		dateUnix.setToggleGroup(dateFormat);
-		dateSelf.setToggleGroup(dateFormat);
-		dateUnix.setSelected(true);
-		addDateListener();
-
 		saveName = new ToggleGroup();
 		saveNames.setToggleGroup(saveName);
 		saveNew.setToggleGroup(saveName);
@@ -131,19 +123,6 @@ public class SaveWizardController {
 		nullUpper.setToggleGroup(nullSave);
 		nullEmpty.setToggleGroup(nullSave);
 		nullUpper.setSelected(true);
-	}
-
-	/**
-	 * Set the Listener for the date format radioButtons so that the user input box is enabled.
-	 */
-	private void addDateListener() {
-		dateFormat.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-			if (newValue.equals(dateSelf)) {
-				formatInput.setDisable(false);
-			} else {
-				formatInput.setDisable(true);
-			}
-		});
 	}
 
 	/**
@@ -158,10 +137,6 @@ public class SaveWizardController {
 		delimiterComma.setUserData("comma");
 		delimiterSpace.setUserData("space");
 		delimiterTab.setUserData("tab");
-
-		dateUnix.setUserData("unix");
-		dateExcel.setUserData("excel");
-		dateSelf.setUserData("user");
 
 		saveNames.setUserData(false);
 		saveNew.setUserData(true);
@@ -249,7 +224,9 @@ public class SaveWizardController {
 	                         String delimiter,
 	                         boolean underScore) {
 		DataTableWriter dataTableWriter = new DataTableWriter();
-		dataTableWriter.setQuotationMarks(true);
+		dataTableWriter.setQuotationMarks(quotes.isSelected());
+		dataTableWriter.setNullVal(nullSave.getSelectedToggle().getUserData().toString());
+		dataTableWriter.setDelimiter(delimiter);
 		try {
 			for (String tableName : tables) {
 				DataTable table = model.getByName(tableName).get();
@@ -263,8 +240,7 @@ public class SaveWizardController {
 							location.getPath() + File.separator + table.getName()
 									+ "." + extension);
 				}
-				dataTableWriter.write(table, saveLocation, delimiter,
-						nullSave.getSelectedToggle().getUserData().toString());
+				dataTableWriter.write(table, saveLocation);
 			}
 			dialog.close();
 		} catch (IOException e) {

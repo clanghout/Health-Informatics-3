@@ -32,20 +32,6 @@
 								<RadioButton fx:id="delimiterSpace">Space</RadioButton>
 							</children>
 						</VBox>
-						<VBox>
-							<!--select date format-->
-							<children>
-								<Label>Select date format for save</Label>
-								<RadioButton fx:id="dateUnix">Unix timestamp</RadioButton>
-								<RadioButton fx:id="dateExcel">Excel timestamp</RadioButton>
-								<RadioButton fx:id="dateSelf">Custom dateFormat:</RadioButton>
-								<HBox styleClass="right-padding">
-									<children>
-										<TextField fx:id="formatInput" promptText="YY-mm-dd"/>
-									</children>
-								</HBox>
-							</children>
-						</VBox>
 					</children>
 				</VBox>
 				<VBox styleClass="inner-box">
@@ -75,6 +61,7 @@
 								<RadioButton fx:id="nullEmpty">"" (empty)</RadioButton>
 							</children>
 						</VBox>
+						<CheckBox fx:id="quotes">Quotation marks around Strings.</CheckBox>
 						<Label fx:id="saveMessage"/>
 						<HBox alignment="BOTTOM_LEFT" styleClass="spaced-box">
 							<!--buttons-->

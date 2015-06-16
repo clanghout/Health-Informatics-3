@@ -3,10 +3,11 @@ package model.output;
 import model.data.DataColumn;
 import model.data.DataTable;
 import model.data.DataRow;
-import model.data.value.DataValue;
-import model.data.value.StringValue;
+import model.data.value.*;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,7 +20,8 @@ public class DataTableWriter {
 
 	// Options for user
 	private boolean quotationMarks;
-	private String delimiter;
+	private String delimiter = ", ";
+	private String nullVal = "";
 
 	/**
 	 * Constructor for DataTableWriter.
@@ -32,10 +34,9 @@ public class DataTableWriter {
 	 *
 	 * @param dataTable The table you want to output.
 	 * @param file      The file you want to write to.
-	 * @param delimiter The delimiter you want to use between fields.
 	 */
-	public void write(DataTable dataTable, File file, String delimiter, String nullVal) throws IOException {
-		this.delimiter = delimiter;
+	public void write(DataTable dataTable,
+	                  File file) throws IOException {
 		List<DataColumn> columns = readColumns(dataTable);
 		List<DataRow> rows = dataTable.getRows();
 		try (PrintWriter writer = new PrintWriter(file, "UTF-8")) {
@@ -77,11 +78,7 @@ public class DataTableWriter {
 		if (dataValue.isNull()) {
 			value += nullVal;
 		} else {
-			if (quotationMarks) {
-				value += addQuotes(dataValue);
-			} else {
-				value += dataValue.toString();
-			}
+			value += formatValue(dataValue);
 		}
 		writer.print(value);
 	}
@@ -90,13 +87,62 @@ public class DataTableWriter {
 		return in.getColumns();
 	}
 
-	public String addQuotes(DataValue value) {
+	/**
+	 * Format the value to write to file.
+	 * @param value the value that is formatted.
+	 * @return String containing formatted data.
+	 */
+	public String formatValue(DataValue value) {
 		String val = value.toString();
-		if (value instanceof StringValue) {
+		if (value instanceof StringValue && quotationMarks) {
 			return '"' + val + '"';
+		} else if (value instanceof DateValue) {
+			DateValue dateValue = (DateValue) value;
+			LocalDate date = dateValue.getValue();
+			return writeDate(date.getYear(),
+					date.getMonthValue(),
+					date.getDayOfMonth()).toString();
+		} else if (value instanceof DateTimeValue) {
+			DateTimeValue dateValue = (DateTimeValue) value;
+			LocalDateTime date = dateValue.getValue();
+			StringBuilder builder = writeDate(date.getYear(),
+					date.getMonthValue(),
+					date.getDayOfMonth());
+			builder.append(" ");
+			builder.append(date.getHour());
+			builder.append(':');
+			builder.append(date.getMinute());
+			builder.append(':');
+			builder.append(date.getSecond());
+			return builder.toString();
 		} else {
 			return val;
 		}
+	}
+
+	/**
+	 * Create stringBuilder containing years, months and days.
+	 * @param year years
+	 * @param month months
+	 * @param day days
+	 * @return appended StringBuilder
+	 */
+	private StringBuilder writeDate(int year, int month, int day) {
+		StringBuilder builder = new StringBuilder();
+		builder.append(year);
+		builder.append('-');
+		builder.append(month);
+		builder.append('-');
+		builder.append(day);
+		return builder;
+	}
+
+	public void setDelimiter(String delimiter) {
+		this.delimiter = delimiter;
+	}
+
+	public void setNullVal(String nullVal) {
+		this.nullVal = nullVal;
 	}
 
 	public void setQuotationMarks(boolean quotationMarks) {

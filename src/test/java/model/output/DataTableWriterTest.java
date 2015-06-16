@@ -4,6 +4,8 @@ import model.data.DataColumn;
 import model.data.DataTable;
 import model.data.DataRow;
 import model.data.value.DataValue;
+import model.data.value.DateTimeValue;
+import model.data.value.DateValue;
 import model.data.value.StringValue;
 import org.junit.Before;
 import org.junit.Test;
@@ -71,7 +73,8 @@ public class DataTableWriterTest {
 		when(dataTable.getColumns()).thenReturn(columnsMap);
 
 		DataTableWriter writer = new DataTableWriter();
-		writer.write(dataTable, testFile, ",", "");
+		writer.setDelimiter(",");
+		writer.write(dataTable, testFile);
 		BufferedReader reader = new BufferedReader(new FileReader(testFile));
 		String firstLine = reader.readLine();
 		assertEquals(firstLine, "value1,value2,value3");
@@ -102,11 +105,13 @@ public class DataTableWriterTest {
 		when(dataTable.getColumns()).thenReturn(columnsMap);
 
 		DataTableWriter writer = new DataTableWriter();
-		writer.write(dataTable, testFile, "\t", "");
+		writer.setDelimiter("\t");
+		writer.write(dataTable, testFile);
 		BufferedReader reader = new BufferedReader(new FileReader(testFile));
 		String firstLine = reader.readLine();
 		assertEquals(firstLine, "value1\tvalue2\tvalue3");
-		writer.write(dataTable, testFile, " ", "");
+		writer.setDelimiter(" ");
+		writer.write(dataTable, testFile);
 		reader = new BufferedReader(new FileReader(testFile));
 		firstLine = reader.readLine();
 		assertEquals(firstLine, "value1 value2 value3");
@@ -115,7 +120,89 @@ public class DataTableWriterTest {
 	@Test
 	public void testAddQuotes() throws Exception {
 		DataTableWriter writer = new DataTableWriter();
-		String test = writer.addQuotes(new StringValue("test"));
+		writer.setQuotationMarks(true);
+		String test = writer.formatValue(new StringValue("test"));
 		assertEquals(test, "\"test\"");
 	}
+
+	@Test
+	public void testNULL() throws Exception {
+		rows = new ArrayList<>();
+		columns = new DataColumn[]{
+				new DataColumn("column1", null, StringValue.class)
+		};
+		DataValue[] valuesRow1 = {
+				new StringValue(null)
+		};
+		rows.add(new DataRow(columns, valuesRow1));
+
+		ArrayList<DataColumn> columnsMap = new ArrayList<>(Arrays.asList(this.columns));
+
+		when(dataTable.getRows()).thenReturn(unmodifiableList(rows));
+		when(dataTable.getColumns()).thenReturn(columnsMap);
+
+		DataTableWriter writer = new DataTableWriter();
+		writer.setNullVal("NULL");
+		writer.write(dataTable, testFile);
+		BufferedReader reader = new BufferedReader(new FileReader(testFile));
+		String firstLine = reader.readLine();
+		assertEquals(firstLine, "NULL");
+		writer.setNullVal("null");
+		writer.write(dataTable, testFile);
+		reader = new BufferedReader(new FileReader(testFile));
+		firstLine = reader.readLine();
+		assertEquals(firstLine, "null");
+		writer.setNullVal("");
+		writer.write(dataTable, testFile);
+		reader = new BufferedReader(new FileReader(testFile));
+		firstLine = reader.readLine();
+		assertEquals(firstLine, "");
+	}
+
+	@Test
+	 public void testDate() throws Exception {
+		rows = new ArrayList<>();
+		columns = new DataColumn[]{
+				new DataColumn("column1", null, DateValue.class)
+		};
+		DataValue[] valuesRow1 = {
+				new DateValue(2000,12,12)
+		};
+		rows.add(new DataRow(columns, valuesRow1));
+
+		ArrayList<DataColumn> columnsMap = new ArrayList<>(Arrays.asList(this.columns));
+
+		when(dataTable.getRows()).thenReturn(unmodifiableList(rows));
+		when(dataTable.getColumns()).thenReturn(columnsMap);
+
+		DataTableWriter writer = new DataTableWriter();
+		writer.write(dataTable, testFile);
+		BufferedReader reader = new BufferedReader(new FileReader(testFile));
+		String firstLine = reader.readLine();
+		assertEquals(firstLine, "2000-12-12");
+	}
+
+	@Test
+	public void testDateTime() throws Exception {
+		rows = new ArrayList<>();
+		columns = new DataColumn[]{
+				new DataColumn("column1", null, DateTimeValue.class)
+		};
+		DataValue[] valuesRow1 = {
+				new DateTimeValue(2000,12,12, 8, 45,12)
+		};
+		rows.add(new DataRow(columns, valuesRow1));
+
+		ArrayList<DataColumn> columnsMap = new ArrayList<>(Arrays.asList(this.columns));
+
+		when(dataTable.getRows()).thenReturn(unmodifiableList(rows));
+		when(dataTable.getColumns()).thenReturn(columnsMap);
+
+		DataTableWriter writer = new DataTableWriter();
+		writer.write(dataTable, testFile);
+		BufferedReader reader = new BufferedReader(new FileReader(testFile));
+		String firstLine = reader.readLine();
+		assertEquals(firstLine, "2000-12-12 8:45:12");
+	}
+
 }
