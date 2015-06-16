@@ -31,7 +31,7 @@ public class SaveWizardController {
 	@FXML
 	private RadioButton extensionTxt, extensionCsv;
 	@FXML
-	private RadioButton delimiterComma, delimiterTab, delimiterSpace;
+	private RadioButton delimiterComma, delimiterSemicolon, delimiterTab, delimiterSpace;
 	@FXML
 	private RadioButton saveNames, saveNew;
 	@FXML
@@ -42,8 +42,6 @@ public class SaveWizardController {
 	private Parent root;
 	@FXML
 	private Label tableSaveLabel;
-	@FXML
-	private TextField formatInput;
 	@FXML
 	private CheckBox quotes;
 
@@ -77,7 +75,6 @@ public class SaveWizardController {
 		this.dialog = dialog;
 		this.model = model;
 		saveMessage.setTextFill(Color.RED);
-		formatInput.setDisable(true);
 
 		setToggleGroups();
 		setUserData();
@@ -85,7 +82,7 @@ public class SaveWizardController {
 		extension.selectedToggleProperty().addListener(
 				(observable, oldValue, newValue) -> {
 					if (newValue.equals(extensionCsv)) {
-						delimiterComma.setSelected(true);
+						delimiterSemicolon.setSelected(true);
 						setDisableDelimiter(true);
 					} else {
 						setDisableDelimiter(false);
@@ -109,6 +106,7 @@ public class SaveWizardController {
 
 		delimiter = new ToggleGroup();
 		delimiterComma.setToggleGroup(delimiter);
+		delimiterSemicolon.setToggleGroup(delimiter);
 		delimiterSpace.setToggleGroup(delimiter);
 		delimiterTab.setToggleGroup(delimiter);
 		delimiterComma.setSelected(true);
@@ -134,9 +132,10 @@ public class SaveWizardController {
 		extensionTxt.setUserData("txt");
 		extensionCsv.setUserData("csv");
 
-		delimiterComma.setUserData("comma");
-		delimiterSpace.setUserData("space");
-		delimiterTab.setUserData("tab");
+		delimiterComma.setUserData(",");
+		delimiterSemicolon.setUserData(";");
+		delimiterSpace.setUserData(" ");
+		delimiterTab.setUserData("\t");
 
 		saveNames.setUserData(false);
 		saveNew.setUserData(true);
@@ -153,6 +152,7 @@ public class SaveWizardController {
 	 */
 	private void setDisableDelimiter(Boolean value) {
 		delimiterComma.setDisable(value);
+		delimiterSemicolon.setDisable(value);
 		delimiterSpace.setDisable(value);
 		delimiterTab.setDisable(value);
 	}
@@ -181,7 +181,7 @@ public class SaveWizardController {
 		tableSaveLabel.setTextFill(Color.BLACK);
 		List<String> tables = getSelectedTables();
 		String selectedExtension = extension.getSelectedToggle().getUserData().toString();
-		String delimitSymbol = getSelectedDelimiter();
+		String delimitSymbol = delimiter.getSelectedToggle().getUserData().toString();
 		if (!tables.isEmpty()) {
 			File temp;
 			boolean newSave = (boolean) saveName.getSelectedToggle().getUserData();
@@ -277,27 +277,6 @@ public class SaveWizardController {
 				new File(System.getProperty("user.home"))
 		);
 		return directoryChooser.showDialog(root.getScene().getWindow());
-	}
-
-	/**
-	 * Check what delimiter is selected by the user.
-	 * If The user selected csv as extension the selected value will always be comma.
-	 *
-	 * @return the delimiter to use.
-	 */
-	private String getSelectedDelimiter() {
-		String res = ", ";
-		switch (delimiter.getSelectedToggle().getUserData().toString()) {
-			case "tab":
-				res = "\t";
-				break;
-			case "space":
-				res = " ";
-				break;
-			default:
-				break;
-		}
-		return res;
 	}
 
 	/**

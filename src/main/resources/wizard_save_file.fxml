@@ -28,6 +28,7 @@
 								<Label>(only for .txt extension)</Label>
 								<Label>Delimiter to use:</Label>
 								<RadioButton fx:id="delimiterComma">Comma</RadioButton>
+								<RadioButton fx:id="delimiterSemicolon">Semicolon</RadioButton>
 								<RadioButton fx:id="delimiterTab">Tab</RadioButton>
 								<RadioButton fx:id="delimiterSpace">Space</RadioButton>
 							</children>
