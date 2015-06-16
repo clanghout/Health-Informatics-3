@@ -87,35 +87,54 @@ public abstract class ExcelFile extends DataFile {
 	}
 
 	private DataValue toDataValue(Cell cell, ColumnInfo columnInfo) {
-		switch (cell.getCellType()) {
-			case Cell.CELL_TYPE_BLANK:
-				return DataValue.getNullInstance(columnInfo.getType());
-			case Cell.CELL_TYPE_STRING:
-				return parseStringValue(cell, columnInfo);
-			case Cell.CELL_TYPE_NUMERIC:
-				return parseNumValue(cell, columnInfo);
-			case Cell.CELL_TYPE_BOOLEAN:
-				return new BoolValue(cell.getBooleanCellValue());
-			default:
-				throw new UnsupportedOperationException(
-						String.format("Cell type %s not supported", cell.getCellType()));
-		}
+		System.out.println("cell = " + cell);
+		if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
+			return DataValue.getNullInstance(columnInfo.getType());
+
+		} else if (columnInfo.getType() == BoolValue.class) {
+			return parseBoolValue(cell);
+
+		} else if (columnInfo.getType() == StringValue.class) {
+			return parseStringValue(cell);
+
+		} else if (isTemporalValue(columnInfo.getType())) {
+			return parseExcelDateCell(cell, columnInfo);
+
+		} else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+			return parseNumValue(cell, columnInfo);
+
+		} else throw new UnsupportedOperationException(
+				String.format("Type %s is not recognized", columnInfo.getType()));
 	}
 
-	private DataValue parseStringValue(Cell cell, ColumnInfo columnInfo) {
-		if (cell.getStringCellValue().equals("NULL")) {
-			return DataValue.getNullInstance(columnInfo.getType());
-		} else if (isTemporalValue(columnInfo.getType())) {
-			return parseTemporalValue(cell.getStringCellValue(), columnInfo);
-		} else {
-			return new StringValue(cell.getStringCellValue());
-		}
+	private BoolValue parseBoolValue(Cell cell) {
+		if (cell.getCellType() == Cell.CELL_TYPE_STRING
+			&& cell.getStringCellValue().equals("NULL")) {
+				return (BoolValue) DataValue.getNullInstance(BoolValue.class);
+			} else {
+				return new BoolValue(cell.getBooleanCellValue());
+			}
+	}
+
+	private StringValue parseStringValue(Cell cell) {
+		if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+			if (cell.getStringCellValue().equals("NULL")) {
+				return (StringValue) DataValue.getNullInstance(StringValue.class);
+			} else {
+				return new StringValue(cell.getStringCellValue());
+			}
+
+		} else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+			return new StringValue(String.valueOf(cell.getNumericCellValue()));
+
+		} else if (cell.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
+			return new StringValue(String.valueOf(cell.getBooleanCellValue()));
+
+		} else throw new UnsupportedOperationException(
+				String.format("Type String is not compatible with Excel cell type %s", cell.getCellType()));
 	}
 
 	private DataValue parseNumValue(Cell cell, ColumnInfo columnInfo) {
-		if (isTemporalValue(columnInfo.getType())) {
-			return parseExcelDateCell(cell, columnInfo);
-		}
 		
 		double cellValue = cell.getNumericCellValue();
 		
@@ -130,19 +149,25 @@ public abstract class ExcelFile extends DataFile {
 	}
 
 	private DataValue parseExcelDateCell(Cell cell, ColumnInfo columnInfo) {
-		if (DateUtil.isCellDateFormatted(cell)) {
-			Date date = cell.getDateCellValue();
-			return parseDateCellValue(date, columnInfo.getType());
+		if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC
+				&& DateUtil.isCellDateFormatted(cell)) {
+			return parseDateCellValue(cell.getDateCellValue(), columnInfo.getType());
 	
-		} else {
-			if (columnInfo.getFormat().equals(EXCEL_DATE)) {
+		} else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC
+					&& (columnInfo.getFormat().equals(EXCEL_DATE))) {
 				Date javaDate = DateUtil.getJavaDate(cell.getNumericCellValue());
-				return parseDateCellValue(javaDate, columnInfo.getType());
-			} else {
-				return parseTemporalValue(
-						String.valueOf(cell.getNumericCellValue()), columnInfo);
-			}
-		}
+			return parseDateCellValue(javaDate, columnInfo.getType());
+
+		} else if (cell.getCellType() == Cell.CELL_TYPE_STRING
+					&& (cell.getStringCellValue().equals("NULL"))) {
+			return DataValue.getNullInstance(columnInfo.getType());
+
+		} else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+			return parseTemporalValue(cell.getStringCellValue(), columnInfo);
+
+		} else throw new UnsupportedOperationException(
+				String.format("Type %s is not compatible with Excel cell type %s",
+						columnInfo.getType(), cell.getCellType()));
 	}
 
 	private DataValue parseDateCellValue(Date date, Class<? extends DataValue> type) {
