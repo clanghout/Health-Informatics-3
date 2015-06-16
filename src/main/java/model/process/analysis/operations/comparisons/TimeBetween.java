@@ -67,14 +67,7 @@ public class TimeBetween extends DataProcess {
 
 	private DataTable getVars(DataTable table) {
 
-		if (!value.getClass().equals(TimeValue.class)) {
-			table.getRow(0).setValue(table.getColumn("Difference date"),
-					new PeriodValue(0, 0, 0));
-		}
-		if (!value.getClass().equals(DateValue.class)) {
-			table.getRow(0).setValue(table.getColumn("Difference time"),
-					new TimeValue(0, 0, 0));
-		}
+		setFirst(table);
 
 		for (int i = 1; i < table.getRowCount(); i++) {
 			DataRow current = table.getRow(i);
@@ -108,6 +101,21 @@ public class TimeBetween extends DataProcess {
 
 		}
 		return table;
+	}
+	
+	/**
+	 * Set the values of the first row to 0.
+	 * @param table
+	 */
+	private void setFirst(DataTable table) {
+		if (!value.getClass().equals(TimeValue.class)) {
+			table.getRow(0).setValue(table.getColumn("Difference date"),
+					new PeriodValue(0, 0, 0));
+		}
+		if (!value.getClass().equals(DateValue.class)) {
+			table.getRow(0).setValue(table.getColumn("Difference time"),
+					new TimeValue(0, 0, 0));
+		}
 	}
 
 	/**
