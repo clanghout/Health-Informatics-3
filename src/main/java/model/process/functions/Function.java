@@ -7,7 +7,7 @@ import model.data.value.DataValue;
 import model.data.value.FloatValue;
 import model.data.value.IntValue;
 import model.data.value.NumberValue;
-import model.exceptions.FunctionInputMismatchException;
+import model.exceptions.InputMismatchException;
 
 /**
  * This class will provide a framework for functions resulting single data values.
@@ -73,7 +73,7 @@ public abstract class Function {
 		} else if (value instanceof FloatValue) {
 			setInt(false);
 		} else {
-			throw new FunctionInputMismatchException("Specified column is neither float nor int");
+			throw new InputMismatchException("Specified column is neither float nor int");
 		}
 
 		return true;

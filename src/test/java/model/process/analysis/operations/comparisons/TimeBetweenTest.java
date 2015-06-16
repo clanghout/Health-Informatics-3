@@ -1,5 +1,6 @@
 package model.process.analysis.operations.comparisons;
 
+<<<<<<< HEAD
 import static org.junit.Assert.*;
 
 import model.data.DataColumn;
@@ -122,5 +123,8 @@ public class TimeBetweenTest {
 
 		assertEquals(compareTime, timeDiff);
 	}
+=======
+public class TimeBetweenTest {
+>>>>>>> master
 
 }
