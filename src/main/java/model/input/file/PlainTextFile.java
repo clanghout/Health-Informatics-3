@@ -130,22 +130,6 @@ public class PlainTextFile extends DataFile {
 	}
 
 	/**
-	 * Creates a DataValue from a string.
-	 * @param value The string that will be converted
-	 * @param columnInfo The info of the column to which the DataValue will be inserted
-	 * @return The DataValue
-	 */
-	private DataValue toDataValue(String value, ColumnInfo columnInfo) {
-		if (value.isEmpty() || value.equals("NULL")) {
-			return DataValue.getNullInstance(columnInfo.getType());
-		} else if (isTemporalValue(columnInfo.getType())) {
-			return parseTemporalValue(value, columnInfo);
-		} else {
-			return parseSimpleDataValue(value, columnInfo.getType());
-		}
-	}
-
-	/**
 	 * Sets the delimiter that separates the values in the file.
 	 * @param delimiter The delimiter to set
 	 */

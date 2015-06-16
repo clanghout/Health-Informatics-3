@@ -34,7 +34,7 @@ public class PlainTextFileTest {
 		textFile.addColumnInfo(new ColumnInfo(TimeValue.class, "HH:mm"));
 		textFile.addColumnInfo(new ColumnInfo(BoolValue.class));
 
-		textFile.createMetaDataValue("MetaData", "string");
+		textFile.createMetaDataValue("somekeyvalue", new ColumnInfo("MetaData", StringValue.class));
 		textFile.setStartLine(6);
 		textFile.setEndLine(2);
 
@@ -72,7 +72,7 @@ public class PlainTextFileTest {
 		assertTrue(row2.getValue(table.getColumn("Tijden(hh:mm)")).isNull());
 		assertEquals(new TimeValue(23, 59, 0), row3.getValue(table.getColumn("Tijden(hh:mm)")));
 
-		assertEquals(new StringValue("plaintext2"), row3.getValue(table.getColumn("MetaData")));
+		assertEquals(new StringValue("somekeyvalue"), row3.getValue(table.getColumn("MetaData")));
 
 		assertEquals(new BoolValue(true), row0.getValue(table.getColumn("Booleanen")));
 		assertEquals(new BoolValue(false), row1.getValue(table.getColumn("Booleanen")));

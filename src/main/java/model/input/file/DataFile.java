@@ -254,20 +254,35 @@ public abstract class DataFile {
 	/**
 	 * Sets the standard metadata value.
 	 *
-	 * @param name The name that the metadata column will get
-	 * @param type The type of the column
+	 * @param metaValue The value that the metadata column will contain
+	 * @param columnInfo The columnInfo that will be used to parse the metadata value
+	 *                   to a DataValue
 	 */
-	public void createMetaDataValue(String name, String type) {
-		try {
-			String fileName = this.getFile().getName();
-			String metaValue = fileName.substring(0, fileName.lastIndexOf("."));
-			Class<? extends DataValue> typeClass = DataFile.getColumnType(type);
-			this.metaDataValue = parseSimpleDataValue(metaValue, typeClass);
-			this.setMetaDataType(getColumnType(type));
-			this.setMetaDataColumnName(name);
+	public void createMetaDataValue(String metaValue, ColumnInfo columnInfo) {
+			if (metaValue.isEmpty()) {
+				metaValue = getPath().substring(
+						getPath().lastIndexOf(File.separator) + 1,
+						getPath().lastIndexOf("."));
+			}
+			this.metaDataValue = toDataValue(metaValue, columnInfo);
+			this.setMetaDataType(columnInfo.getType());
+			this.setMetaDataColumnName(columnInfo.getName());
 			hasMetaData = true;
-		} catch (FileNotFoundException e) {
-			log.log(Level.SEVERE, "The file could not be found", e);
+	}
+
+	/**
+	 * Creates a DataValue from a string.
+	 * @param value The string that will be converted
+	 * @param columnInfo The info of the column to which the DataValue will be inserted
+	 * @return The DataValue
+	 */
+	protected DataValue toDataValue(String value, ColumnInfo columnInfo) {
+		if (value.isEmpty() || value.equals("NULL")) {
+			return DataValue.getNullInstance(columnInfo.getType());
+		} else if (isTemporalValue(columnInfo.getType())) {
+			return parseTemporalValue(value, columnInfo);
+		} else {
+			return parseSimpleDataValue(value, columnInfo.getType());
 		}
 	}
 
