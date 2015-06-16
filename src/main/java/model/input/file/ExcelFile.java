@@ -9,8 +9,8 @@ import org.apache.poi.ss.usermodel.Row;
 import java.io.FileNotFoundException;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 
@@ -87,7 +87,6 @@ public abstract class ExcelFile extends DataFile {
 	}
 
 	private DataValue toDataValue(Cell cell, ColumnInfo columnInfo) {
-		System.out.println("cell = " + cell);
 		if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
 			return DataValue.getNullInstance(columnInfo.getType());
 
@@ -171,20 +170,20 @@ public abstract class ExcelFile extends DataFile {
 	}
 
 	private DataValue parseDateCellValue(Date date, Class<? extends DataValue> type) {
+		Instant instant = Instant.ofEpochMilli(date.getTime());
+		LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+
 		if (type == DateTimeValue.class) {
-			Instant instant = Instant.ofEpochMilli(date.getTime());
-			return new DateTimeValue(LocalDateTime.ofInstant(instant, ZoneId.systemDefault()));
+			return new DateTimeValue(localDateTime);
 
 		} else if (type == DateValue.class) {
-			Instant instant = Instant.ofEpochMilli(date.getTime());
-			return new DateValue(LocalDateTime.ofInstant(instant, ZoneId.systemDefault()));
+			return new DateValue(localDateTime.toLocalDate());
 
 		} else if (type == TimeValue.class) {
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(date);
-			return new TimeValue(calendar.get(Calendar.HOUR_OF_DAY),
-								calendar.get(Calendar.MINUTE),
-								calendar.get(Calendar.SECOND));
+			LocalTime localTime = localDateTime.toLocalTime();
+			return new TimeValue(localDateTime.getHour(),
+								localTime.getMinute(),
+								localTime.getSecond());
 		}
 		return null;
 	}
