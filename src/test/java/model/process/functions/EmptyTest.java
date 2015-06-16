@@ -1,10 +1,11 @@
 package model.process.functions;
 
-import model.data.value.FloatValue;
-import model.exceptions.FunctionInputMismatchException;
+import model.exceptions.InputMismatchException;
 import model.data.DataColumn;
 import model.data.DataTable;
 import model.data.describer.RowValueDescriber;
+import model.data.value.FloatValue;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -52,7 +53,7 @@ public class EmptyTest {
 	public void testEmptyTableSum() throws Exception {
 		assertEquals(new FloatValue(0f), new Sum(table, new RowValueDescriber<>(column)).calculate());
 	}
-
+	
 	@Test
 	public void testEmptyTableDeviation() throws Exception {
 		assertEquals(new FloatValue(0f),

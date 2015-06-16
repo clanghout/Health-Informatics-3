@@ -1,6 +1,6 @@
 package model.process.functions;
 
-import model.exceptions.FunctionInputMismatchException;
+import model.exceptions.InputMismatchException;
 import model.data.describer.RowValueDescriber;
 import model.data.value.DataValue;
 import model.data.value.FloatValue;
@@ -22,7 +22,7 @@ public class MaximumTest extends FunctionTest {
 	 * 
 	 * @throws Exception
 	 */
-	@Test(expected = FunctionInputMismatchException.class)
+	@Test(expected = InputMismatchException.class)
 	public void TestStringMaximum() throws Exception {
 		DataValue maximum = new Maximum(table, new RowValueDescriber<>(stringColumn)).calculate();
 	}
