@@ -30,9 +30,9 @@ import org.junit.Test;
  */
 public class LagSequentialTest {
 
-	private Event event;
-	private Event event2;
-	private Event event3;
+	private DataTable table1;
+	private DataTable table2;
+	private DataTable table3;
 	private DataColumn datecol;
 	private DataColumn datecol2;
 	private DataColumn datecol3;
@@ -65,16 +65,9 @@ public class LagSequentialTest {
 		inti = new IntValue(23);
 		builder.createRow(date, inti);
 
-		DataTable table = builder.build();
+		table1 = builder.build();
 
-		DataDescriber<BoolValue> greater = new ConstraintDescriber(
-				new GreaterThanCheck<>(new RowValueDescriber<>(
-						table.getColumn("measurement")),
-						new ConstantDescriber<>(new IntValue(0))));
-
-		event = new Event(table, greater);
-
-		model.add(table);
+		model.add(table1);
 
 		/**
 		 * Build second table
@@ -96,15 +89,9 @@ public class LagSequentialTest {
 		inti = new IntValue(90);
 		builder.createRow(date, inti);
 
-		table = builder.build();
+		table2 = builder.build();
 
-		greater = new ConstraintDescriber(new GreaterThanCheck<>(
-				new RowValueDescriber<>(table.getColumn("measurement2")),
-				new ConstantDescriber<>(new IntValue(0))));
-
-		event2 = new Event(table, greater);
-
-		model.add(table);
+		model.add(table2);
 
 		/**
 		 * Build third table (empty)
@@ -118,15 +105,9 @@ public class LagSequentialTest {
 
 		datedesc3 = new Identifier<DataColumn>(datecol3.getName());
 
-		table = builder.build();
+		table3 = builder.build();
 
-		greater = new ConstraintDescriber(new GreaterThanCheck<>(
-				new RowValueDescriber<>(table.getColumn("measurement3")),
-				new ConstantDescriber<>(new IntValue(0))));
-
-		event3 = new Event(table, greater);
-
-		model.add(table);
+		model.add(table3);
 	}
 
 	/**
@@ -136,11 +117,11 @@ public class LagSequentialTest {
 	 */
 	@Test
 	public void testLSA() throws Exception {
-		LagSequential lsa = new LagSequential(event, datedesc, event2,
+		LagSequential lsa = new LagSequential(table1, datedesc, table2,
 				datedesc2);
 		DataTable result = lsa.getResult();
-		assertEquals(((DataTable) event.create()).getRowCount(), 2);
-		assertEquals(((DataTable) event2.create()).getRowCount(), 2);
+		assertEquals(table1.getRowCount(), 2);
+		assertEquals(table2.getRowCount(), 2);
 
 		assertEquals(result.getRowCount(), 4);
 		
@@ -165,9 +146,9 @@ public class LagSequentialTest {
 	 * 
 	 * @throws Exception
 	 */
-	@Test(expected = InputMismatchException.class)
+	@Test(expected = NullPointerException.class)
 	public void testEmptyTable() throws Exception {
-		LagSequential lsa = new LagSequential(event3, datedesc3, event2,
+		LagSequential lsa = new LagSequential(table3, datedesc3, table2,
 				datedesc2);
 	}
 }

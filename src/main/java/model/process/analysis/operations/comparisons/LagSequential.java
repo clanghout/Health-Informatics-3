@@ -12,6 +12,7 @@ import model.language.ColumnIdentifier;
 import model.language.Identifier;
 import model.process.SortProcess;
 import model.process.SortProcess.Order;
+import model.process.analysis.LagSequentialAnalysis;
 import model.process.analysis.operations.Connection;
 import model.process.analysis.operations.Event;
 
@@ -51,10 +52,10 @@ public class LagSequential {
 	 *            The column of the dateValues (second event)
 	 * @return
 	 */
-	public LagSequential(Event eventA, Identifier<DataColumn> dateA,
-			Event eventB, Identifier<DataColumn> dateB) {
-		tableA = checkTable(eventA.create());
-		tableB = checkTable(eventB.create());
+	public LagSequential(DataTable tableA, Identifier<DataColumn> dateA,
+			DataTable tableB, Identifier<DataColumn> dateB) {
+		this.tableA = tableA;
+		this.tableB = tableB;
 		this.colA = dateA;
 		this.colB = dateB;
 		this.model = new DataModel();
@@ -90,7 +91,7 @@ public class LagSequential {
 	}
 
 	/**
-	 * Calls sorting on the table. 
+	 * Calls sorting on the table.
 	 * 
 	 * @param table
 	 *            The table to sort
