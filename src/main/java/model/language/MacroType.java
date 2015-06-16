@@ -48,8 +48,28 @@ class MacroType {
 				return parseJoin(body, model, parser);
 			case "Connection":
 				return parseConnection(body, model, parser);
+			case "Comparison":
+				return parseComparison(body, model, parser);
 			default:
 				throw new ParseException(String.format("Macro type %s isn't supported", type));
+		}
+	}
+
+	private DataProcess parseComparison(String body, DataModel model, LanguageParser parser)
+			throws ParseException {
+		ReportingParseRunner runner = new ReportingParseRunner(parser.LagSequential());
+		ParsingResult result = runner.run(body);
+
+		if (result.matched) {
+			Identifier<DataTable> leftTable = (Identifier<DataTable>) result.valueStack.pop();
+			Identifier<DataTable> rightTable = (Identifier<DataTable>) result.valueStack.pop();
+			Identifier<DataTable> resultName = (Identifier<DataTable>) result.valueStack.pop();
+			ColumnIdentifier firstColumn = (ColumnIdentifier) result.valueStack.pop();
+			ColumnIdentifier secondColumn = (ColumnIdentifier) result.valueStack.pop();
+
+
+		} else {
+			throw new ParseException("Failed to parse Comparison", result.parseErrors);
 		}
 	}
 

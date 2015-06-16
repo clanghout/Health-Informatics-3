@@ -956,4 +956,28 @@ class LanguageParser extends BaseParser<Object> {
 				BooleanExpression()
 		);
 	}
+
+	Rule LagSequential() {
+		return Sequence(
+				Identifier(),
+				SomeWhiteSpace(),
+				"WITH",
+				SomeWhiteSpace(),
+				Identifier(),
+				SomeWhiteSpace(),
+				"AS",
+				SomeWhiteSpace(),
+				Identifier(),
+				SomeWhiteSpace(),
+				"ON",
+				SomeWhiteSpace(),
+				ColumnIdentifier(),
+				SomeWhiteSpace(),
+				"TO",
+				SomeWhiteSpace(),
+				ColumnIdentifier(),
+				WhiteSpace(),
+				swap5()
+		);
+	}
 }
