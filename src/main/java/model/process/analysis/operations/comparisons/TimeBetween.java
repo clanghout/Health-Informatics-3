@@ -34,7 +34,7 @@ public class TimeBetween extends DataProcess {
 	private LocalTime curtime;
 	private LocalDate predate;
 	private LocalTime pretime;
-	
+
 	private static final int MINSEC = 60;
 
 	public TimeBetween(Identifier<DataColumn> date) {
@@ -123,23 +123,7 @@ public class TimeBetween extends DataProcess {
 		boolean negative = false;
 
 		if (!value.getClass().equals(DateValue.class)) {
-			Duration diffTime = Duration.between(pretime, curtime);
-
-			negative = diffTime.isNegative();
-
-			if (diffTime.isNegative()) {
-				diffTime = diffTime.negated();
-				diffTime = diffTime.minusDays(1);
-				diffTime = diffTime.negated();
-			}
-
-			int hour = (int) diffTime.toHours();
-			int min = ((int) diffTime.toMinutes()) - (hour * MINSEC);
-			int sec = ((int) diffTime.getSeconds()) - (min * MINSEC)
-					- (hour * MINSEC * MINSEC);
-
-			DataValue val = new TimeValue(hour, min, sec);
-			current.setValue(table.getColumn("Difference time"), val);
+			negative = makeTime(table, current);
 		}
 
 		if (!value.getClass().equals(TimeValue.class)) {
@@ -153,5 +137,34 @@ public class TimeBetween extends DataProcess {
 		}
 
 		return table;
+	}
+
+	/**
+	 * Does the calculation for the time and sets it in the table.
+	 * 
+	 * @param table
+	 * @param current
+	 * @return
+	 */
+	private boolean makeTime(DataTable table, DataRow current) {
+		Duration diffTime = Duration.between(pretime, curtime);
+
+		boolean negative = diffTime.isNegative();
+
+		if (diffTime.isNegative()) {
+			diffTime = diffTime.negated();
+			diffTime = diffTime.minusDays(1);
+			diffTime = diffTime.negated();
+		}
+
+		int hour = (int) diffTime.toHours();
+		int min = ((int) diffTime.toMinutes()) - (hour * MINSEC);
+		int sec = ((int) diffTime.getSeconds()) - (min * MINSEC)
+				- (hour * MINSEC * MINSEC);
+
+		DataValue val = new TimeValue(hour, min, sec);
+		current.setValue(table.getColumn("Difference time"), val);
+
+		return negative;
 	}
 }
