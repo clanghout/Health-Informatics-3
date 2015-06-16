@@ -483,7 +483,9 @@ class LanguageParser extends BaseParser<Object> {
 		return Sequence(
 				Process(),
 				Optional(
+						WhiteSpace(),
 						"|",
+						WhiteSpace(),
 						FirstOf(
 								Pipe(),
 								Process()
