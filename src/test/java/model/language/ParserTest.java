@@ -624,10 +624,10 @@ public class ParserTest {
 		builder.setName("test2");
 		builder.createColumn("date", DateTimeValue.class);
 
-		builder.createRow(new DateTimeValue(1995, 01, 18, 12, 12, 12));
-		builder.createRow(new DateTimeValue(1996, 01, 18, 12, 12, 12));
-		builder.createRow(new DateTimeValue(1997, 01, 18, 12, 12, 12));
-		builder.createRow(new DateTimeValue(1998, 01, 18, 12, 12, 12));
+		builder.createRow(new DateTimeValue(1995, 1, 18, 12, 12, 12));
+		builder.createRow(new DateTimeValue(1996, 1, 18, 12, 12, 12));
+		builder.createRow(new DateTimeValue(1997, 1, 18, 12, 12, 12));
+		builder.createRow(new DateTimeValue(1998, 1, 18, 12, 12, 12));
 
 		DataTable test2 = builder.build();
 		model.add(test2);
