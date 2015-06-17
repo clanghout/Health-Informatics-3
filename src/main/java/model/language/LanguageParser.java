@@ -231,6 +231,8 @@ class LanguageParser extends BaseParser<Object> {
 	Rule DateExpression() {
 		return FirstOf(
 				DateCalculation(),
+				UnaryDateFunction(),
+				BinaryDateFunction(),
 				Sequence("(", DateExpression(), ")"),
 				DateTimeLiteral(),
 				DateLiteral(),
@@ -241,6 +243,7 @@ class LanguageParser extends BaseParser<Object> {
 	Rule TimeExpression() {
 		return FirstOf(
 				TimeLiteral(),
+				UnaryDateFunction(),
 				DateColumn()
 		);
 	}
@@ -273,11 +276,7 @@ class LanguageParser extends BaseParser<Object> {
 	}
 
 	Rule DateFunction() {
-		return FirstOf(
-				UnaryDateFunction(),
-				BinaryDateFunction(),
-				TernaryDateFunction()
-		);
+		return TernaryDateFunction();
 	}
 
 	Rule UnaryDateFunction() {

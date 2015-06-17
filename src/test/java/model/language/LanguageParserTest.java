@@ -289,7 +289,7 @@ public class LanguageParserTest {
 
 	@Test
 	public void testCombine() throws Exception {
-		BasicParseRunner runner = new BasicParseRunner(parser.DateFunction());
+		BasicParseRunner runner = new BasicParseRunner(parser.DateExpression());
 		String input = "COMBINE(#1995-01-17#, #12:12#)";
 
 		ParsingResult result = runner.run(input);
@@ -303,7 +303,7 @@ public class LanguageParserTest {
 
 	@Test
 	public void testExtractTime() throws Exception {
-		BasicParseRunner runner = new BasicParseRunner(parser.DateFunction());
+		BasicParseRunner runner = new BasicParseRunner(parser.TimeExpression());
 		String input = "TO_TIME(#1995-01-17 12:12#)";
 
 		ParsingResult result = runner.run(input);
@@ -317,7 +317,7 @@ public class LanguageParserTest {
 
 	@Test
 	public void testExtractDate() throws Exception {
-		BasicParseRunner runner = new BasicParseRunner(parser.DateFunction());
+		BasicParseRunner runner = new BasicParseRunner(parser.DateExpression());
 		String input = "TO_DATE(#1995-01-17 12:12#)";
 
 		ParsingResult result = runner.run(input);
