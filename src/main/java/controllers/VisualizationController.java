@@ -12,6 +12,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import model.data.DataModel;
+import model.data.ProgramModel;
 import view.GraphCreationDialog;
 
 import javax.imageio.ImageIO;
@@ -36,7 +37,7 @@ public class VisualizationController {
 	private Button clearViewButton;
 	@FXML
 	private Button saveButton;
-	private DataModel model;
+	private DataModel model = ProgramModel.getDataModel();
 	private Logger logger = Logger.getLogger("VisualizationController");
 	private WritableImage image;
 
@@ -90,15 +91,6 @@ public class VisualizationController {
 		saveButton.setDisable(false);
 	}
 
-	/**
-	 * Sets the model that will be observed.
-	 *
-	 * @param model The model
-	 */
-	public void setModel(DataModel model) {
-		this.model = model;
-	}
-
 
 	/**
 	 * Create a popupWindow and add the model to the controller.
@@ -113,7 +105,7 @@ public class VisualizationController {
 
 			PopupVisualizationController popupController =
 					graphCreationDialog.getFxml().getController();
-			popupController.initializeView(model, this, graphCreationDialog);
+			popupController.initializeView(this, graphCreationDialog);
 
 		} catch (NullPointerException e) {
 			logger.log(Level.SEVERE, "No controller present");

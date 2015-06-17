@@ -2,6 +2,7 @@ package model.input.reader;
 
 import model.data.DataModel;
 import model.data.DataTable;
+import model.data.ProgramModel;
 import model.input.file.DataFile;
 
 import java.io.*;
@@ -45,7 +46,7 @@ public class DataReader {
 	 * @throws IOException When the file is missing or corrupted
 	 */
 	public DataModel createDataModel() throws IOException {
-		DataModel model = new DataModel();
+		DataModel model = ProgramModel.getDataModel();
 		List<DataFile> dataFiles = xmlReader.getDataFiles();
 		for (DataFile dataFile : dataFiles) {
 			DataTable table = dataFile.createDataTable();

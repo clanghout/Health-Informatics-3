@@ -30,7 +30,7 @@ public class TableViewController implements Observer {
 	@FXML
 	private ListView<TableWrapper> inputTables;
 
-	private DataModel model;
+	private DataModel model = ProgramModel.getDataModel();;
 	private DataTable currentTable;
 
 
@@ -138,10 +138,8 @@ public class TableViewController implements Observer {
 	/**
 	 * Sets the model that will be observed and initializes the first view of the model.
 	 *
-	 * @param model The model
 	 */
-	public void setDataModel(DataModel model) {
-		this.model = model;
+	public void setDataModelObserver() {
 		currentTable = model.get(0);
 		model.addObserver(this);
 		updateList();

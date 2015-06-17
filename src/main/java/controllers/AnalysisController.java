@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import model.data.ProgramModel;
 import model.exceptions.ParseException;
 import model.language.Parser;
 import model.data.DataModel;
@@ -25,7 +26,7 @@ import java.util.List;
  */
 public class AnalysisController {
 
-	private DataModel model;
+	private DataModel model = ProgramModel.getDataModel();;
 
 	@FXML
 	private Parent root;
@@ -38,14 +39,6 @@ public class AnalysisController {
 
 	private static final int ERROR_RANGE = 5;
 
-	/**
-	 * Sets the model that will be observed.
-	 *
-	 * @param model The model
-	 */
-	public void setDataModel(DataModel model) {
-		this.model = model;
-	}
 
 	@FXML
 	protected void handleExecuteButtonAction(ActionEvent event) {

@@ -10,6 +10,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import model.data.DataModel;
 import model.data.DataTable;
+import model.data.ProgramModel;
 import model.output.DataTableWriter;
 import view.Dialog;
 import view.SaveDialog;
@@ -45,7 +46,7 @@ public class SaveWizardController {
 	@FXML
 	private CheckBox quotes;
 
-	private DataModel model;
+	private DataModel model = ProgramModel.getDataModel();
 	private Dialog dialog;
 	private ToggleGroup extension;
 	private ToggleGroup delimiter;
@@ -66,14 +67,11 @@ public class SaveWizardController {
 	/**
 	 * Set the initialization of the popup.
 	 *
-	 * @param model  The dataModel of the program.
 	 * @param dialog The dialog where this is the controller of.
 	 */
-	public void initializeView(DataModel model,
-	                           SaveDialog dialog) {
+	public void initializeView(SaveDialog dialog) {
 
 		this.dialog = dialog;
-		this.model = model;
 		saveMessage.setTextFill(Color.RED);
 
 		setToggleGroups();

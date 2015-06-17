@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import model.data.DataModel;
 import model.data.DataTable;
+import model.data.ProgramModel;
 import view.GraphCreationDialog;
 
 /**
@@ -60,9 +61,9 @@ public class PopupVisualizationController {
 	 * @param model the input model of which the table can be specified.
 	 */
 	public void initializeView(
-			DataModel model,
 			VisualizationController visualisationController,
 			GraphCreationDialog dialog) {
+		DataModel model = ProgramModel.getDataModel();
 		this.visualizationController = visualisationController;
 		this.dialog = dialog;
 
