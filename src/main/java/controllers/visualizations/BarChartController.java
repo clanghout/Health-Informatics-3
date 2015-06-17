@@ -96,7 +96,7 @@ public class BarChartController extends ChartController {
 				yAxis = new NumberAxis(yCol.getName(), min, max, sep);
 				setErrorLabel(yAxisErrorLabel, "");
 				ySet = true;
-			} catch (NullPointerException e) {
+			} catch (Exception e) {
 				setErrorLabel(yAxisErrorLabel, "Please select a column with number values.");
 			}
 		});
