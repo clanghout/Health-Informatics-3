@@ -52,8 +52,8 @@ public class AnalysisController {
 
 	@FXML
 	protected void handleExecuteButtonAction(ActionEvent event) {
-		Parser parser = new Parser();
 		emptyLabels();
+		Parser parser = new Parser();
 		Label errorLabelExtra = new Label();
 		try {
 			DataProcess process = parser.parse(userscript.getText(), model);
@@ -76,7 +76,7 @@ public class AnalysisController {
 
 	@FXML
 	protected void handleLoadButtonAction() {
-		emptyLabels();
+
 	}
 
 	@FXML
@@ -90,7 +90,7 @@ public class AnalysisController {
 		);
 		fileChooser.getExtensionFilters().add(
 				new FileChooser.ExtensionFilter(
-						"txt", "*.txt")
+						"TXT", "*.txt")
 		);
 		File saveLoc = fileChooser.showSaveDialog(root.getScene().getWindow());
 		try (PrintWriter writer = new PrintWriter(saveLoc, "UTF-8")) {
