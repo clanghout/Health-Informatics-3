@@ -90,13 +90,13 @@ public class BarChartController extends ChartController {
 			yCol = newValue;
 			DataDescriber<NumberValue> yColDescriber = new RowValueDescriber<>(yCol);
 			try {
-				float max = (float) new Maximum(table, yColDescriber).calculate().getValue();
-				float min = (float) new Minimum(table, yColDescriber).calculate().getValue() - 1;
+				float max = (int) new Maximum(table, yColDescriber).calculate().getValue();
+				float min = (int) new Minimum(table, yColDescriber).calculate().getValue() - 1;
 				int sep = computeSeparatorValue(max, min);
 				yAxis = new NumberAxis(yCol.getName(), min, max, sep);
 				setErrorLabel(yAxisErrorLabel, "");
 				ySet = true;
-			} catch (Exception e) {
+			} catch (NullPointerException e) {
 				setErrorLabel(yAxisErrorLabel, "Please select a column with number values.");
 			}
 		});
