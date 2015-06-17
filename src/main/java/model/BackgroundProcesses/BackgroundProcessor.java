@@ -30,8 +30,13 @@ public class BackgroundProcessor implements Runnable {
 	public void run() {
 		try {
 			while (true) {
-				Runnable task = queue.take();
-				new Thread(task).start();
+				Runnable task = queue.peek();
+				while (task == null) {
+					sleep(100);
+					task = queue.peek();
+				}
+				task.run();
+				queue.poll();
 			}
 		} catch (InterruptedException ex) {
 			logger.log(Level.SEVERE, "Background task failed: " + ex.toString());
