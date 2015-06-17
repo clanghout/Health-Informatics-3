@@ -37,10 +37,12 @@
 
 .analysis-text-out {
     -fx-padding: 15px;
+    -fx-font-family: 'monospace';
 }
 .analysis-text {
-	-fx-pref-height: 290px;
-	-fx-pref-width: 500px;
+    -fx-pref-height: 290px;
+    -fx-pref-width: 500px;
+    -fx-font-family: 'monospace';
 }
 
 .file-name-field {

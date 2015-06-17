@@ -2,9 +2,11 @@ package controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import model.exceptions.ParseException;
 import model.language.Parser;
 import model.data.DataModel;
@@ -12,6 +14,7 @@ import model.process.DataProcess;
 import org.parboiled.buffers.InputBuffer;
 import org.parboiled.errors.ParseError;
 
+import java.io.*;
 import java.util.List;
 
 
@@ -24,6 +27,8 @@ public class AnalysisController {
 
 	private DataModel model;
 
+	@FXML
+	private Parent root;
 	@FXML
 	private TextArea userscript;
 	@FXML
@@ -45,7 +50,6 @@ public class AnalysisController {
 	@FXML
 	protected void handleExecuteButtonAction(ActionEvent event) {
 		Parser parser = new Parser();
-		emptyLabels();
 		Label errorLabelExtra = new Label();
 		try {
 			DataProcess process = parser.parse(userscript.getText(), model);
@@ -66,8 +70,63 @@ public class AnalysisController {
 		errorBox.getChildren().add(errorLabelExtra);
 	}
 
+	@FXML
+	protected void handleLoadButtonAction() {
+		userscript.setText("");
+		FileChooser fileChooser = new FileChooser();
+
+		fileChooser.setTitle("Select file to load");
+		fileChooser.setInitialDirectory(
+				new File(System.getProperty("user.home"))
+		);
+		fileChooser.getExtensionFilters().add(
+				new FileChooser.ExtensionFilter("TXT", "*.txt")
+		);
+
+		File load =  fileChooser.showOpenDialog(root.getScene().getWindow());
+		String script = "";
+		try (BufferedReader reader = new BufferedReader(new FileReader(load))) {
+			String line;
+			script = reader.readLine();
+			while ((line = reader.readLine()) != null) {
+				script += "\n" + line;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		userscript.setText(script);
+	}
+
+	@FXML
+	protected void handleSaveButtonAction() {
+		emptyLabels();
+		FileChooser fileChooser = new FileChooser();
+
+		fileChooser.setTitle("Save your user script");
+		fileChooser.setInitialDirectory(
+				new File(System.getProperty("user.home"))
+		);
+		fileChooser.getExtensionFilters().add(
+				new FileChooser.ExtensionFilter(
+						"TXT", "*.txt")
+		);
+		File saveLoc = fileChooser.showSaveDialog(root.getScene().getWindow());
+		try (PrintWriter writer = new PrintWriter(saveLoc, "UTF-8")) {
+			userscript.getParagraphs().forEach(writer::println);
+		} catch (FileNotFoundException | UnsupportedEncodingException e) {
+			errorLabel.setText("Something went wrong while saving the file");
+		}
+
+	}
+
+	@FXML
+	protected void handleClearButtonAction() {
+		userscript.setText("");
+	}
+
 	/**
 	 * Create a label with error message for every parse error.
+	 *
 	 * @param e teh Exception containing the parse errors
 	 */
 	private void createParseExceptionMessage(ParseException e) {
