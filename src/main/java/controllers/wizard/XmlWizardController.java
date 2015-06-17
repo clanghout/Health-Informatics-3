@@ -88,6 +88,15 @@ public class XmlWizardController {
 		}
 	};
 
+	private final ChangeListener<Boolean> addMetaCheckChangeListener
+			= (observable, oldValue, newValue) -> {
+		if (newValue != null && selectedFile != null) {
+			if (newValue != selectedFile.hasMetaData()) {
+				apply.setDisable(false);
+			}
+		}
+	};
+
 	private final ChangeListener<String> startLineChangeListener = (ov, oldValue, newValue) -> {
 		if (newValue != null && selectedFile != null) {
 			if (!(newValue.equals(String.valueOf(selectedFile.getStartLine())))) {
@@ -202,7 +211,7 @@ public class XmlWizardController {
 		columntype.valueProperty().addListener(columnTypeListener);
 		datacolumns.getColumns().addListener(datacolumnsListener);
 		fileselectfield.textProperty().addListener(filePathListener);
-
+		addmetacheck.selectedProperty().addListener(addMetaCheckChangeListener);
 		disableAll(true);
 
 		metacolumnName.textProperty().addListener(metacolumnNameListener);
@@ -577,6 +586,8 @@ public class XmlWizardController {
 								DataFile.getColumnType((String) metacolumntype.getValue()),
 								metacolumnformat.getText())
 				);
+			} else {
+				selectedFile.setHasMetaData(false);
 			}
 		} catch (NumberFormatException | DateTimeParseException e) {
 			logger.log(Level.SEVERE, "Value: \"" + metacolumnvalue.getText()
