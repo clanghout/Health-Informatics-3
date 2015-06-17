@@ -1,17 +1,21 @@
 package model.input.file;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.value.*;
 import model.exceptions.DataFileNotRecognizedException;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
 /**
  * Class for a datafile. This class contains all the specification of a datafile such as the 
  * path to the file, the starting and ending line of the data in the file and the names of the
@@ -30,11 +34,11 @@ public abstract class DataFile {
 	private String path;
 	private int startLine;
 	private int endLine;
-	private Map<String, Class<? extends DataValue>> columns;
-	private List<Class<? extends DataValue>> columnList;
-	private boolean firstRowAsHeader;
-	private Class<? extends DataValue>[] columnTypes;
+
+	private List<ColumnInfo> columns;
+
 	private DataTableBuilder builder = new DataTableBuilder();
+	private boolean firstRowAsHeader;
 	private boolean hasMetaData;
 
 	/**
@@ -47,7 +51,7 @@ public abstract class DataFile {
 		this.setStartLine(1);
 		this.setEndLine(0);
 		this.setFirstRowAsHeader(false);
-		this.setColumns(new LinkedHashMap<>(), new ArrayList<>());
+		this.columns = new ArrayList<>();
 	}
 
 	/**
@@ -129,20 +133,12 @@ public abstract class DataFile {
 		this.endLine = endLine;
 	}
 
-	public void setColumnTypes(Class<? extends DataValue<?>>[] types) {
-		this.columnTypes = types;
-	}
-	
-	public Class[] getColumnTypes() {
-		return this.columnTypes;
-	}
-
 	/**
 	 * Returns the type of the class based on a string describing the type.
 	 * @param type The name of the type
 	 * @return The classtype
 	 */
-	public static Class getColumnType(String type) {
+	public static Class<? extends DataValue> getColumnType(String type) {
 		switch (type) {
 			case "int":
 				return IntValue.class;
@@ -156,6 +152,8 @@ public abstract class DataFile {
 				return TimeValue.class;
 			case "datetime" :
 				return DateTimeValue.class;
+			case "bool" :
+				return BoolValue.class;
 			default:
 				throw new RuntimeException("The specified type of data is not supported");
 		}
@@ -166,7 +164,7 @@ public abstract class DataFile {
 	 * @param type The class
 	 * @return The type of class as a string
 	 */
-	public static String getStringColumnType(Class type) {
+	public static String getStringColumnType(Class<? extends DataValue> type) {
 		if (type == IntValue.class) {
 			return "int";
 		} else if (type == FloatValue.class) {
@@ -179,6 +177,8 @@ public abstract class DataFile {
 			return "time";
 		} else if (type == DateTimeValue.class) {
 			return "datetime";
+		} else if (type == BoolValue.class) {
+			return "bool";
 		} else {
 			throw new RuntimeException("The specified type of data is not supported");
 		}
@@ -193,56 +193,21 @@ public abstract class DataFile {
 	}
 
 	/**
-	 * Returns the array with the names of the columns.
-	 * @return The array with the names of the columns
+	 * Returns the List with the names and types of the columns.
+	 * @return The List with the names and types of the columns
 	 */
-	public Map<String, Class<? extends DataValue>> getColumns() {
+	public List<ColumnInfo> getColumns() {
 		return columns;
 	}
 
-	public List<Class<? extends DataValue>> getColumnList() {
-		return columnList;
+	/**
+	 * Adds ColumnInfo for a new column to the list.
+	 * @param info The ColumnInfo to add
+	 */
+	public void addColumnInfo(ColumnInfo info) {
+		columns.add(info);
 	}
 
-	/**
-	 * Sets the names of the columns.
-	 * @param columns The columns to set
-	 */
-	public void setColumns(
-			Map<String, Class<? extends DataValue>> columns,
-			List<Class<? extends DataValue>> columnList) {
-		this.columns = new LinkedHashMap<>(columns);
-		this.columnList = columnList;
-	}
-
-	/**
-	 * Tries to parse an integer.
-	 * @param value The String to parse
-	 * @return True if the value can be parsed as integer
-	 */
-	protected boolean tryParseInt(String value) {
-		try {
-			Integer.parseInt(value);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
-	
-	/**
-	 * Tries to parse a float.
-	 * @param value The String to parse
-	 * @return True if the value can be parsed as float
-	 */
-	protected boolean tryParseFloat(String value) {
-		try {
-			Float.parseFloat(value);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
-	
 	/**
 	 * Returns true if the columns' headers are in the first row.
 	 * @return The firstRowAsHeader
@@ -268,26 +233,10 @@ public abstract class DataFile {
 	}
 
 	/**
-	 * Sets the metadatavalue.
-	 * @param metaDataValue The metadatavalue
-	 */
-	public void setMetaDataValue(DataValue<?> metaDataValue) {
-		this.metaDataValue = metaDataValue;
-	}
-
-	/**
-	 * Sets if the datafile has metadata.
-	 * @param hasMetaData True if the datafile contains metadata
-	 */
-	public void setHasMetaData(boolean hasMetaData) {
-		this.hasMetaData = hasMetaData;
-	}
-
-	/**
 	 * Sets the class for the metadata column.
 	 * @param metaDataType The class for the metadata
 	 */
-	public void setMetaDataType(Class<? extends DataValue<?>> metaDataType) {
+	public void setMetaDataType(Class<? extends DataValue> metaDataType) {
 		this.metaDataType = metaDataType;
 	}
 
@@ -304,39 +253,123 @@ public abstract class DataFile {
 	/**
 	 * Sets the standard metadata value.
 	 *
-	 * @param name The name that the metadata column will get
-	 * @param type The type of the column
+	 * @param metaValue The value that the metadata column will contain
+	 * @param columnInfo The columnInfo that will be used to parse the metadata value
+	 *                   to a DataValue
 	 */
-	public void createMetaDataValue(String name, String type) {
-		try {
-			String fileName = this.getFile().getName();
-			String metaValue = fileName.substring(0, fileName.lastIndexOf("."));
+	public void createMetaDataValue(String metaValue, ColumnInfo columnInfo) {
+			if (metaValue.isEmpty()) {
+				metaValue = getPath().substring(
+						getPath().lastIndexOf(File.separator) + 1,
+						getPath().lastIndexOf("."));
+			}
+			this.metaDataValue = toDataValue(metaValue, columnInfo);
+			this.setMetaDataType(columnInfo.getType());
+			this.setMetaDataColumnName(columnInfo.getName());
+			hasMetaData = true;
+	}
 
-			this.metaDataValue = parseDataValue(metaValue, type);
-			this.setMetaDataType(getColumnType(type));
-			this.setMetaDataColumnName(name);
-		} catch (FileNotFoundException e) {
-			log.log(Level.SEVERE, "The file could not be found", e);
+	/**
+	 * Creates a DataValue from a string.
+	 * @param value The string that will be converted
+	 * @param columnInfo The info of the column to which the DataValue will be inserted
+	 * @return The DataValue
+	 */
+	protected DataValue toDataValue(String value, ColumnInfo columnInfo) {
+		if (value.isEmpty() || value.equals("NULL")) {
+			return DataValue.getNullInstance(columnInfo.getType());
+		} else if (isTemporalValue(columnInfo.getType())) {
+			return parseTemporalValue(value, columnInfo);
+		} else {
+			return parseSimpleDataValue(value, columnInfo.getType());
 		}
 	}
 
 	/**
-	 * Parses a string to a DataValue of a given type.
+	 * Parses a String or number to a DataValue of a given type.
 	 * @param value The value to parse
 	 * @param type The type of DataValue to parse to
 	 * @return The new created DataValue
 	 */
-	public static DataValue parseDataValue(String value, String type) {
-		switch (type) {
-			case "int":
-				return new IntValue(Integer.parseInt(value));
-			case "float":
-				return new FloatValue(Float.parseFloat(value));
-			case "string":
-				return new StringValue(value);
-			default:
-				throw new RuntimeException("Class has not yet implemented");
+	protected DataValue parseSimpleDataValue(String value, Class<? extends DataValue> type) {
+		if (type == IntValue.class) {
+			return new IntValue(Integer.parseInt(value));
+		} else if (type == FloatValue.class) {
+			return new FloatValue(Float.parseFloat(value));
+		} else if (type == StringValue.class) {
+			return new StringValue(value);
+		} else if (type == BoolValue.class) {
+			return new BoolValue(Boolean.parseBoolean(value));
+		} else {
+			throw new RuntimeException("Class has not yet been implemented");
 		}
+	}
+
+	/**
+	 * Parses a string representing a localtime using the given format.
+	 * @param value The value to parse
+	 * @param format The format used to parse
+	 * @return The new created TimeValue
+	 */
+	protected TimeValue parseLocalTime(String value, String format) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+		LocalTime localTime = LocalTime.parse(value, formatter);
+
+		return new TimeValue(localTime.getHour(),
+				localTime.getMinute(),
+				localTime.getSecond());
+	}
+
+	/**
+	 * Parses a String representing a LocalDateTime using a given format.
+	 * @param value The value to parse
+	 * @param format The format used to parse
+	 * @return The new created LocalDateTime
+	 */
+	protected LocalDateTime parseLocalDateTime(String value, String format) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+		return LocalDateTime.from(formatter.parse(value));
+	}
+
+	/**
+	 * Parses a String representing a LocalDate using a given format.
+	 * @param value The value to parse
+	 * @param format The format used to parse
+	 * @return The new created LocalDate
+	 */
+	protected LocalDate parseLocalDate(String value, String format) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+		return LocalDate.parse(value, formatter);
+	}
+
+	/**
+	 * Parses a String representing a TemporalValue using given parse information.
+	 * @param value The value to parse
+	 * @param columnInfo The information used to parse the TemporalValue
+	 * @return The new created TemporalValue
+	 */
+	protected TemporalValue parseTemporalValue(String value, ColumnInfo columnInfo) {
+		if (columnInfo.getType() == DateValue.class) {
+			return new DateValue(parseLocalDate(value, columnInfo.getFormat()));
+		} else if (columnInfo.getType() == DateTimeValue.class) {
+			return new DateTimeValue(parseLocalDateTime(value, columnInfo.getFormat()));
+		} else if (columnInfo.getType() == TimeValue.class) {
+			return parseLocalTime(value, columnInfo.getFormat());
+		}
+		throw new RuntimeException("Type of TemporalValue : "
+				+ columnInfo.getType()
+				+ " is not recognized");
+	}
+
+	/**
+	 * Returns true if a type is a TemporalValue.
+	 * @param type The type to check
+	 * @return True if type is a TemporalValue
+	 */
+	protected boolean isTemporalValue(Class<? extends DataValue> type) {
+		return type == DateTimeValue.class
+				|| type == DateValue.class
+				|| type == TimeValue.class;
 	}
 
 	/**
@@ -367,7 +400,7 @@ public abstract class DataFile {
 	 * Returns the type of class of the metadata column.
 	 * @return The type of class of the metadata column
 	 */
-	public Class getMetaDataType() {
+	public Class<? extends DataValue> getMetaDataType() {
 		return metaDataType;
 	}
 }

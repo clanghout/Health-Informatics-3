@@ -1,6 +1,7 @@
 package model.input.reader;
 
 import model.data.value.DataValue;
+import model.input.file.ColumnInfo;
 import model.input.file.DataFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -75,6 +76,11 @@ public class XmlReader {
 	 * The name of the metadata tag in the xml file.
 	 */
 	private static final String METADATA_TAG = "metadata";
+
+	/**
+	 * The name of the dateformat attribute in the xml file.
+	 */
+	private static final String DATE_FORMAT_ATTRIBUTE = "format";
 
 	private Logger log = Logger.getLogger("XmlReader");
 
@@ -163,22 +169,30 @@ public class XmlReader {
 	private DataFile setMetaData(DataFile theDataFile, NodeList metaData) {
 		Element metaDataElem = ((Element) metaData.item(0));
 
-		if ((metaDataElem != null
-				&& metaDataElem.getAttribute("type") != null)
-				&& metaDataElem.getAttribute("name") != null) {
+		if (metaDataElem != null
+				&& metaDataElem.getAttribute("name") != null
+				&& metaDataElem.getAttribute("type") != null) {
+			String value = metaDataElem.getAttribute("value");
 			String type = metaDataElem.getAttribute("type");
 			String name = metaDataElem.getAttribute("name");
-			theDataFile.createMetaDataValue(name, type);
-			theDataFile.setHasMetaData(true);
+			String format = metaDataElem.getAttribute("format");
+			ColumnInfo columnInfo = new ColumnInfo(name, DataFile.getColumnType(type), format);
+			theDataFile.createMetaDataValue(value, columnInfo);
 		}
 		return theDataFile;
 	}
 
 	private DataFile setColumnTypes(DataFile theDataFile, NodeList columns) {
 		if (theDataFile.hasFirstRowAsHeader()) {
-			theDataFile.setColumnTypes(createTypesArray(columns));
+			for (int i = 0; i < columns.getLength(); i++) {
+				Element columnElement = (Element) columns.item(i);
+				String typeAttribute = columnElement.getAttribute("type");
+				String format = columnElement.getAttribute(DATE_FORMAT_ATTRIBUTE);
+				theDataFile.addColumnInfo(new ColumnInfo(
+						DataFile.getColumnType(typeAttribute), format));
+			}
 		} else {
-			theDataFile = setColumnTypeMapping(columns, theDataFile);
+			theDataFile = setColumn(columns, theDataFile);
 		}
 		return theDataFile;
 	}
@@ -196,32 +210,20 @@ public class XmlReader {
 		return completePath;
 	}
 
-	private DataFile setColumnTypeMapping(NodeList columns, DataFile dataFile) {
-		Map<String, Class<? extends DataValue>> mapping = new LinkedHashMap<>();
-		List<Class<? extends DataValue>> columnTypes = new ArrayList<>();
+	private DataFile setColumn(NodeList columns, DataFile dataFile) {
 		for (int i = 0; i < columns.getLength(); i++) {
 			Element columnElement = (Element) columns.item(i);
 			String typeAttribute = columnElement.getAttribute("type");
-			Class columnType = DataFile.getColumnType(typeAttribute);
-			mapping.put(columnElement.getTextContent(),
-					columnType);
-			columnTypes.add(columnType);
+			String format = columnElement.getAttribute(DATE_FORMAT_ATTRIBUTE);
+			Class<? extends DataValue> columnType = DataFile.getColumnType(typeAttribute);
+			dataFile.addColumnInfo(new ColumnInfo(
+					columnElement.getTextContent(),
+					columnType,
+					format));
 		}
-		dataFile.setColumns(mapping, columnTypes);
 		return dataFile;
 	}
-		
-	
-	private Class[] createTypesArray(NodeList columns) {
-		Class[] types = new Class[columns.getLength()];
-		for (int i = 0; i < columns.getLength(); i++) {
-			Element columnElement = (Element) columns.item(i);
-			String typeAttribute = columnElement.getAttribute("type");
-			types[i] = DataFile.getColumnType(typeAttribute);
-		}
-		return types;
-	}
-	
+
 	/**
 	 * Decorates the constructed DataFile with the start and end line.
 	 * @param dataElement The data element of the file read from xml
