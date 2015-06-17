@@ -273,6 +273,31 @@ class LanguageParser extends BaseParser<Object> {
 	}
 
 	Rule DateFunction() {
+		return FirstOf(
+				BinaryDateFunction(),
+				TernaryDateFunction()
+		);
+	}
+
+	Rule BinaryDateFunction() {
+		return Sequence(
+				"COMBINE(",
+				WhiteSpace(),
+				DateExpression(),
+				WhiteSpace(),
+				",",
+				WhiteSpace(),
+				TimeExpression(),
+				WhiteSpace(),
+				")",
+				swap(),
+				push(
+						new CombineNode((ValueNode<DateValue>) pop(), (ValueNode<TimeValue>) pop())
+				)
+		);
+	}
+
+	Rule TernaryDateFunction() {
 		return Sequence(
 				DateFunctionName(),
 				"(",

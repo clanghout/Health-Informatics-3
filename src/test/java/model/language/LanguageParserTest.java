@@ -286,4 +286,18 @@ public class LanguageParserTest {
 
 		assertEquals(2, functions.size());
 	}
+
+	@Test
+	public void testCombine() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.DateFunction());
+		String input = "COMBINE(#1995-01-17#, #12:12#)";
+
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+
+		ValueNode<DateTimeValue> node = (ValueNode<DateTimeValue>) result.resultValue;
+
+		assertEquals(new DateTimeValue(1995, 1, 17, 12, 12, 00), node.resolve(null).resolve(null));
+	}
 }
