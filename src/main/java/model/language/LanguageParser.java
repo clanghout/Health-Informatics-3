@@ -231,6 +231,8 @@ class LanguageParser extends BaseParser<Object> {
 	Rule DateExpression() {
 		return FirstOf(
 				DateCalculation(),
+				UnaryDateFunction(),
+				BinaryDateFunction(),
 				Sequence("(", DateExpression(), ")"),
 				DateTimeLiteral(),
 				DateLiteral(),
@@ -241,6 +243,7 @@ class LanguageParser extends BaseParser<Object> {
 	Rule TimeExpression() {
 		return FirstOf(
 				TimeLiteral(),
+				UnaryDateFunction(),
 				DateColumn()
 		);
 	}
@@ -273,9 +276,23 @@ class LanguageParser extends BaseParser<Object> {
 	}
 
 	Rule DateFunction() {
-		return FirstOf(
-				BinaryDateFunction(),
-				TernaryDateFunction()
+		return TernaryDateFunction();
+	}
+
+	Rule UnaryDateFunction() {
+		return Sequence(
+				FirstOf("TO_TIME", "TO_DATE"),
+				push(match()),
+				"(",
+				WhiteSpace(),
+				DateExpression(),
+				WhiteSpace(),
+				")",
+				swap(),
+				push(new ExtractTimeNode(
+						(String) pop(),
+						(ValueNode<DateTimeValue>) pop()
+				))
 		);
 	}
 

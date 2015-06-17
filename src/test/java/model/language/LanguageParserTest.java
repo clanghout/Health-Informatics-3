@@ -289,7 +289,7 @@ public class LanguageParserTest {
 
 	@Test
 	public void testCombine() throws Exception {
-		BasicParseRunner runner = new BasicParseRunner(parser.DateFunction());
+		BasicParseRunner runner = new BasicParseRunner(parser.DateExpression());
 		String input = "COMBINE(#1995-01-17#, #12:12#)";
 
 		ParsingResult result = runner.run(input);
@@ -299,5 +299,33 @@ public class LanguageParserTest {
 		ValueNode<DateTimeValue> node = (ValueNode<DateTimeValue>) result.resultValue;
 
 		assertEquals(new DateTimeValue(1995, 1, 17, 12, 12, 00), node.resolve(null).resolve(null));
+	}
+
+	@Test
+	public void testExtractTime() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.TimeExpression());
+		String input = "TO_TIME(#1995-01-17 12:12#)";
+
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+
+		ValueNode<TimeValue> node = (ValueNode<TimeValue>) result.resultValue;
+
+		assertEquals(new TimeValue(12, 12, 00), node.resolve(null).resolve(null));
+	}
+
+	@Test
+	public void testExtractDate() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.DateExpression());
+		String input = "TO_DATE(#1995-01-17 12:12#)";
+
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+
+		ValueNode<DateValue> node = (ValueNode<DateValue>) result.resultValue;
+
+		assertEquals(new DateValue(1995, 1, 17), node.resolve(null).resolve(null));
 	}
 }
