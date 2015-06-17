@@ -39,13 +39,16 @@ public class NumberOperationNode extends OperationNode<NumberValue> {
 	}
 
 	private Computation resolveComputation(DataModel model) {
+		DataDescriber<NumberValue> leftValue = left().resolve(model);
+		DataDescriber<NumberValue> rightValue = right() != null ? right().resolve(model) : null;
 		switch (getOperation()) {
-			case "+": return new Addition<>(left().resolve(model), right().resolve(model));
-			case "-": return new Subtraction<>(left().resolve(model), right().resolve(model));
-			case "*": return new Multiplication<>(left().resolve(model), right().resolve(model));
-			case "/": return new Division<>(left().resolve(model), right().resolve(model));
-			case "^": return new Power<>(left().resolve(model), right().resolve(model));
-			case "SQRT": return new SquareRoot<>(left().resolve(model));
+			case "+": return new Addition<>(leftValue, rightValue);
+			case "-": return new Subtraction<>(leftValue, rightValue);
+			case "*": return new Multiplication<>(leftValue, rightValue);
+			case "/": return new Division<>(leftValue, rightValue);
+			case "^": return new Power<>(leftValue, rightValue);
+			case "%": return new Modulo<>(leftValue, rightValue);
+			case "SQRT": return new SquareRoot<>(leftValue);
 			default:
 				throw new UnsupportedOperationException(
 						String.format("Operation %s not supported", getOperation())
