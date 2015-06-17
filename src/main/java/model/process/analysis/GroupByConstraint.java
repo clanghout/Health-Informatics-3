@@ -2,6 +2,8 @@ package model.process.analysis;
 
 import model.data.DataTable;
 import model.data.Table;
+import model.data.value.DataValue;
+import model.data.value.StringValue;
 import model.process.functions.Function;
 
 import java.util.LinkedHashMap;
@@ -28,9 +30,8 @@ public class GroupByConstraint extends GroupByAnalysis {
 			List<String> groupNames,
 			List<Function> functions,
 			List<String> columnNames) {
-
+		super(name, functions, columnNames);
 		constructConstraintList(groupNames, constraintList);
-		constructBuilder(name, functions, columnNames);
 	}
 
 	/**
@@ -47,9 +48,9 @@ public class GroupByConstraint extends GroupByAnalysis {
 					"number of groups does not correspond to the number of group names.");
 		}
 
-		LinkedHashMap<String, ConstraintAnalysis> constraints = new LinkedHashMap<>();
+		LinkedHashMap<DataValue, ConstraintAnalysis> constraints = new LinkedHashMap<>();
 		for (int i = 0; i < constrainList.size(); i++) {
-			constraints.put(groupNames.get(i), constrainList.get(i));
+			constraints.put(new StringValue(groupNames.get(i)), constrainList.get(i));
 		}
 		setConstraints(constraints);
 	}

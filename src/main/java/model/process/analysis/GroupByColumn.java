@@ -34,9 +34,8 @@ public class GroupByColumn extends GroupByAnalysis {
 			DataDescriber<?> column,
 			List<Function> functions,
 			List<String> columnNames) {
-
+		super(name, functions, columnNames);
 		this.column = column;
-		constructBuilder(name, functions, columnNames);
 
 	}
 
@@ -57,11 +56,11 @@ public class GroupByColumn extends GroupByAnalysis {
 	 * @param table table to get the distinct values from.
 	 */
 	private void createConstraintsFromColumn(DataTable table) {
-		LinkedHashMap<String, ConstraintAnalysis> constraints = new LinkedHashMap<>();
+		LinkedHashMap<DataValue, ConstraintAnalysis> constraints = new LinkedHashMap<>();
 
 		for (DataRow row : table.getRows()) {
 			DataValue<?> value = column.resolve(row);
-			constraints.put(value.toString(), new ConstraintAnalysis(
+			constraints.put(value, new ConstraintAnalysis(
 					new ConstraintDescriber(
 							new EqualityCheck(
 									column,

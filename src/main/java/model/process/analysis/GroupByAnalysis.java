@@ -17,42 +17,45 @@ import java.util.Map;
  * Created by jens on 6/3/15.
  */
 public abstract class GroupByAnalysis extends DataAnalysis {
-	private LinkedHashMap<String, ConstraintAnalysis> constraints;
+	private LinkedHashMap<? extends DataValue, ConstraintAnalysis> constraints;
 	private DataTableBuilder builder;
-	private List<Function> functionsList;
+	private String name;
+	private List<Function> functions;
+	private List<String> columnNames;
+
+	protected GroupByAnalysis(String name, List<Function> functions, List<String> columnNames) {
+		this.name = name;
+		this.functions = functions;
+		this.columnNames = columnNames;
+	}
 
 	/**
 	 * Set the constraints for the chunks.
 	 * @param constraints a linkedHashMap that contains all the constraints for the chunks.
 	 */
-	public void setConstraints(LinkedHashMap<String, ConstraintAnalysis> constraints) {
+	public void setConstraints(LinkedHashMap<? extends DataValue, ConstraintAnalysis> constraints) {
 		this.constraints = constraints;
 	}
 
 	/**
-	 * Create a DataTable builder for the return table.
-	 * @param name name of the new table
-	 * @param functions functions used for the columns
-	 * @param columnsNames names for the columns
+	 * Add a chunk column to the builder.
 	 */
-	protected void constructBuilder(
-			String name,
-			List<Function> functions,
-			List<String> columnsNames) {
-		
-		builder = new DataTableBuilder();
-		builder.setName(name);
-		if (functions.size() != columnsNames.size()) {
-			throw new IllegalArgumentException(
-					"number of columns does not correspond to the number of functions.");
+	protected void addChunkColumn() {
+		if (constraints.size() == 0) {
+			builder.createColumn("Chunk", StringValue.class);
+		} else {
+			builder.createColumn("Chunk",
+					(Class<? extends DataValue>) constraints.keySet().toArray()[0].getClass());
 		}
+	}
 
-		this.functionsList = functions;
-		builder.createColumn("Chunk", StringValue.class);
-
+	/**
+	 * Add the columns for the function results to the builder.
+	 */
+	protected void addFunctionColumns() {
 		for (int i = 0; i < functions.size(); i++) {
 			try {
-				builder.createColumn(columnsNames.get(i),
+				builder.createColumn(columnNames.get(i),
 						(Class<? extends DataValue>) functions.get(i)
 								.getClass()
 								.getMethod("calculate")
@@ -62,6 +65,22 @@ public abstract class GroupByAnalysis extends DataAnalysis {
 			}
 		}
 	}
+	/**
+	 * Create a DataTable builder for the return table.
+	 */
+	protected void constructBuilder() {
+		
+		builder = new DataTableBuilder();
+		builder.setName(name);
+		if (functions.size() != columnNames.size()) {
+			throw new IllegalArgumentException(
+					"number of columns does not correspond to the number of functions.");
+		}
+
+		addChunkColumn();
+		addFunctionColumns();
+
+	}
 
 	/**
 	 * Perform the specified functions on the chunks in the input table.
@@ -69,15 +88,16 @@ public abstract class GroupByAnalysis extends DataAnalysis {
 	 * @return a table that contains, for each chunk, the results of the functions.
 	 */
 	protected DataTable groupBy(DataTable input) {
-		for (Map.Entry<String, ConstraintAnalysis> entry : constraints.entrySet()) {
+		constructBuilder();
+		for (Map.Entry<? extends DataValue, ConstraintAnalysis> entry : constraints.entrySet()) {
 			DataTable chunk = input.copy();
 			chunk = (DataTable) entry.getValue().analyse(chunk);
 
-			DataValue[] values = new DataValue[functionsList.size() + 1];
-			values[0] = new StringValue(entry.getKey());
+			DataValue[] values = new DataValue[functions.size() + 1];
+			values[0] = entry.getKey();
 
 			int i = 1;
-			for (Function function : functionsList) {
+			for (Function function : functions) {
 				function.setTable(chunk);
 				values[i] = function.calculate();
 				i++;
