@@ -25,6 +25,7 @@ import view.Dialog;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -465,13 +466,11 @@ public class XmlWizardController {
 	@FXML
 	public void addMetaData(ActionEvent actionEvent) {
 		if (addmetacheck.isSelected()) {
-			selectedFile.setHasMetaData(true);
 			metacolumnName.setDisable(false);
 			metacolumntype.setDisable(false);
 			metacolumnformat.setDisable(false);
 			metacolumnvalue.setDisable(false);
 		} else {
-			selectedFile.setHasMetaData(false);
 			metacolumnName.setDisable(true);
 			metacolumntype.setDisable(true);
 			metacolumnformat.setDisable(true);
@@ -483,15 +482,28 @@ public class XmlWizardController {
 	 * Sets the metadata values of the file.
 	 */
 	public void setMetaData() {
-		logger.info(String.format("Creating metadata: %s is a %s and the format is %s: %s",
+		logger.info(String.format("Creating metadata: Columnname \"%s\" is a %s and the format is %s: %s",
 				metacolumnName.getText(), metacolumntype.getValue(),
-				metacolumnformat, metacolumnvalue.getText()));
-		selectedFile.createMetaDataValue(
-				metacolumnvalue.getText(),
-				new ColumnInfo(columnName.getText(),
-						DataFile.getColumnType((String) columntype.getValue()),
-						columnFormat.getText())
-		);
+				metacolumnformat.getText(), metacolumnvalue.getText()));
+
+		try {
+			if (addmetacheck.isSelected()) {
+				selectedFile.createMetaDataValue(
+						metacolumnvalue.getText(),
+						new ColumnInfo(metacolumnName.getText(),
+								DataFile.getColumnType((String) metacolumntype.getValue()),
+								metacolumnformat.getText())
+				);
+			}
+		} catch (NumberFormatException | DateTimeParseException e) {
+			logger.log(Level.SEVERE, "Value: \"" + metacolumnvalue.getText()
+					+ "\" can not be parsed to a " + metacolumntype.getValue().toString()
+					+ ": " + e.getMessage());
+		} catch (IllegalArgumentException e) {
+			logger.log(Level.SEVERE, "Value: \"" + metacolumnvalue.getText()
+					+ "\" can not be parsed to a " + metacolumntype.getValue().toString()
+					+ " using format \"" + metacolumnformat.getText() + "\": " + e.getMessage());
+		}
 	}
 
 	/**
