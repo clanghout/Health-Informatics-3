@@ -328,4 +328,60 @@ public class LanguageParserTest {
 
 		assertEquals(new DateValue(1995, 1, 17), node.resolve(null).resolve(null));
 	}
+
+	@Test
+	public void testStringEquality() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.BooleanExpression());
+		String input = "\"test\" = \"test\"";
+
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+
+		ValueNode<BoolValue> node = (ValueNode<BoolValue>) result.resultValue;
+
+		assertTrue(node.resolve(null).resolve(null).getValue());
+	}
+
+	@Test
+	public void testDateEquality() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.BooleanExpression());
+		String input = "#1995-01-17# =#1995-01-17#";
+
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+
+		ValueNode<BoolValue> node = (ValueNode<BoolValue>) result.resultValue;
+
+		assertTrue(node.resolve(null).resolve(null).getValue());
+	}
+
+	@Test
+	public void testTimeEquality() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.BooleanExpression());
+		String input = "#12:12# =#12:12:00#";
+
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+
+		ValueNode<BoolValue> node = (ValueNode<BoolValue>) result.resultValue;
+
+		assertTrue(node.resolve(null).resolve(null).getValue());
+	}
+
+	@Test
+	public void testBooleanEquality() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.BooleanExpression());
+		String input = "(false) = (false)";
+
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+
+		ValueNode<BoolValue> node = (ValueNode<BoolValue>) result.resultValue;
+
+		assertTrue(node.resolve(null).resolve(null).getValue());
+	}
 }
