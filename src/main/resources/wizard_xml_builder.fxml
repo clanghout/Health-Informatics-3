@@ -34,7 +34,7 @@
                             onAction="#selectFile"/>
                     <Button text="Remove"
                             onAction="#removeDataFile"/>
-                    <Separator />
+                    <Separator orientation="VERTICAL"/>
                     <Button text="Copy template"
                             onAction="#copyTemplate"/>
                     <Button text="Paste template"
@@ -66,12 +66,12 @@
                                        fx:id="hasFirstRowHeader"
                                        text="First row as table header"
                                        onAction="#handleFirstRowHeaderCheckbox"/>
-                               <HBox>
+                               <HBox styleClass="spaced-box">
                                    <Button text="Add column"
                                            onAction="#addColumnRow"/>
                                    <Button text="Remove column"
                                            onAction="#removeColumnRow"/>
-                                   <Separator />
+                                   <Separator orientation="VERTICAL"/>
                                    <Button text="Up"
                                            onAction="#moveColumnUp"/>
                                    <Button text="Down"
