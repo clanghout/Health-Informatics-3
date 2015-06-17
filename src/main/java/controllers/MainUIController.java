@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public class MainUIController {
 
 	private static final double WIZARD_DIALOG_WIDTH = 1000;
-	private static final double WIZARD_DIALOG_HEIGHT = 640;
+	private static final double WIZARD_DIALOG_HEIGHT = 800;
 
 	@FXML private TableViewController tableViewController;
 	@FXML private DataController dataController;

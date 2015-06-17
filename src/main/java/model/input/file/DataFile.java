@@ -40,6 +40,7 @@ public abstract class DataFile {
 	private DataTableBuilder builder = new DataTableBuilder();
 	private boolean firstRowAsHeader;
 	private boolean hasMetaData;
+	private String metaDataFormat;
 
 	/**
 	 * Creates a new type of a DataFile. Sets the default range of lines to read
@@ -429,5 +430,13 @@ public abstract class DataFile {
 	 */
 	public Class<? extends DataValue> getMetaDataType() {
 		return metaDataType;
+	}
+
+	/**
+	 * Returns the date format how the metadata should be parsed.
+	 * @return The format
+	 */
+	public String getMetaDataFormat() {
+		return metaDataFormat;
 	}
 }

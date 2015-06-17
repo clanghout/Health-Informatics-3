@@ -41,64 +41,76 @@
                 <items>
                     <VBox styleClass="spaced-box">
                        <children>
-                           <Label>Column specification:</Label>
+                           <Label>Column Specification:</Label>
                            <TableView fx:id="datacolumns"
                                    editable="true"/>
-                           <HBox styleClass="import-box">
-                               <TextField
-                                       fx:id="columnName"/>
-                               <ComboBox
-                                       fx:id="columntype"/>
-                               <TextField
-                                       fx:id="columnFormat"/>
-                               <Button text="Add column"
-                                       onAction="#addColumnRow"/>
-                               <Button text="Remove column"
-                                       onAction="#removeColumnRow"/>
-                           </HBox>
-                           <CheckBox
-                                   fx:id="hasFirstRowHeader"
-                                   text="First row as table header"
-                                   onAction="#handleFirstRowHeaderCheckbox"/>
+                           <VBox styleClass="import-box">
+                               <GridPane styleClass="spaced-box" hgap="10" vgap="10">
+                                   <Label GridPane.columnIndex="0" GridPane.rowIndex="0">Column Name:</Label>
+                                   <TextField GridPane.columnIndex="1" GridPane.rowIndex="0"
+                                           fx:id="columnName"/>
+
+                                   <Label GridPane.columnIndex="0" GridPane.rowIndex="1">Column Type:</Label>
+                                   <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="1"
+                                           fx:id="columntype"/>
+
+                                   <Label GridPane.columnIndex="0" GridPane.rowIndex="2">Date/Time Format</Label>
+                                   <TextField GridPane.columnIndex="1" GridPane.rowIndex="2"
+                                           fx:id="columnFormat"/>
+                               </GridPane>
+                               <CheckBox
+                                       fx:id="hasFirstRowHeader"
+                                       text="First row as table header"
+                                       onAction="#handleFirstRowHeaderCheckbox"/>
+                               <HBox>
+                                   <Button text="Add column"
+                                           onAction="#addColumnRow"/>
+                                   <Button text="Remove column"
+                                           onAction="#removeColumnRow"/>
+                               </HBox>
+                           </VBox>
                        </children>
                     </VBox>
                     <VBox styleClass="spaced-box">
                         <children>
                             <Label>
-                                Plain textfile
+                                Plain Textfile Specification
                             </Label>
                             <VBox styleClass="rightpadded">
                                 <Label> Starting line: </Label>
                                 <TextField fx:id="startLine" />
                             </VBox>
-                            <Separator />
                             <VBox styleClass="rightpadded">
                                 <Label> Remove from end: </Label>
                                 <TextField fx:id="endLine" />
                             </VBox>
-                            <VBox styleClass="spaced-box">
+                            <VBox styleClass="rightpadded">
+                                <Label> Delimiter: </Label>
+                                <TextField fx:id="delimiter" />
+                            </VBox>
+                            <Separator />
                                 <Label>Add filename column: </Label>
                                 <CheckBox
                                         fx:id="addmetacheck"
                                         text="Add filename column"
                                         onAction="#addMetaData" />
-                                <HBox styleClass="spaced-box">
-                                    <VBox>
-                                        <Label>Column name:</Label>
-                                        <TextField
-                                                fx:id="metacolumnName" />
-                                    </VBox>
-                                    <VBox>
-                                        <Label>Column type</Label>
-                                        <ComboBox
-                                                fx:id="metacolumntype" />
-                                    </VBox>
-                                    <Button fx:id="apply"
-                                            text="Apply"
-                                            onAction="#applyChanges" />
+                                <GridPane styleClass="spaced-box" hgap="10" vgap="10">
+                                    <Label GridPane.columnIndex="0" GridPane.rowIndex="1">Column Name:</Label>
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="1"
+                                                    fx:id="metacolumnName" />
 
-                                </HBox>
-                            </VBox>
+                                    <Label GridPane.columnIndex="0" GridPane.rowIndex="2">Column Type</Label>
+                                    <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="2"
+                                                    fx:id="metacolumntype" />
+
+                                    <Label GridPane.columnIndex="0" GridPane.rowIndex="3">Date/Time Format</Label>
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="3"
+                                               fx:id="metacolumnformat"/>
+
+                                    <Label GridPane.columnIndex="0" GridPane.rowIndex="4">Column value (optional)</Label>
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="4"
+                                               fx:id="metacolumnvalue" />
+                                </GridPane>
                         </children>
                     </VBox>
                 </items>
@@ -109,6 +121,9 @@
                             onAction="#createXml" />
                     <Button text="Cancel"
                             onAction="#handleCancelButton" />
+                    <Button fx:id="apply"
+                            text="Apply"
+                            onAction="#applyChanges" />
                 </children>
             </HBox>
         </children>

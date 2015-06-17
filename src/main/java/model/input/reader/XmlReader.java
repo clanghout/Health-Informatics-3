@@ -3,6 +3,7 @@ package model.input.reader;
 import model.data.value.DataValue;
 import model.input.file.ColumnInfo;
 import model.input.file.DataFile;
+import model.input.file.PlainTextFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -158,10 +159,18 @@ public class XmlReader {
 		}
 
 		NodeList columns = columnsElement.getElementsByTagName(COLUMN_TAG);
+		setDelimiter(theDataFile, elem.getAttribute("delimiter"));
 		setColumnTypes(theDataFile, columns);
 		NodeList metaData = elem.getElementsByTagName(METADATA_TAG);
 		theDataFile = setMetaData(theDataFile, metaData);
 
+		return theDataFile;
+	}
+
+	private DataFile setDelimiter(DataFile theDataFile, String delimiter) {
+		if (delimiter != null && theDataFile instanceof PlainTextFile) {
+			((PlainTextFile) theDataFile).setDelimiter(delimiter);
+		}
 		return theDataFile;
 	}
 

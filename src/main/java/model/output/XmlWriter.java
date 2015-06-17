@@ -2,6 +2,7 @@ package model.output;
 
 import model.input.file.ColumnInfo;
 import model.input.file.DataFile;
+import model.input.file.PlainTextFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -91,6 +92,9 @@ public class XmlWriter {
 			throws FileNotFoundException {
 		Element res = document.createElement("file");
 		res.setAttribute("name", dataFile.getFile().getName());
+		if (dataFile instanceof PlainTextFile) {
+			res.setAttribute("delimiter", ((PlainTextFile) dataFile).getDelimiter());
+		}
 		res.appendChild(createPathElement(dataFile));
 		if (dataFile.hasMetaData()) {
 			res.appendChild(createMetaDataElement(dataFile));
@@ -107,6 +111,7 @@ public class XmlWriter {
 		String name = dataFile.getMetaDataColumnName();
 		String type = DataFile.getStringColumnType(
 				dataFile.getMetaDataType());
+		metadataElement.setAttribute("value", dataFile.getMetaDataValue().getValue().toString());
 		metadataElement.setAttribute("name", name);
 		metadataElement.setAttribute("type", type);
 		return metadataElement;

@@ -76,7 +76,9 @@ public class ColumnInfo {
 	 * @return true if they have the same name
 	 */
 	public boolean equals(ColumnInfo other) {
-		return !(name == null) && this.name.equals(other.getName());
+		return !(name == null)
+				&& !name.isEmpty()
+				&& this.name.equals(other.getName());
 	}
 
 	/**
