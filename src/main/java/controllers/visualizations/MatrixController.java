@@ -1,19 +1,10 @@
 package controllers.visualizations;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.image.WritableImage;
 import model.data.DataModel;
 import model.data.DataRow;
 import model.data.DataTable;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,6 +19,7 @@ public class MatrixController {
 
 	/**
 	 * Construct new MatrixController.
+	 *
 	 * @param model DataModel of the application
 	 */
 	public MatrixController(DataModel model) {
@@ -40,10 +32,10 @@ public class MatrixController {
 	private void collectCodes() {
 		codes = new HashSet<>();
 		logger.log(Level.INFO, "Tables in model = " + model.getObservableList());
-		for (DataTable table: model.getObservableList()) {
+		for (DataTable table : model.getObservableList()) {
 			logger.log(Level.INFO, "checking table " + table);
 			for (DataRow row : table.getRows()) {
-					codes.addAll(row.getCodes());
+				codes.addAll(row.getCodes());
 			}
 		}
 	}
@@ -62,6 +54,7 @@ public class MatrixController {
 
 	/**
 	 * Returns the set of codes of the model.
+	 *
 	 * @return Set of codes.
 	 */
 	public Set<String> getCodes() {
@@ -72,67 +65,42 @@ public class MatrixController {
 
 	/**
 	 * Create a TableView object.
+	 *
 	 * @param codes the list of codes for the right axis.
 	 * @return createImage of the tableView
 	 */
-	public TableView create(List<String> codes) {
-		System.out.println("call create");
-		TableView<ObservableList<StringProperty>> matrix = new TableView<>();
-		System.out.println("create matrix = " + matrix + " now call fill");
-		fillTableHeaders(matrix, codes);
-		for (String code : codes) {
-			ObservableList<StringProperty> row = FXCollections.observableArrayList();
-			fillTableRow(row, code);
-			matrix.getItems().add(row);
+	public int[][] create(List<String> codes) {
+		Map<String, Integer> codeMap = new HashMap<>(codes.size());
+		int[][] matrix = createMatrix(codes.size());
+		for (int i = 0; i < codes.size(); i++) {
+			String code = codes.get(i);
+			codeMap.put(code, i);
+		}
+		String currentCode = codes.get(0);
+		for (DataTable table : model.getTables()) {
+			for (DataRow row : table.getRows()) {
+				for (String code : row.getCodes()) {
+					matrix[codeMap.get(currentCode)][codeMap.get(code)] += 1;
+					currentCode = code;
+				}
+			}
 		}
 		return matrix;
-//		return createImage(matrix);
-	}
-
-	private void fillTableRow(ObservableList<StringProperty> row, String code) {
-		row.add(new SimpleStringProperty(code));
-
-
 	}
 
 	/**
-	 * Fills the headers of the table.
+	 * Create square matrix filled with 0.
 	 *
-	 * @param columns A List containing the DataColumns
+	 * @param size size of sides.
+	 * @return int[][] with all 0 values.
 	 */
-	private void fillTableHeaders(TableView matrix, List<String> columns) {
-		System.out.println("fill headers callede");
-		matrix.getColumns().add(createColumn(0, ""));
-		System.out.println("add column");
-		for (int i = 0; i < columns.size(); i++) {
-			matrix.getColumns().add(createColumn(i + 1, columns.get(i)));
+	private int[][] createMatrix(int size) {
+		int[][] matrix = new int[size][size];
+		for (int i = 0; i < matrix.length; i++) {
+			for (int i1 = 0; i1 < matrix[0].length; i1++) {
+				matrix[i][i1] = 0;
+			}
 		}
-	}
-
-	/**
-	 * Creates a new TableColumn based on an observable list with StringProperties.
-	 *
-	 * @param index       The index of the column that will be created
-	 * @param columnTitle The name of the column
-	 * @return The created TableColumn
-	 * @see <a href="https://docs.oracle.com/javafx/2/api/javafx/scene/control/TableView.html">
-	 * The TableView Class</a>
-	 */
-	private TableColumn<ObservableList<StringProperty>, String> createColumn(int index,
-	                                                                         String columnTitle) {
-		TableColumn<ObservableList<StringProperty>, String> column
-				= new TableColumn<>(columnTitle);
-		column.setCellValueFactory(
-				cellDataFeatures -> cellDataFeatures.getValue().get(index));
-		return column;
-	}
-
-	/**
-	 * Create an image of a TableView containing the matrix.
-	 * @return image of the table.
-	 */
-	public WritableImage createImage(TableView view) {
-
-		return null;
+		return matrix;
 	}
 }

@@ -77,8 +77,8 @@ public class PopupMatrixController {
 				createMessage.setText("Please select one or more codes.");
 			} else {
 				System.out.println("selected = " + selected);
-				TableView matrix = matrixController.create(selected);
-				visualizationController.drawMatrix(matrix);
+				int[][] matrix = matrixController.create(selected);
+				visualizationController.drawMatrix(matrix, selected);
 				dialog.close();
 			}
 		} else {

@@ -1,5 +1,9 @@
 package controllers;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -7,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.Chart;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -20,6 +25,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -78,9 +84,53 @@ public class VisualizationController {
 		saveButton.setDisable(false);
 	}
 
-	public void drawMatrix(TableView matrix) {
-		visualizationGraph.getChildren().add(matrix);
+	public void drawMatrix(int[][] matrix, List<String> colNames) {
+		TableView table = new TableView();
+		fillTableHeaders(table, colNames);
+		for (int i = 0; i < matrix.length; i++) {
+			int[] matrixRow = matrix[i];
+			ObservableList<StringProperty> row = FXCollections.observableArrayList();
+			row.add(new SimpleStringProperty(colNames.get(i)));
+			for(int matrixVal : matrixRow) {
+				row.add(new SimpleStringProperty(String.valueOf(matrixVal)));
+			}
+			table.getItems().add(row);
+		}
+
+
+		visualizationGraph.getChildren().add(table);
 		saveButton.setDisable(true);
+	}
+
+	/**
+	 * Fills the headers of the table.
+	 *
+	 * @param columns A List containing the DataColumns
+	 */
+	private void fillTableHeaders(TableView matrix, List<String> columns) {
+		System.out.println("fill headers called");
+		matrix.getColumns().add(createColumn(0, ""));
+		System.out.println("add column");
+		for (int i = 0; i < columns.size(); i++) {
+			matrix.getColumns().add(createColumn(i + 1, columns.get(i)));
+		}
+	}
+
+	/**
+	 * Creates a new TableColumn based on an observable list with StringProperties.
+	 *
+	 * @param index       The index of the column that will be created
+	 * @param columnTitle The name of the column
+	 * @return The created TableColumn
+	 * @see <a href="https://docs.oracle.com/javafx/2/api/javafx/scene/control/TableView.html">
+	 * The TableView Class</a>
+	 */
+	private TableColumn<ObservableList<StringProperty>, String> createColumn(int index, String columnTitle) {
+		TableColumn<ObservableList<StringProperty>, String> column
+				= new TableColumn<>(columnTitle);
+		column.setCellValueFactory(
+				cellDataFeatures -> cellDataFeatures.getValue().get(index));
+		return column;
 	}
 
 	/**
