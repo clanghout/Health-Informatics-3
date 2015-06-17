@@ -1,6 +1,7 @@
 package model.process.analysis;
 
 
+import model.data.DataColumn;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.value.DataValue;
@@ -17,15 +18,24 @@ import java.util.Map;
  * Created by jens on 6/3/15.
  */
 public abstract class GroupByAnalysis extends DataAnalysis {
-	private LinkedHashMap<String, ConstraintAnalysis> constraints;
+	private LinkedHashMap<? extends DataValue, ConstraintAnalysis> constraints;
 	private DataTableBuilder builder;
 	private List<Function> functionsList;
+	private String name;
+	private List<Function> functions;
+	private List<String> columnNames;
+
+	GroupByAnalysis(String name, List<Function> functions, List<String> columnNames) {
+		this.name = name;
+		this.functions = functions;
+		this.columnNames = columnNames;
+	}
 
 	/**
 	 * Set the constraints for the chunks.
 	 * @param constraints a linkedHashMap that contains all the constraints for the chunks.
 	 */
-	public void setConstraints(LinkedHashMap<String, ConstraintAnalysis> constraints) {
+	public void setConstraints(LinkedHashMap<? extends DataValue, ConstraintAnalysis> constraints) {
 		this.constraints = constraints;
 	}
 
@@ -48,7 +58,11 @@ public abstract class GroupByAnalysis extends DataAnalysis {
 		}
 
 		this.functionsList = functions;
-		builder.createColumn("Chunk", StringValue.class);
+		if (constraints.size() == 0) {
+			builder.createColumn("Chunk", StringValue.class);
+		} else {
+			builder.createColumn("Chunk", (Class<? extends DataValue>) constraints.keySet().toArray()[0].getClass());
+		}
 
 		for (int i = 0; i < functions.size(); i++) {
 			try {
@@ -69,12 +83,13 @@ public abstract class GroupByAnalysis extends DataAnalysis {
 	 * @return a table that contains, for each chunk, the results of the functions.
 	 */
 	protected DataTable groupBy(DataTable input) {
-		for (Map.Entry<String, ConstraintAnalysis> entry : constraints.entrySet()) {
+		constructBuilder(name, functions, columnNames);
+		for (Map.Entry<? extends DataValue, ConstraintAnalysis> entry : constraints.entrySet()) {
 			DataTable chunk = input.copy();
 			chunk = (DataTable) entry.getValue().analyse(chunk);
 
 			DataValue[] values = new DataValue[functionsList.size() + 1];
-			values[0] = new StringValue(entry.getKey());
+			values[0] = entry.getKey();
 
 			int i = 1;
 			for (Function function : functionsList) {

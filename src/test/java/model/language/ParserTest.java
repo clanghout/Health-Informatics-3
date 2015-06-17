@@ -480,7 +480,7 @@ public class ParserTest {
 
 		DataTable table = (DataTable) result;
 
-		assertEquals(new StringValue("22"), table.getRow(0).getValue(table.getColumn("Chunk")));
+		assertEquals(new IntValue(22), table.getRow(0).getValue(table.getColumn("Chunk")));
 		assertEquals(new IntValue(10), table.getRow(0).getValue(table.getColumn("max")));
 		assertEquals(new FloatValue(7.5f), table.getRow(0).getValue(table.getColumn("avg")));
 
