@@ -3,6 +3,7 @@ package controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
@@ -35,6 +36,8 @@ public class AnalysisController {
 	private Label errorLabel;
 	@FXML
 	private VBox errorBox;
+	@FXML
+	private Button execute, save, load, clear;
 
 	private static final int ERROR_RANGE = 5;
 
@@ -45,6 +48,17 @@ public class AnalysisController {
 	 */
 	public void setDataModel(DataModel model) {
 		this.model = model;
+	}
+
+	/**
+	 * Initialization of the analysis tab.
+	 */
+	public void initialize() {
+		execute.setMaxWidth(Double.MAX_VALUE);
+		Double width = execute.getWidth();
+		save.setMinWidth(width);
+		load.setMinWidth(width);
+		clear.setMinWidth(width);
 	}
 
 	@FXML
