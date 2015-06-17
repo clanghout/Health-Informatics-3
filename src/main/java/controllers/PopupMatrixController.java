@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import model.data.DataModel;
@@ -22,7 +21,6 @@ import java.util.logging.Logger;
  * Created by Chris on 10-6-2015.
  */
 public class PopupMatrixController {
-	private DataModel model;
 	private MatrixCreationDialog dialog;
 	private VisualizationController visualizationController;
 	private MatrixController matrixController;
@@ -39,7 +37,6 @@ public class PopupMatrixController {
 	public void initializeView(DataModel model,
 	                           MatrixCreationDialog dialog,
 	                           VisualizationController visualizationController) {
-		this.model = model;
 		this.dialog = dialog;
 		this.visualizationController = visualizationController;
 		createMessage.setMaxWidth(Double.MAX_VALUE);
@@ -49,9 +46,6 @@ public class PopupMatrixController {
 		CheckBox codeBox;
 		Set<String> codes = matrixController.getCodes();
 		logger.log(Level.INFO, "list of codes = " + codes);
-		codes.add("klaas");
-		codes.add("sjon");
-		codes.add("jacco");
 		for (String code : codes) {
 			codeBox = new CheckBox(code);
 			codesList.getChildren().add(codeBox);
