@@ -3,15 +3,13 @@ package controllers;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import model.data.DataModel;
 import model.data.DataTable;
-import javafx.scene.control.RadioButton;
 import model.output.DataTableWriter;
 import view.Dialog;
 import view.SaveDialog;
@@ -33,16 +31,26 @@ public class SaveWizardController {
 	@FXML
 	private RadioButton extensionTxt, extensionCsv;
 	@FXML
-	private RadioButton delimiterComma, delimiterTab, delimiterSpace;
+	private RadioButton delimiterComma, delimiterSemicolon, delimiterTab, delimiterSpace;
+	@FXML
+	private RadioButton saveNames, saveNew;
+	@FXML
+	private RadioButton nullLower, nullUpper, nullEmpty;
 	@FXML
 	private Label saveMessage;
 	@FXML
 	private Parent root;
+	@FXML
+	private Label tableSaveLabel;
+	@FXML
+	private CheckBox quotes;
 
 	private DataModel model;
 	private Dialog dialog;
 	private ToggleGroup extension;
 	private ToggleGroup delimiter;
+	private ToggleGroup saveName;
+	private ToggleGroup nullSave;
 
 	private Logger logger = Logger.getLogger("SaveWizardController");
 
@@ -74,7 +82,7 @@ public class SaveWizardController {
 		extension.selectedToggleProperty().addListener(
 				(observable, oldValue, newValue) -> {
 					if (newValue.equals(extensionCsv)) {
-						delimiterComma.setSelected(true);
+						delimiterSemicolon.setSelected(true);
 						setDisableDelimiter(true);
 					} else {
 						setDisableDelimiter(false);
@@ -98,9 +106,21 @@ public class SaveWizardController {
 
 		delimiter = new ToggleGroup();
 		delimiterComma.setToggleGroup(delimiter);
+		delimiterSemicolon.setToggleGroup(delimiter);
 		delimiterSpace.setToggleGroup(delimiter);
 		delimiterTab.setToggleGroup(delimiter);
 		delimiterComma.setSelected(true);
+
+		saveName = new ToggleGroup();
+		saveNames.setToggleGroup(saveName);
+		saveNew.setToggleGroup(saveName);
+		saveNew.setSelected(true);
+
+		nullSave = new ToggleGroup();
+		nullLower.setToggleGroup(nullSave);
+		nullUpper.setToggleGroup(nullSave);
+		nullEmpty.setToggleGroup(nullSave);
+		nullUpper.setSelected(true);
 	}
 
 	/**
@@ -111,9 +131,18 @@ public class SaveWizardController {
 	private void setUserData() {
 		extensionTxt.setUserData("txt");
 		extensionCsv.setUserData("csv");
-		delimiterComma.setUserData("comma");
-		delimiterSpace.setUserData("space");
-		delimiterTab.setUserData("tab");
+
+		delimiterComma.setUserData(",");
+		delimiterSemicolon.setUserData(";");
+		delimiterSpace.setUserData(" ");
+		delimiterTab.setUserData("\t");
+
+		saveNames.setUserData(false);
+		saveNew.setUserData(true);
+
+		nullEmpty.setUserData("");
+		nullLower.setUserData("null");
+		nullUpper.setUserData("NULL");
 	}
 
 	/**
@@ -123,6 +152,7 @@ public class SaveWizardController {
 	 */
 	private void setDisableDelimiter(Boolean value) {
 		delimiterComma.setDisable(value);
+		delimiterSemicolon.setDisable(value);
 		delimiterSpace.setDisable(value);
 		delimiterTab.setDisable(value);
 	}
@@ -148,42 +178,69 @@ public class SaveWizardController {
 	 */
 	@FXML
 	protected void handleSaveButton() {
+		tableSaveLabel.setTextFill(Color.BLACK);
 		List<String> tables = getSelectedTables();
 		String selectedExtension = extension.getSelectedToggle().getUserData().toString();
-		String delimitSymbol = getSelectedDelimiter();
+		String delimitSymbol = delimiter.getSelectedToggle().getUserData().toString();
 		if (!tables.isEmpty()) {
-			File temp = selectSaveLocation(selectedExtension);
-			String tempPath = temp.getAbsolutePath();
-			if (tempPath.endsWith(selectedExtension)) {
-				temp = new File(tempPath.substring(
-						0, tempPath.length() - EXTENSION_SIZE));
+			File temp;
+			boolean newSave = (boolean) saveName.getSelectedToggle().getUserData();
+			try {
+				if (newSave) {
+					temp = selectNewFileLocation(selectedExtension);
+					String tempPath = temp.getAbsolutePath();
+					if (tempPath.endsWith(selectedExtension)) {
+						temp = new File(tempPath.substring(
+								0, tempPath.length() - EXTENSION_SIZE));
+					}
+				} else {
+					temp = selectFolderLocation();
+				}
+
+				writeTables(tables, temp, selectedExtension, delimitSymbol, newSave);
+			} catch (NullPointerException e) {
+				logger.log(Level.SEVERE, "Error saving; no file selected");
+				saveMessage.setText(
+						"Data not saved! No file location selected.");
 			}
-			writeTables(tables, temp, selectedExtension, delimitSymbol);
 		} else {
 			logger.log(Level.INFO, "No table selected thus no save");
+			tableSaveLabel.setTextFill(Color.RED);
 			saveMessage.setText("Please select one or more tables to save.");
 		}
 	}
 
 	/**
 	 * Write the selected tables to file.
-	 * @param tables the names of the tables to write.
-	 * @param location the location where to save.
+	 *
+	 * @param tables    the names of the tables to write.
+	 * @param location  the location where to save.
 	 * @param extension the extension for the save.
 	 * @param delimiter the delimiter to use in the file.
 	 */
 	private void writeTables(List<String> tables,
 	                         File location,
 	                         String extension,
-	                         String delimiter) {
+	                         String delimiter,
+	                         boolean underScore) {
 		DataTableWriter dataTableWriter = new DataTableWriter();
+		dataTableWriter.setQuotationMarks(quotes.isSelected());
+		dataTableWriter.setNullVal(nullSave.getSelectedToggle().getUserData().toString());
+		dataTableWriter.setDelimiter(delimiter);
 		try {
 			for (String tableName : tables) {
 				DataTable table = model.getByName(tableName).get();
-				File saveLocation = new File(
-						location.getPath() + "_" + table.getName()
-								+ "." + extension);
-				dataTableWriter.write(table, saveLocation, delimiter);
+				File saveLocation;
+				if (underScore) {
+					saveLocation = new File(
+							location.getPath() + "_" + table.getName()
+									+ "." + extension);
+				} else {
+					saveLocation = new File(
+							location.getPath() + File.separator + table.getName()
+									+ "." + extension);
+				}
+				dataTableWriter.write(table, saveLocation);
 			}
 			dialog.close();
 		} catch (IOException e) {
@@ -199,10 +256,10 @@ public class SaveWizardController {
 	 * @param extension the selected extension
 	 * @return picked location to save the file.
 	 */
-	private File selectSaveLocation(String extension) {
+	private File selectNewFileLocation(String extension) {
 		FileChooser fileChooser = new FileChooser();
 
-		fileChooser.setTitle("Select location to save output");
+		fileChooser.setTitle("Select name to save the data");
 		fileChooser.setInitialDirectory(
 				new File(System.getProperty("user.home"))
 		);
@@ -213,25 +270,13 @@ public class SaveWizardController {
 		return fileChooser.showSaveDialog(root.getScene().getWindow());
 	}
 
-	/**
-	 * Check what delimiter is selected by the user.
-	 * If The user selected csv as extension the selected value will always be comma.
-	 *
-	 * @return the delimiter to use.
-	 */
-	private String getSelectedDelimiter() {
-		String res = ", ";
-		switch (delimiter.getSelectedToggle().getUserData().toString()) {
-			case "tab":
-				res = "\t";
-				break;
-			case "space":
-				res = " ";
-				break;
-			default:
-				break;
-		}
-		return res;
+	private File selectFolderLocation() {
+		DirectoryChooser directoryChooser = new DirectoryChooser();
+		directoryChooser.setTitle("Select location to save output");
+		directoryChooser.setInitialDirectory(
+				new File(System.getProperty("user.home"))
+		);
+		return directoryChooser.showDialog(root.getScene().getWindow());
 	}
 
 	/**

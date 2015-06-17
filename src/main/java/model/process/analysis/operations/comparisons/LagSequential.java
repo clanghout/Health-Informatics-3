@@ -37,15 +37,14 @@ public class LagSequential {
 	/**
 	 * Construct LSA resulting combined table of events sorted chronologically.
 	 * 
-	 * @param eventA
+	 * @param tableA
 	 *            The first event
 	 * @param dateA
 	 *            The column of the dateValues (first event)
-	 * @param eventB
+	 * @param tableB
 	 *            The second event
 	 * @param dateB
 	 *            The column of the dateValues (second event)
-	 * @return
 	 */
 	public LagSequential(DataTable tableA, Identifier<DataColumn> dateA,
 			DataTable tableB, Identifier<DataColumn> dateB, String name) {

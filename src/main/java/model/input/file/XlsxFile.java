@@ -1,8 +1,11 @@
 package model.input.file;
 
 import model.data.DataTable;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -34,14 +37,17 @@ public class XlsxFile extends ExcelFile {
 
 		FileInputStream file = new FileInputStream(getFile());
 		try {
-			Workbook workbook = new XSSFWorkbook(file);
-			XSSFSheet sheet = (XSSFSheet) workbook.getSheetAt(0);
+			Workbook workbook =  WorkbookFactory.create(file);
+			Sheet sheet = workbook.getSheetAt(0);
 			Iterator<Row> rowIterator = sheet.iterator();
 			return createTable(rowIterator);
 			
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Error reading xlsx file", e);
 			throw e;
+		} catch (InvalidFormatException e) {
+			e.printStackTrace();
+			throw new RuntimeException();
 		}
 	}
 }
