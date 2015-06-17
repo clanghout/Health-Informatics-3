@@ -72,6 +72,14 @@ class ProcessInfo {
 				return new SortProcess(
 						new TableValueDescriber<>(model, (ColumnIdentifier) parameters[0]),
 						order);
+			case "join":
+				return macros.get(parameters[0]);
+			case "connection":
+				return macros.get(parameters[0]);
+			case "computation":
+				return macros.get(parameters[0]);
+			case "compare":
+				return macros.get(parameters[0]);
 			default:
 				throw new UnsupportedOperationException("This code has not been implemented yet");
 		}

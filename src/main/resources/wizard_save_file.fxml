@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="root" styleClass="main-box-save" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	  fx:controller="controllers.SaveWizardController">
+	<children>
+		<HBox styleClass="save-box">
+			<!--main top box-->
+			<children>
+				<VBox styleClass="inner-box">
+					<!--leftside-->
+					<children>
+						<VBox>
+							<!--extension type-->
+							<children>
+								<Label>Save as:</Label>
+								<RadioButton fx:id="extensionTxt">.txt</RadioButton>
+								<RadioButton fx:id="extensionCsv">.csv</RadioButton>
+							</children>
+						</VBox>
+						<VBox maxWidth="Infinity">
+							<!--select delimiter-->
+							<children>
+								<Label>(only for .txt extension)</Label>
+								<Label>Delimiter to use:</Label>
+								<RadioButton fx:id="delimiterComma">Comma</RadioButton>
+								<RadioButton fx:id="delimiterSemicolon">Semicolon</RadioButton>
+								<RadioButton fx:id="delimiterTab">Tab</RadioButton>
+								<RadioButton fx:id="delimiterSpace">Space</RadioButton>
+							</children>
+						</VBox>
+					</children>
+				</VBox>
+				<VBox styleClass="inner-box">
+					<!--tables to save-->
+					<children>
+						<Label fx:id="tableSaveLabel">Select the tables you want to save:</Label>
+						<VBox fx:id="tablesBox"/>
+					</children>
+				</VBox>
+				<VBox styleClass="inner-box">
+					<!--column 3-->
+					<children>
+						<VBox>
+							<!--select save style-->
+							<children>
+								<Label>Naming of the save files:</Label>
+								<RadioButton fx:id="saveNames">Save only table names</RadioButton>
+								<RadioButton fx:id="saveNew" text="Save as inputName_tableName.extension"/>
+							</children>
+						</VBox>
+						<VBox>
+							<!--select null style-->
+							<children>
+								<Label>How to save null values?</Label>
+								<RadioButton fx:id="nullLower">null</RadioButton>
+								<RadioButton fx:id="nullUpper">NULL</RadioButton>
+								<RadioButton fx:id="nullEmpty">"" (empty)</RadioButton>
+							</children>
+						</VBox>
+						<CheckBox fx:id="quotes">Quotation marks around Strings.</CheckBox>
+						<Label fx:id="saveMessage"/>
+						<HBox alignment="BOTTOM_LEFT" styleClass="spaced-box">
+							<!--buttons-->
+							<children>
+								<Button onAction="#handleSaveButton" text="Save"/>
+								<Button onAction="#handleCancelButton" text="Cancel"/>
+							</children>
+						</HBox>
+					</children>
+				</VBox>
+			</children>
+		</HBox>
+	</children>
+	<stylesheets>
+		<URL value="@wizard.css"/>
+	</stylesheets>
+</VBox>

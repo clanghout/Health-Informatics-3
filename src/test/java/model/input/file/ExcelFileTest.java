@@ -1,19 +1,16 @@
 package model.input.file;
 
-import static org.junit.Assert.*;
-
-import java.io.*;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-
 import model.data.DataColumn;
 import model.data.DataRow;
 import model.data.DataTable;
 import model.data.value.*;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * JUnit test for the XlsFile class.
@@ -23,7 +20,9 @@ import org.junit.Test;
 public class ExcelFileTest {
 
 	private XlsxFile xlsxFile;
+	private XlsxFile xlsxFile2;
 	private XlsFile xlsFile;
+	private XlsFile xlsFile2;
 
 	@Before
 	public void setUp() throws Exception {
@@ -33,24 +32,37 @@ public class ExcelFileTest {
 		String file2 = getClass().getResource("/model/input/xls1.xls").getFile();
 		xlsFile = new XlsFile(file2);
 
-		xlsxFile.setColumns(createmapping(), createList());
-		xlsFile.setColumns(createmapping(), createList());
+		String file3 = getClass().getResource("/model/input/xlsx2.xlsx").getFile();
+		xlsxFile2 = new XlsxFile(file3);
 
-	}
+		String file4 = getClass().getResource("/model/input/xls2.xls").getFile();
+		xlsFile2 = new XlsFile(file4);
 
-	private LinkedHashMap<String, Class<? extends DataValue>> createmapping() {
-		LinkedHashMap<String, Class<? extends DataValue>> mapping = new LinkedHashMap<>();mapping.put("string", StringValue.class);
-		mapping.put("float", FloatValue.class);
-		mapping.put("int", IntValue.class);
-		return mapping;
-	}
+		// Create the specifications of the files
+		xlsFile.addColumnInfo(new ColumnInfo("string", StringValue.class));
+		xlsFile.addColumnInfo(new ColumnInfo("float", FloatValue.class));
+		xlsFile.addColumnInfo(new ColumnInfo("int", IntValue.class));
 
-	private List<Class<? extends DataValue>> createList() {
-		List<Class<? extends DataValue>> list = new ArrayList<>();
-		list.add(StringValue.class);
-		list.add(FloatValue.class);
-		list.add(IntValue.class);
-		return list;
+		xlsxFile.addColumnInfo(new ColumnInfo("string", StringValue.class));
+		xlsxFile.addColumnInfo(new ColumnInfo("float", FloatValue.class));
+		xlsxFile.addColumnInfo(new ColumnInfo("int", IntValue.class));
+
+		xlsxFile2.setFirstRowAsHeader(true);
+		xlsxFile2.createMetaDataValue("0809", new ColumnInfo("M374D474", TimeValue.class, "HHmm"));
+		xlsxFile2.addColumnInfo(new ColumnInfo(IntValue.class));
+		xlsxFile2.addColumnInfo(new ColumnInfo(StringValue.class));
+		xlsxFile2.addColumnInfo(new ColumnInfo(DateTimeValue.class));
+		xlsxFile2.addColumnInfo(new ColumnInfo(FloatValue.class));
+		xlsxFile2.addColumnInfo(new ColumnInfo(DateValue.class, "exceldate"));
+		xlsxFile2.addColumnInfo(new ColumnInfo(BoolValue.class));
+
+		xlsFile2.setFirstRowAsHeader(true);
+		xlsFile2.addColumnInfo(new ColumnInfo(IntValue.class));
+		xlsFile2.addColumnInfo(new ColumnInfo(StringValue.class));
+		xlsFile2.addColumnInfo(new ColumnInfo(DateTimeValue.class));
+		xlsFile2.addColumnInfo(new ColumnInfo(FloatValue.class));
+		xlsFile2.addColumnInfo(new ColumnInfo(DateValue.class, "exceldate"));
+		xlsFile2.addColumnInfo(new ColumnInfo(BoolValue.class));
 	}
 
 	@Test
@@ -67,6 +79,101 @@ public class ExcelFileTest {
 		assertEquals(new StringValue("string"), row.getValue(table.getColumn("string")));
 		assertEquals(new FloatValue(0.666f), row.getValue(table.getColumn("float")));
 		assertEquals(new IntValue(666), row.getValue(table.getColumn("int")));
+	}
+
+	@Test
+	public void testReadXlsx2() throws Exception {
+		DataTable table = xlsxFile2.createDataTable();
+
+		List<DataColumn> columns = table.getColumns();
+		assertEquals(IntValue.class, columns.get(0).getType());
+		assertEquals(StringValue.class, columns.get(1).getType());
+		assertEquals(DateTimeValue.class, columns.get(2).getType());
+		assertEquals(FloatValue.class, columns.get(3).getType());
+		assertEquals(DateValue.class, columns.get(4).getType());
+		assertEquals(BoolValue.class, columns.get(5).getType());
+		assertEquals(TimeValue.class, columns.get(6).getType());
+
+		assertEquals(3, table.getRowCount());
+		DataRow row0 = table.getRow(0);
+		DataRow row1 = table.getRow(1);
+		DataRow row2 = table.getRow(2);
+
+		assertEquals(new IntValue(1), row0.getValue(table.getColumn("Intheader")));
+		assertEquals(new IntValue(8), row1.getValue(table.getColumn("Intheader")));
+		assertTrue(row2.getValue(table.getColumn("Intheader")).isNull());
+
+		assertEquals(new StringValue("row2"), row0.getValue(table.getColumn("Stringen")));
+		assertEquals(new StringValue("row3"), row1.getValue(table.getColumn("Stringen")));
+		assertEquals(new StringValue("dingen"), row2.getValue(table.getColumn("Stringen")));
+
+		assertEquals(new DateTimeValue(1995, 9, 8, 9, 9, 9),
+				row0.getValue(table.getColumn("Datums")));
+		assertEquals(new DateTimeValue(1995, 12, 9, 13, 13, 13),
+				row1.getValue(table.getColumn("Datums")));
+		assertTrue(row2.getValue(table.getColumn("Datums")).isNull());
+
+		assertTrue(row2.getValue(table.getColumn("Datums")).isNull());
+
+		assertEquals(new BoolValue(true), row0.getValue(table.getColumn("Booleans")));
+		assertEquals(new BoolValue(false), row1.getValue(table.getColumn("Booleans")));
+		assertTrue(row2.getValue(table.getColumn("Booleans")).isNull());
+
+		assertEquals(new FloatValue(0.8f), row0.getValue(table.getColumn("Floots")));
+		assertEquals(new FloatValue(13.13f), row1.getValue(table.getColumn("Floots")));
+		assertEquals(new FloatValue(21.21f), row2.getValue(table.getColumn("Floots")));
+
+		assertEquals(new DateValue(2012, 6, 20), row0.getValue(table.getColumn("lelijke_excel_dates")));
+		assertEquals(new DateValue(2012, 6, 21), row2.getValue(table.getColumn("lelijke_excel_dates")));
+
+		assertEquals(new TimeValue(8, 9, 0), row1.getValue(table.getColumn("M374D474")));
+
+
+	}
+
+	@Test
+	public void testReadXls2() throws Exception {
+		DataTable table = xlsFile2.createDataTable();
+
+		List<DataColumn> columns = table.getColumns();
+		assertEquals(IntValue.class, columns.get(0).getType());
+		assertEquals(StringValue.class, columns.get(1).getType());
+		assertEquals(DateTimeValue.class, columns.get(2).getType());
+		assertEquals(FloatValue.class, columns.get(3).getType());
+		assertEquals(DateValue.class, columns.get(4).getType());
+		assertEquals(BoolValue.class, columns.get(5).getType());
+
+		assertEquals(3, table.getRowCount());
+		DataRow row0 = table.getRow(0);
+		DataRow row1 = table.getRow(1);
+		DataRow row2 = table.getRow(2);
+
+		assertEquals(new IntValue(1), row0.getValue(table.getColumn("Intheader")));
+		assertEquals(new IntValue(8), row1.getValue(table.getColumn("Intheader")));
+		assertTrue(row2.getValue(table.getColumn("Intheader")).isNull());
+
+		assertEquals(new StringValue("row2"), row0.getValue(table.getColumn("Stringen")));
+		assertEquals(new StringValue("row3"), row1.getValue(table.getColumn("Stringen")));
+		assertEquals(new StringValue("dingen"), row2.getValue(table.getColumn("Stringen")));
+
+		assertEquals(new BoolValue(true), row0.getValue(table.getColumn("Booleans")));
+		assertEquals(new BoolValue(false), row1.getValue(table.getColumn("Booleans")));
+		assertTrue(row2.getValue(table.getColumn("Booleans")).isNull());
+
+		assertEquals(new DateTimeValue(1995, 9, 8, 9, 9, 9),
+				row0.getValue(table.getColumn("Datums")));
+		assertEquals(new DateTimeValue(1995, 12, 9, 13, 13, 13),
+				row1.getValue(table.getColumn("Datums")));
+		assertTrue(row2.getValue(table.getColumn("Datums")).isNull());
+
+		assertTrue(row2.getValue(table.getColumn("Datums")).isNull());
+
+		assertEquals(new FloatValue(0.8f), row0.getValue(table.getColumn("Floots")));
+		assertEquals(new FloatValue(13.13f), row1.getValue(table.getColumn("Floots")));
+		assertEquals(new FloatValue(21.21f), row2.getValue(table.getColumn("Floots")));
+
+		assertEquals(new DateValue(2012, 6, 20), row0.getValue(table.getColumn("lelijke_excel_dates")));
+		assertEquals(new DateValue(2012, 6, 21), row2.getValue(table.getColumn("lelijke_excel_dates")));
 	}
 
 	@Test

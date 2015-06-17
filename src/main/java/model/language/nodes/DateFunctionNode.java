@@ -19,6 +19,7 @@ public class DateFunctionNode extends ValueNode<IntValue> {
 	private ValueNode<? extends TemporalValue<?>> left;
 	private ValueNode<TemporalValue<?>> right;
 	private String unit;
+	private String operation;
 
 	/**
 	 * Construct a new DateFunctionNode.
@@ -29,21 +30,28 @@ public class DateFunctionNode extends ValueNode<IntValue> {
 	public DateFunctionNode(
 			ValueNode<? extends TemporalValue<?>> left,
 			ValueNode<TemporalValue<?>> right,
-			String unit) {
+			String unit,
+			String operation) {
 		super(null, null);
 		this.left = left;
 		this.right = right;
+		this.operation = operation;
 		this.unit = unit;
 	}
 
 	@Override
 	public DataDescriber<IntValue> resolve(DataModel model) {
 		ChronoUnit chronoUnit = PeriodNode.resolveUnit(unit);
-
-		return new OperationDescriber<>(new Relative(
-				left.resolve(model),
-				right.resolve(model),
-				chronoUnit
-		));
+		if (operation.equals("RELATIVE")) {
+			return new OperationDescriber<>(new Relative(
+					left.resolve(model),
+					right.resolve(model),
+					chronoUnit
+			));
+		} else {
+			throw new UnsupportedOperationException(
+					String.format("Operation %s isn't supported", operation)
+			);
+		}
 	}
 }

@@ -1,14 +1,17 @@
 package model.input.file;
 
 import model.data.DataTable;
-import model.data.value.DataValue;
-import model.data.value.FloatValue;
-import model.data.value.IntValue;
-import model.data.value.StringValue;
+import model.data.value.*;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 
 import java.io.FileNotFoundException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Iterator;
 
 /**
@@ -17,6 +20,8 @@ import java.util.Iterator;
  *
  */
 public abstract class ExcelFile extends DataFile {
+
+	private static final String EXCEL_DATE = "exceldate";
 
 	/**
 	 * Creates a new ExcelFile.
@@ -37,12 +42,14 @@ public abstract class ExcelFile extends DataFile {
 		getBuilder().setName(getFile().getName().replace(".", ""));
 		if (hasFirstRowAsHeader()) {
 			Row headers = rowIterator.next();
-			for (int i = 0; i < getColumnTypes().length; i++) {
-				getColumns().put(headers.getCell(i).getStringCellValue(), getColumnTypes()[i]);
+			for (int i = 0; i < getColumns().size(); i++) {
+				ColumnInfo column = getColumns().get(i);
+				column.setName(headers.getCell(i).getStringCellValue());
+				getBuilder().createColumn(column.getName(), column.getType());
 			}
 		} else {
-			for (String key : getColumns().keySet()) {
-				getBuilder().createColumn(key, getColumns().get(key));
+			for (ColumnInfo column : getColumns()) {
+				getBuilder().createColumn(column.getName(), column.getType());
 			}
 		}
 		if (hasMetaData()) {
@@ -61,9 +68,16 @@ public abstract class ExcelFile extends DataFile {
 			} else {
 				values = new DataValue[getColumns().size()];
 			}
+			int nullCount = 0;
 			for (int i = 0; i < getColumns().size(); i++) {
 				Cell cell = row.getCell(i, Row.CREATE_NULL_AS_BLANK);
-				values[i] = toDataValue(cell);
+				values[i] = toDataValue(cell, getColumns().get(i));
+				if (values[i].isNull()) {
+					nullCount++;
+				}
+			}
+			if (nullCount == getColumns().size()) {
+				break;
 			}
 			if (hasMetaData()) {
 				values[values.length - 1] = getMetaDataValue();
@@ -72,19 +86,112 @@ public abstract class ExcelFile extends DataFile {
 		}
 	}
 
-	private DataValue toDataValue(Cell cell) {
-		switch (cell.getCellType()) {
-			case Cell.CELL_TYPE_STRING:
-				return new StringValue(cell.getStringCellValue());
-			case Cell.CELL_TYPE_NUMERIC:
-				double cellValue = cell.getNumericCellValue();
-				return (cellValue % 1 == 0)
-						? new IntValue((int) cellValue) : new FloatValue((float) cellValue);
-			case Cell.CELL_TYPE_BLANK:
-				return new StringValue("");
-			default: throw new UnsupportedOperationException(
-					String.format("Cell type %s not supported", cell.getCellType())
-			);
+	private DataValue toDataValue(Cell cell, ColumnInfo columnInfo) {
+		if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
+			return DataValue.getNullInstance(columnInfo.getType());
+
+		} else if (columnInfo.getType() == BoolValue.class) {
+			return parseBoolValue(cell);
+
+		} else if (columnInfo.getType() == StringValue.class) {
+			return parseStringValue(cell);
+
+		} else if (isTemporalValue(columnInfo.getType())) {
+			return parseExcelDateCell(cell, columnInfo);
+
+		} else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+			return parseNumValue(cell, columnInfo);
+
+		} else {
+			throw new UnsupportedOperationException(
+					String.format("Type %s is not recognized", columnInfo.getType()));
 		}
+	}
+
+	private BoolValue parseBoolValue(Cell cell) {
+		if (cell.getCellType() == Cell.CELL_TYPE_STRING
+			&& cell.getStringCellValue().equals("NULL")) {
+				return (BoolValue) DataValue.getNullInstance(BoolValue.class);
+			} else {
+				return new BoolValue(cell.getBooleanCellValue());
+			}
+	}
+
+	private StringValue parseStringValue(Cell cell) {
+		if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+			if (cell.getStringCellValue().equals("NULL")) {
+				return (StringValue) DataValue.getNullInstance(StringValue.class);
+			} else {
+				return new StringValue(cell.getStringCellValue());
+			}
+
+		} else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+			return new StringValue(String.valueOf(cell.getNumericCellValue()));
+
+		} else if (cell.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
+			return new StringValue(String.valueOf(cell.getBooleanCellValue()));
+
+		} else {
+			throw new UnsupportedOperationException(
+					String.format("Type String is not compatible with Excel cell type %s",
+							cell.getCellType()));
+		}
+	}
+
+	private DataValue parseNumValue(Cell cell, ColumnInfo columnInfo) {
+		
+		double cellValue = cell.getNumericCellValue();
+		
+		if (columnInfo.getType() == IntValue.class) {
+			return new IntValue((int) cellValue);
+		} else if (columnInfo.getType() == FloatValue.class) {
+			return new FloatValue((float) cellValue);
+		} else {
+			throw new UnsupportedOperationException(
+				String.format("type %s not supported", columnInfo.getType()));
+		}
+	}
+
+	private DataValue parseExcelDateCell(Cell cell, ColumnInfo columnInfo) {
+		if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC
+				&& DateUtil.isCellDateFormatted(cell)) {
+			return parseDateCellValue(cell.getDateCellValue(), columnInfo.getType());
+	
+		} else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC
+					&& (columnInfo.getFormat().equals(EXCEL_DATE))) {
+				Date javaDate = DateUtil.getJavaDate(cell.getNumericCellValue());
+			return parseDateCellValue(javaDate, columnInfo.getType());
+
+		} else if (cell.getCellType() == Cell.CELL_TYPE_STRING
+					&& (cell.getStringCellValue().equals("NULL"))) {
+			return DataValue.getNullInstance(columnInfo.getType());
+
+		} else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+			return parseTemporalValue(cell.getStringCellValue(), columnInfo);
+
+		} else {
+			throw new UnsupportedOperationException(
+					String.format("Type %s is not compatible with Excel cell type %s",
+							columnInfo.getType(), cell.getCellType()));
+		}
+	}
+
+	private DataValue parseDateCellValue(Date date, Class<? extends DataValue> type) {
+		Instant instant = Instant.ofEpochMilli(date.getTime());
+		LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+
+		if (type == DateTimeValue.class) {
+			return new DateTimeValue(localDateTime);
+
+		} else if (type == DateValue.class) {
+			return new DateValue(localDateTime.toLocalDate());
+
+		} else if (type == TimeValue.class) {
+			LocalTime localTime = localDateTime.toLocalTime();
+			return new TimeValue(localDateTime.getHour(),
+								localTime.getMinute(),
+								localTime.getSecond());
+		}
+		return null;
 	}
 }

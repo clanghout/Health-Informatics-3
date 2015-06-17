@@ -45,7 +45,7 @@ public class PopupVisualizationController {
 
 	/**
 	 * Initialize the popup window.
-	 * initially disables comboboxes, reenabled when data is present.
+	 * initially disables comboBoxes, re enabled when data is present.
 	 * <p>
 	 * This method is automatically called at the initialization of the application.
 	 */
@@ -60,7 +60,7 @@ public class PopupVisualizationController {
 	/**
 	 * Manual initialization of the controller for when the DataModel is specified.
 	 *
-	 * @param model the input model of wich the table can be specified.
+	 * @param model the input model of which the table can be specified.
 	 */
 	public void initializeView(
 			DataModel model,

@@ -1,9 +1,11 @@
 package model.process.functions;
 
-import model.exceptions.FunctionInputMismatchException;
+import model.exceptions.InputMismatchException;
 import model.data.describer.RowValueDescriber;
 import model.data.value.DataValue;
 import model.data.value.FloatValue;
+import model.data.value.IntValue;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -20,7 +22,7 @@ public class MaximumTest extends FunctionTest {
 	 * 
 	 * @throws Exception
 	 */
-	@Test(expected = FunctionInputMismatchException.class)
+	@Test(expected = InputMismatchException.class)
 	public void TestStringMaximum() throws Exception {
 		DataValue maximum = new Maximum(table, new RowValueDescriber<>(stringColumn)).calculate();
 	}
@@ -34,7 +36,7 @@ public class MaximumTest extends FunctionTest {
 	@Test
 	public void testIntMaximum() throws Exception {
 		DataValue max = new Maximum(table, new RowValueDescriber<>(intColumn)).calculate();
-		assertEquals(new FloatValue(10.0f), max);
+		assertEquals(new IntValue(10), max);
 	}
 
 	@Test
@@ -54,7 +56,7 @@ public class MaximumTest extends FunctionTest {
 	@Test
 	public void testIntMultipleMaximum() throws Exception {
 		DataValue max = new Maximum(table, new RowValueDescriber<>(intsColumn)).calculate();
-		FloatValue f = new FloatValue(12.0f);
+		IntValue f = new IntValue(12);
 		assertEquals(f, max);
 	}
 }

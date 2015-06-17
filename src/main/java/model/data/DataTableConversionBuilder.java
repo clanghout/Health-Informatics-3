@@ -26,6 +26,28 @@ public class DataTableConversionBuilder extends DataTableBuilder {
 			this.addColumn(column.copy());
 		}
 	}
+	
+	/**
+	 * Adds a column to an existing table and sets a default DataValue as its value.
+	 * 
+	 * @param table the table to add the column to
+	 * @param type the DataValue to fill in the new column
+	 * @param columnName the name of the new column
+	 */
+	public void addColumn(DataTable table, DataValue type, String columnName) {
+		addColumn(new DataColumn(columnName, table, type.getClass()));
+		for (DataRow row : table.getRows()) {
+			int i = 1;
+			for (DataColumn col : table.getColumns()) {
+				if (i == table.getColumns().size()) {
+					row.setValue(col, type);
+				} else {
+				row.setValue(col, row.getValue(col));
+				}
+				i++;
+			}
+		}
+	}
 
 	/**
 	 * Add all the rows from the table to the builder.

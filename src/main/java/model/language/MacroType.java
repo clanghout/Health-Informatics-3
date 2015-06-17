@@ -4,6 +4,7 @@ import model.data.DataModel;
 import model.data.DataTable;
 import model.data.describer.DataDescriber;
 import model.data.value.BoolValue;
+import model.data.value.DataValue;
 import model.exceptions.ParseException;
 import model.language.nodes.FunctionNode;
 import model.language.nodes.ValueNode;
@@ -11,7 +12,11 @@ import model.process.DataProcess;
 import model.process.analysis.ConstraintAnalysis;
 import model.process.analysis.GroupByColumn;
 import model.process.analysis.GroupByConstraint;
+import model.process.analysis.operations.ColumnComputation;
+import model.process.analysis.LagSequentialAnalysis;
+import model.process.analysis.operations.Connection;
 import model.process.functions.Function;
+import model.process.setOperations.FullJoin;
 import org.parboiled.Parboiled;
 import org.parboiled.parserunners.ReportingParseRunner;
 import org.parboiled.support.ParsingResult;
@@ -42,8 +47,138 @@ class MacroType {
 				return parseGroupByColumn(body, model, parser);
 			case "GroupByConstraint":
 				return parseGroupByConstraints(body, model, parser);
+			case "Join":
+				return parseJoin(body, model, parser);
+			case "Connection":
+				return parseConnection(body, model, parser);
+			case "Computation":
+				return parseComputation(body, model, parser);
+			case "Comparison":
+				return parseComparison(body, model, parser);
 			default:
 				throw new ParseException(String.format("Macro type %s isn't supported", type));
+		}
+	}
+
+	private DataProcess parseComputation(String body, DataModel model, LanguageParser parser)
+			throws ParseException {
+		ReportingParseRunner runner = new ReportingParseRunner(parser.ColumnComputation());
+		ParsingResult result = runner.run(body);
+
+		if (result.matched) {
+			Identifier<DataTable> name = (Identifier<DataTable>) result.valueStack.pop();
+			String columnCompType = (String) result.valueStack.pop();
+			List<ValueNode<DataValue>> values = (List<ValueNode<DataValue>>)
+					result.valueStack.pop();
+			List<Identifier> identifiers = (List<Identifier>) result.valueStack.pop();
+
+			ColumnComputation comp = new ColumnComputation(
+					name.getName(),
+					columnCompType.equals("INCLUDE EXISTING")
+			);
+
+			for (int i = 0; i < identifiers.size(); i++) {
+				comp.addColumn(values.get(i).resolve(model), identifiers.get(i).getName());
+			}
+
+			return comp;
+		} else {
+			throw new ParseException("Couldn't parse Computation", result.parseErrors);
+		}
+	}
+
+	private DataProcess parseComparison(String body, DataModel model, LanguageParser parser)
+			throws ParseException {
+		ReportingParseRunner runner = new ReportingParseRunner(parser.LagSequential());
+		ParsingResult result = runner.run(body);
+
+		if (result.matched) {
+			Identifier<DataTable> leftTable = (Identifier<DataTable>) result.valueStack.pop();
+			Identifier<DataTable> rightTable = (Identifier<DataTable>) result.valueStack.pop();
+			Identifier<DataTable> resultName = (Identifier<DataTable>) result.valueStack.pop();
+			ColumnIdentifier firstColumn = (ColumnIdentifier) result.valueStack.pop();
+			ColumnIdentifier secondColumn = (ColumnIdentifier) result.valueStack.pop();
+
+			LagSequentialAnalysis analysis = new LagSequentialAnalysis(
+					leftTable,
+					new Identifier<>(firstColumn.getColumn()),
+					rightTable,
+					new Identifier<>(secondColumn.getColumn())
+			);
+
+			analysis.setName(resultName.getName());
+
+			return analysis;
+		} else {
+			throw new ParseException("Failed to parse Comparison", result.parseErrors);
+		}
+	}
+
+	private DataProcess parseConnection(String body, DataModel model, LanguageParser parser)
+			throws ParseException {
+		ReportingParseRunner runner = new ReportingParseRunner(parser.Connection());
+		ParsingResult result = runner.run(body);
+
+		if (result.matched) {
+			Identifier<DataTable> leftTable = (Identifier<DataTable>) result.valueStack.pop();
+			Identifier<DataTable> rightTable = (Identifier<DataTable>) result.valueStack.pop();
+			Identifier name = (Identifier) result.valueStack.pop();
+			ColumnIdentifier leftColumn = (ColumnIdentifier) result.valueStack.pop();
+			ColumnIdentifier rightColumn = (ColumnIdentifier) result.valueStack.pop();
+
+			return new Connection(name.getName(), leftTable, leftColumn, rightTable, rightColumn);
+		} else {
+			throw new ParseException("Failed to parse Connection", result.parseErrors);
+		}
+	}
+
+	private DataProcess parseJoin(String body, DataModel model, LanguageParser parser)
+			throws ParseException {
+		ReportingParseRunner runner = new ReportingParseRunner(parser.Join());
+		ParsingResult result = runner.run(body);
+
+		if (result.matched) {
+			Identifier<DataTable> leftTable = (Identifier<DataTable>) result.valueStack.pop();
+			Identifier<DataTable> rightTable = (Identifier<DataTable>) result.valueStack.pop();
+			Identifier name = (Identifier) result.valueStack.pop();
+			ValueNode<BoolValue> constraint = (ValueNode<BoolValue>) result.valueStack.pop();
+			List<ColumnIdentifier> leftColumns = (List<ColumnIdentifier>) result.valueStack.pop();
+			List<ColumnIdentifier> rightColumns = (List<ColumnIdentifier>) result.valueStack.pop();
+			String joinType = (String) result.valueStack.pop();
+
+			FullJoin.Join type = resolveJoinType(joinType);
+			FullJoin join = new FullJoin(
+					name.getName(),
+					leftTable,
+					rightTable,
+					type
+			);
+
+			for (int i = 0; i < rightColumns.size(); i++) {
+				join.addCombineColumn(
+						leftColumns.get(i),
+						rightColumns.get(i)
+				);
+			}
+
+			if (constraint != null) {
+				join.setConstraint(constraint.resolve(model));
+			}
+
+			return join;
+		} else {
+			throw new ParseException("Failed to parse Join", result.parseErrors);
+		}
+	}
+
+	private FullJoin.Join resolveJoinType(String type) throws ParseException {
+		switch (type) {
+			case "FULL JOIN": return FullJoin.Join.FULL;
+			case "LEFT JOIN": return FullJoin.Join.LEFT;
+			case "RIGHT JOIN": return FullJoin.Join.RIGHT;
+			case "JOIN": return FullJoin.Join.JOIN;
+			default:
+				throw new ParseException(String.format("Type %s is not a valid join type", type));
 		}
 	}
 
