@@ -33,7 +33,7 @@ public class SimpleJoin extends Join {
 	}
 
 	@Override
-	protected void joinTable() {
+	protected DataTable joinTable() {
 		for (Row row : (Iterable<Row>) table) {
 			DataRow newRow = new DataRow();
 			if (getConstraint().resolve(row).getValue()) {
@@ -45,6 +45,7 @@ public class SimpleJoin extends Join {
 				getBuilder().addRow(newRow);
 			}
 		}
+		return getBuilder().build();
 	}
 
 	@Override

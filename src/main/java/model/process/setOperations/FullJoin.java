@@ -65,8 +65,11 @@ public class FullJoin extends Join {
 
 
 	@Override
-	protected void joinTable() {
+	protected DataTable joinTable() {
 		processFullJoin(getLeft(), getRight());
+		DataTable res = getBuilder().build();
+		getDataModel().add(res);
+		return res;
 	}
 
 	@Override

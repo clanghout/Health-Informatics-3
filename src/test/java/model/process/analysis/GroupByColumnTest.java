@@ -1,6 +1,7 @@
 package model.process.analysis;
 
 import model.data.DataColumn;
+import model.data.DataModel;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.data.describer.ConstantDescriber;
@@ -54,7 +55,7 @@ public class GroupByColumnTest {
 	public void testAnalyseNoFuncions() throws Exception {
 		GroupByColumn groupBy = new GroupByColumn("test2", new RowValueDescriber<>(c1),
 				new ArrayList<Function>(), new ArrayList<String>());
-
+		groupBy.setDataModel(new DataModel());
 		DataTable out = (DataTable) groupBy.analyse(table);
 
 		assertEquals(out.getRows().size(), 3);
@@ -73,7 +74,7 @@ public class GroupByColumnTest {
 		name.add("max");
 		GroupByColumn groupBy = new GroupByColumn("test2", new RowValueDescriber<>(c1),
 				functions, name);
-
+		groupBy.setDataModel(new DataModel());
 		DataTable out = (DataTable) groupBy.analyse(table);
 
 		assertEquals(out.getRows().size(), 3);
@@ -99,7 +100,7 @@ public class GroupByColumnTest {
 		name.add("min");
 		GroupByColumn groupBy = new GroupByColumn("test2", new RowValueDescriber<>(c1),
 				functions, name);
-
+		groupBy.setDataModel(new DataModel());
 		DataTable out = (DataTable) groupBy.analyse(table);
 
 		assertEquals(out.getRows().size(), 3);
@@ -151,6 +152,7 @@ public class GroupByColumnTest {
 		GroupByColumn groupBy = new GroupByColumn("test2", new RowValueDescriber<>(c1),
 				functions, name);
 
+		groupBy.setDataModel(new DataModel());
 		DataTable out = (DataTable) groupBy.analyse(table);
 
 		assertEquals(0, out.getRowCount());

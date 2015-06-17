@@ -89,7 +89,7 @@ class LanguageParser extends BaseParser<Object> {
 	Rule NumberOperator() {
 		return Sequence(
 				FirstOf(
-						"*", "/", "+", "-", "^"
+						"*", "/", "+", "-", "^", "%"
 				),
 				push(match())
 		);
@@ -615,12 +615,42 @@ class LanguageParser extends BaseParser<Object> {
 	}
 
 	Rule Equality() {
+		return FirstOf(
+				NumberEquality(),
+				StringEquality(),
+				BoolEquality(),
+				DateEquality(),
+				TimeEquality()
+		);
+	}
+
+	Rule NumberEquality() {
+		return EqualityImpl(NumberExpression());
+	}
+
+	Rule StringEquality() {
+		return EqualityImpl(StringExpression());
+	}
+
+	Rule BoolEquality() {
+		return EqualityImpl(Sequence("(", BooleanExpression(), ")"));
+	}
+
+	Rule DateEquality() {
+		return EqualityImpl(DateExpression());
+	}
+
+	Rule TimeEquality() {
+		return EqualityImpl(TimeExpression());
+	}
+
+	Rule EqualityImpl(Rule var) {
 		return Sequence(
-				NumberExpression(),
+				var,
 				WhiteSpace(),
 				"=",
 				WhiteSpace(),
-				NumberExpression(),
+				var,
 				swap(),
 				push(new EqualityNode((ValueNode) pop(), (ValueNode) pop()))
 		);
