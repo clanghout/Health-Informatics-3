@@ -135,6 +135,25 @@ public class XmlWizardController {
 			}
 		}
 	});
+
+	private final ChangeListener<String> metacolumnvalueListener = (ov, oldValue, newValue) -> {
+		if (newValue != null
+				&& selectedFile != null
+				&& !(newValue.equals(selectedFile.getMetaDataValue()))) {
+
+			apply.setDisable(false);
+		}
+	};
+
+	private final ChangeListener<String> metacolumnformatListener = (ov, oldValue, newValue) -> {
+		if (newValue != null
+				&& selectedFile != null
+				&& !(newValue.equals(selectedFile.getMetaDataColumnName()))) {
+
+			apply.setDisable(false);
+		}
+	};
+
 	private ListChangeListener datacolumnsListener = new ListChangeListener() {
 		private boolean suspended;
 
@@ -162,6 +181,8 @@ public class XmlWizardController {
 		disableAll(true);
 		metacolumnName.textProperty().addListener(metacolumnNameListener);
 		metacolumntype.valueProperty().addListener(metacolumntypeListener);
+		metacolumnvalue.textProperty().addListener(metacolumnvalueListener);
+		metacolumnformat.textProperty().addListener(metacolumnformatListener);
 		this.datafiles.getSelectionModel().selectedItemProperty().addListener(listener);
 		datacolumns.getColumns().setAll(columns);
 
