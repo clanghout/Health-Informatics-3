@@ -117,8 +117,7 @@ public abstract class Join extends DataProcess {
 		resolveCombineColumnsIdentifiers();
 		simplifyCombinedColumns();
 		addColumns();
-		joinTable();
-		return builder.build();
+		return joinTable();
 	}
 
 	/**
@@ -224,7 +223,7 @@ public abstract class Join extends DataProcess {
 	/**
 	 * Join the tables.
 	 */
-	protected abstract void joinTable();
+	protected abstract DataTable joinTable();
 
 	/**
 	 * Return a combined table that contains all the tables that should be joined.

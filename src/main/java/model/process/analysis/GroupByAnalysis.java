@@ -85,7 +85,9 @@ public abstract class GroupByAnalysis extends DataAnalysis {
 
 			builder.createRow(values);
 		}
-		return builder.build();
+		DataTable res = builder.build();
+		getDataModel().add(res);
+		return res;
 
 	}
 }
