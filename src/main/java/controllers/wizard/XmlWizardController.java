@@ -158,7 +158,7 @@ public class XmlWizardController {
 	private final ChangeListener<String> delimiterListener = (ov, oldValue, newValue) -> {
 		if (newValue != null
 				&& selectedFile != null
-				&& !(newValue.equals(((PlainTextFile)selectedFile).getDelimiter()))) {
+				&& !(newValue.equals(((PlainTextFile) selectedFile).getDelimiter()))) {
 
 			apply.setDisable(false);
 		}
@@ -514,7 +514,8 @@ public class XmlWizardController {
 	 * Sets the metadata values of the file.
 	 */
 	public void setMetaData() {
-		logger.info(String.format("Creating metadata: Columnname \"%s\" is a %s and the format is \"%s\": %s",
+		logger.info(String.format(
+				"Creating metadata: Columnname \"%s\" is a %s and the format is \"%s\": %s",
 				metacolumnName.getText(), metacolumntype.getValue(),
 				metacolumnformat.getText(), metacolumnvalue.getText()));
 
