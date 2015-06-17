@@ -645,4 +645,37 @@ public class ParserTest {
 		assertEquals(new IntValue(9), table.getRow(3).getValue(table.getColumn("value")));
 		assertEquals(new IntValue(10), table.getRow(4).getValue(table.getColumn("value")));
 	}
+
+	@Test
+	public void testLagSequential() throws Exception {
+		DataTableBuilder builder = new DataTableBuilder();
+		builder.setName("test2");
+		builder.createColumn("date", DateTimeValue.class);
+
+		builder.createRow(new DateTimeValue(1995, 1, 18, 12, 12, 12));
+		builder.createRow(new DateTimeValue(1996, 1, 18, 12, 12, 12));
+		builder.createRow(new DateTimeValue(1997, 1, 18, 12, 12, 12));
+		builder.createRow(new DateTimeValue(1998, 1, 18, 12, 12, 12));
+
+		DataTable test2 = builder.build();
+		model.add(test2);
+
+		String input = "def comp : Comparison = test1 WITH test2 AS compared" +
+				" ON test1.date TO test2.date;" +
+				"compare(comp)";
+
+		Table result = parseAndProcess(input);
+		assertTrue(result instanceof DataTable);
+
+		DataTable table = (DataTable) result;
+
+		assertEquals(new IntValue(11), table.getRow(0).getValue(table.getColumn("value")));
+		assertEquals(new IntValue(9), table.getRow(1).getValue(table.getColumn("value")));
+		assertTrue(table.getRow(2).getValue(table.getColumn("value")).isNull());
+		assertTrue(table.getRow(3).getValue(table.getColumn("value")).isNull());
+		assertEquals(new IntValue(10), table.getRow(4).getValue(table.getColumn("value")));
+		assertEquals(new IntValue(5), table.getRow(5).getValue(table.getColumn("value")));
+		assertTrue(table.getRow(6).getValue(table.getColumn("value")).isNull());
+		assertTrue(table.getRow(7).getValue(table.getColumn("value")).isNull());
+	}
 }
