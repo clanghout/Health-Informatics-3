@@ -113,8 +113,12 @@ public class XmlWriter {
 		String type = DataFile.getStringColumnType(
 				dataFile.getMetaDataType());
 		DataValue value = dataFile.getMetaDataValue();
+		String format = dataFile.getMetaDataFormat();
 		if (value != null) {
 			metadataElement.setAttribute("value", value.getValue().toString());
+		}
+		if (format != null) {
+			metadataElement.setAttribute("format", format);
 		}
 		metadataElement.setAttribute("name", name);
 		metadataElement.setAttribute("type", type);

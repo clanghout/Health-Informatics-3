@@ -286,15 +286,16 @@ public abstract class DataFile {
 	 *                   to a DataValue
 	 */
 	public void createMetaDataValue(String metaValue, ColumnInfo columnInfo) {
-			if (metaValue.isEmpty()) {
-				metaValue = getPath().substring(
-						getPath().lastIndexOf(File.separator) + 1,
-						getPath().lastIndexOf("."));
-			}
-			this.metaDataValue = toDataValue(metaValue, columnInfo);
-			this.setMetaDataType(columnInfo.getType());
-			this.setMetaDataColumnName(columnInfo.getName());
-			hasMetaData = true;
+		if (metaValue.isEmpty()) {
+			metaValue = getPath().substring(
+					getPath().lastIndexOf(File.separator) + 1,
+					getPath().lastIndexOf("."));
+		}
+		this.metaDataValue = toDataValue(metaValue, columnInfo);
+		this.metaDataFormat = columnInfo.getFormat();
+		this.setMetaDataType(columnInfo.getType());
+		this.setMetaDataColumnName(columnInfo.getName());
+		hasMetaData = true;
 	}
 
 	/**

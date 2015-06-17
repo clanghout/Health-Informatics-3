@@ -81,6 +81,7 @@ public class XmlWizardController {
 			selectedFile = newValue;
 			disableAll(false);
 			fillElements();
+			apply.setDisable(true);
 		} else {
 			disableAll(true);
 		}
@@ -154,6 +155,15 @@ public class XmlWizardController {
 		}
 	};
 
+	private final ChangeListener<String> delimiterListener = (ov, oldValue, newValue) -> {
+		if (newValue != null
+				&& selectedFile != null
+				&& !(newValue.equals(((PlainTextFile)selectedFile).getDelimiter()))) {
+
+			apply.setDisable(false);
+		}
+	};
+
 	private ListChangeListener datacolumnsListener = new ListChangeListener() {
 		private boolean suspended;
 
@@ -174,6 +184,7 @@ public class XmlWizardController {
 	public void initialize() {
 		startLine.textProperty().addListener(startLineChangeListener);
 		endLine.textProperty().addListener(endLineChangeListener);
+		delimiter.textProperty().addListener(delimiterListener);
 		metacolumntype.getSelectionModel().select("string");
 		columntype.getSelectionModel().select("string");
 		columntype.valueProperty().addListener(columnTypeListener);
