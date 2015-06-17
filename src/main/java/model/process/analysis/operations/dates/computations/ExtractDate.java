@@ -22,6 +22,6 @@ public class ExtractDate extends DateComputation<DateTimeValue, DateValue> {
 
 	@Override
 	protected DateValue compute(Row row) {
-		return new DateValue(getRight().resolve(row).getValue().toLocalTime());
+		return new DateValue(getRight().resolve(row).getValue().toLocalDate());
 	}
 }
