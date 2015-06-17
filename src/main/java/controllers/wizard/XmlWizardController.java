@@ -389,6 +389,8 @@ public class XmlWizardController {
 
 	private void setDataFilePath() {
 		selectedFile.setPath(fileselectfield.getText());
+		datafiles.getItems().set(
+				datafiles.getItems().indexOf(selectedFile), selectedFile);
 	}
 
 	private void updateColumnsView() {
