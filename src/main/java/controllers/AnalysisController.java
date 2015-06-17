@@ -14,10 +14,7 @@ import model.process.DataProcess;
 import org.parboiled.buffers.InputBuffer;
 import org.parboiled.errors.ParseError;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.List;
 
 
@@ -52,7 +49,6 @@ public class AnalysisController {
 
 	@FXML
 	protected void handleExecuteButtonAction(ActionEvent event) {
-		emptyLabels();
 		Parser parser = new Parser();
 		Label errorLabelExtra = new Label();
 		try {
@@ -76,7 +72,29 @@ public class AnalysisController {
 
 	@FXML
 	protected void handleLoadButtonAction() {
+		userscript.setText("");
+		FileChooser fileChooser = new FileChooser();
 
+		fileChooser.setTitle("Select file to load");
+		fileChooser.setInitialDirectory(
+				new File(System.getProperty("user.home"))
+		);
+		fileChooser.getExtensionFilters().add(
+				new FileChooser.ExtensionFilter("TXT", "*.txt")
+		);
+
+		File load =  fileChooser.showOpenDialog(root.getScene().getWindow());
+		String script = "";
+		try (BufferedReader reader = new BufferedReader(new FileReader(load))) {
+			String line;
+			script = reader.readLine();
+			while ((line = reader.readLine()) != null) {
+				script += "\n" + line;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		userscript.setText(script);
 	}
 
 	@FXML
