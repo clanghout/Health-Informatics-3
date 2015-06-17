@@ -293,6 +293,7 @@ class LanguageParser extends BaseParser<Object> {
 						new DateFunctionNode(
 								(ValueNode<TemporalValue<?>>) pop(),
 								(ValueNode<TemporalValue<?>>) pop(),
+								(String) pop(),
 								(String) pop()
 						)
 				)
@@ -985,6 +986,75 @@ class LanguageParser extends BaseParser<Object> {
 				"ON",
 				SomeWhiteSpace(),
 				BooleanExpression()
+		);
+	}
+
+	/**
+	 * first adds all the columns from the input table to the result
+	 * computation(NAME name INCLUDE EXISTING SET COLUMNS col1 AS input.c1 + input.c2, col2 AS "never gonna")
+	 * dont add all the columns from the input table
+	 * computation(NAME name NEW SET COLUMNS col1 AS input.c3, col2 AS "give you up")
+	 *
+	 */
+	Rule ColumnComputation() {
+		return Sequence(
+				"NAME",
+				SomeWhiteSpace(),
+				Identifier(),
+				SomeWhiteSpace(),
+				ColumnComutationType(),
+				SomeWhiteSpace(),
+				"SET COLUMNS",
+				SomeWhiteSpace(),
+				ColumnComputationColumns(),
+				swap4()
+		);
+	}
+
+	Rule ColumnComputationColumns() {
+		Var<List<Identifier>> columnIdentifiers = new Var<>();
+		Var<List<ValueNode<DataValue>>> values = new Var();
+		return Sequence(
+				new Action() {
+					@Override
+					public boolean run(Context context) {
+						columnIdentifiers.set(new ArrayList<>());
+						values.set(new ArrayList<>());
+						return true;
+					}
+				},
+				ZeroOrMore(
+						ColumnComputationColumn(),
+						",",
+						WhiteSpace(),
+						values.get().add((ValueNode<DataValue>) pop()),
+						columnIdentifiers.get().add((Identifier) pop())
+				),
+				ColumnComputationColumn(),
+				columnIdentifiers.get().add((Identifier) pop()),
+				values.get().add((ValueNode<DataValue>) pop()),
+				push(values.get()),
+				push(columnIdentifiers.get())
+		);
+	}
+
+	Rule ColumnComputationColumn() {
+		return Sequence(
+				AnyValue(),
+				SomeWhiteSpace(),
+				"AS",
+				SomeWhiteSpace(),
+				Identifier()
+		);
+	}
+
+	Rule ColumnComutationType() {
+		return Sequence(
+				FirstOf(
+						"INCLUDE EXISTING",
+						"NEW"
+				),
+				push(match())
 		);
 	}
 

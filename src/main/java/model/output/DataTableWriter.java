@@ -111,7 +111,7 @@ public class DataTableWriter {
 	}
 
 	/**
-	 * Build a string for the dateTimeValue
+	 * Build a string for the dateTimeValue.
 	 * @param dateValue values
 	 * @return formatted string
 	 */

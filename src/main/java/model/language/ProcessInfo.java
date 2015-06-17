@@ -76,6 +76,8 @@ class ProcessInfo {
 				return macros.get(parameters[0]);
 			case "connection":
 				return macros.get(parameters[0]);
+			case "computation":
+				return macros.get(parameters[0]);
 			case "compare":
 				return macros.get(parameters[0]);
 			default:
