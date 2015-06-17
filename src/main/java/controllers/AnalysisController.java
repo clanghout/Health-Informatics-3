@@ -17,6 +17,7 @@ import org.parboiled.errors.ParseError;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 
@@ -75,10 +76,28 @@ public class AnalysisController {
 
 	@FXML
 	protected void handleLoadButtonAction() {
+		emptyLabels();
 	}
 
 	@FXML
 	protected void handleSaveButtonAction() {
+		emptyLabels();
+		FileChooser fileChooser = new FileChooser();
+
+		fileChooser.setTitle("Save your user script");
+		fileChooser.setInitialDirectory(
+				new File(System.getProperty("user.home"))
+		);
+		fileChooser.getExtensionFilters().add(
+				new FileChooser.ExtensionFilter(
+						"txt", "*.txt")
+		);
+		File saveLoc = fileChooser.showSaveDialog(root.getScene().getWindow());
+		try (PrintWriter writer = new PrintWriter(saveLoc, "UTF-8")) {
+			userscript.getParagraphs().forEach(writer::println);
+		} catch (FileNotFoundException | UnsupportedEncodingException e) {
+			errorLabel.setText("Something went wrong while saving the file");
+		}
 
 	}
 
@@ -89,6 +108,7 @@ public class AnalysisController {
 
 	/**
 	 * Create a label with error message for every parse error.
+	 *
 	 * @param e teh Exception containing the parse errors
 	 */
 	private void createParseExceptionMessage(ParseException e) {
