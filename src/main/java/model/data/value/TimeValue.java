@@ -1,6 +1,7 @@
 package model.data.value;
 
 import java.time.LocalTime;
+import java.time.temporal.TemporalAccessor;
 
 /**
  * Data Class containing a value with type Time.
@@ -31,6 +32,15 @@ public class TimeValue extends TemporalValue<LocalTime> {
 		} else {
 			time = LocalTime.of(hour, minute, second);
 		}
+	}
+
+	/**
+	 * Construct a new TimeValue from a TemporalAccessor.
+	 * @param time The time this value should be.
+	 */
+	public TimeValue(TemporalAccessor time) {
+		super("HH:mm:ss");
+		this.time = LocalTime.from(time);
 	}
 
 	@Override
