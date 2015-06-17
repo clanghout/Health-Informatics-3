@@ -44,7 +44,8 @@ public abstract class GroupByAnalysis extends DataAnalysis {
 		if (constraints.size() == 0) {
 			builder.createColumn("Chunk", StringValue.class);
 		} else {
-			builder.createColumn("Chunk", (Class<? extends DataValue>) constraints.keySet().toArray()[0].getClass());
+			builder.createColumn("Chunk",
+					(Class<? extends DataValue>) constraints.keySet().toArray()[0].getClass());
 		}
 	}
 
