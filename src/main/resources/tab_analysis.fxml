@@ -18,11 +18,11 @@
 					<children>
 						<VBox styleClass="analysis-buttons">
 							<children>
-								<Button text="Load"  onAction="#handleLoadButtonAction"/>
-								<Button text="Save"  onAction="#handleSaveButtonAction"/>
-								<Button text="Execute" onAction="#handleExecuteButtonAction"/>
-								<Label />
-								<Button text="Clear" onAction="#handleClearButtonAction"/>
+								<Button fx:id="load" text="Load" onAction="#handleLoadButtonAction"/>
+								<Button fx:id="save" text="Save" onAction="#handleSaveButtonAction"/>
+								<Button fx:id="execute" text="Execute" onAction="#handleExecuteButtonAction"/>
+								<Label/>
+								<Button fx:id="clear" text="Clear" onAction="#handleClearButtonAction"/>
 							</children>
 						</VBox>
 						<VBox styleClass="analysis-spacing">
