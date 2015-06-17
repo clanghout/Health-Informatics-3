@@ -695,4 +695,20 @@ public class ParserTest {
 		assertTrue(table.getRow(6).getValue(table.getColumn("value")).isNull());
 		assertTrue(table.getRow(7).getValue(table.getColumn("value")).isNull());
 	}
+
+	@Test
+	public void testTimeBetween() throws Exception {
+		String input = "from(test1)|timeBetween(date)";
+
+		Table result = parseAndProcess(input);
+		assertTrue(result instanceof DataTable);
+
+		DataTable table = (DataTable) result;
+		DataColumn diffColumn = table.getColumn("Difference date");
+
+		assertEquals(new PeriodValue(0, 0, 0), table.getRow(0).getValue(diffColumn));
+		assertEquals(new PeriodValue(2, 0, 0), table.getRow(1).getValue(diffColumn));
+		assertEquals(new PeriodValue(-2, 0, 0), table.getRow(2).getValue(diffColumn));
+		assertEquals(new PeriodValue(2, 0, 0), table.getRow(3).getValue(diffColumn));
+	}
 }
