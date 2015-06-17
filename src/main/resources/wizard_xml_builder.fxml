@@ -71,6 +71,11 @@
                                            onAction="#addColumnRow"/>
                                    <Button text="Remove column"
                                            onAction="#removeColumnRow"/>
+                                   <Separator />
+                                   <Button text="Up"
+                                           onAction="#moveColumnUp"/>
+                                   <Button text="Down"
+                                           onAction="#moveColumnDown"/>
                                </HBox>
                            </VBox>
                        </children>

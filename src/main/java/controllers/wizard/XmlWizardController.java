@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -123,7 +124,8 @@ public class XmlWizardController {
 		}
 	};
 
-	private final ChangeListener<String> columnTypeListener = ((observable, oldValue, newValue) -> {
+	private final ChangeListener<String> columnTypeListener
+			= ((observable, oldValue, newValue) -> {
 		logger.info("Column type selected: " + newValue);
 		if (selectedFile != null) {
 			if (newValue.equals("date")
@@ -627,5 +629,34 @@ public class XmlWizardController {
 		metacolumnformat.setDisable(value);
 		metacolumnvalue.setDisable(value);
 		apply.setDisable(value);
+	}
+
+	/**
+	 * Moves the selected column-representing row 1 position up.
+	 * @param actionEvent
+	 */
+	@FXML
+	public void moveColumnUp(ActionEvent actionEvent) {
+		swapColumnRow(-1);
+	}
+
+	/**
+	 * Moves the selected column-representing row 1 position down.
+	 * @param actionEvent
+	 */
+	@FXML
+	public void moveColumnDown(ActionEvent actionEvent) {
+		swapColumnRow(1);
+	}
+
+	private void swapColumnRow(int offset) {
+		int selectedIndex = datacolumns.getSelectionModel().getSelectedIndex();
+		int targetIndex = selectedIndex + offset;
+		List<ColumnInfo> columns = selectedFile.getColumns();
+		if (!(targetIndex >= columns.size()) && !(targetIndex < 0)) {
+			Collections.swap(columns, selectedIndex, targetIndex);
+			updateColumnsView();
+			datacolumns.getSelectionModel().select(targetIndex);
+		}
 	}
 }
