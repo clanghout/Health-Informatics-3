@@ -482,7 +482,7 @@ public class XmlWizardController {
 	 * Sets the metadata values of the file.
 	 */
 	public void setMetaData() {
-		logger.info(String.format("Creating metadata: Columnname \"%s\" is a %s and the format is %s: %s",
+		logger.info(String.format("Creating metadata: Columnname \"%s\" is a %s and the format is \"%s\": %s",
 				metacolumnName.getText(), metacolumntype.getValue(),
 				metacolumnformat.getText(), metacolumnvalue.getText()));
 

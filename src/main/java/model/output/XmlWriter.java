@@ -1,5 +1,6 @@
 package model.output;
 
+import model.data.value.DataValue;
 import model.input.file.ColumnInfo;
 import model.input.file.DataFile;
 import model.input.file.PlainTextFile;
@@ -111,7 +112,10 @@ public class XmlWriter {
 		String name = dataFile.getMetaDataColumnName();
 		String type = DataFile.getStringColumnType(
 				dataFile.getMetaDataType());
-		metadataElement.setAttribute("value", dataFile.getMetaDataValue().getValue().toString());
+		DataValue value = dataFile.getMetaDataValue();
+		if (value != null) {
+			metadataElement.setAttribute("value", value.getValue().toString());
+		}
 		metadataElement.setAttribute("name", name);
 		metadataElement.setAttribute("type", type);
 		return metadataElement;

@@ -40,6 +40,8 @@ public class XmlWriterTest {
 		when(textFile.hasFirstRowAsHeader()).thenReturn(false);
 		when(textFile.hasMetaData()).thenReturn(true);
 		when(textFile.getMetaDataColumnName()).thenReturn("metaldata");
+		DataValue metaValue = new StringValue("metalstring");
+		when(textFile.getMetaDataValue()).thenReturn(metaValue);
 		Class metaDataType = StringValue.class;
 		when(textFile.getMetaDataType()).thenReturn(metaDataType);
 		List<ColumnInfo> cols = new ArrayList<>();
@@ -69,6 +71,7 @@ public class XmlWriterTest {
 		assertEquals(File.separator + "path" + File.separator + "to", path.getTextContent());
 		assertEquals("Prettyname.txt", fileElem.getAttribute("name"));
 		assertEquals("metaldata", meta.getAttribute("name"));
+		assertEquals("metalstring", meta.getAttribute("value"));
 		assertEquals("string", meta.getAttribute("type"));
 
 		Element columns = (Element) fileElem
