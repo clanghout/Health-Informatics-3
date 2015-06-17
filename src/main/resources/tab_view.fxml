@@ -6,14 +6,10 @@
     <content>
         <VBox>
             <children>
-                <SplitPane styleClass="vertical-split" dividerPositions="0.8">
+                <SplitPane styleClass="horizontal-split" dividerPositions="0.2" >
                     <items>
-                        <SplitPane styleClass="horizontal-split" dividerPositions="0.2" >
-                            <items>
-                                <ListView fx:id="inputTables" />
-                                <TableView fx:id="tableView" />
-                            </items>
-                        </SplitPane>
+                        <ListView fx:id="inputTables" />
+                        <TableView fx:id="tableView" />
                     </items>
                 </SplitPane>
             </children>
