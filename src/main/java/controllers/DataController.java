@@ -1,10 +1,12 @@
 package controllers;
 
+import model.BackgroundProcesses.Reader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
+import model.BackgroundProcesses.BackgroundProcessor;
+import model.BackgroundProcesses.TestTask;
 import model.data.ProgramModel;
-import model.input.reader.DataReader;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TextField;
@@ -102,8 +104,10 @@ public class DataController {
 	 */
 	private void read() {
 		try {
-			DataReader reader = new DataReader(file);
-			reader.createDataModel();
+		TestTask test = new TestTask(2);
+			Reader reader = new Reader(file);
+			BackgroundProcessor.getQueue().offer(reader);
+
 			mainUIController.setModelObservers();
 			
 		} catch (Exception e) {

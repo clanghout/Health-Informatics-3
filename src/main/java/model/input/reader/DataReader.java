@@ -1,5 +1,6 @@
 package model.input.reader;
 
+import javafx.application.Platform;
 import model.data.DataModel;
 import model.data.DataTable;
 import model.data.ProgramModel;
@@ -50,8 +51,13 @@ public class DataReader {
 		List<DataFile> dataFiles = xmlReader.getDataFiles();
 		for (DataFile dataFile : dataFiles) {
 			DataTable table = dataFile.createDataTable();
-			
-			model.add(table);
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					model.add(table);
+				}
+			});
+
 		}
 		return model;
 	}
