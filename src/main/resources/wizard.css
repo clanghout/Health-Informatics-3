@@ -1,6 +1,6 @@
 .main-box {
-	-fx-pref-width: 640px;
-	-fx-spacing: 10px;
+    -fx-pref-width: 640px;
+    -fx-spacing: 10px;
 }
 
 .datafiles-box {
@@ -9,11 +9,11 @@
 
 .spaced-box {
     -fx-spacing: 10px;
-    -fx-padding: 0px 0px 10px 10px;
+    -fx-padding: 0 0 10px 10px;
 }
 
 .path-box {
-    -fx-padding: 0px 10px 0px 10px;
+    -fx-padding: 0 10px 0 10px;
     -fx-spacing: 5px;
 }
 
@@ -22,7 +22,7 @@
 }
 
 .import-box {
-    -fx-padding: 0px 10px 0px 10px;
+    -fx-padding: 0 10px 0 10px;
     -fx-spacing: 5px;
 }
 
@@ -42,14 +42,19 @@
 }
 
 .colheader-checkbox {
-    -fx-padding: 0px 0px 10px 10px;
+    -fx-padding: 0 0 10px 10px;
 }
 
 .save-box {
-	-fx-padding: 15px;
-	-fx-spacing: 5px;
+    -fx-padding: 15px;
+    -fx-spacing: 5px;
 }
 
 .inner-box {
-	-fx-spacing: 5px;
+    -fx-spacing: 5px;
+    -fx-padding: 0 15px 0 0;
+}
+
+.right-padding {
+    -fx-padding: 0 0 0 20px;
 }
