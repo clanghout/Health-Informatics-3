@@ -8,7 +8,6 @@ import org.parboiled.Context;
 import org.parboiled.Rule;
 import org.parboiled.support.Var;
 
-import java.beans.Expression;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -699,9 +698,10 @@ class LanguageParser extends BaseParser<Object> {
 	 */
 	Rule Sugar() {
 		return Sequence(
-				ZeroOrMore(Macro()),
+				ZeroOrMore(Sequence(WhiteSpace(), Macro(), WhiteSpace())),
 				WhiteSpace(),
-				Pipe()
+				Pipe(),
+				ZeroOrMore(Sequence(WhiteSpace(), Macro(), WhiteSpace()))
 		);
 	}
 
@@ -1055,6 +1055,30 @@ class LanguageParser extends BaseParser<Object> {
 						"NEW"
 				),
 				push(match())
+		);
+	}
+
+	Rule LagSequential() {
+		return Sequence(
+				Identifier(),
+				SomeWhiteSpace(),
+				"WITH",
+				SomeWhiteSpace(),
+				Identifier(),
+				SomeWhiteSpace(),
+				"AS",
+				SomeWhiteSpace(),
+				Identifier(),
+				SomeWhiteSpace(),
+				"ON",
+				SomeWhiteSpace(),
+				ColumnIdentifier(),
+				SomeWhiteSpace(),
+				"TO",
+				SomeWhiteSpace(),
+				ColumnIdentifier(),
+				WhiteSpace(),
+				swap5()
 		);
 	}
 }

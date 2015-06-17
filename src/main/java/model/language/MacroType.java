@@ -13,6 +13,7 @@ import model.process.analysis.ConstraintAnalysis;
 import model.process.analysis.GroupByColumn;
 import model.process.analysis.GroupByConstraint;
 import model.process.analysis.operations.ColumnComputation;
+import model.process.analysis.LagSequentialAnalysis;
 import model.process.analysis.operations.Connection;
 import model.process.functions.Function;
 import model.process.setOperations.FullJoin;
@@ -52,6 +53,8 @@ class MacroType {
 				return parseConnection(body, model, parser);
 			case "Computation":
 				return parseComputation(body, model, parser);
+			case "Comparison":
+				return parseComparison(body, model, parser);
 			default:
 				throw new ParseException(String.format("Macro type %s isn't supported", type));
 		}
@@ -81,6 +84,33 @@ class MacroType {
 			return comp;
 		} else {
 			throw new ParseException("Couldn't parse Computation", result.parseErrors);
+		}
+	}
+
+	private DataProcess parseComparison(String body, DataModel model, LanguageParser parser)
+			throws ParseException {
+		ReportingParseRunner runner = new ReportingParseRunner(parser.LagSequential());
+		ParsingResult result = runner.run(body);
+
+		if (result.matched) {
+			Identifier<DataTable> leftTable = (Identifier<DataTable>) result.valueStack.pop();
+			Identifier<DataTable> rightTable = (Identifier<DataTable>) result.valueStack.pop();
+			Identifier<DataTable> resultName = (Identifier<DataTable>) result.valueStack.pop();
+			ColumnIdentifier firstColumn = (ColumnIdentifier) result.valueStack.pop();
+			ColumnIdentifier secondColumn = (ColumnIdentifier) result.valueStack.pop();
+
+			LagSequentialAnalysis analysis = new LagSequentialAnalysis(
+					leftTable,
+					new Identifier<>(firstColumn.getColumn()),
+					rightTable,
+					new Identifier<>(secondColumn.getColumn())
+			);
+
+			analysis.setName(resultName.getName());
+
+			return analysis;
+		} else {
+			throw new ParseException("Failed to parse Comparison", result.parseErrors);
 		}
 	}
 
