@@ -12,15 +12,17 @@
 		xmlns:fx="http://javafx.com/fxml/1"
 		>
 	<content>
-		<AnchorPane>
+		<AnchorPane fx:id="root">
 			<children>
 				<HBox>
 					<children>
 						<VBox styleClass="analysis-buttons">
 							<children>
-								<Button text="Load"/>
-								<Button text="Save"/>
+								<Button text="Load"  onAction="#handleLoadButtonAction"/>
+								<Button text="Save"  onAction="#handleSaveButtonAction"/>
 								<Button text="Execute" onAction="#handleExecuteButtonAction"/>
+								<Label />
+								<Button text="Clear" onAction="#handleClearButtonAction"/>
 							</children>
 						</VBox>
 						<VBox styleClass="analysis-spacing">

@@ -2,9 +2,11 @@ package controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import model.exceptions.ParseException;
 import model.language.Parser;
 import model.data.DataModel;
@@ -12,6 +14,9 @@ import model.process.DataProcess;
 import org.parboiled.buffers.InputBuffer;
 import org.parboiled.errors.ParseError;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.List;
 
 
@@ -24,6 +29,8 @@ public class AnalysisController {
 
 	private DataModel model;
 
+	@FXML
+	private Parent root;
 	@FXML
 	private TextArea userscript;
 	@FXML
@@ -64,6 +71,20 @@ public class AnalysisController {
 			errorLabelExtra.setText(e.getLocalizedMessage() + " | " + e.getMessage());
 		}
 		errorBox.getChildren().add(errorLabelExtra);
+	}
+
+	@FXML
+	protected void handleLoadButtonAction() {
+	}
+
+	@FXML
+	protected void handleSaveButtonAction() {
+
+	}
+
+	@FXML
+	protected void handleClearButtonAction() {
+		userscript.setText("");
 	}
 
 	/**
