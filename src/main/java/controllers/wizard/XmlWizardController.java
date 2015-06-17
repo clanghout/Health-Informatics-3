@@ -164,6 +164,14 @@ public class XmlWizardController {
 		}
 	};
 
+	private final ChangeListener<String> filePathListener = (observable, oldValue, newValue) -> {
+		if (newValue != null
+				&& selectedFile != null
+				&& !(newValue.equals(selectedFile.getPath()))) {
+			apply.setDisable(false);
+		}
+	};
+
 	private ListChangeListener datacolumnsListener = new ListChangeListener() {
 		private boolean suspended;
 
@@ -189,7 +197,10 @@ public class XmlWizardController {
 		columntype.getSelectionModel().select("string");
 		columntype.valueProperty().addListener(columnTypeListener);
 		datacolumns.getColumns().addListener(datacolumnsListener);
+		fileselectfield.textProperty().addListener(filePathListener);
+
 		disableAll(true);
+
 		metacolumnName.textProperty().addListener(metacolumnNameListener);
 		metacolumntype.valueProperty().addListener(metacolumntypeListener);
 		metacolumnvalue.textProperty().addListener(metacolumnvalueListener);
@@ -238,7 +249,6 @@ public class XmlWizardController {
 					file.getName().substring(
 							startExt, endExt));
 			addDataFile(file.getPath(), type);
-			fileselectfield.setText(file.getPath());
 		}
 	}
 
@@ -264,6 +274,7 @@ public class XmlWizardController {
 			((TableColumn) datacolumns.getColumns().get(0)).setVisible(true);
 		}
 		fillMetaElements();
+		fileselectfield.setText(selectedFile.getPath());
 
 		if (selectedFile instanceof PlainTextFile) {
 			fillPlainTextElements();
@@ -343,6 +354,10 @@ public class XmlWizardController {
 	private void addDataFile(String path, String type) {
 		DataFile file = DataFile.createDataFile(path, type);
 		datafiles.getItems().add(file);
+	}
+
+	private void setDataFilePath() {
+		selectedFile.setPath(fileselectfield.getText());
 	}
 
 	private void updateColumnsView() {
@@ -560,6 +575,7 @@ public class XmlWizardController {
 		if (selectedFile instanceof PlainTextFile) {
 			((PlainTextFile) selectedFile).setDelimiter(delimiter.getText());
 		}
+		setDataFilePath();
 		apply.setDisable(true);
 	}
 

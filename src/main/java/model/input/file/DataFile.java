@@ -79,7 +79,15 @@ public abstract class DataFile {
 	public String getPath() {
 		return path;
 	}
-	
+
+	/**
+	 * Sets the path.
+	 * @param path The path to set
+	 */
+	public void setPath(String path) {
+		this.path = path;
+	}
+
 	/**
 	* Creates a new DataFile type class based on the string specified.
 	* @param path The path of the DataFile

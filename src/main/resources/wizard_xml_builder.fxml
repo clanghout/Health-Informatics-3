@@ -29,7 +29,6 @@
                     <Label>Path</Label>
                     <TextField
                             fx:id="fileselectfield"
-                            disable="true"
                             HBox.hgrow="SOMETIMES" />
                     <Button text="Browse"
                             onAction="#selectFile"/>
