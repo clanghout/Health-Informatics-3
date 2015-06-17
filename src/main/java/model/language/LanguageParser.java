@@ -991,13 +991,15 @@ class LanguageParser extends BaseParser<Object> {
 
 	/**
 	 * first adds all the columns from the input table to the result
-	 * computation(name INCLUDE EXISTING SET COLUMNS col1 AS input.c1 + input.c2, col2 AS "never gonna")
+	 * computation(NAME name INCLUDE EXISTING SET COLUMNS col1 AS input.c1 + input.c2, col2 AS "never gonna")
 	 * dont add all the columns from the input table
-	 * computation(name NEW SET COLUMNS col1 AS input.c3, col2 AS "give you up")
+	 * computation(NAME name NEW SET COLUMNS col1 AS input.c3, col2 AS "give you up")
 	 *
 	 */
 	Rule ColumnComputation() {
 		return Sequence(
+				"NAME",
+				SomeWhiteSpace(),
 				Identifier(),
 				SomeWhiteSpace(),
 				ColumnComutationType(),
