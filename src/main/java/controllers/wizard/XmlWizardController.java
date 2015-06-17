@@ -186,6 +186,8 @@ public class XmlWizardController {
 		}
 	};
 
+	private DataFile template;
+
 	/**
 	 * Initializes the controller by filling the static content of elements in the view.
 	 */
@@ -325,6 +327,35 @@ public class XmlWizardController {
 		if (selectedFile.getMetaDataValue().getValue() != null) {
 			metacolumnvalue.setText(selectedFile.getMetaDataValue().getValue().toString());
 		}
+	}
+
+	/**
+	 * Copies the elements of the current element to a template datafile.
+	 */
+	@FXML
+	public void copyTemplate() {
+		this.template = selectedFile;
+		logger.info("Copied selected file: " + selectedFile.toString());
+	}
+
+	/**
+	 * Uses the copied template to fill the elements.
+	 */
+	@FXML
+	public void pasteTemplate() {
+		if (template != null) {
+			selectedFile.getColumns().clear();
+			selectedFile.getColumns().addAll(template.getColumns());
+			selectedFile.setStartLine(template.getStartLine());
+			selectedFile.setEndLine(template.getEndLine());
+			if (selectedFile instanceof PlainTextFile
+					&& template instanceof PlainTextFile) {
+				((PlainTextFile) selectedFile).setDelimiter(
+						((PlainTextFile) template).getDelimiter());
+			}
+			selectedFile.setFirstRowAsHeader(template.hasFirstRowAsHeader());
+		}
+		fillElements();
 	}
 
 	private void disableMeta() {

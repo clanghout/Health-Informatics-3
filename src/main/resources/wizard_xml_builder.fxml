@@ -34,6 +34,11 @@
                             onAction="#selectFile"/>
                     <Button text="Remove"
                             onAction="#removeDataFile"/>
+                    <Separator />
+                    <Button text="Copy template"
+                            onAction="#copyTemplate"/>
+                    <Button text="Paste template"
+                            onAction="#pasteTemplate"/>
                 </children>
             </HBox>
             <SplitPane styleClass="splitpane">
