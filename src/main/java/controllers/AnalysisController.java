@@ -7,6 +7,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import model.BackgroundProcesses.Analyse;
+import model.BackgroundProcesses.BackgroundProcessor;
 import model.data.ProgramModel;
 import model.exceptions.ParseException;
 import model.language.Parser;
@@ -33,34 +35,25 @@ public class AnalysisController {
 	@FXML
 	private TextArea userscript;
 	@FXML
-	private Label errorLabel;
+	volatile private Label errorLabel;
 	@FXML
-	private VBox errorBox;
+	volatile private VBox errorBox;
 
-	private static final int ERROR_RANGE = 5;
+
 
 
 	@FXML
 	protected void handleExecuteButtonAction(ActionEvent event) {
-		Parser parser = new Parser();
-		Label errorLabelExtra = new Label();
-		try {
-			DataProcess process = parser.parse(userscript.getText(), model);
-			process.process();
-			model.setUpdated();
 
-		} catch (IllegalArgumentException e) {
-			errorLabel.setText("ERROR: " + e.getMessage());
-		} catch (ParseException e) {
-			errorLabel.setText(e.getMessage());
-			createParseExceptionMessage(e);
-		} catch (UnsupportedOperationException e) {
-			errorLabel.setText("ERROR: you are using an invalid operation");
-		} catch (RuntimeException e) {
-			errorLabel.setText("Runtime exception occurred");
-			errorLabelExtra.setText(e.getLocalizedMessage() + " | " + e.getMessage());
+		try {
+			errorBox.getChildren().clear();
+			errorLabel.setText("");
+			Analyse analyse = new Analyse(model, userscript.getText(), errorLabel, errorBox);
+			BackgroundProcessor.getQueue().add(analyse);
+		} catch (IllegalStateException e) {
+			errorLabel.setText("Already executing an analysis");
 		}
-		errorBox.getChildren().add(errorLabelExtra);
+
 	}
 
 	@FXML
@@ -117,29 +110,7 @@ public class AnalysisController {
 		userscript.setText("");
 	}
 
-	/**
-	 * Create a label with error message for every parse error.
-	 *
-	 * @param e teh Exception containing the parse errors
-	 */
-	private void createParseExceptionMessage(ParseException e) {
-		List<ParseError> parseErrors = e.getParseErrors();
-		for (ParseError error : parseErrors) {
-			InputBuffer buffer = error.getInputBuffer();
-			Label label = new Label();
-			label.setMaxWidth(Double.MAX_VALUE);
-			String beforeError = buffer.extract(0, error.getStartIndex());
-			int lineCount = beforeError.length() - beforeError.replace("\n", "").length();
-			String errorChar =
-					buffer.extract(error.getStartIndex() - ERROR_RANGE,
-							error.getEndIndex() + ERROR_RANGE);
-			label.setText("Error at line "
-					+ lineCount
-					+ "; near \""
-					+ errorChar + "\"");
-			errorBox.getChildren().add(label);
-		}
-	}
+
 
 	/**
 	 * Clear all the error labels.

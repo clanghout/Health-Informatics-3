@@ -20,6 +20,7 @@ public final class Launcher {
 
 		Thread t = new Thread(processor);
 		t.setDaemon(true);
+		t.setPriority(Thread.MIN_PRIORITY);
 		t.start();
 
 
