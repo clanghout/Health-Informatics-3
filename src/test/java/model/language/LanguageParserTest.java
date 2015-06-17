@@ -384,4 +384,18 @@ public class LanguageParserTest {
 
 		assertTrue(node.resolve(null).resolve(null).getValue());
 	}
+
+	@Test
+	public void testModulo() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.NumberExpression());
+		String input = "10 % 3";
+
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+
+		ValueNode<IntValue> node = (ValueNode<IntValue>) result.resultValue;
+
+		assertEquals(new IntValue(1), node.resolve(null).resolve(null));
+	}
 }

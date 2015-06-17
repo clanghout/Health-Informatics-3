@@ -89,7 +89,7 @@ class LanguageParser extends BaseParser<Object> {
 	Rule NumberOperator() {
 		return Sequence(
 				FirstOf(
-						"*", "/", "+", "-", "^"
+						"*", "/", "+", "-", "^", "%"
 				),
 				push(match())
 		);
