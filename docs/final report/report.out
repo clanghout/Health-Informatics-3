@@ -1,15 +1,30 @@
 \BOOKMARK [0][-]{chapter.1}{Introduction}{}% 1
-\BOOKMARK [1][-]{section.1.1}{Document Structure}{chapter.1}% 2
-\BOOKMARK [1][-]{section.1.2}{Cover and Title Page}{chapter.1}% 3
-\BOOKMARK [1][-]{section.1.3}{Chapters}{chapter.1}% 4
-\BOOKMARK [1][-]{section.1.4}{\134section\173\203\175}{chapter.1}% 5
-\BOOKMARK [2][-]{subsection.1.4.1}{\134subsection\173\203\175}{section.1.4}% 6
-\BOOKMARK [1][-]{section.1.5}{Fonts and Colors}{chapter.1}% 7
-\BOOKMARK [0][-]{chapter.2}{Software Overview}{}% 8
-\BOOKMARK [0][-]{chapter.3}{Engineering Reflection}{}% 9
+\BOOKMARK [0][-]{chapter.2}{Software Overview}{}% 2
+\BOOKMARK [1][-]{section.2.1}{Must Have}{chapter.2}% 3
+\BOOKMARK [1][-]{section.2.2}{Should Have}{chapter.2}% 4
+\BOOKMARK [1][-]{section.2.3}{Additional Functionalities}{chapter.2}% 5
+\BOOKMARK [0][-]{chapter.3}{Engineering Reflection}{}% 6
+\BOOKMARK [1][-]{section.3.1}{GitHub Pulls}{chapter.3}% 7
+\BOOKMARK [1][-]{section.3.2}{Code Quality}{chapter.3}% 8
+\BOOKMARK [1][-]{section.3.3}{SIG Feedback}{chapter.3}% 9
 \BOOKMARK [0][-]{chapter.4}{Feature Description}{}% 10
-\BOOKMARK [0][-]{chapter.5}{Interaction Design}{}% 11
-\BOOKMARK [0][-]{chapter.6}{Product Evaluation}{}% 12
-\BOOKMARK [0][-]{chapter.7}{Outlook}{}% 13
-\BOOKMARK [0][-]{appendix.A}{Sprint Plans}{}% 14
-\BOOKMARK [0][-]{appendix.B}{Sprint Reflections}{}% 15
+\BOOKMARK [1][-]{section.4.1}{Import}{chapter.4}% 11
+\BOOKMARK [2][-]{subsection.4.1.1}{XML}{section.4.1}% 12
+\BOOKMARK [1][-]{section.4.2}{Analysis}{chapter.4}% 13
+\BOOKMARK [2][-]{subsection.4.2.1}{The C's}{section.4.2}% 14
+\BOOKMARK [2][-]{subsection.4.2.2}{Additional Analysis}{section.4.2}% 15
+\BOOKMARK [1][-]{section.4.3}{Visualize}{chapter.4}% 16
+\BOOKMARK [1][-]{section.4.4}{Export}{chapter.4}% 17
+\BOOKMARK [0][-]{chapter.5}{Interaction Design}{}% 18
+\BOOKMARK [1][-]{section.5.1}{Methods}{chapter.5}% 19
+\BOOKMARK [1][-]{section.5.2}{General Persona}{chapter.5}% 20
+\BOOKMARK [1][-]{section.5.3}{Evaluations}{chapter.5}% 21
+\BOOKMARK [0][-]{chapter.6}{Product Evaluation}{}% 22
+\BOOKMARK [1][-]{section.6.1}{Product}{chapter.6}% 23
+\BOOKMARK [1][-]{section.6.2}{Modules}{chapter.6}% 24
+\BOOKMARK [1][-]{section.6.3}{Failure Analysis}{chapter.6}% 25
+\BOOKMARK [0][-]{chapter.7}{Outlook}{}% 26
+\BOOKMARK [1][-]{section.7.1}{Improvements}{chapter.7}% 27
+\BOOKMARK [1][-]{section.7.2}{Future Development}{chapter.7}% 28
+\BOOKMARK [0][-]{appendix.A}{Sprint Plans}{}% 29
+\BOOKMARK [0][-]{appendix.B}{Sprint Reflections}{}% 30
