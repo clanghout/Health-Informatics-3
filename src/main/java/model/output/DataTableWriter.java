@@ -65,41 +65,34 @@ public class DataTableWriter {
 		}
 	}
 
+	/**
+	 * Write to csv file using the commons-csv library.
+	 * @param table table to save.
+	 * @param file file to save to.
+	 * @throws IOException when save location is invalid.
+	 */
 	public void writeCSV(DataTable table, File file) throws IOException {
 		logger.log(Level.INFO, "writing to CSV format");
-		FileWriter fileWriter = null;
-		CSVPrinter csvFilePrinter = null;
 		//Create the CSVFormat object with "\n" as a record delimiter
 		CSVFormat csvFileFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR);
 
-		try {
-			//initialize FileWriter object
-			fileWriter = new FileWriter(file);
-			//initialize CSVPrinter object
-			csvFilePrinter = new CSVPrinter(fileWriter, csvFileFormat);
-			List<String> rowValues;
-			for (DataRow row : table.getRows()) {
-				rowValues = new ArrayList<>();
-				for (DataColumn col : row.getColumns()) {
-					DataValue value = row.getValue(col);
-					rowValues.add(formatValue(value));
+		try (FileWriter fileWriter = new FileWriter(file)) {
+			try (CSVPrinter csvFilePrinter = new CSVPrinter(fileWriter, csvFileFormat)) {
+				List<String> rowValues;
+				for (DataRow row : table.getRows()) {
+					rowValues = new ArrayList<>();
+					for (DataColumn col : row.getColumns()) {
+						DataValue value = row.getValue(col);
+						rowValues.add(formatValue(value));
+					}
+					csvFilePrinter.printRecord(rowValues);
 				}
-				csvFilePrinter.printRecord(rowValues);
 			}
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Error writing file", e);
 			throw e;
-		} finally {
-			try {
-				fileWriter.flush();
-				fileWriter.close();
-				csvFilePrinter.close();
-			} catch (IOException e) {
-				logger.log(Level.SEVERE, "Error while flushing/closing fileWriter/csvPrinter !");
-				e.printStackTrace();
-			}
 		}
-		}
+	}
 
 	/**
 	 * print the value to the file.
@@ -131,6 +124,7 @@ public class DataTableWriter {
 
 	/**
 	 * Format the value to write to file.
+	 *
 	 * @param value the value that is formatted.
 	 * @return String containing formatted data.
 	 */
@@ -154,6 +148,7 @@ public class DataTableWriter {
 
 	/**
 	 * Build a string for the dateTimeValue.
+	 *
 	 * @param dateValue values
 	 * @return formatted string
 	 */
@@ -173,9 +168,10 @@ public class DataTableWriter {
 
 	/**
 	 * Create stringBuilder containing years, months and days.
-	 * @param year years
+	 *
+	 * @param year  years
 	 * @param month months
-	 * @param day days
+	 * @param day   days
 	 * @return appended StringBuilder
 	 */
 	private StringBuilder writeDate(int year, int month, int day) {
