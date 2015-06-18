@@ -1,6 +1,7 @@
 package controllers.wizard;
 
 import controllers.MainUIController;
+import controllers.Reader;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -198,6 +199,7 @@ public class XmlWizardController {
 	};
 
 	private DataFile template;
+	private Label errorLabel;
 
 	/**
 	 * Initializes the controller by filling the static content of elements in the view.
@@ -248,9 +250,10 @@ public class XmlWizardController {
 	 * @param mainUIController The MainUIController
 	 * @param dialog The dialog that is shown to the user
 	 */
-	public void initializeView(MainUIController mainUIController, Dialog dialog) {
+	public void initializeView(MainUIController mainUIController, Dialog dialog, Label error) {
 		this.dialog = dialog;
 		this.mainUIcontroller = mainUIController;
+		this.errorLabel = error;
 	}
 
 	/**
@@ -477,20 +480,13 @@ public class XmlWizardController {
 		File file = fileChooser.showSaveDialog(root.getScene().getWindow());
 		writeXmlToFile(file);
 		try {
-			mainUIcontroller.setModel(createModel());
+			Reader reader = new Reader(file, mainUIcontroller, errorLabel);
 			dialog.close();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			logger.log(Level.SEVERE, "Error creating datamodel " + e.getMessage());
 		}
 	}
 
-	private DataModel createModel() throws IOException {
-		DataModel res = new DataModel();
-		for (DataFile datafile: datafiles.getItems()) {
-			res.add(datafile.createDataTable());
-		}
-		return res;
-	}
 
 	private void writeXmlToFile(File file) {
 		XmlWriter writer = new XmlWriter(createDataFiles());

@@ -1,8 +1,12 @@
 package controllers;
 
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
@@ -16,6 +20,8 @@ import org.parboiled.errors.ParseError;
 
 import java.io.*;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -28,6 +34,8 @@ public class AnalysisController {
 	private DataModel model;
 
 	@FXML
+	private Button executeButton;
+	@FXML
 	private Parent root;
 	@FXML
 	private TextArea userscript;
@@ -35,7 +43,8 @@ public class AnalysisController {
 	private Label errorLabel;
 	@FXML
 	private VBox errorBox;
-
+	private MainUIController mainUIController;
+	private Logger logger = Logger.getLogger("AnalysisController");
 	private static final int ERROR_RANGE = 5;
 
 	/**
@@ -47,28 +56,50 @@ public class AnalysisController {
 		this.model = model;
 	}
 
+	public void setMainUIController(MainUIController main) {
+		this.mainUIController = main;
+	}
+
 	@FXML
 	protected void handleExecuteButtonAction(ActionEvent event) {
-		Parser parser = new Parser();
-		Label errorLabelExtra = new Label();
-		try {
-			DataProcess process = parser.parse(userscript.getText(), model);
-			process.process();
-			model.setUpdated();
+			emptyLabels();
+			Task task = createTask();
+			setFailed(task);
+			setSucceed(task);
 
-		} catch (IllegalArgumentException e) {
-			errorLabel.setText("ERROR: " + e.getMessage());
-		} catch (ParseException e) {
-			errorLabel.setText(e.getMessage());
-			createParseExceptionMessage(e);
-		} catch (UnsupportedOperationException e) {
-			errorLabel.setText("ERROR: you are using an invalid operation");
-		} catch (RuntimeException e) {
-			errorLabel.setText("Runtime exception occurred");
-			errorLabelExtra.setText(e.getLocalizedMessage() + " | " + e.getMessage());
+			mainUIController.startBackgroundProcess(task, "Analysing");
 		}
-		errorBox.getChildren().add(errorLabelExtra);
+
+	/**
+	 * Set the callback functio for a task that succeeds.
+	 * @param task task that must get the callback function.
+	 */
+	private void setSucceed(Task task) {
+		task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+			@Override public void handle(WorkerStateEvent t) {
+				model.setUpdated();
+				logger.info("Analysis complete");
+				mainUIController.endBackgroundProcess(true);
+			}
+		});
 	}
+
+	/**
+	 * Create a task for the analysis.
+	 * @return a new task that can perform an analysis.
+	 */
+	private Task createTask() {
+		return new Task() {
+			@Override protected Integer call() throws Exception {
+				Parser parser = new Parser();
+				DataProcess process = parser.parse(userscript.getText(), model);
+				process.process();
+
+				return null;
+			}
+		};
+	}
+
 
 	@FXML
 	protected void handleLoadButtonAction() {
@@ -154,5 +185,52 @@ public class AnalysisController {
 	private void emptyLabels() {
 		errorLabel.setText("");
 		errorBox.getChildren().clear();
+	}
+
+	/**
+	 * Enable the execute button.
+	 */
+	public void enableImport() {
+		executeButton.setDisable(false);
+	}
+
+	/**
+	 * Disable the execute button.
+	 */
+	public void disableImport() {
+		executeButton.setDisable(true);
+	}
+
+	/**
+	 * Set the callback function when the task fails.
+	 * This create the error messages.
+	 * @task the task that must get the callback function.
+	 */
+	public void setFailed(Task task) {
+		task.setOnFailed(new EventHandler<WorkerStateEvent>() {
+			@Override public void handle(WorkerStateEvent t) {
+				Label errorLabelExtra = new Label();
+				mainUIController.endBackgroundProcess(false);
+				logger.info("Error occured during the analysis");
+				try {
+					throw task.getException();
+				} catch (IllegalArgumentException e) {
+					errorLabel.setText("ERROR: " + e.getMessage());
+				} catch (ParseException e) {
+					errorLabel.setText(e.getMessage());
+					createParseExceptionMessage(e);
+				} catch (UnsupportedOperationException e) {
+					errorLabel.setText("ERROR: you are using an invalid operation");
+				} catch (RuntimeException e) {
+					errorLabel.setText("Runtime exception occurred");
+					errorLabelExtra.setText(e.getLocalizedMessage() + " | " + e.getMessage());
+				} catch (Throwable e) {
+					errorLabel.setText("An unexpected error occurred");
+					logger.log(Level.WARNING, "An error occurred while processing the analysis",
+							e.toString());
+				}
+				errorBox.getChildren().add(errorLabelExtra);
+			}
+		});
 	}
 }
