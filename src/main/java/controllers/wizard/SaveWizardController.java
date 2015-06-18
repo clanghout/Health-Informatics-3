@@ -1,4 +1,4 @@
-package controllers;
+package controllers.wizard;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -249,6 +249,8 @@ public class SaveWizardController {
 				}
 			}
 			dialog.close();
+			Dialog.showAlert(dialog.getStage(), "Data saved",
+					String.format("Your tables are saved at %s", location.getAbsolutePath()));
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Error saving", e);
 			saveMessage.setText(

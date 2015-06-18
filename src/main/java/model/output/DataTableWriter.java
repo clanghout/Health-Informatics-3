@@ -6,7 +6,6 @@ import model.data.DataRow;
 import model.data.value.*;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
-
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

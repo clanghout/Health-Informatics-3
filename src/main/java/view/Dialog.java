@@ -6,6 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import org.controlsfx.dialog.Dialogs;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -71,11 +73,25 @@ public abstract class Dialog {
 	}
 
 	/**
-	 * Returns the stage of the dialog.
-	 * @return The stage
+	 * Create simple Information alert.
+	 * @param title The title of the alert.
+	 * @param message The body of the alert.
+	 */
+	public static void showAlert(Stage stage, String title, String message) {
+		Dialogs.create()
+				.owner(stage)
+				.title(title)
+				.masthead(null)
+				.message(message)
+				.showInformation();
+	}
+
+	/**
+	 * Return the dialog stage.
+	 * @return the stage of the dialog.
 	 */
 	public Stage getStage() {
-		return this.dialog;
+		return dialog;
 	}
 
 	/**
