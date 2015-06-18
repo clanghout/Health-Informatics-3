@@ -18,8 +18,11 @@
 								<Label fx:id="createMessage"/>
 								<HBox styleClass="hbox-button" AnchorPane.bottomAnchor="14.0">
 									<children>
-										<Button onAction="#handleMatrixCreateButtonAction" text="Make matrix"/>
-										<Button onAction="#handleCancelButtonAction" text="Cancel"/>
+										<Button onAction="#handleMatrixCreateButtonAction"
+												text="Make matrix"
+												fx:id="makeButton"/>
+										<Button onAction="#handleCancelButtonAction"
+												text="Cancel"/>
 									</children>
 								</HBox>
 							</children>

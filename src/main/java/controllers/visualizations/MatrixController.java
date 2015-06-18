@@ -76,12 +76,20 @@ public class MatrixController {
 			String code = codes.get(i);
 			codeMap.put(code, i);
 		}
-		String currentCode = codes.get(0);
+		String currentCode = "";
+		boolean init = true;
 		for (DataTable table : model.getTables()) {
 			for (DataRow row : table.getRows()) {
 				for (String code : row.getCodes()) {
-					matrix[codeMap.get(currentCode)][codeMap.get(code)] += 1;
-					currentCode = code;
+					if (codeMap.containsKey(code)) {
+						if (init) {
+							currentCode = code;
+							init = false;
+						} else  {
+							matrix[codeMap.get(currentCode)][codeMap.get(code)] += 1;
+							currentCode = code;
+						}
+					}
 				}
 			}
 		}

@@ -3,6 +3,7 @@ package controllers;
 import controllers.visualizations.MatrixController;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -29,6 +30,8 @@ public class PopupMatrixController {
 	private VBox codesList;
 	@FXML
 	private Label createMessage;
+	@FXML
+	private Button makeButton;
 	private Logger logger = Logger.getLogger("PopupMatrixController");
 
 	public PopupMatrixController() {
@@ -46,6 +49,10 @@ public class PopupMatrixController {
 		CheckBox codeBox;
 		Set<String> codes = matrixController.getCodes();
 		logger.log(Level.INFO, "list of codes = " + codes);
+		if (codes.isEmpty()) {
+			createMessage.setText("cannot create matrix when no codes are present.");
+			makeButton.setDisable(true);
+		}
 		for (String code : codes) {
 			codeBox = new CheckBox(code);
 			codesList.getChildren().add(codeBox);
@@ -63,14 +70,14 @@ public class PopupMatrixController {
 			for (Node box : codesList.getChildren()) {
 				CheckBox cBox = (CheckBox) box;
 				if (cBox.isSelected()) {
-					System.out.println("cBox.getId() = " + cBox.getText());
 					selected.add(cBox.getText());
+					logger.log(Level.INFO, cBox.getText() + "selected");
 				}
 			}
 			if (selected.isEmpty()) {
 				createMessage.setText("Please select one or more codes.");
 			} else {
-				System.out.println("selected = " + selected);
+				logger.log(Level.INFO, "selected = " + selected);
 				int[][] matrix = matrixController.create(selected);
 				visualizationController.drawMatrix(matrix, selected);
 				dialog.close();
