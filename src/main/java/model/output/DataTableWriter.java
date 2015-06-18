@@ -95,7 +95,7 @@ public class DataTableWriter {
 				fileWriter.close();
 				csvFilePrinter.close();
 			} catch (IOException e) {
-				System.out.println("Error while flushing/closing fileWriter/csvPrinter !!!");
+				logger.log(Level.SEVERE, "Error while flushing/closing fileWriter/csvPrinter !");
 				e.printStackTrace();
 			}
 		}
