@@ -14,12 +14,10 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
-<<<<<<< HEAD
 
-=======
 import javafx.stage.Popup;
 import model.data.DataModel;
->>>>>>> 944c924d0724163b97cad867e22e39c9ba8ee02e
+
 import model.exceptions.DataFileNotRecognizedException;
 import model.input.file.ColumnInfo;
 import model.input.file.DataFile;
@@ -499,24 +497,15 @@ public class XmlWizardController {
 				new File(System.getProperty("user.home"))
 		);
 		File file = fileChooser.showSaveDialog(root.getScene().getWindow());
-<<<<<<< HEAD
-		writeXmlToFile(file);
-		try {
-			Reader reader = new Reader(file, mainUIcontroller, errorLabel);
-			reader.execute();
-			dialog.close();
-		} catch (Exception e) {
-			logger.log(Level.SEVERE, "Error creating datamodel " + e.getMessage());
-=======
 		if (file != null) {
 			writeXmlToFile(file);
 			try {
-				mainUIcontroller.setModel(createModel());
+				Reader reader = new Reader(file, mainUIcontroller, errorLabel);
+				reader.execute();
 				dialog.close();
-			} catch (IOException e) {
+			} catch (Exception e) {
 				logger.log(Level.SEVERE, "Error creating datamodel " + e.getMessage());
 			}
->>>>>>> 944c924d0724163b97cad867e22e39c9ba8ee02e
 		}
 	}
 
