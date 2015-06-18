@@ -11,7 +11,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import javafx.stage.Popup;
 import model.data.DataModel;
 import model.exceptions.DataFileNotRecognizedException;
 import model.input.file.ColumnInfo;
@@ -40,7 +42,18 @@ import java.util.logging.Logger;
  */
 public class XmlWizardController {
 
+	private static final String DATE_FORMAT_HELP_TEXT =
+					"y = year\n" +
+					"M = month of year\n" +
+					"d = day of month \n" +
+					"------------------\n" +
+					"H = hour of day \n" +
+					"m = minute of hour \n" +
+					"s = second of minute\n" +
+					"exceldate = excel date\n";
+
 	private Logger logger = Logger.getLogger("XmlWizardController");
+
 	@FXML private Button apply;
 
 	@FXML private CheckBox addmetacheck;
@@ -132,15 +145,11 @@ public class XmlWizardController {
 		}
 	};
 
-	private final ChangeListener<String> metacolumntypeListener = (ov, oldValue, newValue) -> {
-		if (newValue != null
-				&& selectedFile != null
-				&& selectedFile.getMetaDataType() != null
-				&& !(newValue.equals(DataFile.getStringColumnType(
-				selectedFile.getMetaDataType())))) {
-			disableFormatFieldsOnTemporal(metacolumnformat, newValue);
-			apply.setDisable(false);
-		}
+	private final ChangeListener<String> metacolumntypeListener
+			= (ov, oldValue, newValue) -> {
+		logger.info("MetaColumn type selected: " + newValue);
+		disableFormatFieldsOnTemporal(metacolumnformat, newValue);
+		apply.setDisable(false);
 	};
 
 	private final ChangeListener<String> columnTypeListener
@@ -523,7 +532,7 @@ public class XmlWizardController {
 	}
 
 	/**
-	 * Changes the selected file to use the first row as a header in the table
+	 * Changes the selected file to use the first row as a header in the table.
 	 * when the checkbox is selected.
 	 * @param actionEvent JavaFX event
 	 */
@@ -579,12 +588,10 @@ public class XmlWizardController {
 		if (addmetacheck.isSelected()) {
 			metacolumnName.setDisable(false);
 			metacolumntype.setDisable(false);
-			metacolumnformat.setDisable(false);
 			metacolumnvalue.setDisable(false);
 		} else {
 			metacolumnName.setDisable(true);
 			metacolumntype.setDisable(true);
-			metacolumnformat.setDisable(true);
 			metacolumnvalue.setDisable(true);
 		}
 	}
@@ -639,6 +646,18 @@ public class XmlWizardController {
 
 		setDataFilePath();
 		apply.setDisable(true);
+	}
+
+	/**
+	 * Shows the help dialog for date and time formats on the stage.
+	 * @param mouseEvent JavaFX event
+	 */
+	@FXML
+	public void showDateFormatHelp(MouseEvent mouseEvent) {
+		Popup popup = Dialog.createPopup(DATE_FORMAT_HELP_TEXT);
+		popup.setX(mouseEvent.getScreenX());
+		popup.setY(mouseEvent.getScreenY());
+		popup.show(dialog.getStage());
 	}
 
 	private void disableAll(boolean value) {
