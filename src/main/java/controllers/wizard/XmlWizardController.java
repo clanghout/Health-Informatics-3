@@ -138,14 +138,7 @@ public class XmlWizardController {
 				&& selectedFile.getMetaDataType() != null
 				&& !(newValue.equals(DataFile.getStringColumnType(
 				selectedFile.getMetaDataType())))) {
-			if (newValue.equals("date")
-					|| newValue.equals("datetime")
-					|| newValue.equals("time")) {
-				metacolumnformat.setDisable(false);
-			} else {
-				metacolumnformat.setText("");
-				metacolumnformat.setDisable(true);
-			}
+			disableFormatFieldsOnTemporal(metacolumnformat, newValue);
 			apply.setDisable(false);
 		}
 	};
@@ -153,16 +146,7 @@ public class XmlWizardController {
 	private final ChangeListener<String> columnTypeListener
 			= ((observable, oldValue, newValue) -> {
 		logger.info("Column type selected: " + newValue);
-		if (selectedFile != null) {
-			if (newValue.equals("date")
-					|| newValue.equals("datetime")
-					|| newValue.equals("time")) {
-				columnFormat.setDisable(false);
-			} else {
-				columnFormat.setText("");
-				columnFormat.setDisable(true);
-			}
-		}
+		disableFormatFieldsOnTemporal(columnFormat, newValue);
 	});
 
 	private final ChangeListener<String> metacolumnvalueListener = (ov, oldValue, newValue) -> {
@@ -242,6 +226,18 @@ public class XmlWizardController {
 		columntype.setItems(typesSelect);
 	}
 
+	private void disableFormatFieldsOnTemporal(TextField formatfield, String newValue) {
+		if (newValue.equals("date")
+				|| newValue.equals("datetime")
+				|| newValue.equals("time")) {
+			logger.info("Temporal selected, enable format field");
+			formatfield.setDisable(false);
+		} else {
+			formatfield.setText("");
+			formatfield.setDisable(true);
+		}
+	}
+
 	private void disableColumnFormatFields() {
 		columnFormat.setDisable(true);
 		metacolumnformat.setDisable(true);
@@ -309,6 +305,7 @@ public class XmlWizardController {
 			((TableColumn) datacolumns.getColumns().get(0)).setVisible(true);
 		}
 		fillMetaElements();
+		disableFormatFieldsOnTemporal(metacolumnformat, (String) metacolumntype.getValue());
 		fileselectfield.setText(selectedFile.getPath());
 
 		if (selectedFile instanceof PlainTextFile) {
