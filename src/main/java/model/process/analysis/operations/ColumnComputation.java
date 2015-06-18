@@ -1,9 +1,6 @@
 package model.process.analysis.operations;
 
-import model.data.DataColumn;
-import model.data.DataTableBuilder;
-import model.data.Row;
-import model.data.Table;
+import model.data.*;
 import model.data.describer.DataDescriber;
 import model.data.describer.TableValueDescriber;
 import model.data.value.DataValue;
@@ -72,7 +69,9 @@ public class ColumnComputation extends DataProcess {
 			builder.createRow(getValues(iterator.next()));
 		}
 
-		return builder.build();
+		DataTable res = builder.build();
+		getDataModel().add(res);
+		return res;
 	}
 
 	/**
