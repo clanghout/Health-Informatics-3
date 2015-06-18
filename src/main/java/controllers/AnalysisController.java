@@ -70,6 +70,10 @@ public class AnalysisController {
 			mainUIController.startBackgroundProcess(task, "Analysing");
 		}
 
+	/**
+	 * Set the callback functio for a task that succeeds.
+	 * @param task task that must get the callback function.
+	 */
 	private void setSucceed(Task task) {
 		task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 			@Override public void handle(WorkerStateEvent t) {
@@ -80,6 +84,10 @@ public class AnalysisController {
 		});
 	}
 
+	/**
+	 * Create a task for the analysis.
+	 * @return a new task that can perform an analysis.
+	 */
 	private Task createTask() {
 		return new Task() {
 			@Override protected Integer call() throws Exception {
@@ -179,14 +187,25 @@ public class AnalysisController {
 		errorBox.getChildren().clear();
 	}
 
+	/**
+	 * Enable the execute button.
+	 */
 	public void enableImport() {
 		executeButton.setDisable(false);
 	}
 
+	/**
+	 * Disable the execute button.
+	 */
 	public void disableImport() {
 		executeButton.setDisable(true);
 	}
 
+	/**
+	 * Set the callback function when the task fails.
+	 * This create the error messages.
+	 * @task the task that must get the callback function.
+	 */
 	public void setFailed(Task task) {
 		task.setOnFailed(new EventHandler<WorkerStateEvent>() {
 			@Override public void handle(WorkerStateEvent t) {

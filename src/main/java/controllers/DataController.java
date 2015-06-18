@@ -123,6 +123,10 @@ public class DataController {
 		}
 	}
 
+	/**
+	 * Set the callback function for when the task fails or succeeds.
+	 * @task the task that must get the callback functions.
+	 */
 	private void setHandlers(Task task) {
 
 		task.setOnFailed(new EventHandler<WorkerStateEvent>() {
@@ -147,6 +151,10 @@ public class DataController {
 		});
 	}
 
+	/**
+	 * Create a task for the analysis.
+	 * @return a new task that can perform an analysis.
+	 */
 	private Task createTask() {
 		return new Task() {
 			@Override protected Integer call() throws Exception {
@@ -179,10 +187,16 @@ public class DataController {
 
 	}
 
+	/**
+	 * Disable the import button.
+	 */
 	public void disableImport() {
 		importButton.setDisable(true);
 	}
 
+	/**
+	 * Enable the import button.
+	 */
 	public void enableImport() {
 		importButton.setDisable(false);
 	}
