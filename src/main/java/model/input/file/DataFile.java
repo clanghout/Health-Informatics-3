@@ -40,6 +40,7 @@ public abstract class DataFile {
 	private DataTableBuilder builder = new DataTableBuilder();
 	private boolean firstRowAsHeader;
 	private boolean hasMetaData;
+	private String metaDataFormat;
 
 	/**
 	 * Creates a new type of a DataFile. Sets the default range of lines to read
@@ -78,7 +79,15 @@ public abstract class DataFile {
 	public String getPath() {
 		return path;
 	}
-	
+
+	/**
+	 * Sets the path.
+	 * @param path The path to set
+	 */
+	public void setPath(String path) {
+		this.path = path;
+	}
+
 	/**
 	* Creates a new DataFile type class based on the string specified.
 	* @param path The path of the DataFile
@@ -96,6 +105,12 @@ public abstract class DataFile {
 					+ " is not recognized");
 		} 	
 	}
+
+	/**
+	 * Creates a String of the type.
+	 * @return The String of the type
+	 */
+	public abstract String getFileTypeAsString();
 	
 	/**
 	 * Returns the line at which the datafile will begin reading i.e. the 
@@ -155,7 +170,10 @@ public abstract class DataFile {
 			case "bool" :
 				return BoolValue.class;
 			default:
-				throw new RuntimeException("The specified type of data is not supported");
+				throw new RuntimeException(
+						String.format("The specified type %s of data is not supported",
+								type)
+				);
 		}
 	}
 
@@ -180,7 +198,10 @@ public abstract class DataFile {
 		} else if (type == BoolValue.class) {
 			return "bool";
 		} else {
-			throw new RuntimeException("The specified type of data is not supported");
+			throw new RuntimeException(
+					String.format("The specified type %s of data is not supported",
+									type.toString())
+			);
 		}
 	}
 
@@ -201,10 +222,17 @@ public abstract class DataFile {
 	}
 
 	/**
-	 * Adds ColumnInfo for a new column to the list.
+	 * Adds ColumnInfo for a new column to the list if it does not exist yet.
+	 * Otherwise the existing ColumnInfo will be overwritten.
 	 * @param info The ColumnInfo to add
 	 */
 	public void addColumnInfo(ColumnInfo info) {
+		for (int i = 0; i < columns.size(); i++) {
+			if (columns.get(i).equals(info)) {
+				columns.set(i, info);
+				return;
+			}
+		}
 		columns.add(info);
 	}
 
@@ -233,6 +261,14 @@ public abstract class DataFile {
 	}
 
 	/**
+	 * Sets if the datafile has metadata.
+	 * @param hasMetaData True if the datafile contains metadata
+	 */
+	public void setHasMetaData(boolean hasMetaData) {
+		this.hasMetaData = hasMetaData;
+	}
+
+	/**
 	 * Sets the class for the metadata column.
 	 * @param metaDataType The class for the metadata
 	 */
@@ -247,7 +283,7 @@ public abstract class DataFile {
 	 */
 	@Override
 	public String toString() {
-		return "[" + path + "]";
+		return path;
 	}
 
 	/**
@@ -258,15 +294,16 @@ public abstract class DataFile {
 	 *                   to a DataValue
 	 */
 	public void createMetaDataValue(String metaValue, ColumnInfo columnInfo) {
-			if (metaValue.isEmpty()) {
-				metaValue = getPath().substring(
-						getPath().lastIndexOf(File.separator) + 1,
-						getPath().lastIndexOf("."));
-			}
-			this.metaDataValue = toDataValue(metaValue, columnInfo);
-			this.setMetaDataType(columnInfo.getType());
-			this.setMetaDataColumnName(columnInfo.getName());
-			hasMetaData = true;
+		if (metaValue.isEmpty()) {
+			metaValue = getPath().substring(
+					getPath().lastIndexOf(File.separator) + 1,
+					getPath().lastIndexOf("."));
+		}
+		this.metaDataValue = toDataValue(metaValue, columnInfo);
+		this.metaDataFormat = columnInfo.getFormat();
+		this.setMetaDataType(columnInfo.getType());
+		this.setMetaDataColumnName(columnInfo.getName());
+		hasMetaData = true;
 	}
 
 	/**
@@ -402,5 +439,13 @@ public abstract class DataFile {
 	 */
 	public Class<? extends DataValue> getMetaDataType() {
 		return metaDataType;
+	}
+
+	/**
+	 * Returns the date format how the metadata should be parsed.
+	 * @return The format
+	 */
+	public String getMetaDataFormat() {
+		return metaDataFormat;
 	}
 }
