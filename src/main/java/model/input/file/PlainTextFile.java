@@ -56,6 +56,8 @@ public class PlainTextFile extends DataFile {
 			List<String> lines = readLines(scanner);
 			addRowsToBuilder(filterLastRows(lines));
 
+		scanner.close();
+
 		return getBuilder().build();
 	}
 
