@@ -92,9 +92,12 @@
 	-fx-spacing: 5px;
 }
 
-.test {
-	-fx-background-color: #ff3d40;
-	-fx-end-margin: 0px;
+.progressBox {
+	-fx-padding: 10px, 10px, 10px, 10px;
+}
+
+.progressBox > Label {
+	-fx-padding: 10px, 0px, 0px, 0px;;
 }
 
 ProgressIndicator {
