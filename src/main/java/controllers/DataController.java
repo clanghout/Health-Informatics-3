@@ -1,5 +1,8 @@
 package controllers;
 
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
@@ -9,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import model.data.DataModel;
+import model.process.DataProcess;
 import view.SaveDialog;
 
 import java.io.File;
@@ -22,7 +26,9 @@ import java.util.logging.Logger;
  * Created by Boudewijn on 6-5-2015.
  */
 public class DataController {
-	
+	@FXML
+	private Button importButton;
+
 	@FXML
 	private TextField fileNameField;
 	
@@ -101,13 +107,51 @@ public class DataController {
 	 */
 	private void read() {
 		try {
-			DataReader reader = new DataReader(file);
-			model = reader.createDataModel();
-			mainUIController.setModel(model);
+			errorLabel.setText("");
+			Task task = createTask();
+			setHandlers(task);
+
+			if (!mainUIController.startBackgroundProcess(task)) {
+				errorLabel.setText("An operation is already running in the background");
+			}
 			
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "An error occurred while reading the file", e);
 		}
+	}
+
+	private void setHandlers(Task task) {
+
+		task.setOnFailed(new EventHandler<WorkerStateEvent>() {
+			@Override public void handle(WorkerStateEvent t) {
+				Throwable exception = task.getException();
+				logger.log(Level.WARNING, "An error occurred while reading the file"
+								+ exception.getClass().getName() + " -> "
+								+ exception.getMessage(),
+						exception.getCause());
+				mainUIController.endBackgroundProcess();
+				errorLabel.setTextFill(Color.RED);
+				errorLabel.setText("An error occurred while reading the file");
+			}
+		});
+
+		task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+			@Override public void handle(WorkerStateEvent t) {
+				mainUIController.setModel(model);
+				mainUIController.endBackgroundProcess();
+			}
+		});
+	}
+
+	private Task createTask() {
+		return new Task() {
+			@Override protected Integer call() throws Exception {
+				DataReader reader = new DataReader(file);
+				model = reader.createDataModel();
+
+				return null;
+			}
+		};
 	}
 
 	/**
@@ -129,5 +173,13 @@ public class DataController {
 		}
 
 
+	}
+
+	public void disableImport() {
+		importButton.setDisable(true);
+	}
+
+	public void enableImport() {
+		importButton.setDisable(false);
 	}
 }
