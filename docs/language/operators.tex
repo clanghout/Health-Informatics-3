@@ -1,0 +1,73 @@
+In our language we support many operations on numbers and booleans.
+
+For numbers we support:
+\begin{itemize}
+	\item $+$
+	\item $-$
+	\item $*$
+	\item $/$
+	\item $^\wedge$
+	\item $\%$
+	\item $SQRT$
+	\item $>$
+	\item $<$
+	\item $<=$
+	\item $>=$
+\end{itemize}
+
+For booleans we support:
+\begin{itemize}
+	\item $AND$
+	\item $OR$
+	\item $NOT$
+\end{itemize}
+
+All values support the equality operation $=$.
+
+\subsection{Date operations}
+To operate on dates we have several functions which can be called.
+
+\subsubsection{Relative}
+In order to work more freely with dates we support the RELATIVE function. This functions calculates the differences between 2 dates in a given time unit.
+
+For example:
+$RELATIVE(\#1995-01-17\#, \#2015-06-18\#, DAYS)$ \\
+Gives the result $7457$.
+
+The first 2 arguments are the dates to compare and the third argument is the unit. The supported units are DAYS, MONTHS and YEARS.
+
+\subsubsection{Combine}
+The combine function combines a date and a time to give a date time.
+
+For example:
+$COMBINE(\#1995-01-17\#, \#12:12\#)$ \\
+Returns the equivalent of $\#1995-01-17\ 12:12\#$.
+
+The first argument is the date and the second the time.
+
+\subsubsection{To date and To time}
+To get either the time part or date part of a given date time you can call TO\_DATE or TO\_TIME.
+
+For example:
+$COMBINE(TO\_DATE(\#1995-01-17\ 12:12\#), TO\_TIME(\#1995-01-17\ 12:12\#))$ \\
+Results in $\#1995-01-17\ 12:12\#$ and is a rather useless operation.
+
+TO\_DATE and TO\_TIME both only take one date time argument.
+
+\subsubsection{After and Before}
+To compare dates we have the BEFORE and AFTER operations.
+
+For example:
+$\#1995-01-17\#\ BEFORE\ \#1995-01-18\#$ \\
+Results in true.
+
+All different temporal values are supported, so BEFORE and AFTER work with times, dates and date times. Do note: that mixing only works between dates and date times. Since $\#1995-01-17\#\ BEFORE\ \#12:00\#$ is nonsense.
+
+\subsubsection{Add and Min}
+To add or subtract time we support the ADD and MIN operations.
+
+For example:
+$\#1995-01-17\#\ ADD\ \#1\ YEARS\#$ \\
+Results in $\#1996-01-17\#$.
+
+The left side argument should either be a date or a date time and the right side argument should be a period. The supported units are DAYS, MONTHS and YEARS.
