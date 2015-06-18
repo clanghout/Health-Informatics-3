@@ -1,30 +1,20 @@
 package controllers;
 
 
-import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
-import model.input.reader.DataReader;
+
 
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import model.data.DataModel;
-import model.input.reader.DataReader;
-import model.input.reader.XmlReader;
 import view.SaveDialog;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * The controller for the Data tab.
@@ -49,8 +39,6 @@ public class DataController {
 	private Label errorLabel;
 
 	private MainUIController mainUIController;
-	
-	private Logger logger = Logger.getLogger("DataController");
 
 	private File file;
 	private DataModel model;

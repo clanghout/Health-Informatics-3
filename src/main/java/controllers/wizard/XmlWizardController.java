@@ -13,7 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
-import model.data.DataModel;
+
 import model.exceptions.DataFileNotRecognizedException;
 import model.input.file.ColumnInfo;
 import model.input.file.DataFile;
@@ -103,7 +103,7 @@ public class XmlWizardController {
 			if (!(newValue.equals(String.valueOf(selectedFile.getStartLine())))) {
 				try {
 					selectedFile.setStartLine(Integer.parseInt(startLine.getText()));
-				} catch(NumberFormatException e) {
+				} catch (NumberFormatException e) {
 					logger.log(Level.SEVERE, "Can not parse the chosen value to an integer. "
 							+ e.getMessage());
 				}
@@ -116,7 +116,7 @@ public class XmlWizardController {
 			if (!(newValue.equals(String.valueOf(selectedFile.getEndLine())))) {
 				try {
 					selectedFile.setEndLine(Integer.parseInt(endLine.getText()));
-				} catch(NumberFormatException e) {
+				} catch (NumberFormatException e) {
 					logger.log(Level.SEVERE, "Can not parse the selected value to an integer. "
 							+ e.getMessage());
 				}
@@ -481,6 +481,7 @@ public class XmlWizardController {
 		writeXmlToFile(file);
 		try {
 			Reader reader = new Reader(file, mainUIcontroller, errorLabel);
+			reader.execute();
 			dialog.close();
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "Error creating datamodel " + e.getMessage());

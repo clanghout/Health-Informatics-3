@@ -3,7 +3,6 @@ package controllers;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import model.data.DataModel;
@@ -15,6 +14,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Class that creates a read task. Used by the xmlwizard and the datacontroller.
+ *
  * Created by jens on 6/18/15.
  */
 public class Reader {
@@ -26,6 +27,13 @@ public class Reader {
 	private File file;
 	private Logger logger = Logger.getLogger("Reader");
 
+	/**
+	 * Construct a new reader.
+	 * @param file xml to read
+	 * @param mainUIController ui that should receive the model
+	 *                            and where the buttons must get disabled.
+	 * @param error label for the error messages
+	 */
 	public Reader(File file, MainUIController mainUIController, Label error) {
 		this.file = file;
 		this.mainUIController = mainUIController;
@@ -33,8 +41,10 @@ public class Reader {
 		this.model = new DataModel();
 	}
 
+	/**
+	 * Start a thread that load a datamodel.
+	 */
 	public void execute() {
-
 		mainUIController.setModel(model);
 		try {
 			errorLabel.setText("");
