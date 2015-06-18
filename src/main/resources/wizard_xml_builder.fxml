@@ -4,46 +4,135 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox styleClass="main-box" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainUIController">
+<VBox fx:id="root" styleClass="main-box" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.wizard.XmlWizardController">
         <children>
+            <MenuBar VBox.vgrow="NEVER">
+                <menus>
+                    <Menu text="File">
+                        <items>
+                            <MenuItem onAction="#loadXml" text="Load" />
+                        </items>
+                        <items>
+                            <MenuItem onAction="#createXml" text="Save" />
+                        </items>
+                    </Menu>
+                </menus>
+            </MenuBar>
             <VBox styleClass="datafiles-box">
                 <Label>Data Files:</Label>
-                <TableView styleClass="datafiles"/>
+                <ListView
+                        fx:id="datafiles"
+                        styleClass="datafiles"/>
             </VBox>
             <HBox styleClass="path-box">
                 <children>
                     <Label>Path</Label>
-                    <TextField HBox.hgrow="SOMETIMES" />
-                    <Button text="Browse" />
-                </children>
-            </HBox>
-            <HBox styleClass="import-box">
-                <children>
-                    <Label>Import as: </Label>
-                    <ComboBox />
-                    <Button text="Import"/>
+                    <TextField
+                            fx:id="fileselectfield"
+                            HBox.hgrow="SOMETIMES" />
+                    <Button text="Browse"
+                            onAction="#selectFile"/>
+                    <Button text="Remove"
+                            onAction="#removeDataFile"/>
+                    <Separator orientation="VERTICAL"/>
+                    <Button text="Copy template"
+                            onAction="#copyTemplate"/>
+                    <Button text="Paste template"
+                            onAction="#pasteTemplate"/>
                 </children>
             </HBox>
             <SplitPane styleClass="splitpane">
                 <items>
                     <VBox styleClass="spaced-box">
                        <children>
-                            <Label>Column specification:</Label>
-                           <TableView />
-                           <Button text="Add column" />
-                           <CheckBox text="First row as table header"/>
+                           <Label>Column Specification:</Label>
+                           <TableView fx:id="datacolumns"
+                                   editable="true"/>
+                           <VBox styleClass="import-box">
+                               <GridPane styleClass="spaced-box" hgap="10" vgap="10">
+                                   <Label GridPane.columnIndex="0" GridPane.rowIndex="0">Column Name:</Label>
+                                   <TextField GridPane.columnIndex="1" GridPane.rowIndex="0"
+                                           fx:id="columnName"/>
+
+                                   <Label GridPane.columnIndex="0" GridPane.rowIndex="1">Column Type:</Label>
+                                   <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="1"
+                                           fx:id="columntype"/>
+
+                                   <Label GridPane.columnIndex="0" GridPane.rowIndex="2">Date/Time Format</Label>
+                                   <TextField GridPane.columnIndex="1" GridPane.rowIndex="2"
+                                           fx:id="columnFormat"/>
+                               </GridPane>
+                               <CheckBox
+                                       fx:id="hasFirstRowHeader"
+                                       text="First row as table header"
+                                       onAction="#handleFirstRowHeaderCheckbox"/>
+                               <HBox styleClass="spaced-box">
+                                   <Button text="Add column"
+                                           onAction="#addColumnRow"/>
+                                   <Button text="Remove column"
+                                           onAction="#removeColumnRow"/>
+                                   <Separator orientation="VERTICAL"/>
+                                   <Button text="Up"
+                                           onAction="#moveColumnUp"/>
+                                   <Button text="Down"
+                                           onAction="#moveColumnDown"/>
+                               </HBox>
+                           </VBox>
                        </children>
                     </VBox>
-                    <HBox styleClass="spaced-box">
+                    <VBox styleClass="spaced-box">
                         <children>
-                            <Label> RESERVED FOR SPECIFYING FILESPECIFIC THINGS </Label>
+                            <Label>
+                                Plain Textfile Specification
+                            </Label>
+                            <VBox styleClass="rightpadded">
+                                <Label> Starting line: </Label>
+                                <TextField fx:id="startLine" />
+                            </VBox>
+                            <VBox styleClass="rightpadded">
+                                <Label> Remove from end: </Label>
+                                <TextField fx:id="endLine" />
+                            </VBox>
+                            <VBox styleClass="rightpadded">
+                                <Label> Delimiter: </Label>
+                                <TextField fx:id="delimiter" />
+                            </VBox>
+                            <Separator />
+                                <Label>Add filename column: </Label>
+                                <CheckBox
+                                        fx:id="addmetacheck"
+                                        text="Add filename column"
+                                        onAction="#addMetaData" />
+                                <GridPane styleClass="spaced-box" hgap="10" vgap="10">
+                                    <Label GridPane.columnIndex="0" GridPane.rowIndex="1">Column Name:</Label>
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="1"
+                                                    fx:id="metacolumnName" />
+
+                                    <Label GridPane.columnIndex="0" GridPane.rowIndex="2">Column Type</Label>
+                                    <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="2"
+                                                    fx:id="metacolumntype" />
+
+                                    <Label GridPane.columnIndex="0" GridPane.rowIndex="3">Date/Time Format</Label>
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="3"
+                                               fx:id="metacolumnformat"/>
+
+                                    <Label GridPane.columnIndex="0" GridPane.rowIndex="4">Column value (optional)</Label>
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="4"
+                                               fx:id="metacolumnvalue" />
+                                </GridPane>
                         </children>
-                    </HBox>
+                    </VBox>
                 </items>
             </SplitPane>
             <HBox styleClass="spaced-box">
                 <children>
-                    <Button text="Create xml file" />
+                    <Button text="Create xml file"
+                            onAction="#createXml" />
+                    <Button text="Cancel"
+                            onAction="#handleCancelButton" />
+                    <Button fx:id="apply"
+                            text="Apply"
+                            onAction="#applyChanges" />
                 </children>
             </HBox>
         </children>
