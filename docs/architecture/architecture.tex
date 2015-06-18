@@ -123,6 +123,12 @@ write the Java code with.
 For continuous integration and version control we use Git and Github. Locally we use Maven to build the project. On GitHub we use Travis CI to verify the builds.
 We also use the JavaFX Scene Builder as a tool to design parts of the GUI because this provides a better preview of what the interface will look like while creating it.
 
+\subsection{Data organization}
+The data that we read from the file is stored in datatables containing columns of specific types. These datatables together form the model on which we can perform the analyses. The values are stored as datavalues inside the table in columns having the same type as the datavalue.
+
+In week 4.8 we found an issue that reading data from a large excel file takes up a lot of time and memory. We thought this could have been caused by the fact that we used hashmaps to store the rows and the iteration over it's entries could take up a lot of time. We tried using linked hashmaps instead but that did not improve the reading speed very much.
+
+
 \subsection{Used libraries}
 \begin{description}
 
@@ -154,6 +160,15 @@ plain Java. This means you don't get an extra build process. The disadvantage is
 Parboiled does some magical stuff which our analysis tools don't fully understand, 
 so you need to be aware of it. All in all we're really satisfied with the strength of
 Parboiled and feel that we've made the right choice.
+
+\item[JFreeChart] For creating the boxplot visualization we made use of the JFreeChart framework
+after we found that JavaFX (which we use to create barchart visualizations) did not support creating boxplots.
+
+\item[ControlsFX] For making dialog windows to notify the user that something happened.
+This library offers various standard popups that the average computer user is familiar with.
+
+\item[Apache Commons CSV] To write the tables to a csv file.
+
 
 \end{description}
 
