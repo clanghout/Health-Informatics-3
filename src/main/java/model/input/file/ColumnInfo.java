@@ -71,6 +71,17 @@ public class ColumnInfo {
 	}
 
 	/**
+	 * Checks if a columninfo equals another columninfo.
+	 * @param other The columninfo to compare with
+	 * @return true if they have the same name
+	 */
+	public boolean equals(ColumnInfo other) {
+		return !(name == null)
+				&& !name.isEmpty()
+				&& this.name.equals(other.getName());
+	}
+
+	/**
 	 * Returns the type of the elements in the column.
 	 * @return The type
 	 */

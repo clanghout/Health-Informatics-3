@@ -55,6 +55,10 @@
 	-fx-pref-width: 150px;
 }
 
+.button-container {
+    -fx-padding: 15px;
+}
+
 .data-container {
 	-fx-orientation: vertical;
 }
@@ -77,6 +81,14 @@
 	-fx-min-width: 0;
 	-fx-min-height: 0;
 	-fx-pref-width: 160px;
+}
+
+.horizontal-split {
+	-fx-orientation: horizontal;
+}
+
+.vertical-split {
+	-fx-orientation: vertical;
 }
 
 .outsidebox {

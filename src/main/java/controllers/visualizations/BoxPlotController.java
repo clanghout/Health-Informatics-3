@@ -99,8 +99,10 @@ public class BoxPlotController extends ChartController {
 			yCol = newValue;
 			DataDescriber<NumberValue> yColDescriber = new RowValueDescriber<>(yCol);
 			try {
-				float max = (int) new Maximum(table, yColDescriber).calculate().getValue();
-				float min = (int) new Minimum(table, yColDescriber).calculate().getValue() - 1;
+				NumberValue maxValue = new Maximum(table, yColDescriber).calculate();
+				NumberValue minValue = new Minimum(table, yColDescriber).calculate();
+				float max = Float.valueOf(maxValue.getValue().toString());
+				float min = Float.valueOf(minValue.getValue().toString()) - 1;
 				yAxis = new NumberAxis(newValue.getName());
 				yAxis.setRange(min * SCALEDOWN_YAXIS, max * SCALEUP_YAXIS);
 				setErrorLabel(yAxisErrorLabel, "");

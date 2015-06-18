@@ -36,7 +36,7 @@ public class PlainTextFile extends DataFile {
 		counter = 1;
 		InputStream stream = new FileInputStream(getFile());
 		getBuilder().setName(getFile().getName().replace(".", ""));
-		try (Scanner scanner = new Scanner(stream, "UTF-8")) {
+		Scanner scanner = new Scanner(stream, "UTF-8");
 			scanner.useDelimiter("\\A");
 			skipToStartLine(scanner);
 
@@ -55,9 +55,15 @@ public class PlainTextFile extends DataFile {
 
 			List<String> lines = readLines(scanner);
 			addRowsToBuilder(filterLastRows(lines));
-		}
+
+		scanner.close();
 
 		return getBuilder().build();
+	}
+
+	@Override
+	public String getFileTypeAsString() {
+		return "plaintext";
 	}
 
 	private void handleFirstRowHeader(Scanner scanner) {
@@ -124,7 +130,7 @@ public class PlainTextFile extends DataFile {
 			getBuilder().createRow(values);
 		}
 	}
-	
+
 	private List<String> filterLastRows(List<String> lines) {
 		return lines.subList(0, lines.size() - getEndLine());
 	}

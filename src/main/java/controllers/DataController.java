@@ -1,15 +1,18 @@
 package controllers;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.paint.Color;
-import model.input.reader.DataReader;
+import controllers.wizard.XmlWizardController;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import model.data.DataModel;
-import view.SaveDialog;
+import model.input.reader.DataReader;
+import model.input.reader.XmlReader;
+import view.Dialog;
+import view.XMLCreationDialog;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +25,7 @@ import java.util.logging.Logger;
  * Created by Boudewijn on 6-5-2015.
  */
 public class DataController {
-	
+
 	@FXML
 	private TextField fileNameField;
 	
@@ -30,7 +33,7 @@ public class DataController {
 	private Parent root;
 
 	@FXML
-	private Button saveButton;
+	private Button xmlWizardButton;
 
 	@FXML
 	private Label errorLabel;
@@ -41,7 +44,11 @@ public class DataController {
 
 	private File file;
 	private DataModel model;
-	
+
+	private static final double WIZARD_DIALOG_WIDTH = 1000;
+	private static final double WIZARD_DIALOG_HEIGHT = 800;
+
+
 	/**
 	 * Creates a new TableViewController.
 	 */
@@ -54,7 +61,6 @@ public class DataController {
 	 */
 	public void initialize(MainUIController mainUIController) {
 		this.mainUIController = mainUIController;
-		saveButton.setDisable(true);
 		errorLabel.setText("Import data");
 	}
 
@@ -74,7 +80,20 @@ public class DataController {
 			read();
 			errorLabel.setTextFill(Color.BLACK);
 			errorLabel.setText("File Selected:");
-			saveButton.setDisable(false);
+		}
+	}
+
+	@FXML
+	protected void handleXMLWizardButtonAction() {
+		try {
+			Dialog wizardDialog = new XMLCreationDialog();
+			XmlWizardController wizardController =
+					wizardDialog.getFxml().getController();
+			wizardController.initializeView(mainUIController, wizardDialog);
+			wizardDialog.setSize(WIZARD_DIALOG_WIDTH, WIZARD_DIALOG_HEIGHT);
+			wizardDialog.show();
+		} catch (IOException e) {
+			logger.log(Level.SEVERE, "FXML error: " + e.getMessage());
 		}
 	}
 
@@ -101,33 +120,13 @@ public class DataController {
 	 */
 	private void read() {
 		try {
-			DataReader reader = new DataReader(file);
+			DataReader reader = new DataReader(new XmlReader());
+			reader.read(file);
 			model = reader.createDataModel();
 			mainUIController.setModel(model);
 			
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "An error occurred while reading the file", e);
 		}
-	}
-
-	/**
-	 * Handle the save button.
-	 * Opens a save Dialog.
-	 */
-	@FXML
-	protected void handleSaveButtonAction() {
-		SaveDialog saveDialog;
-		try {
-			saveDialog = new SaveDialog();
-			saveDialog.show();
-			SaveWizardController saveWizardController
-					= saveDialog.getFxml().getController();
-			saveWizardController.initializeView(model, saveDialog);
-
-		} catch (IOException e) {
-			errorLabel.setText("ERROR: popup file is missing.");
-		}
-
-
 	}
 }

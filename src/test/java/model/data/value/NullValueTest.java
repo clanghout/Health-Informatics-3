@@ -72,6 +72,12 @@ public class NullValueTest {
 		assertEquals(0.0f, value.getValue());
 		assertEquals(true, value.isNull());
 	}
+
+	@Test
+	public void testNullFloatToString() throws Exception {
+		value = new FloatValue(null);
+		assertEquals("", value.toString());
+	}
 	
 	@Test
 	public void testNullInt() throws Exception {

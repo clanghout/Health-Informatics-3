@@ -9,6 +9,9 @@ import javafx.scene.paint.Color;
 import javafx.util.StringConverter;
 import model.data.DataColumn;
 import model.data.DataTable;
+import model.data.value.FloatValue;
+import model.data.value.IntValue;
+import model.data.value.NumberValue;
 
 /**
  * Abstract ChartController specifying the controller for a javaFX chart.
