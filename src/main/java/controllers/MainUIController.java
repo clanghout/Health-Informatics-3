@@ -52,15 +52,11 @@ public class MainUIController {
 
 	@FXML
 	protected void handleSaveAction() {
-		SaveDialog saveDialog;
 		try {
-			saveDialog = new SaveDialog();
+			SaveDialog saveDialog = new SaveDialog(model);
 			saveDialog.show();
-			SaveWizardController saveWizardController
-					= saveDialog.getFxml().getController();
-			saveWizardController.initializeView(model, saveDialog);
 		} catch (IOException e) {
-			//errorLabel.setText("ERROR: popup file is missing.");
+			e.printStackTrace();
 		}
 	}
 
