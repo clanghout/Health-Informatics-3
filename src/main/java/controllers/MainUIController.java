@@ -38,12 +38,9 @@ public class MainUIController {
 	
 	/**
 	 * Sets the model for the other controllers that need the same DataModel.
-	 * @param model The DataModel
 	 */
-	public void setModel(DataModel model) {
-		tableViewController.setDataModel(model);
-		analysisController.setDataModel(model);
-		visualizationController.setModel(model);
+	public void setModelObservers() {
+		tableViewController.setDataModelObserver();
 		visualizationController.initializeVisualisation();
 
 	}

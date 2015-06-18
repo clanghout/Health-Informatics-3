@@ -1,9 +1,12 @@
 package controllers;
 
+import model.BackgroundProcesses.Reader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
-import model.input.reader.DataReader;
+import model.BackgroundProcesses.BackgroundProcessor;
+import model.BackgroundProcesses.TestTask;
+import model.data.ProgramModel;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TextField;
@@ -40,7 +43,7 @@ public class DataController {
 	private Logger logger = Logger.getLogger("DataController");
 
 	private File file;
-	private DataModel model;
+	private DataModel model = ProgramModel.getDataModel();;
 	
 	/**
 	 * Creates a new TableViewController.
@@ -101,9 +104,11 @@ public class DataController {
 	 */
 	private void read() {
 		try {
-			DataReader reader = new DataReader(file);
-			model = reader.createDataModel();
-			mainUIController.setModel(model);
+		TestTask test = new TestTask(2);
+			Reader reader = new Reader(file);
+			BackgroundProcessor.getQueue().offer(reader);
+
+			mainUIController.setModelObservers();
 			
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "An error occurred while reading the file", e);
@@ -122,7 +127,7 @@ public class DataController {
 			saveDialog.show();
 			SaveWizardController saveWizardController
 					= saveDialog.getFxml().getController();
-			saveWizardController.initializeView(model, saveDialog);
+			saveWizardController.initializeView(saveDialog);
 
 		} catch (IOException e) {
 			errorLabel.setText("ERROR: popup file is missing.");

@@ -30,7 +30,7 @@ public class TableViewController implements Observer {
 	@FXML
 	private ListView<TableWrapper> inputTables;
 
-	private DataModel model;
+	private DataModel model = ProgramModel.getDataModel();;
 	private DataTable currentTable;
 
 
@@ -61,6 +61,9 @@ public class TableViewController implements Observer {
 	 * Loads the data from the model and updates the view for the user.
 	 */
 	private void fillTable(DataTable table) {
+		if(table == null) {
+			return;
+		}
 		logger.info("update table: " + table);
 		tableView.getItems().clear();
 		tableView.getColumns().clear();
@@ -138,14 +141,15 @@ public class TableViewController implements Observer {
 	/**
 	 * Sets the model that will be observed and initializes the first view of the model.
 	 *
-	 * @param model The model
 	 */
-	public void setDataModel(DataModel model) {
-		this.model = model;
-		currentTable = model.get(0);
+	public void setDataModelObserver() {
 		model.addObserver(this);
-		updateList();
-		fillTable(currentTable);
+		if(model.getTables().size() > 0) {
+			currentTable = model.get(0);
+			model.addObserver(this);
+			updateList();
+			fillTable(currentTable);
+		}
 	}
 
 	/**
