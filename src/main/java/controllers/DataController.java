@@ -39,6 +39,9 @@ public class DataController {
 	private Button saveButton;
 
 	@FXML
+	private Label progressLabel;
+
+	@FXML
 	private Label errorLabel;
 
 	private MainUIController mainUIController;
@@ -111,10 +114,10 @@ public class DataController {
 			Task task = createTask();
 			setHandlers(task);
 
-			if (!mainUIController.startBackgroundProcess(task)) {
+			if (!mainUIController.startBackgroundProcess(task, "Loading Data")) {
 				errorLabel.setText("An operation is already running in the background");
 			}
-			
+
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "An error occurred while reading the file", e);
 		}
@@ -129,7 +132,7 @@ public class DataController {
 								+ exception.getClass().getName() + " -> "
 								+ exception.getMessage(),
 						exception.getCause());
-				mainUIController.endBackgroundProcess();
+				mainUIController.endBackgroundProcess(false);
 				errorLabel.setTextFill(Color.RED);
 				errorLabel.setText("An error occurred while reading the file");
 			}
@@ -138,7 +141,8 @@ public class DataController {
 		task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 			@Override public void handle(WorkerStateEvent t) {
 				mainUIController.setModel(model);
-				mainUIController.endBackgroundProcess();
+				model.setUpdated();
+				mainUIController.endBackgroundProcess(true);
 			}
 		});
 	}

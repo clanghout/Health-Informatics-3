@@ -4,6 +4,9 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.paint.Color;
 import model.data.DataModel;
 
 import java.util.logging.Logger;
@@ -19,28 +22,44 @@ public class MainUIController {
 	@FXML private DataController dataController;
 	@FXML private AnalysisController analysisController;
 	@FXML private VisualizationController visualizationController;
+	@FXML private ProgressIndicator indicator;
+	@FXML private Label progressLabel;
+
 	private Logger logger = Logger.getLogger("MainUIController");
 	private boolean backgroundProcess = false;
 
-	public boolean startBackgroundProcess(Task task) {
+	public boolean startBackgroundProcess(Task task, String process) {
 		if (backgroundProcess) {
 			return false;
 		}
 		synchronized (MainUIController.class) {
+			indicator.setVisible(true);
+			progressLabel.setTextFill(Color.BLACK);
+			progressLabel.setText(process);
 			backgroundProcess = true;
 			dataController.disableImport();
 			analysisController.disableImport();
-			System.out.println("disabe");
+			logger.info("Start process");
 			new Thread(task).start();
 
 			return true;
 		}
 	}
 
-	public void endBackgroundProcess() {
+	public void endBackgroundProcess(boolean succes) {
+		logger.info("End process");
 		backgroundProcess = false;
 		dataController.enableImport();
 		analysisController.enableImport();
+		indicator.setVisible(false);
+
+		if (succes) {
+			progressLabel.setTextFill(Color.BLACK);
+			progressLabel.setText("Done");
+		} else {
+			progressLabel.setTextFill(Color.RED);
+			progressLabel.setText("Error");
+		}
 
 	}
 
@@ -68,6 +87,7 @@ public class MainUIController {
 	public void setModel(DataModel model) {
 		tableViewController.setDataModel(model);
 		analysisController.setDataModel(model);
+		analysisController.setMainUIController(this);
 		visualizationController.setModel(model);
 		visualizationController.initializeVisualisation();
 

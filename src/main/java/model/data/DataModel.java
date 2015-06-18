@@ -40,7 +40,6 @@ public class DataModel extends Observable implements Iterable<DataTable> {
 	 */
 	public void add(DataTable table) {
 		insert(table);
-		setUpdated();
 	}
 
 	private void insert(DataTable table) {
