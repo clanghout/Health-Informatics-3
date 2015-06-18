@@ -71,7 +71,7 @@ public class AnalysisController {
 		}
 
 	/**
-	 * Set the callback functio for a task that succeeds.
+	 * Set the callback function for a task that succeeds.
 	 * @param task task that must get the callback function.
 	 */
 	private void setSucceed(Task task) {
