@@ -25,7 +25,6 @@ import static org.mockito.Mockito.when;
  */
 public class XmlWriterTest {
 
-	XmlWriter writer;
 	@Mock
 	PlainTextFile textFile;
 
@@ -39,6 +38,12 @@ public class XmlWriterTest {
 
 		when(textFile.getFile()).thenReturn(new File("/path/to/Prettyname.txt"));
 		when(textFile.hasFirstRowAsHeader()).thenReturn(false);
+		when(textFile.hasMetaData()).thenReturn(true);
+		when(textFile.getMetaDataColumnName()).thenReturn("metaldata");
+		DataValue metaValue = new StringValue("metalstring");
+		when(textFile.getMetaDataValue()).thenReturn(metaValue);
+		Class metaDataType = StringValue.class;
+		when(textFile.getMetaDataType()).thenReturn(metaDataType);
 		List<ColumnInfo> cols = new ArrayList<>();
 		
 		cols.add(new ColumnInfo("someInts", IntValue.class));
@@ -61,7 +66,13 @@ public class XmlWriterTest {
 		assertEquals(1, root.getChildNodes().getLength());
 		assertEquals("file", root.getFirstChild().getNodeName());
 		Element fileElem = (Element) root.getElementsByTagName("file").item(0);
+		Element path = (Element) fileElem.getElementsByTagName("path").item(0);
+		Element meta = (Element) fileElem.getElementsByTagName("metadata").item(0);
+		assertEquals(File.separator + "path" + File.separator + "to", path.getTextContent());
 		assertEquals("Prettyname.txt", fileElem.getAttribute("name"));
+		assertEquals("metaldata", meta.getAttribute("name"));
+		assertEquals("metalstring", meta.getAttribute("value"));
+		assertEquals("string", meta.getAttribute("type"));
 
 		Element columns = (Element) fileElem
 				.getElementsByTagName("columns").item(0);
@@ -82,11 +93,6 @@ public class XmlWriterTest {
 				.item(4)).getAttribute("type"));
 		assertEquals("datetime", ((Element)columns.getElementsByTagName("column")
 				.item(5)).getAttribute("type"));
-
-	}
-
-	@Test
-	public void testWrite() throws Exception {
 
 	}
 }

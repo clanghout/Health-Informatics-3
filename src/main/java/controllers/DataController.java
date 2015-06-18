@@ -1,5 +1,6 @@
 package controllers;
 
+
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
@@ -7,11 +8,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import model.input.reader.DataReader;
+
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import model.data.DataModel;
+import model.input.reader.DataReader;
+import model.input.reader.XmlReader;
 import view.SaveDialog;
 
 import java.io.File;
@@ -27,6 +34,7 @@ import java.util.logging.Logger;
 public class DataController {
 	@FXML
 	private Button importButton;
+
 
 	@FXML
 	private TextField fileNameField;
@@ -76,7 +84,8 @@ public class DataController {
 			errorLabel.setText("ERROR: No file selected for import.");
 		} else {
 			fileNameField.setText(file.getAbsolutePath());
-			read();
+			Reader reader = new Reader(file, mainUIController, errorLabel);
+			reader.execute();
 			errorLabel.setTextFill(Color.BLACK);
 			errorLabel.setText("File Selected:");
 			saveButton.setDisable(false);
@@ -101,66 +110,6 @@ public class DataController {
 		return fileChooser.showOpenDialog(root.getScene().getWindow());
 	}
 
-	/**
-	 * Read the data and set the model in the mainUIController.
-	 */
-	private void read() {
-		try {
-			errorLabel.setText("");
-			Task task = createTask();
-			setHandlers(task);
-
-			if (!mainUIController.startBackgroundProcess(task, "Loading Data")) {
-				errorLabel.setText("An operation is already running in the background");
-			}
-
-		} catch (Exception e) {
-			logger.log(Level.WARNING, "An error occurred while reading the file", e);
-		}
-	}
-
-	/**
-	 * Set the callback function for when the task fails or succeeds.
-	 * @param task the task that must get the callback functions.
-	 */
-	private void setHandlers(Task task) {
-
-		task.setOnFailed(new EventHandler<WorkerStateEvent>() {
-			@Override public void handle(WorkerStateEvent t) {
-				Throwable exception = task.getException();
-				logger.log(Level.WARNING, "An error occurred while reading the file"
-								+ exception.getClass().getName() + " -> "
-								+ exception.getMessage(),
-						exception.getCause());
-				mainUIController.endBackgroundProcess(false);
-				errorLabel.setTextFill(Color.RED);
-				errorLabel.setText("An error occurred while reading the file");
-			}
-		});
-
-		task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-			@Override public void handle(WorkerStateEvent t) {
-				mainUIController.setModel(model);
-				model.setUpdated();
-				mainUIController.endBackgroundProcess(true);
-			}
-		});
-	}
-
-	/**
-	 * Create a task for the analysis.
-	 * @return a new task that can perform an analysis.
-	 */
-	private Task createTask() {
-		return new Task() {
-			@Override protected Integer call() throws Exception {
-				DataReader reader = new DataReader(file);
-				model = reader.createDataModel();
-
-				return null;
-			}
-		};
-	}
 
 	/**
 	 * Handle the save button.
@@ -195,5 +144,9 @@ public class DataController {
 	 */
 	public void enableImport() {
 		importButton.setDisable(false);
+	}
+
+	public Label getErrorLabel() {
+		return errorLabel;
 	}
 }

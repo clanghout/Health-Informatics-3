@@ -52,6 +52,16 @@ public abstract class Dialog {
 	}
 
 	/**
+	 * Sets the size of the dialog.
+	 * @param width The width of the dialog
+	 * @param height The height of the dialog
+	 */
+	public void setSize(double width, double height) {
+		dialog.setHeight(height);
+		dialog.setWidth(width);
+	}
+
+	/**
 	 * Close the dialog.
 	 */
 	public void close() {

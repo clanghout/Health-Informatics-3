@@ -61,6 +61,9 @@ public class TableViewController implements Observer {
 	 * Loads the data from the model and updates the view for the user.
 	 */
 	private void fillTable(DataTable table) {
+		if (table == null) {
+			return;
+		}
 		logger.info("update table: " + table);
 		tableView.getItems().clear();
 		tableView.getColumns().clear();
@@ -142,7 +145,9 @@ public class TableViewController implements Observer {
 	 */
 	public void setDataModel(DataModel model) {
 		this.model = model;
-		currentTable = model.get(0);
+		if (model.getTables().size() > 0) {
+			currentTable = model.get(0);
+		}
 		model.addObserver(this);
 		updateList();
 		fillTable(currentTable);
