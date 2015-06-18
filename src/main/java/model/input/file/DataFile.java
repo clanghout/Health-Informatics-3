@@ -448,4 +448,8 @@ public abstract class DataFile {
 	public String getMetaDataFormat() {
 		return metaDataFormat;
 	}
+
+	public void setMetaDataFormat(String metaDataFormat) {
+		this.metaDataFormat = metaDataFormat;
+	}
 }
