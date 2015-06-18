@@ -536,6 +536,7 @@ public class XmlWizardController {
 			if (hasFirstRowHeader.isSelected()) {
 				selectedFile.setFirstRowAsHeader(true);
 				columnName.setDisable(true);
+				columnName.setText("");
 				((TableColumn) datacolumns.getColumns().get(0)).setVisible(false);
 			} else {
 				selectedFile.setFirstRowAsHeader(false);
