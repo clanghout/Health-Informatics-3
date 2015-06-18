@@ -100,7 +100,12 @@ public class XmlWizardController {
 	private final ChangeListener<String> startLineChangeListener = (ov, oldValue, newValue) -> {
 		if (newValue != null && selectedFile != null) {
 			if (!(newValue.equals(String.valueOf(selectedFile.getStartLine())))) {
-				selectedFile.setStartLine(Integer.parseInt(startLine.getText()));
+				try {
+					selectedFile.setStartLine(Integer.parseInt(startLine.getText()));
+				} catch(NumberFormatException e) {
+					logger.log(Level.SEVERE, "Can not parse the chosen value to an integer. "
+							+ e.getMessage());
+				}
 			}
 		}
 	};
@@ -108,7 +113,12 @@ public class XmlWizardController {
 	private final ChangeListener<String> endLineChangeListener = (ov, oldValue, newValue) -> {
 		if (newValue != null && selectedFile != null) {
 			if (!(newValue.equals(String.valueOf(selectedFile.getEndLine())))) {
-				selectedFile.setEndLine(Integer.parseInt(endLine.getText()));
+				try {
+					selectedFile.setEndLine(Integer.parseInt(endLine.getText()));
+				} catch(NumberFormatException e) {
+					logger.log(Level.SEVERE, "Can not parse the selected value to an integer. "
+							+ e.getMessage());
+				}
 			}
 		}
 	};
@@ -128,7 +138,14 @@ public class XmlWizardController {
 				&& selectedFile.getMetaDataType() != null
 				&& !(newValue.equals(DataFile.getStringColumnType(
 				selectedFile.getMetaDataType())))) {
-
+			if (newValue.equals("date")
+					|| newValue.equals("datetime")
+					|| newValue.equals("time")) {
+				metacolumnformat.setDisable(false);
+			} else {
+				metacolumnformat.setText("");
+				metacolumnformat.setDisable(true);
+			}
 			apply.setDisable(false);
 		}
 	};
@@ -213,6 +230,7 @@ public class XmlWizardController {
 		addmetacheck.selectedProperty().addListener(addMetaCheckChangeListener);
 		disableAll(true);
 
+		disableColumnFormatFields();
 		metacolumnName.textProperty().addListener(metacolumnNameListener);
 		metacolumntype.valueProperty().addListener(metacolumntypeListener);
 		metacolumnvalue.textProperty().addListener(metacolumnvalueListener);
@@ -222,6 +240,11 @@ public class XmlWizardController {
 
 		metacolumntype.setItems(typesSelect);
 		columntype.setItems(typesSelect);
+	}
+
+	private void disableColumnFormatFields() {
+		columnFormat.setDisable(true);
+		metacolumnformat.setDisable(true);
 	}
 
 	/**
@@ -624,7 +647,6 @@ public class XmlWizardController {
 		datacolumns.setDisable(value);
 		columnName.setDisable(value);
 		columntype.setDisable(value);
-		columnFormat.setDisable(value);
 		hasFirstRowHeader.setDisable(value);
 		startLine.setDisable(value);
 		endLine.setDisable(value);
@@ -632,7 +654,6 @@ public class XmlWizardController {
 		addmetacheck.setDisable(value);
 		metacolumnName.setDisable(value);
 		metacolumntype.setDisable(value);
-		metacolumnformat.setDisable(value);
 		metacolumnvalue.setDisable(value);
 		apply.setDisable(value);
 	}
