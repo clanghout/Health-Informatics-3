@@ -11,7 +11,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import javafx.stage.Popup;
 import model.data.DataModel;
 import model.exceptions.DataFileNotRecognizedException;
 import model.input.file.ColumnInfo;
@@ -40,7 +42,18 @@ import java.util.logging.Logger;
  */
 public class XmlWizardController {
 
+	private static final String DATE_FORMAT_HELP_TEXT =
+					"y = year\n" +
+					"M = month of year\n" +
+					"d = day of month \n" +
+					"------------------\n" +
+					"H = hour of day \n" +
+					"m = minute of hour \n" +
+					"s = second of minute\n" +
+					"exceldate = excel date\n";
+
 	private Logger logger = Logger.getLogger("XmlWizardController");
+
 	@FXML private Button apply;
 
 	@FXML private CheckBox addmetacheck;
@@ -132,15 +145,11 @@ public class XmlWizardController {
 		}
 	};
 
-	private final ChangeListener<String> metacolumntypeListener = (ov, oldValue, newValue) -> {
-		if (newValue != null
-				&& selectedFile != null
-				&& selectedFile.getMetaDataType() != null
-				&& !(newValue.equals(DataFile.getStringColumnType(
-				selectedFile.getMetaDataType())))) {
-			disableFormatFieldsOnTemporal(metacolumnformat, newValue);
-			apply.setDisable(false);
-		}
+	private final ChangeListener<String> metacolumntypeListener
+			= (ov, oldValue, newValue) -> {
+		logger.info("MetaColumn type selected: " + newValue);
+		disableFormatFieldsOnTemporal(metacolumnformat, newValue);
+		apply.setDisable(false);
 	};
 
 	private final ChangeListener<String> columnTypeListener
@@ -340,9 +349,9 @@ public class XmlWizardController {
 	}
 
 	private void enableMeta() {
-		logger.info(String.format("enable metadata: %s, %s with value %s and format %s",
+		logger.info(String.format("enable metadata: %s, type %s and format %s",
 				selectedFile.getMetaDataColumnName(), selectedFile.getMetaDataType(),
-				selectedFile.getMetaDataValue().getValue(), selectedFile.getMetaDataFormat()));
+				selectedFile.getMetaDataFormat()));
 
 		addmetacheck.setSelected(true);
 		metacolumnName.setDisable(false);
@@ -354,7 +363,7 @@ public class XmlWizardController {
 				DataFile.getStringColumnType(selectedFile.getMetaDataType()));
 		metacolumnformat.setText(selectedFile.getMetaDataFormat());
 
-		if (selectedFile.getMetaDataValue().getValue() != null) {
+		if (selectedFile.getMetaDataValue() != null) {
 			metacolumnvalue.setText(selectedFile.getMetaDataValue().getValue().toString());
 		}
 	}
@@ -373,9 +382,11 @@ public class XmlWizardController {
 	 */
 	@FXML
 	public void pasteTemplate() {
-		if (template != null) {
-			selectedFile.getColumns().clear();
-			selectedFile.getColumns().addAll(template.getColumns());
+		if (template != null && selectedFile != null) {
+			if (selectedFile.getColumns() != template.getColumns()) {
+				selectedFile.getColumns().clear();
+				selectedFile.getColumns().addAll(template.getColumns());
+			}
 			selectedFile.setStartLine(template.getStartLine());
 			selectedFile.setEndLine(template.getEndLine());
 			if (selectedFile instanceof PlainTextFile
@@ -383,6 +394,10 @@ public class XmlWizardController {
 				((PlainTextFile) selectedFile).setDelimiter(
 						((PlainTextFile) template).getDelimiter());
 			}
+			selectedFile.setHasMetaData(template.hasMetaData());
+			selectedFile.setMetaDataColumnName(template.getMetaDataColumnName());
+			selectedFile.setMetaDataType(template.getMetaDataType());
+
 			selectedFile.setFirstRowAsHeader(template.hasFirstRowAsHeader());
 		}
 		fillElements();
@@ -451,6 +466,8 @@ public class XmlWizardController {
 			selectedFile.addColumnInfo(
 					new ColumnInfo(colName, DataFile.getColumnType(colType), format));
 			updateColumnsView();
+			columnName.clear();
+			columnName.requestFocus();
 		}
 	}
 
@@ -475,12 +492,14 @@ public class XmlWizardController {
 				new File(System.getProperty("user.home"))
 		);
 		File file = fileChooser.showSaveDialog(root.getScene().getWindow());
-		writeXmlToFile(file);
-		try {
-			mainUIcontroller.setModel(createModel());
-			dialog.close();
-		} catch (IOException e) {
-			logger.log(Level.SEVERE, "Error creating datamodel " + e.getMessage());
+		if (file != null) {
+			writeXmlToFile(file);
+			try {
+				mainUIcontroller.setModel(createModel());
+				dialog.close();
+			} catch (IOException e) {
+				logger.log(Level.SEVERE, "Error creating datamodel " + e.getMessage());
+			}
 		}
 	}
 
@@ -523,7 +542,7 @@ public class XmlWizardController {
 	}
 
 	/**
-	 * Changes the selected file to use the first row as a header in the table
+	 * Changes the selected file to use the first row as a header in the table.
 	 * when the checkbox is selected.
 	 * @param actionEvent JavaFX event
 	 */
@@ -562,9 +581,11 @@ public class XmlWizardController {
 			);
 
 			File file = fileChooser.showOpenDialog(root.getScene().getWindow());
-			reader.read(file);
-			datafiles.getItems().clear();
-			datafiles.getItems().addAll(reader.getDataFiles());
+			if (file != null) {
+				reader.read(file);
+				datafiles.getItems().clear();
+				datafiles.getItems().addAll(reader.getDataFiles());
+			}
 		} catch (ParserConfigurationException | SAXException | IOException e) {
 			logger.log(Level.SEVERE, "Error when reading xml file: " + e.getMessage() , e);
 		}
@@ -579,12 +600,10 @@ public class XmlWizardController {
 		if (addmetacheck.isSelected()) {
 			metacolumnName.setDisable(false);
 			metacolumntype.setDisable(false);
-			metacolumnformat.setDisable(false);
 			metacolumnvalue.setDisable(false);
 		} else {
 			metacolumnName.setDisable(true);
 			metacolumntype.setDisable(true);
-			metacolumnformat.setDisable(true);
 			metacolumnvalue.setDisable(true);
 		}
 	}
@@ -639,6 +658,18 @@ public class XmlWizardController {
 
 		setDataFilePath();
 		apply.setDisable(true);
+	}
+
+	/**
+	 * Shows the help dialog for date and time formats on the stage.
+	 * @param mouseEvent JavaFX event
+	 */
+	@FXML
+	public void showDateFormatHelp(MouseEvent mouseEvent) {
+		Popup popup = Dialog.createPopup(DATE_FORMAT_HELP_TEXT);
+		popup.setX(mouseEvent.getScreenX());
+		popup.setY(mouseEvent.getScreenY());
+		popup.show(dialog.getStage());
 	}
 
 	private void disableAll(boolean value) {
