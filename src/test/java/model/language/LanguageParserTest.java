@@ -398,4 +398,18 @@ public class LanguageParserTest {
 
 		assertEquals(new IntValue(1), node.resolve(null).resolve(null));
 	}
+
+	@Test
+	public void testFloatIntCompare() throws Exception {
+		BasicParseRunner runner = new BasicParseRunner(parser.BooleanExpression());
+		String input = "2.3 > 2";
+
+		ParsingResult result = runner.run(input);
+
+		assertTrue(result.matched);
+
+		ValueNode<BoolValue> node = (ValueNode<BoolValue>) result.resultValue;
+
+		assertTrue(node.resolve(null).resolve(null).getValue());
+	}
 }

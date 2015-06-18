@@ -1,13 +1,16 @@
 package controllers;
 
+import controllers.wizard.XmlWizardController;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 import model.data.DataModel;
 import view.SaveDialog;
-
 import java.io.IOException;
+import view.Dialog;
+import view.XMLCreationDialog;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -18,16 +21,16 @@ import java.util.logging.Logger;
 public class MainUIController {
 
 	@FXML
-	private TableViewController tableViewController;
-	@FXML
-	private DataController dataController;
-	@FXML
-	private AnalysisController analysisController;
-	@FXML
-	private VisualizationController visualizationController;
-	@FXML
 	private MenuItem save;
 	private DataModel model;
+
+	private static final double WIZARD_DIALOG_WIDTH = 1000;
+	private static final double WIZARD_DIALOG_HEIGHT = 800;
+
+	@FXML private TableViewController tableViewController;
+	@FXML private DataController dataController;
+	@FXML private AnalysisController analysisController;
+	@FXML private VisualizationController visualizationController;
 	private Logger logger = Logger.getLogger("MainUIController");
 
 	/**
@@ -72,7 +75,20 @@ public class MainUIController {
 		analysisController.setDataModel(model);
 		visualizationController.setModel(model);
 		visualizationController.initializeVisualisation();
+	}
 
+	@FXML
+	protected void startWizard(ActionEvent actionEvent) {
+		try {
+			Dialog wizardDialog = new XMLCreationDialog();
+			XmlWizardController wizardController =
+					wizardDialog.getFxml().getController();
+			wizardController.initializeView(this, wizardDialog);
+			wizardDialog.setSize(WIZARD_DIALOG_WIDTH, WIZARD_DIALOG_HEIGHT);
+			wizardDialog.show();
+		} catch (IOException e) {
+			logger.log(Level.SEVERE, "FXML error: " + e.getMessage());
+		}
 	}
 
 }

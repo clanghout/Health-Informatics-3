@@ -1,15 +1,15 @@
 package controllers;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.paint.Color;
-import model.input.reader.DataReader;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import model.data.DataModel;
-
+import model.input.reader.DataReader;
+import model.input.reader.XmlReader;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  * Created by Boudewijn on 6-5-2015.
  */
 public class DataController {
-	
+
 	@FXML
 	private TextField fileNameField;
 	
@@ -102,7 +102,8 @@ public class DataController {
 	 */
 	private void read() {
 		try {
-			DataReader reader = new DataReader(file);
+			DataReader reader = new DataReader(new XmlReader());
+			reader.read(file);
 			model = reader.createDataModel();
 			mainUIController.setModel(model);
 			

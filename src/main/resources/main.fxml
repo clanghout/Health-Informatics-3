@@ -12,6 +12,7 @@
 		<Menu text="File">
 			<items>
 				<MenuItem onAction="#handleSaveAction" text="Save Tables" fx:id="save"/>
+				<MenuItem onAction="#startWizard" text="XML Wizard"/>
 				<MenuItem onAction="#handleQuitAction" text="Quit" />
 			</items>
 		</Menu>

@@ -50,4 +50,9 @@ public class XlsxFile extends ExcelFile {
 			throw new RuntimeException();
 		}
 	}
+
+	@Override
+	public String getFileTypeAsString() {
+		return "xlsx";
+	}
 }
