@@ -9,7 +9,6 @@ import org.apache.commons.csv.CSVPrinter;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -77,14 +76,12 @@ public class DataTableWriter {
 
 		try (FileWriter fileWriter = new FileWriter(file)) {
 			try (CSVPrinter csvFilePrinter = new CSVPrinter(fileWriter, csvFileFormat)) {
-				List<String> rowValues;
 				for (DataRow row : table.getRows()) {
-					rowValues = new ArrayList<>();
 					for (DataColumn col : row.getColumns()) {
 						DataValue value = row.getValue(col);
-						rowValues.add(formatValue(value));
+						csvFilePrinter.print(formatValue(value));
 					}
-					csvFilePrinter.printRecord(rowValues);
+					csvFilePrinter.println();
 				}
 			}
 		} catch (IOException e) {

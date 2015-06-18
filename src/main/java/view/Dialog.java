@@ -3,6 +3,8 @@ package view;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import org.controlsfx.dialog.Dialogs;
 
@@ -84,12 +86,30 @@ public abstract class Dialog {
 				.showInformation();
 	}
 
-
 	/**
 	 * Return the dialog stage.
 	 * @return the stage of the dialog.
 	 */
 	public Stage getStage() {
 		return dialog;
+	}
+
+	/**
+	 * Creates a new popup that can be shown to the user as an assist.
+	 * @param popupText The text that the popup will contain
+	 * @return The popup
+	 */
+	public static Popup createPopup(String popupText) {
+		Popup popup = new Popup();
+		popup.setAutoHide(true);
+		popup.setAutoHide(true);
+
+		Label message = new Label(popupText);
+		message.setOnMouseReleased(event -> popup.hide());
+		message.getStylesheets().add(Dialog.class.getResource("/assist.css").toExternalForm());
+		message.getStyleClass().add("message");
+
+		popup.getContent().add(message);
+		return popup;
 	}
 }

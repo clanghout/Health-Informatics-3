@@ -52,15 +52,18 @@
                                <GridPane styleClass="spaced-box" hgap="10" vgap="10">
                                    <Label GridPane.columnIndex="0" GridPane.rowIndex="0">Column Name:</Label>
                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="0"
-                                           fx:id="columnName"/>
+                                              GridPane.columnSpan="2" fx:id="columnName"/>
 
                                    <Label GridPane.columnIndex="0" GridPane.rowIndex="1">Column Type:</Label>
                                    <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="1"
-                                           fx:id="columntype"/>
+                                             GridPane.columnSpan="2" fx:id="columntype"/>
 
                                    <Label GridPane.columnIndex="0" GridPane.rowIndex="2">Date/Time Format</Label>
                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="2"
                                            fx:id="columnFormat"/>
+                                   <Button GridPane.columnIndex="2" GridPane.rowIndex="2"
+                                           text="Help"
+                                           onMouseReleased="#showDateFormatHelp"/>
                                </GridPane>
                                <CheckBox
                                        fx:id="hasFirstRowHeader"
@@ -104,21 +107,23 @@
                                         text="Add filename column"
                                         onAction="#addMetaData" />
                                 <GridPane styleClass="spaced-box" hgap="10" vgap="10">
-                                    <Label GridPane.columnIndex="0" GridPane.rowIndex="1">Column Name:</Label>
-                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="1"
-                                                    fx:id="metacolumnName" />
+                                    <Label GridPane.columnIndex="0" GridPane.rowIndex="0">Column Name:</Label>
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="0"
+                                               GridPane.columnSpan="2" fx:id="metacolumnName" />
 
-                                    <Label GridPane.columnIndex="0" GridPane.rowIndex="2">Column Type</Label>
-                                    <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="2"
-                                                    fx:id="metacolumntype" />
+                                    <Label GridPane.columnIndex="0" GridPane.rowIndex="1">Column Type</Label>
+                                    <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="1"
+                                              GridPane.columnSpan="2" fx:id="metacolumntype" />
 
-                                    <Label GridPane.columnIndex="0" GridPane.rowIndex="3">Date/Time Format</Label>
+                                    <Label GridPane.columnIndex="0" GridPane.rowIndex="2">Date/Time Format</Label>
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="2"
+                                               GridPane.columnSpan="1" fx:id="metacolumnformat" />
+                                    <Button GridPane.columnIndex="2" GridPane.rowIndex="2"
+                                            text="Help"
+                                            onMouseReleased="#showDateFormatHelp"/>
+                                    <Label GridPane.columnIndex="0" GridPane.rowIndex="3">Column value (optional)</Label>
                                     <TextField GridPane.columnIndex="1" GridPane.rowIndex="3"
-                                               fx:id="metacolumnformat"/>
-
-                                    <Label GridPane.columnIndex="0" GridPane.rowIndex="4">Column value (optional)</Label>
-                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="4"
-                                               fx:id="metacolumnvalue" />
+                                               GridPane.columnSpan="2" fx:id="metacolumnvalue" />
                                 </GridPane>
                         </children>
                     </VBox>
