@@ -20,7 +20,8 @@
 							<children>
 								<Button text="Load"  onAction="#handleLoadButtonAction"/>
 								<Button text="Save"  onAction="#handleSaveButtonAction"/>
-								<Button text="Execute" onAction="#handleExecuteButtonAction"/>
+								<Button text="Execute" onAction="#handleExecuteButtonAction"
+										fx:id="executeButton"/>
 								<Label />
 								<Button text="Clear" onAction="#handleClearButtonAction"/>
 							</children>
