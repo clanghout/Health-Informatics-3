@@ -64,6 +64,8 @@ public class Connection extends DataProcess {
 		sort.setDataModel(this.getDataModel());
 		sort.setInput(joinedTable);
 
-		return (DataTable) sort.process();
+		DataTable result = (DataTable) sort.process();
+		this.getDataModel().add(result);
+		return result;
 	}
 }
