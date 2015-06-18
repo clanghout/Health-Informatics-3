@@ -40,7 +40,12 @@ public class MainUIController {
 			dataController.disableImport();
 			analysisController.disableImport();
 			logger.info("Start process");
-			new Thread(task).start();
+
+			Thread thread = new Thread(task);
+			thread.setDaemon(true);
+			thread.setPriority(Thread.MIN_PRIORITY);
+			thread.start();
+
 
 			return true;
 		}

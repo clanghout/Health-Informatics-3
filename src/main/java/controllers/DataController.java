@@ -12,7 +12,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import model.data.DataModel;
-import model.process.DataProcess;
 import view.SaveDialog;
 
 import java.io.File;
@@ -37,9 +36,6 @@ public class DataController {
 
 	@FXML
 	private Button saveButton;
-
-	@FXML
-	private Label progressLabel;
 
 	@FXML
 	private Label errorLabel;
@@ -125,7 +121,7 @@ public class DataController {
 
 	/**
 	 * Set the callback function for when the task fails or succeeds.
-	 * @task the task that must get the callback functions.
+	 * @param task the task that must get the callback functions.
 	 */
 	private void setHandlers(Task task) {
 
