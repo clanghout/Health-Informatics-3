@@ -31,6 +31,7 @@ testFile.txt
 *.bbl
 *.blg
 *.dvi
+*.out
 
 #super secret data
 super-secret-Data/*
