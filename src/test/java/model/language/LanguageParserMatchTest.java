@@ -100,7 +100,9 @@ public class LanguageParserMatchTest {
 						parser.Connection(),
 						"table1 WITH table2 AS test FROM table1.col AND table2.col",
 						true
-				}
+				},
+				{ parser.Sugar(), "test() |\n shit()    \t| stuff()", true},
+				{ parser.Sugar(), "def test : Test = a; def test2 : Stuff = b; test()", true}
 		};
 
 		return Arrays.asList(testData);

@@ -6,6 +6,7 @@ import model.data.describer.TableValueDescriber;
 import model.data.value.StringValue;
 import model.language.nodes.ValueNode;
 import model.process.*;
+import model.process.analysis.operations.comparisons.TimeBetween;
 import model.process.setOperations.Difference;
 import model.process.setOperations.Union;
 
@@ -76,6 +77,12 @@ class ProcessInfo {
 				return macros.get(parameters[0]);
 			case "connection":
 				return macros.get(parameters[0]);
+			case "computation":
+				return macros.get(parameters[0]);
+			case "compare":
+				return macros.get(parameters[0]);
+			case "timeBetween":
+				return new TimeBetween((Identifier) parameters[0]);
 			default:
 				throw new UnsupportedOperationException("This code has not been implemented yet");
 		}

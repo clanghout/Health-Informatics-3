@@ -89,7 +89,7 @@ class LanguageParser extends BaseParser<Object> {
 	Rule NumberOperator() {
 		return Sequence(
 				FirstOf(
-						"*", "/", "+", "-", "^"
+						"*", "/", "+", "-", "^", "%"
 				),
 				push(match())
 		);
@@ -231,9 +231,19 @@ class LanguageParser extends BaseParser<Object> {
 	Rule DateExpression() {
 		return FirstOf(
 				DateCalculation(),
+				UnaryDateFunction(),
+				BinaryDateFunction(),
 				Sequence("(", DateExpression(), ")"),
 				DateTimeLiteral(),
 				DateLiteral(),
+				DateColumn()
+		);
+	}
+
+	Rule TimeExpression() {
+		return FirstOf(
+				TimeLiteral(),
+				UnaryDateFunction(),
 				DateColumn()
 		);
 	}
@@ -266,6 +276,45 @@ class LanguageParser extends BaseParser<Object> {
 	}
 
 	Rule DateFunction() {
+		return TernaryDateFunction();
+	}
+
+	Rule UnaryDateFunction() {
+		return Sequence(
+				FirstOf("TO_TIME", "TO_DATE"),
+				push(match()),
+				"(",
+				WhiteSpace(),
+				DateExpression(),
+				WhiteSpace(),
+				")",
+				swap(),
+				push(new ExtractTimeNode(
+						(String) pop(),
+						(ValueNode<DateTimeValue>) pop()
+				))
+		);
+	}
+
+	Rule BinaryDateFunction() {
+		return Sequence(
+				"COMBINE(",
+				WhiteSpace(),
+				DateExpression(),
+				WhiteSpace(),
+				",",
+				WhiteSpace(),
+				TimeExpression(),
+				WhiteSpace(),
+				")",
+				swap(),
+				push(
+						new CombineNode((ValueNode<DateValue>) pop(), (ValueNode<TimeValue>) pop())
+				)
+		);
+	}
+
+	Rule TernaryDateFunction() {
 		return Sequence(
 				DateFunctionName(),
 				"(",
@@ -286,6 +335,7 @@ class LanguageParser extends BaseParser<Object> {
 						new DateFunctionNode(
 								(ValueNode<TemporalValue<?>>) pop(),
 								(ValueNode<TemporalValue<?>>) pop(),
+								(String) pop(),
 								(String) pop()
 						)
 				)
@@ -332,6 +382,20 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
+	Rule TimeLiteral() {
+		return Sequence(
+				"#",
+				TimeBody(),
+				"#",
+				swap3(),
+				push(new TimeNode(
+						(ValueNode<IntValue>) pop(),
+						(ValueNode<IntValue>) pop(),
+						(ValueNode<IntValue>) pop()
+				))
+		);
+	}
+
 	Rule DateBody() {
 		return Sequence(
 				IntLiteralOfN(4),
@@ -342,16 +406,16 @@ class LanguageParser extends BaseParser<Object> {
 		);
 	}
 
-	Rule DateComparison() {
+	Rule TemporalComparison(Rule expression) {
 		return Sequence(
-				DateExpression(),
+				expression,
 				SomeWhiteSpace(),
 				Sequence(
 						FirstOf("AFTER", "BEFORE"),
 						push(match())
 				),
 				SomeWhiteSpace(),
-				DateExpression(),
+				expression,
 				swap3(),
 				push(new DateCompareNode(
 								(ValueNode<? extends TemporalValue<?>>) pop(),
@@ -360,6 +424,14 @@ class LanguageParser extends BaseParser<Object> {
 						)
 				)
 		);
+	}
+
+	Rule DateComparison() {
+		return TemporalComparison(DateExpression());
+	}
+
+	Rule TimeComparison() {
+		return TemporalComparison(TimeExpression());
 	}
 
 	Rule TimeBody() {
@@ -483,7 +555,9 @@ class LanguageParser extends BaseParser<Object> {
 		return Sequence(
 				Process(),
 				Optional(
+						WhiteSpace(),
 						"|",
+						WhiteSpace(),
 						FirstOf(
 								Pipe(),
 								Process()
@@ -523,6 +597,7 @@ class LanguageParser extends BaseParser<Object> {
 	Rule Comparison() {
 		return FirstOf(
 				DateComparison(),
+				TimeComparison(),
 				NumberComparison()
 		);
 	}
@@ -540,12 +615,42 @@ class LanguageParser extends BaseParser<Object> {
 	}
 
 	Rule Equality() {
+		return FirstOf(
+				NumberEquality(),
+				StringEquality(),
+				BoolEquality(),
+				DateEquality(),
+				TimeEquality()
+		);
+	}
+
+	Rule NumberEquality() {
+		return EqualityImpl(NumberExpression());
+	}
+
+	Rule StringEquality() {
+		return EqualityImpl(StringExpression());
+	}
+
+	Rule BoolEquality() {
+		return EqualityImpl(Sequence("(", BooleanExpression(), ")"));
+	}
+
+	Rule DateEquality() {
+		return EqualityImpl(DateExpression());
+	}
+
+	Rule TimeEquality() {
+		return EqualityImpl(TimeExpression());
+	}
+
+	Rule EqualityImpl(Rule var) {
 		return Sequence(
-				NumberExpression(),
+				var,
 				WhiteSpace(),
 				"=",
 				WhiteSpace(),
-				NumberExpression(),
+				var,
 				swap(),
 				push(new EqualityNode((ValueNode) pop(), (ValueNode) pop()))
 		);
@@ -665,9 +770,10 @@ class LanguageParser extends BaseParser<Object> {
 	 */
 	Rule Sugar() {
 		return Sequence(
-				ZeroOrMore(Macro()),
+				ZeroOrMore(Sequence(WhiteSpace(), Macro(), WhiteSpace())),
 				WhiteSpace(),
-				Pipe()
+				Pipe(),
+				ZeroOrMore(Sequence(WhiteSpace(), Macro(), WhiteSpace()))
 		);
 	}
 
@@ -952,6 +1058,99 @@ class LanguageParser extends BaseParser<Object> {
 				"ON",
 				SomeWhiteSpace(),
 				BooleanExpression()
+		);
+	}
+
+	/**
+	 * first adds all the columns from the input table to the result
+	 * computation(NAME name INCLUDE EXISTING SET COLUMNS col1 AS input.c1 + input.c2, col2 AS "never gonna")
+	 * dont add all the columns from the input table
+	 * computation(NAME name NEW SET COLUMNS col1 AS input.c3, col2 AS "give you up")
+	 *
+	 */
+	Rule ColumnComputation() {
+		return Sequence(
+				"NAME",
+				SomeWhiteSpace(),
+				Identifier(),
+				SomeWhiteSpace(),
+				ColumnComutationType(),
+				SomeWhiteSpace(),
+				"SET COLUMNS",
+				SomeWhiteSpace(),
+				ColumnComputationColumns(),
+				swap4()
+		);
+	}
+
+	Rule ColumnComputationColumns() {
+		Var<List<Identifier>> columnIdentifiers = new Var<>();
+		Var<List<ValueNode<DataValue>>> values = new Var();
+		return Sequence(
+				new Action() {
+					@Override
+					public boolean run(Context context) {
+						columnIdentifiers.set(new ArrayList<>());
+						values.set(new ArrayList<>());
+						return true;
+					}
+				},
+				ZeroOrMore(
+						ColumnComputationColumn(),
+						",",
+						WhiteSpace(),
+						values.get().add((ValueNode<DataValue>) pop()),
+						columnIdentifiers.get().add((Identifier) pop())
+				),
+				ColumnComputationColumn(),
+				columnIdentifiers.get().add((Identifier) pop()),
+				values.get().add((ValueNode<DataValue>) pop()),
+				push(values.get()),
+				push(columnIdentifiers.get())
+		);
+	}
+
+	Rule ColumnComputationColumn() {
+		return Sequence(
+				AnyValue(),
+				SomeWhiteSpace(),
+				"AS",
+				SomeWhiteSpace(),
+				Identifier()
+		);
+	}
+
+	Rule ColumnComutationType() {
+		return Sequence(
+				FirstOf(
+						"INCLUDE EXISTING",
+						"NEW"
+				),
+				push(match())
+		);
+	}
+
+	Rule LagSequential() {
+		return Sequence(
+				Identifier(),
+				SomeWhiteSpace(),
+				"WITH",
+				SomeWhiteSpace(),
+				Identifier(),
+				SomeWhiteSpace(),
+				"AS",
+				SomeWhiteSpace(),
+				Identifier(),
+				SomeWhiteSpace(),
+				"ON",
+				SomeWhiteSpace(),
+				ColumnIdentifier(),
+				SomeWhiteSpace(),
+				"TO",
+				SomeWhiteSpace(),
+				ColumnIdentifier(),
+				WhiteSpace(),
+				swap5()
 		);
 	}
 }
