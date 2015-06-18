@@ -631,7 +631,8 @@ public class ParserTest {
 		DataTable test2 = builder.build();
 		model.add(test2);
 
-		String input = "def con : Connection = test1 WITH test2 AS joined" +
+		String input = "def con : Connection = test1 ON test1.value WITH test2 ON test2.value " +
+				"AS joined" +
 				" FROM test1.value AND test2.value;" +
 				"connection(con)";
 

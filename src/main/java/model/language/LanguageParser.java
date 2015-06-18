@@ -952,13 +952,25 @@ class LanguageParser extends BaseParser<Object> {
 
 	Rule Connection() {
 		return Sequence(
-				JoinBody(EMPTY,
-						Optional(
-								JoinColumnStart(),
-								JoinColumn()
-						)
-				),
-				swap5()
+				Identifier(),
+				SomeWhiteSpace(),
+				"ON",
+				SomeWhiteSpace(),
+				ColumnIdentifier(),
+				SomeWhiteSpace(),
+				"WITH",
+				SomeWhiteSpace(),
+				Identifier(),
+				SomeWhiteSpace(),
+				"ON",
+				SomeWhiteSpace(),
+				ColumnIdentifier(),
+				SomeWhiteSpace(),
+				"AS",
+				SomeWhiteSpace(),
+				Identifier(),
+				JoinColumns(),
+				swap6()
 		);
 	}
 
