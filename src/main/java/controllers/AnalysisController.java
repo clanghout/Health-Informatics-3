@@ -223,7 +223,7 @@ public class AnalysisController {
 					errorLabel.setText("ERROR: you are using an invalid operation");
 				} catch (RuntimeException e) {
 					errorLabel.setText("Runtime exception occurred");
-					errorLabelExtra.setText(e.getLocalizedMessage() + " | " + e.getMessage());
+					errorLabelExtra.setText(e.getMessage());
 				} catch (Throwable e) {
 					errorLabel.setText("An unexpected error occurred");
 					logger.log(Level.WARNING, "An error occurred while processing the analysis",
