@@ -46,28 +46,22 @@ Let's begin with another example: \\
 
 $def\ idCheck : Constraint = measurement.id = 1\ AND\ (measurement.level > 5)\ OR\ NOT(true)\ AND\ (measurement.level > measurement.value);$
 
-All macros start with the word def. It is followed by the identifier for the macro (which can then be used in a process chain). In this case the identifier is idCheck. After this we see the type. We currently have several types in our language: Constraint, GroupByColumn, GroupByConstraint, Join and Connection. We plan on implementing a few more.
+All macros start with the word def. It is followed by the identifier for the macro (which can then be used in a process chain). In this case the identifier is idCheck. After this we see the type. We currently have several types in our language: Constraint, GroupByColumn, GroupByConstraint, Join, Computation, Comparison and Connection.
 
 After the type, we require an = to specify the actual content of the macro. The actual working depends on the type of macro. We close the macro with an ;.
 
 \section{Literals}
 \input{literal}
 
+\section{Operators}
+\input{operators}
+
 \section{Constraints}
 Constraints can be somewhat complicated and rightfully so, therefore the declaration should be powerfull, but not overly complicated.
 
-In the previous example we saw a constraint, let's take a closer look.
-
-In the $measurement.id = 1$ we declare that for the given table the column id should be 1, simple enough. 
-
-In the $measurement.level > 5$ we declare that level should be larger than 5. 
-
-With $table.column <= 2$ and $table.column >= 2$ we declare that the table's column should be less/larger or equal to 2.
-
-Next we have the AND, OR and NOT statement. With AND we declare that both constrains should hold. For example when we have $table.id > 2\ AND\ table.id < 4$, than the $id$ should be larger than 2 and less than 4.
-With OR we declare that one or more constrains should hold. So when we have $table.name = "Matthijs"\ OR\ table.name = "Bob"$, than name must be "Matthijs" or the name must be "Bob".
-
-For dates we have the BEFORE and AFTER commands, which do exactly what you'd expect. For example $\#1995-01-17\#\ BEFORE\ \#1994-01-17\#$ returns true.
+In the end a constraint is simply a boolean expression. This means that both the following are valid constraints: \\
+$def\ simple : Constraint = true;$ \\
+$def\ complicated : Constraint = NOT(RELATIVE(\#1995-01-15\#, admire2.date, DAYS) > 2);$
 
 \section{Computation}
 \input{computation}
