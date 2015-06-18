@@ -243,7 +243,7 @@ public class SaveWizardController {
 				dataTableWriter.write(table, saveLocation);
 			}
 			dialog.close();
-			Dialog.showAlert("Data saved",
+			Dialog.showAlert(dialog.getStage(), "Data saved",
 					String.format("Your tables are saved at %s", location.getAbsolutePath()));
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Error saving", e);

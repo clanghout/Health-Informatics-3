@@ -5,6 +5,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
+import org.controlsfx.dialog.Dialogs;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,6 +20,7 @@ public abstract class Dialog {
 	private Stage dialog;
 	private FXMLLoader fxml;
 	private Logger logger = Logger.getLogger("VisualizationController");
+	private Stage stage;
 
 	/**
 	 * Make a custom Dialog.
@@ -74,11 +77,16 @@ public abstract class Dialog {
 	 * @param title The title of the alert.
 	 * @param message The body of the alert.
 	 */
-	public static void showAlert(String title, String message) {
-		Alert alert = new Alert(Alert.AlertType.INFORMATION);
-		alert.setTitle(title);
-		alert.setHeaderText(null);
-		alert.setContentText(message);
-		alert.showAndWait();
+	public static void showAlert(Stage stage, String title, String message) {
+		Dialogs.create()
+				.owner(stage)
+				.title(title)
+				.masthead(null)
+				.message(message)
+				.showInformation();
+	}
+
+	public Stage getStage() {
+		return stage;
 	}
 }
