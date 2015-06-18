@@ -1,4 +1,4 @@
-package controllers;
+package controllers.wizard;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;

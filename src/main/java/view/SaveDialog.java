@@ -1,6 +1,6 @@
 package view;
 
-import controllers.SaveWizardController;
+import controllers.wizard.SaveWizardController;
 import model.data.DataModel;
 
 import java.io.IOException;

@@ -19,7 +19,6 @@ public abstract class Dialog {
 	private Stage dialog;
 	private FXMLLoader fxml;
 	private Logger logger = Logger.getLogger("VisualizationController");
-	private Stage stage;
 
 	/**
 	 * Make a custom Dialog.
@@ -85,7 +84,12 @@ public abstract class Dialog {
 				.showInformation();
 	}
 
+
+	/**
+	 * Return the dialog stage.
+	 * @return the stage of the dialog.
+	 */
 	public Stage getStage() {
-		return stage;
+		return dialog;
 	}
 }
