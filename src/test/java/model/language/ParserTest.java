@@ -650,7 +650,8 @@ public class ParserTest {
 	@Test
 	public void testComputation() throws Exception {
 		String input = "def comp : Computation = NAME relativeDates NEW SET COLUMNS " +
-				"RELATIVE(#1995-01-17 00:00#, test1.date, DAYS) AS value;" +
+				"RELATIVE(#1995-01-17 00:00#, test1.date, DAYS) AS value, " +
+				"test1.value AS otherValue;" +
 				"from(test1)|computation(comp)";
 
 		Table result = parseAndProcess(input);
@@ -662,6 +663,8 @@ public class ParserTest {
 		assertEquals(new IntValue(731), table.getRow(1).getValue(table.getColumn("value")));
 		assertEquals(new IntValue(0), table.getRow(2).getValue(table.getColumn("value")));
 		assertEquals(new IntValue(731), table.getRow(3).getValue(table.getColumn("value")));
+
+		assertEquals(new IntValue(11), table.getRow(0).getValue(table.getColumn("otherValue")));
 	}
 
 	@Test
