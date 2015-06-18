@@ -6,10 +6,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.paint.Color;
 import model.data.*;
 import view.SaveDialog;
 
@@ -34,9 +32,12 @@ public class TableViewController implements Observer {
 	private ListView<TableWrapper> inputTables;
 	@FXML
 	private Button saveButton;
+	@FXML
+	private Label saveStatus;
 
 	private DataModel model;
 	private DataTable currentTable;
+
 
 
 	/**
@@ -51,6 +52,7 @@ public class TableViewController implements Observer {
 	 */
 	public void initialize() {
 		saveButton.setDisable(true);
+		saveStatus.setTextFill(Color.RED);
 		logger.info("initializing listview changelistener");
 		ChangeListener<TableWrapper> listener = (ov, oldValue, newValue) -> {
 			if (!(newValue == null)) {
@@ -157,11 +159,12 @@ public class TableViewController implements Observer {
 
 	@FXML
 	protected void handleSaveAction() {
+		saveStatus.setText("");
 		try {
 			SaveDialog saveDialog = new SaveDialog(model);
 			saveDialog.show();
 		} catch (IOException e) {
-			e.printStackTrace();
+			saveStatus.setText("An error occurred, data not saved!");
 		}
 	}
 
@@ -179,6 +182,7 @@ public class TableViewController implements Observer {
 			updateList();
 			fillTable(currentTable);
 		}
+		saveStatus.setText("");
 	}
 
 	private void updateList() {

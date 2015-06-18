@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <Tab fx:controller="controllers.TableViewController" text="View" xmlns="http://javafx.com/javafx/8"
 	 xmlns:fx="http://javafx.com/fxml/1">
 	<content>
@@ -13,14 +14,15 @@
 						<TableView fx:id="tableView"/>
 					</items>
 				</SplitPane>
-				<VBox styleClass="button-container">
+				<HBox styleClass="button-container">
 					<children>
 						<Button styleClass="import-button"
 								text="Save Tables"
 								fx:id="saveButton"
 								onAction="#handleSaveAction"/>
+						<Label fx:id="saveStatus"/>
 					</children>
-				</VBox>
+				</HBox>
 			</children>
 		</VBox>
 	</content>
