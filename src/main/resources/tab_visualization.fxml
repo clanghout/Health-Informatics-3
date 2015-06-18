@@ -29,7 +29,7 @@
 										text="Save graph"/>
 							</children>
 						</HBox>
-						<VBox fx:id="visualizationGraph" styleClass="visualization-graph" layoutX="14.0" layoutY="42.0">
+						<VBox fx:id="visualizationGraph">
 
 						</VBox>
 					</children>
