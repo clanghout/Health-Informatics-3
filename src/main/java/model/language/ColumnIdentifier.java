@@ -35,4 +35,9 @@ public class ColumnIdentifier {
 	public String getColumn() {
 		return column;
 	}
+
+	@Override
+	public String toString() {
+		return table + "." + column;
+	}
 }
