@@ -82,7 +82,7 @@ public class SaveWizardController {
 		extension.selectedToggleProperty().addListener(
 				(observable, oldValue, newValue) -> {
 					if (newValue.equals(extensionCsv)) {
-						delimiterSemicolon.setSelected(true);
+						delimiterComma.setSelected(true);
 						setDisableDelimiter(true);
 						quotes.setSelected(false);
 						quotes.setDisable(true);
