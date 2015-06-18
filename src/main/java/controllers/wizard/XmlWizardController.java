@@ -466,6 +466,8 @@ public class XmlWizardController {
 			selectedFile.addColumnInfo(
 					new ColumnInfo(colName, DataFile.getColumnType(colType), format));
 			updateColumnsView();
+			columnName.clear();
+			columnName.requestFocus();
 		}
 	}
 
