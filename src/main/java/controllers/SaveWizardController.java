@@ -84,6 +84,8 @@ public class SaveWizardController {
 					if (newValue.equals(extensionCsv)) {
 						delimiterSemicolon.setSelected(true);
 						setDisableDelimiter(true);
+						quotes.setSelected(false);
+						quotes.setDisable(true);
 					} else {
 						setDisableDelimiter(false);
 					}
@@ -240,7 +242,11 @@ public class SaveWizardController {
 							location.getPath() + File.separator + table.getName()
 									+ "." + extension);
 				}
-				dataTableWriter.write(table, saveLocation);
+				if (extension.equals("csv")) {
+					dataTableWriter.writeCSV(table, saveLocation);
+				} else {
+					dataTableWriter.write(table, saveLocation);
+				}
 			}
 			dialog.close();
 		} catch (IOException e) {

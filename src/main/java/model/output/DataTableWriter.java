@@ -4,10 +4,13 @@ import model.data.DataColumn;
 import model.data.DataTable;
 import model.data.DataRow;
 import model.data.value.*;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +20,9 @@ import java.util.logging.Logger;
  */
 public class DataTableWriter {
 	private Logger logger = Logger.getLogger("DataTableWriter");
+
+	//Delimiter used in CSV file
+	private static final String NEW_LINE_SEPARATOR = "\n";
 
 	// Options for user
 	private boolean quotationMarks;
@@ -58,6 +64,42 @@ public class DataTableWriter {
 			throw e;
 		}
 	}
+
+	public void writeCSV(DataTable table, File file) throws IOException {
+		logger.log(Level.INFO, "writing to CSV format");
+		FileWriter fileWriter = null;
+		CSVPrinter csvFilePrinter = null;
+		//Create the CSVFormat object with "\n" as a record delimiter
+		CSVFormat csvFileFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR);
+
+		try {
+			//initialize FileWriter object
+			fileWriter = new FileWriter(file);
+			//initialize CSVPrinter object
+			csvFilePrinter = new CSVPrinter(fileWriter, csvFileFormat);
+			List<String> rowValues;
+			for (DataRow row : table.getRows()) {
+				rowValues = new ArrayList<>();
+				for (DataColumn col : row.getColumns()) {
+					DataValue value = row.getValue(col);
+					rowValues.add(formatValue(value));
+				}
+				csvFilePrinter.printRecord(rowValues);
+			}
+		} catch (IOException e) {
+			logger.log(Level.SEVERE, "Error writing file", e);
+			throw e;
+		} finally {
+			try {
+				fileWriter.flush();
+				fileWriter.close();
+				csvFilePrinter.close();
+			} catch (IOException e) {
+				System.out.println("Error while flushing/closing fileWriter/csvPrinter !!!");
+				e.printStackTrace();
+			}
+		}
+		}
 
 	/**
 	 * print the value to the file.
