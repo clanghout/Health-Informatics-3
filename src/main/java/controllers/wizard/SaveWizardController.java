@@ -1,4 +1,4 @@
-package controllers;
+package controllers.wizard;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -82,8 +82,10 @@ public class SaveWizardController {
 		extension.selectedToggleProperty().addListener(
 				(observable, oldValue, newValue) -> {
 					if (newValue.equals(extensionCsv)) {
-						delimiterSemicolon.setSelected(true);
+						delimiterComma.setSelected(true);
 						setDisableDelimiter(true);
+						quotes.setSelected(false);
+						quotes.setDisable(true);
 					} else {
 						setDisableDelimiter(false);
 					}
@@ -240,9 +242,15 @@ public class SaveWizardController {
 							location.getPath() + File.separator + table.getName()
 									+ "." + extension);
 				}
-				dataTableWriter.write(table, saveLocation);
+				if (extension.equals("csv")) {
+					dataTableWriter.writeCSV(table, saveLocation);
+				} else {
+					dataTableWriter.write(table, saveLocation);
+				}
 			}
 			dialog.close();
+			Dialog.showAlert(dialog.getStage(), "Data saved",
+					String.format("Your tables are saved at %s", location.getAbsolutePath()));
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Error saving", e);
 			saveMessage.setText(

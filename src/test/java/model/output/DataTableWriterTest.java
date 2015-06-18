@@ -3,10 +3,7 @@ package model.output;
 import model.data.DataColumn;
 import model.data.DataTable;
 import model.data.DataRow;
-import model.data.value.DataValue;
-import model.data.value.DateTimeValue;
-import model.data.value.DateValue;
-import model.data.value.StringValue;
+import model.data.value.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -203,6 +200,38 @@ public class DataTableWriterTest {
 		BufferedReader reader = new BufferedReader(new FileReader(testFile));
 		String firstLine = reader.readLine();
 		assertEquals(firstLine, "2000-12-12 8:45:12");
+	}
+
+	@Test
+	public void testCsvWrite() throws Exception {
+		rows = new ArrayList<>();
+		columns = new DataColumn[]{
+				new DataColumn("column1", null, StringValue.class),
+				new DataColumn("column2", null, IntValue.class)
+		};
+		DataValue[] valuesRow1 = {
+				new StringValue("test"),
+				new IntValue(12)
+		};
+		DataValue[] valuesRow2 = {
+				new StringValue("test2"),
+				new IntValue(55)
+		};
+		rows.add(new DataRow(columns, valuesRow1));
+		rows.add(new DataRow(columns, valuesRow2));
+
+		ArrayList<DataColumn> columnsMap = new ArrayList<>(Arrays.asList(this.columns));
+
+		when(dataTable.getRows()).thenReturn(unmodifiableList(rows));
+		when(dataTable.getColumns()).thenReturn(columnsMap);
+
+		DataTableWriter writer = new DataTableWriter();
+		writer.writeCSV(dataTable, testFile);
+		BufferedReader reader = new BufferedReader(new FileReader(testFile));
+		String firstLine = reader.readLine();
+		assertEquals("test,12", firstLine);
+		String secondLine = reader.readLine();
+		assertEquals("test2,55", secondLine);
 	}
 
 }

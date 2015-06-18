@@ -40,7 +40,7 @@ public final class BoolValue extends DataValue<Boolean> {
 	}
 
 	@Override
-	public String toString() {
+	public String toStringNotNull() {
 		return String.valueOf(value);
 	}
 

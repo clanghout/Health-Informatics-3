@@ -3,7 +3,11 @@ package view;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
+import org.controlsfx.dialog.Dialogs;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,5 +70,46 @@ public abstract class Dialog {
 	 */
 	public void close() {
 		dialog.close();
+	}
+
+	/**
+	 * Create simple Information alert.
+	 * @param title The title of the alert.
+	 * @param message The body of the alert.
+	 */
+	public static void showAlert(Stage stage, String title, String message) {
+		Dialogs.create()
+				.owner(stage)
+				.title(title)
+				.masthead(null)
+				.message(message)
+				.showInformation();
+	}
+
+	/**
+	 * Return the dialog stage.
+	 * @return the stage of the dialog.
+	 */
+	public Stage getStage() {
+		return dialog;
+	}
+
+	/**
+	 * Creates a new popup that can be shown to the user as an assist.
+	 * @param popupText The text that the popup will contain
+	 * @return The popup
+	 */
+	public static Popup createPopup(String popupText) {
+		Popup popup = new Popup();
+		popup.setAutoHide(true);
+		popup.setAutoHide(true);
+
+		Label message = new Label(popupText);
+		message.setOnMouseReleased(event -> popup.hide());
+		message.getStylesheets().add(Dialog.class.getResource("/assist.css").toExternalForm());
+		message.getStyleClass().add("message");
+
+		popup.getContent().add(message);
+		return popup;
 	}
 }

@@ -55,6 +55,10 @@
 	-fx-pref-width: 150px;
 }
 
+.button-container {
+    -fx-padding: 15px;
+}
+
 .data-container {
 	-fx-orientation: vertical;
 }
@@ -89,6 +93,7 @@
 
 .outsidebox {
 	-fx-padding: 10px;
+    -fx-spacing: 10px;
 }
 
 .full-box {

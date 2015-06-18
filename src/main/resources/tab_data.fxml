@@ -24,12 +24,12 @@
 												styleClass="import-button"
 												fx:id="importButton"
 												onAction="#handleImportButtonAction"
-												text="Import"/>
+												text="Import existing XML"/>
 										<Button
 												styleClass="import-button"
-												fx:id="saveButton"
-												onAction="#handleSaveButtonAction"
-												text="Save"/>
+												fx:id="xmlWizardButton"
+												onAction="#handleXMLWizardButtonAction"
+												text="Create new XML"/>
 									</children>
 								</VBox>
 							</children>
