@@ -65,8 +65,8 @@ public class XmlWizardController {
 
 	private TableColumn[] columns =
 			{createColumn(0, "Column name"),
-			createColumn(1, "Type"),
-			createColumn(2, "Format")};
+					createColumn(1, "Type"),
+					createColumn(2, "Format")};
 
 	private Dialog dialog;
 	private MainUIController mainUIcontroller;
@@ -100,7 +100,7 @@ public class XmlWizardController {
 	private final ChangeListener<String> startLineChangeListener = (ov, oldValue, newValue) -> {
 		if (newValue != null && selectedFile != null) {
 			if (!(newValue.equals(String.valueOf(selectedFile.getStartLine())))) {
-				apply.setDisable(false);
+				selectedFile.setStartLine(Integer.parseInt(startLine.getText()));
 			}
 		}
 	};
@@ -108,7 +108,7 @@ public class XmlWizardController {
 	private final ChangeListener<String> endLineChangeListener = (ov, oldValue, newValue) -> {
 		if (newValue != null && selectedFile != null) {
 			if (!(newValue.equals(String.valueOf(selectedFile.getEndLine())))) {
-				apply.setDisable(false);
+				selectedFile.setEndLine(Integer.parseInt(endLine.getText()));
 			}
 		}
 	};
@@ -127,7 +127,7 @@ public class XmlWizardController {
 				&& selectedFile != null
 				&& selectedFile.getMetaDataType() != null
 				&& !(newValue.equals(DataFile.getStringColumnType(
-					selectedFile.getMetaDataType())))) {
+				selectedFile.getMetaDataType())))) {
 
 			apply.setDisable(false);
 		}
@@ -170,8 +170,7 @@ public class XmlWizardController {
 		if (newValue != null
 				&& selectedFile != null
 				&& !(newValue.equals(((PlainTextFile) selectedFile).getDelimiter()))) {
-
-			apply.setDisable(false);
+			((PlainTextFile) selectedFile).setDelimiter(delimiter.getText());
 		}
 	};
 
@@ -616,11 +615,7 @@ public class XmlWizardController {
 	@FXML
 	public void applyChanges(ActionEvent actionEvent) {
 		setMetaData();
-		selectedFile.setStartLine(Integer.parseInt(startLine.getText()));
-		selectedFile.setEndLine(Integer.parseInt(endLine.getText()));
-		if (selectedFile instanceof PlainTextFile) {
-			((PlainTextFile) selectedFile).setDelimiter(delimiter.getText());
-		}
+
 		setDataFilePath();
 		apply.setDisable(true);
 	}
