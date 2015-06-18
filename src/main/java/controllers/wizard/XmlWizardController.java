@@ -16,7 +16,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 
 import javafx.stage.Popup;
-import model.data.DataModel;
 
 import model.exceptions.DataFileNotRecognizedException;
 import model.input.file.ColumnInfo;

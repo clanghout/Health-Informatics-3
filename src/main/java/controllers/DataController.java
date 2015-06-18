@@ -1,7 +1,6 @@
 package controllers;
 
 
-import controllers.wizard.SaveWizardController;
 import controllers.wizard.XmlWizardController;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -11,16 +10,11 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 
 
-import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import model.data.DataModel;
 
-import view.SaveDialog;
 
-import model.input.reader.DataReader;
-import model.input.reader.XmlReader;
 import view.Dialog;
 import view.XMLCreationDialog;
 
@@ -54,7 +48,6 @@ public class DataController {
 	private MainUIController mainUIController;
 
 	private File file;
-	private DataModel model;
 
 	private static final double WIZARD_DIALOG_WIDTH = 1000;
 	private static final double WIZARD_DIALOG_HEIGHT = 800;
