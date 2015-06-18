@@ -1,2 +1,27 @@
-We've implemented chunking by group a set of rows.
+We support chunking in the form of a group by. We have 2 kinds of group by operations. One is the group by column. You specify a column in which a single value forms a single group. The other is the group by constraint in which you specify a set of constraints, in which each constraint forms a group. For example:
+
+$def\ group : GroupByColumn = NAME\ perday\ \\
+ON\ admire2.date\ \\
+FROM\ MAX(admire2.measurement)\ AS\ max, \\
+AVERAGE(admire2.measurement)\ AS\ avg; \\
+from(admire2)|groupBy(group)$ \\
+
+$def\ group : GroupByConstraint = NAME\ dayparts\ \\
+ON\ admire2.time\ BEFORE\ \#12:00\#\ AS\ morning,\\ 
+admire2.time\ AFTER\ \#12:00\#\ AS\ afternoon \\
+FROM\ MAX(admire2.measurement)\ AS\ max, \\
+AVERAGE(admire2.measurement)\ AS\ avg; \\
+from(admire2)|groupBy(group)$ \\
+
+The group by column has the following syntax:
+
+$def\ Identifier : GroupByColumn = NAME\ Identifier \\
+ON\ ColumnIdentifier \\
+FROM\ (Function(ColumnIdentifier)\ AS\ Identifier,)+;$ \\
+
+The group by constraint has the following syntax:
+
+$def\ Identifier : GroupByColumn = NAME\ Identifier \\
+ON\ (BooleanExpression\ AS\ Identifier,)+ \\
+FROM\ (Function\ AS\ Identifier,)+;$ \\
 

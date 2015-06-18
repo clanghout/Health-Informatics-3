@@ -1,10 +1,14 @@
-To perform a computation on a table and save the result we support the computation analysis. For example: \\
-$def\ comp : Computation = NAME\ relativeDates\ NEW\ SET\ COLUMNS\ RELATIVE(\#1995-01-17\#, TO\_DATE(admire2.date), DAYS)\ AS\ date; \\
+To perform a computation on a table and save the result we support the computation analysis. For example: 
+
+$def\ comp : Computation = NAME\ relativeDates\ NEW\ SET\ COLUMNS \\
+RELATIVE(\#1995-01-17\#, TO\_DATE(admire2.date), DAYS)\ AS\ date; \\
 from(admire2)|computation(comp);$
+
 Results in a new table being called relativeDates containing a single column called date in which there is a integer which is the number of days between my birthday and the given measurement.
 
 The computation has the following syntax: \\
-$def Identifier : MacroType = NAME\ Identifier\ \\
+
+$def Identifier : Computation = NAME\ Identifier\ \\
 (NEW|INCLUDE\ EXISTING)\ \\
 SET\ COLUMNS\ (Expression\ AS\ Identifier,)+;$
 

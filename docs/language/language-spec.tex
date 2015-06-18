@@ -60,20 +60,20 @@ After the type, we require an = to specify the actual content of the macro. The 
 Constraints can be somewhat complicated and rightfully so, therefore the declaration should be powerfull, but not overly complicated.
 
 In the end a constraint is simply a boolean expression. This means that both the following are valid constraints: \\
+
 $def\ simple : Constraint = true;$ \\
+
 $def\ complicated : Constraint = NOT(RELATIVE(\#1995-01-15\#, admire2.date, DAYS) > 2);$
 
 \section{Computation}
 \input{computation}
-\subsection{Functions}
-\input{functions}
 
-\section{Chunking}
-\input{chunking}
+\section{Group by}
+\input{groupby}
+
 \section{Connections}
 \input{connections}
-\section{Coding}
-\input{coding}
+
 \section{Comparison}
 \input{comparison}
 \section{Conversion}
