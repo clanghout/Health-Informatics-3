@@ -15,7 +15,11 @@ import model.data.DataRow;
 import model.data.DataTable;
 import model.data.describer.DataDescriber;
 import model.data.describer.RowValueDescriber;
+import model.data.value.DataValue;
+import model.data.value.FloatValue;
+import model.data.value.IntValue;
 import model.data.value.NumberValue;
+import model.exceptions.InputMismatchException;
 import model.process.functions.Maximum;
 import model.process.functions.Minimum;
 
@@ -42,6 +46,8 @@ public class BarChartController extends ChartController {
 
 	private boolean xSet = false;
 	private boolean ySet = false;
+	private boolean maxSet = false;
+	private boolean minSet = false;
 
 	private CategoryAxis xAxis;
 	private NumberAxis yAxis;
@@ -90,14 +96,18 @@ public class BarChartController extends ChartController {
 			yCol = newValue;
 			DataDescriber<NumberValue> yColDescriber = new RowValueDescriber<>(yCol);
 			try {
-				float max = (int) new Maximum(table, yColDescriber).calculate().getValue();
-				float min = (int) new Minimum(table, yColDescriber).calculate().getValue() - 1;
+				NumberValue maxValue = new Maximum(table, yColDescriber).calculate();
+				NumberValue minValue = new Minimum(table, yColDescriber).calculate();
+				float max = Float.valueOf(maxValue.getValue().toString());
+				float min = Float.valueOf(minValue.getValue().toString()) - 1;
 				int sep = computeSeparatorValue(max, min);
 				yAxis = new NumberAxis(yCol.getName(), min, max, sep);
 				setErrorLabel(yAxisErrorLabel, "");
 				ySet = true;
-			} catch (Exception e) {
-				setErrorLabel(yAxisErrorLabel, "Please select a column with number values.");
+			} catch (ClassCastException e) {
+				setErrorLabel(yAxisErrorLabel, "Something went wrong with the numbers.");
+			} catch (InputMismatchException e) {
+				setErrorLabel(yAxisErrorLabel, "Please select a column containing just numbers.");
 			}
 		});
 
@@ -149,9 +159,10 @@ public class BarChartController extends ChartController {
 		BarChart res = new BarChart<>(xAxis, yAxis);
 		XYChart.Series<String, Number> series1 = new XYChart.Series<>();
 		series1.setName(yCol.getName());
+
 		for (DataRow row : table.getRows()) {
 			series1.getData().add(new XYChart.Data(row.getValue(xCol).toString(),
-					Integer.valueOf(row.getValue(yCol).getValue().toString())));
+					Float.valueOf(row.getValue(yCol).getValue().toString())));
 		}
 		res.getData().add(series1);
 		res.setAnimated(false);
