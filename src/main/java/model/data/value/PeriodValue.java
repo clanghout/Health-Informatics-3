@@ -59,7 +59,7 @@ public class PeriodValue extends DataValue<Period> {
 	}
 
 	@Override
-	public String toString() {
+	public String toStringNotNull() {
 		return period.toString();
 	}
 

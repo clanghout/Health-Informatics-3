@@ -28,7 +28,7 @@ public final class IntValue extends NumberValue<Integer> {
 	}
 
 	@Override
-	public String toString() {
+	public String toStringNotNull() {
 		return String.valueOf(value);
 	}
 	

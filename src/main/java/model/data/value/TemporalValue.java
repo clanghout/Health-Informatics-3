@@ -47,7 +47,7 @@ public abstract class TemporalValue<T extends Temporal> extends DataValue<T> {
 	}
 
 	@Override
-	public String toString() {
+	public String toStringNotNull() {
 		return getFormatter().format(getValue());
 	}
 }
