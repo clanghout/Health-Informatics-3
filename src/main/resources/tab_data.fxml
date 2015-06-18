@@ -22,6 +22,7 @@
 									<children>
 										<Button
 												styleClass="import-button"
+												fx:id="importButton"
 												onAction="#handleImportButtonAction"
 												text="Import"/>
 										<Button

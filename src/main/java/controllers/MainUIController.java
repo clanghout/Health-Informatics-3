@@ -1,6 +1,7 @@
 package controllers;
 
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import model.data.DataModel;
@@ -19,6 +20,30 @@ public class MainUIController {
 	@FXML private AnalysisController analysisController;
 	@FXML private VisualizationController visualizationController;
 	private Logger logger = Logger.getLogger("MainUIController");
+	private boolean backgroundProcess = false;
+
+	public boolean startBackgroundProcess(Task task) {
+		if (backgroundProcess) {
+			return false;
+		}
+		synchronized (MainUIController.class) {
+			backgroundProcess = true;
+			dataController.disableImport();
+			analysisController.disableImport();
+			System.out.println("disabe");
+			new Thread(task).start();
+
+			return true;
+		}
+	}
+
+	public void endBackgroundProcess() {
+		backgroundProcess = false;
+		dataController.enableImport();
+		analysisController.enableImport();
+
+	}
+
 
 	/**
 	 * Initializes other controllers that depend on this controller.
