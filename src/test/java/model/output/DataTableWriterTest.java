@@ -229,9 +229,9 @@ public class DataTableWriterTest {
 		writer.writeCSV(dataTable, testFile);
 		BufferedReader reader = new BufferedReader(new FileReader(testFile));
 		String firstLine = reader.readLine();
-		assertEquals(firstLine, "test,12");
+		assertEquals("test,12", firstLine);
 		String secondLine = reader.readLine();
-		assertEquals(secondLine, "test2,55");
+		assertEquals("test2,55", secondLine);
 	}
 
 }

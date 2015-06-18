@@ -78,14 +78,12 @@ public class DataTableWriter {
 
 		try (FileWriter fileWriter = new FileWriter(file)) {
 			try (CSVPrinter csvFilePrinter = new CSVPrinter(fileWriter, csvFileFormat)) {
-				List<String> rowValues;
 				for (DataRow row : table.getRows()) {
-					rowValues = new ArrayList<>();
 					for (DataColumn col : row.getColumns()) {
 						DataValue value = row.getValue(col);
-						rowValues.add(formatValue(value));
+						csvFilePrinter.print(formatValue(value));
 					}
-					csvFilePrinter.printRecord(rowValues);
+					csvFilePrinter.println();
 				}
 			}
 		} catch (IOException e) {
