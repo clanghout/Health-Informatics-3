@@ -39,12 +39,17 @@ public final class FloatValue extends NumberValue<Float> {
 
 	@Override
 	public int compareTo(DataValue other) {
-		if (!(other instanceof FloatValue)) {
+		if (!(other instanceof NumberValue)) {
 			throw new IllegalArgumentException(
-					"FloatValue cannot compare to non floats");
+					"FloatValue cannot compare to non numbers");
 		}
-		FloatValue o = (FloatValue) other;
-		return Float.compare(value, o.value);
+		if (other instanceof FloatValue) {
+			FloatValue o = (FloatValue) other;
+			return Float.compare(value, o.value);
+		} else {
+			IntValue intValue = (IntValue) other;
+			return Float.compare(value, (float) intValue.getValue());
+		}
 	}
 
 	@Override

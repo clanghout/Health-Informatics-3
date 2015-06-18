@@ -79,6 +79,14 @@
 	-fx-pref-width: 160px;
 }
 
+.horizontal-split {
+	-fx-orientation: horizontal;
+}
+
+.vertical-split {
+	-fx-orientation: vertical;
+}
+
 .outsidebox {
 	-fx-padding: 10px;
 }
