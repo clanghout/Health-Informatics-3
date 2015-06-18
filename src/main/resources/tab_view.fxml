@@ -1,26 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <Tab fx:controller="controllers.TableViewController" text="View" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-<content>
-    <AnchorPane>
-         <children>
-            <Button text="Save" />
-                <AnchorPane>
-                    <ListView styleClass="model-list" fx:id="inputTables" AnchorPane.bottomAnchor="50.0"/>
-                </AnchorPane>
-                <SplitPane styleClass="data-container" dividerPositions="0.8" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0">
+    <content>
+        <VBox>
+            <children>
+                <SplitPane styleClass="horizontal-split" dividerPositions="0.2" >
                     <items>
-                        <AnchorPane styleClass="table-container">
-                            <children>
-                                <TableView styleClass="data-table" fx:id="tableView" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
-                            </children>
-                        </AnchorPane>
-                        <AnchorPane styleClass="data-fields-container" fx:id="datafields" />
+                        <ListView fx:id="inputTables" />
+                        <TableView fx:id="tableView" />
                     </items>
                 </SplitPane>
-         </children>
-    </AnchorPane>
-</content>
+            </children>
+        </VBox>
+    </content>
 </Tab>
