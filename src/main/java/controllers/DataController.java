@@ -9,10 +9,8 @@ import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import model.data.DataModel;
-import view.SaveDialog;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,7 +28,7 @@ public class DataController {
 	private Parent root;
 
 	@FXML
-	private Button saveButton;
+	private Button xmlWizardButton;
 
 	@FXML
 	private Label errorLabel;
@@ -54,7 +52,6 @@ public class DataController {
 	 */
 	public void initialize(MainUIController mainUIController) {
 		this.mainUIController = mainUIController;
-		saveButton.setDisable(true);
 		errorLabel.setText("Import data");
 	}
 
@@ -74,8 +71,12 @@ public class DataController {
 			read();
 			errorLabel.setTextFill(Color.BLACK);
 			errorLabel.setText("File Selected:");
-			saveButton.setDisable(false);
 		}
+	}
+
+	@FXML
+	protected void handleXMLWizardButtonAction() {
+		//TODO: add xml wizard functionality
 	}
 
 	/**
@@ -108,26 +109,5 @@ public class DataController {
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "An error occurred while reading the file", e);
 		}
-	}
-
-	/**
-	 * Handle the save button.
-	 * Opens a save Dialog.
-	 */
-	@FXML
-	protected void handleSaveButtonAction() {
-		SaveDialog saveDialog;
-		try {
-			saveDialog = new SaveDialog();
-			saveDialog.show();
-			SaveWizardController saveWizardController
-					= saveDialog.getFxml().getController();
-			saveWizardController.initializeView(model, saveDialog);
-
-		} catch (IOException e) {
-			errorLabel.setText("ERROR: popup file is missing.");
-		}
-
-
 	}
 }
