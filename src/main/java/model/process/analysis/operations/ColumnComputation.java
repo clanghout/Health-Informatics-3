@@ -69,7 +69,7 @@ public class ColumnComputation extends DataProcess {
 			builder.createRow(getValues(iterator.next()));
 		}
 
-		DataTable res = builder.build();;
+		DataTable res = builder.build();
 		getDataModel().add(res);
 		return res;
 	}
