@@ -1111,8 +1111,8 @@ class LanguageParser extends BaseParser<Object> {
 						ColumnComputationColumn(),
 						",",
 						WhiteSpace(),
-						values.get().add((ValueNode<DataValue>) pop()),
-						columnIdentifiers.get().add((Identifier) pop())
+						columnIdentifiers.get().add((Identifier) pop()),
+						values.get().add((ValueNode<DataValue>) pop())
 				),
 				ColumnComputationColumn(),
 				columnIdentifiers.get().add((Identifier) pop()),
