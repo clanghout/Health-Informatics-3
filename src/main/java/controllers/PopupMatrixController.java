@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -27,6 +28,8 @@ public class PopupMatrixController {
 	private MatrixController matrixController;
 
 	@FXML
+	private ComboBox tableComboBox, columnComboBox;
+	@FXML
 	private VBox codesList;
 	@FXML
 	private Label createMessage;
@@ -46,13 +49,13 @@ public class PopupMatrixController {
 		createMessage.setTextFill(Color.RED);
 		matrixController = new MatrixController(model);
 		logger.log(Level.INFO, "matrixController created");
-		CheckBox codeBox;
 		Set<String> codes = matrixController.getCodes();
 		logger.log(Level.INFO, "list of codes = " + codes);
 		if (codes.isEmpty()) {
 			createMessage.setText("cannot create matrix when no codes are present.");
 			makeButton.setDisable(true);
 		}
+		CheckBox codeBox;
 		for (String code : codes) {
 			codeBox = new CheckBox(code);
 			codesList.getChildren().add(codeBox);

@@ -13,9 +13,12 @@
 					<children>
 						<VBox>
 							<children>
-								<VBox fx:id="codesList" styleClass="codesList">
-								</VBox>
+								<Label text="Select table"/>
+								<ComboBox fx:id="tableComboBox" promptText="Table to use"/>
+								<Label text="Select column to determine order"/>
+								<ComboBox fx:id="columnComboBox" promptText="Column to use"/>
 								<Label fx:id="createMessage"/>
+								<VBox fx:id="codesList" styleClass="codesList"/>
 								<HBox styleClass="hbox-button" AnchorPane.bottomAnchor="14.0">
 									<children>
 										<Button onAction="#handleMatrixCreateButtonAction"
