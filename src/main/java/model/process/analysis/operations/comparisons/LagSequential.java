@@ -3,14 +3,14 @@ package model.process.analysis.operations.comparisons;
 import model.data.DataColumn;
 import model.data.DataModel;
 import model.data.DataTable;
-import model.data.describer.DataDescriber;
-import model.data.describer.TableValueDescriber;
+import model.process.describer.DataDescriber;
+import model.process.describer.TableValueDescriber;
 import model.data.value.DataValue;
 import model.language.ColumnIdentifier;
 import model.language.Identifier;
 import model.process.SortProcess;
 import model.process.SortProcess.Order;
-import model.process.analysis.operations.Connection;
+import model.process.analysis.Connection;
 
 /**
  * This class will determine a relation between events. Relation will be shown

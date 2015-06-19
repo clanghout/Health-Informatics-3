@@ -8,7 +8,7 @@ import model.data.DataRow;
 import model.data.DataTable;
 import model.data.DataTableConversionBuilder;
 import model.data.Table;
-import model.data.describer.DataDescriber;
+import model.process.describer.DataDescriber;
 import model.data.value.DataValue;
 
 /**

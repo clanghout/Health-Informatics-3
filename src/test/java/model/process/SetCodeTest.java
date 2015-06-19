@@ -4,7 +4,7 @@ import model.data.CombinedDataTable;
 import model.data.DataModel;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
-import model.data.describer.ConstantDescriber;
+import model.process.describer.ConstantDescriber;
 import model.data.value.FloatValue;
 import model.data.value.StringValue;
 import model.language.Identifier;

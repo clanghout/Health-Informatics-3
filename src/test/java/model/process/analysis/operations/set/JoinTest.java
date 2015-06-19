@@ -1,8 +1,8 @@
-package model.process.setOperations;
+package model.process.analysis.operations.set;
 
 import model.data.*;
-import model.data.describer.OperationDescriber;
-import model.data.describer.RowValueDescriber;
+import model.process.describer.OperationDescriber;
+import model.process.describer.RowValueDescriber;
 import model.data.value.FloatValue;
 import model.data.value.StringValue;
 import model.language.ColumnIdentifier;

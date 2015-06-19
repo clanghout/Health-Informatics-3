@@ -1,4 +1,4 @@
-package model.process.setOperations;
+package model.process.analysis.operations.set;
 
 import model.data.DataRow;
 import model.data.DataTable;

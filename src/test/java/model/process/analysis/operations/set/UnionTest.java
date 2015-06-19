@@ -1,8 +1,7 @@
-package model.process.setOperations;
+package model.process.analysis.operations.set;
 
 import model.data.*;
 import model.data.value.FloatValue;
-import model.data.value.NumberValue;
 import model.data.value.StringValue;
 import model.language.Identifier;
 import org.junit.Test;

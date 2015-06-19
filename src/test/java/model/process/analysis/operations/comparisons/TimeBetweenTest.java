@@ -13,6 +13,7 @@ import model.data.value.TimeValue;
 import model.language.Identifier;
 import model.process.DataProcess;
 
+import model.process.analysis.TimeBetween;
 import org.junit.Before;
 import org.junit.Test;
 

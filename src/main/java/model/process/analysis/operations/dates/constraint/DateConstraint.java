@@ -1,7 +1,7 @@
 package model.process.analysis.operations.dates.constraint;
 
 import model.data.Row;
-import model.data.describer.DataDescriber;
+import model.process.describer.DataDescriber;
 import model.data.value.BoolValue;
 import model.data.value.TemporalValue;
 import model.process.analysis.operations.Operation;
