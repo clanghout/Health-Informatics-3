@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.TextFlow?>
-<?import javafx.scene.layout.HBox?>
 <Tab
 		text="Analysis"
 		fx:controller="controllers.AnalysisController"
@@ -12,38 +10,25 @@
 		xmlns:fx="http://javafx.com/fxml/1"
 		>
 	<content>
-		<AnchorPane fx:id="root">
-			<children>
-				<HBox>
-					<children>
-						<VBox styleClass="analysis-buttons">
-							<children>
-								<Button text="Load"  onAction="#handleLoadButtonAction"/>
-								<Button text="Save"  onAction="#handleSaveButtonAction"/>
-								<Button text="Execute" onAction="#handleExecuteButtonAction"
-										fx:id="executeButton"/>
-								<Label />
-								<Button text="Clear" onAction="#handleClearButtonAction"/>
-							</children>
-						</VBox>
-						<VBox styleClass="analysis-spacing">
-							<children>
-								<TextFlow styleClass="analysis-text-out">
-									<children>
-										<TextArea styleClass="analysis-text" fx:id="userscript"/>
-									</children>
-								</TextFlow>
-								<VBox styleClass="labels">
-									<children>
-										<Label fx:id="errorLabel"/>
-										<VBox fx:id="errorBox" styleClass="labels"/>
-									</children>
-								</VBox>
-							</children>
-						</VBox>
-					</children>
-				</HBox>
-			</children>
-		</AnchorPane>
+		<HBox fx:id="root">
+			<VBox styleClass="analysis-buttons">
+				<Button styleClass="analysis-button" text="Load"  onAction="#handleLoadButtonAction"/>
+				<Button styleClass="analysis-button" text="Save"  onAction="#handleSaveButtonAction"/>
+				<Button styleClass="analysis-button" text="Execute" onAction="#handleExecuteButtonAction"
+						fx:id="executeButton"/>
+				<Label />
+				<Button styleClass="analysis-button" text="Clear" onAction="#handleClearButtonAction"/>
+			</VBox>
+
+			<VBox styleClass="analysis-spacing">
+				<TextFlow styleClass="analysis-text-out">
+					<TextArea styleClass="analysis-text" fx:id="userscript"/>
+				</TextFlow>
+				<VBox styleClass="labels">
+					<Label fx:id="errorLabel"/>
+					<VBox fx:id="errorBox" styleClass="labels"/>
+				</VBox>
+			</VBox>
+		</HBox>
 	</content>
 </Tab>
