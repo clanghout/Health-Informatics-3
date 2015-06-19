@@ -5,7 +5,7 @@ import model.data.Table;
 import model.data.describer.DataDescriber;
 import model.data.describer.FunctionDescriber;
 import model.data.describer.TableValueDescriber;
-import model.data.value.NumberValue;
+import model.data.value.DataValue;
 import model.language.ColumnIdentifier;
 import model.language.Identifier;
 import model.process.functions.*;
@@ -15,7 +15,7 @@ import model.process.functions.*;
  *
  * Created by Boudewijn on 10-6-2015.
  */
-public class FunctionNode extends ValueNode<NumberValue<?>> {
+public class FunctionNode extends ValueNode<DataValue<?>> {
 
 	private String function;
 	private ColumnIdentifier tableColumn;
@@ -32,7 +32,7 @@ public class FunctionNode extends ValueNode<NumberValue<?>> {
 	}
 
 	@Override
-	public DataDescriber<NumberValue<?>> resolve(DataModel model) {
+	public DataDescriber<DataValue<?>> resolve(DataModel model) {
 		Function functionOperation = getFunction(model);
 
 		Identifier<Table> table = new Identifier<>(tableColumn.getTable());
@@ -48,15 +48,16 @@ public class FunctionNode extends ValueNode<NumberValue<?>> {
 
 	private Function resolveFunction(
 			String function,
-			DataDescriber<NumberValue> argument) {
+			DataDescriber<DataValue<?>> argument) {
+		DataDescriber asNumber = (DataDescriber) argument;
 		switch (function) {
-			case "COUNT": return new Count(null, argument);
-			case "AVERAGE": return new Average(null, argument);
+			case "COUNT": return new Count(null, asNumber);
+			case "AVERAGE": return new Average(null, asNumber);
 			case "MIN": return new Minimum(null, argument);
 			case "MAX": return new Maximum(null, argument);
-			case "MEDIAN": return new Median(null, argument);
+			case "MEDIAN": return new Median(null, asNumber);
 			case "SUM": return new Sum(null, argument);
-			case "STDDEV": return new StandardDeviation(null, argument);
+			case "STDDEV": return new StandardDeviation(null, asNumber);
 			default: throw new UnsupportedOperationException(
 					String.format("Function %s isn't supported", function)
 			);

@@ -99,7 +99,7 @@ public class GroupByConstraintTest {
 		List<Function> functions = new ArrayList<>();
 		List<String> name = new ArrayList<>();
 
-		functions.add(new Maximum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		functions.add(new Maximum(new DataTable(), new RowValueDescriber<>(c2)));
 		name.add("max");
 		GroupByConstraint groupBy = new GroupByConstraint("test2", constraints, groupNames,
 				functions, name);
@@ -123,9 +123,9 @@ public class GroupByConstraintTest {
 		List<Function> functions = new ArrayList<>();
 		List<String> name = new ArrayList<>();
 
-		functions.add(new Maximum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		functions.add(new Maximum(new DataTable(), new RowValueDescriber<>(c2)));
 		name.add("max");
-		functions.add(new Minimum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		functions.add(new Minimum(new DataTable(), new RowValueDescriber<>(c2)));
 		name.add("min");
 		GroupByConstraint groupBy = new GroupByConstraint("test2", constraints, groupNames,
 				functions, name);
@@ -152,9 +152,9 @@ public class GroupByConstraintTest {
 		List<Function> functions = new ArrayList<>();
 		List<String> name = new ArrayList<>();
 
-		functions.add(new Maximum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		functions.add(new Maximum(new DataTable(), new RowValueDescriber<>(c2)));
 		name.add("max");
-		functions.add(new Minimum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		functions.add(new Minimum(new DataTable(), new RowValueDescriber<>(c2)));
 		GroupByConstraint groupBy = new GroupByConstraint("test2", constraints, groupNames,
 				functions, name);
 
@@ -175,7 +175,7 @@ public class GroupByConstraintTest {
 										new StringValue("geen"))))));
 		groupNames.add("geen");
 
-		functions.add(new Maximum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		functions.add(new Maximum(new DataTable(), new RowValueDescriber<>(c2)));
 		name.add("max");
 		GroupByConstraint groupBy = new GroupByConstraint("test2", constraints, groupNames,
 				functions, name);
@@ -210,9 +210,9 @@ public class GroupByConstraintTest {
 
 		DataTable table = builder.build();
 
-		functions.add(new Maximum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		functions.add(new Maximum(new DataTable(), new RowValueDescriber<>(c2)));
 		name.add("max");
-		functions.add(new Minimum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		functions.add(new Minimum(new DataTable(), new RowValueDescriber<>(c2)));
 		name.add("min");
 		GroupByColumn groupBy = new GroupByColumn("test2", new RowValueDescriber<>(c1),
 				functions, name);

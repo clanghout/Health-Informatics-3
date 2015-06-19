@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:controller="controllers.PopupMatrixController" xmlns="http://javafx.com/javafx/8"
+<VBox fx:controller="controllers.popup.PopupMatrixController" xmlns="http://javafx.com/javafx/8"
 	  xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<AnchorPane>

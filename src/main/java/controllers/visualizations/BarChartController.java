@@ -29,9 +29,8 @@ public class BarChartController extends ChartController {
 	private VBox vBox;
 
 	private DataColumn xCol;
-	private DataColumn yCol;
-	private ComboBox<DataColumn> xAxisBox;
-	private ComboBox<DataColumn> yAxisBox;
+	private ComboBox<ColumnWrapper> xAxisBox;
+	private ComboBox<ColumnWrapper> yAxisBox;
 	private Label xAxisErrorLabel;
 	private Label yAxisErrorLabel;
 
@@ -61,7 +60,7 @@ public class BarChartController extends ChartController {
 	public void setXAxisEventListener() {
 		xAxisBox.valueProperty().addListener((observable1, oldValue1, newValue1) -> {
 			xSet = false;
-			xCol = newValue1;
+			xCol = newValue1.getColumn();
 			List<String> dataxcol = table.getRows().stream()
 					.map(row -> row.getValue(xCol).toString())
 					.collect(Collectors.toList());
@@ -120,11 +119,11 @@ public class BarChartController extends ChartController {
 	public BarChart create() {
 		BarChart res = new BarChart<>(xAxis, yAxis);
 		XYChart.Series<String, Number> series1 = new XYChart.Series<>();
-		series1.setName(yCol.getName());
+		series1.setName(getyCol().getName());
 
 		for (DataRow row : table.getRows()) {
 			series1.getData().add(new XYChart.Data(row.getValue(xCol).toString(),
-					Float.valueOf(row.getValue(yCol).getValue().toString())));
+					Float.valueOf(row.getValue(getyCol()).getValue().toString())));
 		}
 		res.getData().add(series1);
 		res.setAnimated(false);
@@ -148,7 +147,7 @@ public class BarChartController extends ChartController {
 
 	public void createYaxis(float min, float max, int sep) {
 		ySet = false;
-		yAxis = new NumberAxis(yCol.getName(), min, max, sep);
+		yAxis = new NumberAxis(getyCol().getName(), min, max, sep);
 		setErrorLabel(yAxisErrorLabel, "");
 		ySet = true;
 	}

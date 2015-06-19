@@ -1,5 +1,6 @@
-package controllers;
+package controllers.popup;
 
+import controllers.VisualizationController;
 import controllers.visualizations.MatrixController;
 import javafx.fxml.FXML;
 import javafx.scene.Node;

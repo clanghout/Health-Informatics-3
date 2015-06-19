@@ -1,5 +1,7 @@
 package controllers;
 
+import controllers.popup.PopupMatrixController;
+import controllers.popup.PopupVisualizationController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;

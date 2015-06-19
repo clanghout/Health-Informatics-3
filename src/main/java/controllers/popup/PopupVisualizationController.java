@@ -1,5 +1,6 @@
-package controllers;
+package controllers.popup;
 
+import controllers.VisualizationController;
 import controllers.visualizations.BarChartController;
 import controllers.visualizations.BoxPlotController;
 import controllers.visualizations.ChartController;
@@ -16,6 +17,10 @@ import model.data.DataModel;
 import model.data.DataTable;
 import view.GraphCreationDialog;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Controller for the popup window that shows when the graph create button is pressed.
  * With this controller the right visualisation is chosen and the input needed for
@@ -25,7 +30,7 @@ import view.GraphCreationDialog;
  */
 public class PopupVisualizationController {
 	@FXML
-	private ComboBox<DataTable> tableComboBox;
+	private ComboBox<TableWrapper> tableComboBox;
 	@FXML
 	private ComboBox<String> visualizationComboBox;
 	@FXML
@@ -70,13 +75,7 @@ public class PopupVisualizationController {
 		this.dialog = dialog;
 
 		tableComboBox.setDisable(false);
-
-		tableComboBox.setItems(model.getObservableList());
-		tableComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-			tableSet = true;
-			this.table = newValue;
-			visualizationComboBox.setDisable(false);
-		});
+		initComboBox(model);
 		visualizationComboBox.setItems(FXCollections.observableArrayList(
 				"BarChart", "BoxPlot"));
 		visualizationComboBox.valueProperty()
@@ -101,6 +100,19 @@ public class PopupVisualizationController {
 							break;
 					}
 				});
+	}
+
+	private void initComboBox(DataModel model) {
+		List<TableWrapper> tables = model.getTables().stream()
+				.map(TableWrapper::new)
+				.collect(Collectors.toList());
+		List<TableWrapper> asArrayList = new ArrayList<>(tables);
+		tableComboBox.setItems(FXCollections.observableArrayList(asArrayList));
+		tableComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+			this.table = newValue.getTable();
+			visualizationComboBox.setDisable(false);
+			tableSet = true;
+		});
 	}
 
 	/**
@@ -130,5 +142,26 @@ public class PopupVisualizationController {
 	@FXML
 	protected void handleCancelButtonAction() {
 		dialog.close();
+	}
+
+	/**
+	 * This class is a simple wrapper for the DataTable.
+	 */
+	private final class TableWrapper {
+
+		private DataTable table;
+
+		private TableWrapper(DataTable table) {
+			this.table = table;
+		}
+
+		@Override
+		public String toString() {
+			return table.getName();
+		}
+
+		private DataTable getTable() {
+			return table;
+		}
 	}
 }

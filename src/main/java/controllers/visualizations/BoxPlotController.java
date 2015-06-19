@@ -4,7 +4,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
-import model.data.DataColumn;
 import model.data.DataTable;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
@@ -30,8 +29,7 @@ import static javafx.embed.swing.SwingFXUtils.toFXImage;
 public class BoxPlotController extends ChartController {
 	private DataTable table;
 	private VBox vBox;
-	private DataColumn yCol;
-	private ComboBox<DataColumn> yAxisBox;
+	private ComboBox<ColumnWrapper> yAxisBox;
 	private Label yAxisErrorLabel;
 
 	private boolean ySet = false;
@@ -84,7 +82,6 @@ public class BoxPlotController extends ChartController {
 		return ySet;
 	}
 
-
 	/**
 	 * create the dataSet for the boxPlot.
 	 *
@@ -93,7 +90,7 @@ public class BoxPlotController extends ChartController {
 	public DefaultBoxAndWhiskerCategoryDataset createDataset() {
 		DefaultBoxAndWhiskerCategoryDataset dataset = new DefaultBoxAndWhiskerCategoryDataset();
 		List data = table.getRows().stream()
-				.map(row -> row.getValue(yCol).getValue()).collect(Collectors.toList());
+				.map(row -> row.getValue(getyCol()).getValue()).collect(Collectors.toList());
 		dataset.add(data, "", table.getName());
 		return dataset;
 	}
@@ -127,7 +124,8 @@ public class BoxPlotController extends ChartController {
 
 	@Override
 	public void createYaxis(float min, float max, int sep) {
-		yAxis = new NumberAxis(yCol.getName());
+		yAxis = new NumberAxis(getyCol().getName());
 		yAxis.setRange(min * SCALEDOWN_YAXIS, max * SCALEUP_YAXIS);
+		ySet = true;
 	}
 }
