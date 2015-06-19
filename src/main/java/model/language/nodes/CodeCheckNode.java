@@ -1,11 +1,11 @@
 package model.language.nodes;
 
 import model.data.DataModel;
-import model.process.describer.ConstraintDescriber;
 import model.process.describer.DataDescriber;
 import model.data.value.BoolValue;
 import model.data.value.StringValue;
 import model.process.analysis.operations.constraints.CodeCheck;
+import model.process.describer.OperationDescriber;
 
 /**
  * Represent the code check operation on a row.
@@ -32,6 +32,6 @@ public class CodeCheckNode extends ValueNode<BoolValue> {
 	 */
 	@Override
 	public DataDescriber<BoolValue> resolve(DataModel model) {
-		return new ConstraintDescriber(new CodeCheck(code.resolve(model)));
+		return new OperationDescriber<>(new CodeCheck(code.resolve(model)));
 	}
 }
