@@ -77,7 +77,7 @@ public class DataTableWriter {
 		try (FileWriter fileWriter = new FileWriter(file)) {
 			try (CSVPrinter csvFilePrinter = new CSVPrinter(fileWriter, csvFileFormat)) {
 				for (DataRow row : table.getRows()) {
-					for (DataColumn col : row.getColumns()) {
+					for (DataColumn col : table.getColumns()) {
 						DataValue value = row.getValue(col);
 						csvFilePrinter.print(formatValue(value));
 					}
