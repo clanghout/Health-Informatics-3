@@ -124,9 +124,11 @@ For continuous integration and version control we use Git and Github. Locally we
 We also use the JavaFX Scene Builder as a tool to design parts of the GUI because this provides a better preview of what the interface will look like while creating it.
 
 \subsection{Data organization}
-The data that we read from the file is stored in datatables containing columns of specific types. These datatables together form the model on which we can perform the analyses. The values are stored as datavalues inside the table in columns having the same type as the datavalue.
+The data that we read from the file is stored in datatables containing columns of specific types. These datatables together form the model on which we can perform the analyses. The values are stored as datavalues inside columns having the same type as the datavalue. These datavalues are divided in subclasses for strings, integers, floats, dates and booleans.
 
-In week 4.8 we found an issue that reading data from a large excel file takes up a lot of time and memory. We thought this could have been caused by the fact that we used hashmaps to store the rows and the iteration over it's entries could take up a lot of time. We tried using linked hashmaps instead but that did not improve the reading speed very much.
+To refer to data inside methods, we use identifiers. These identifiers can point to a column or table by finding the corresponding data for its given string which is the name of the searched data. The software also has a describer implemented, which can be used to refer to single values like a specific of a column in a row. 
+
+In week 4.8 we found an issue that reading data from a large excel file takes up a lot of time and memory. We thought this could have been caused by the fact that we used hashmaps to store the rows and the iteration over its entries could take up a lot of time. We tried using linked hashmaps instead but that did not improve the reading speed very much.
 
 
 \subsection{Used libraries}
