@@ -200,8 +200,6 @@
 				<artifactId>maven-pmd-plugin</artifactId>
 				<version>3.4</version>
 				<configuration>
-					<ignoreIdentifiers>true</ignoreIdentifiers>
-					<ignoreLiterals>true</ignoreLiterals>
 					<minimumTokens>100</minimumTokens>
 				</configuration>
 			</plugin>
