@@ -26,7 +26,7 @@ public class Maximum extends Function<DataValue<?>> {
 	 */
 	@Override
 	public DataValue<?> calculate() {
-		Optional<DataRow> row = getTable().getRows().stream()
+		Optional<DataRow> row = getTable().getRows().parallelStream()
 				.max((thisRow, otherRow) ->
 						getArgument().resolve(thisRow).compareTo(getArgument().resolve(otherRow)));
 		return row.isPresent() ? getArgument().resolve(row.get()) : new FloatValue(0f);
