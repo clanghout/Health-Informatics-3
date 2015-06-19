@@ -37,8 +37,8 @@ public class BarChartController extends ChartController {
 
 	private DataColumn xCol;
 	private DataColumn yCol;
-	private ComboBox<DataColumn> xAxisBox;
-	private ComboBox<DataColumn> yAxisBox;
+	private ComboBox<ColumnWrapper> xAxisBox;
+	private ComboBox<ColumnWrapper> yAxisBox;
 	private Label xAxisErrorLabel;
 	private Label yAxisErrorLabel;
 
@@ -70,7 +70,7 @@ public class BarChartController extends ChartController {
 	public void setXAxisEventListener() {
 		xAxisBox.valueProperty().addListener((observable1, oldValue1, newValue1) -> {
 			xSet = false;
-			xCol = newValue1;
+			xCol = newValue1.getColumn();
 			List<String> dataxcol = table.getRows().stream()
 					.map(row -> row.getValue(xCol).toString())
 					.collect(Collectors.toList());
@@ -91,7 +91,7 @@ public class BarChartController extends ChartController {
 	public void setYAxisEventListener() {
 		yAxisBox.valueProperty().addListener((observable, oldValue, newValue) -> {
 			ySet = false;
-			yCol = newValue;
+			yCol = newValue.getColumn();
 			DataDescriber<DataValue<?>> yColDescriber = new RowValueDescriber<>(yCol);
 			try {
 				NumberValue maxValue = (NumberValue) new Maximum(table, yColDescriber).calculate();

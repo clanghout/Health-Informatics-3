@@ -37,7 +37,7 @@ public class BoxPlotController extends ChartController {
 	private DataTable table;
 	private VBox vBox;
 	private DataColumn yCol;
-	private ComboBox<DataColumn> yAxisBox;
+	private ComboBox<ColumnWrapper> yAxisBox;
 	private Label yAxisErrorLabel;
 
 	private boolean ySet = false;
@@ -97,14 +97,14 @@ public class BoxPlotController extends ChartController {
 	public void setYAxisEventListener() {
 		yAxisBox.valueProperty().addListener((observable, oldValue, newValue) -> {
 			ySet = false;
-			yCol = newValue;
+			yCol = newValue.getColumn();
 			DataDescriber<DataValue<?>> yColDescriber = new RowValueDescriber<>(yCol);
 			try {
 				NumberValue maxValue = (NumberValue) new Maximum(table, yColDescriber).calculate();
 				NumberValue minValue = (NumberValue) new Minimum(table, yColDescriber).calculate();
 				float max = Float.valueOf(maxValue.getValue().toString());
 				float min = Float.valueOf(minValue.getValue().toString()) - 1;
-				yAxis = new NumberAxis(newValue.getName());
+				yAxis = new NumberAxis(newValue.getColumn().getName());
 				yAxis.setRange(min * SCALEDOWN_YAXIS, max * SCALEUP_YAXIS);
 				setErrorLabel(yAxisErrorLabel, "");
 				ySet = true;
