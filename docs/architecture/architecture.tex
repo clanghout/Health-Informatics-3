@@ -78,7 +78,7 @@ The software is based on the model-view-controller design pattern. The idea is t
 
 \subsection{Subsystem decomposition}
 
-As mentioned before our program consists of modules that work together. In figure~\ref{fig:modules} these modules are laid out. We realized that the structure we have now does not entirely fit the MVC pattern since there are modules that are not really a part of the MVC. We will change the structure in the near future in a way that each model is a part of a module in the MVC.
+As mentioned before our program consists of modules that work together. In figure~\ref{fig:modules} these modules are laid out. The model module consists of the data that was read from files and data was outputted from performed analyses. This data can be used by the controllers to show it to the user. The user can specify an analyis in SUGAR and the controller will then update the model after the analysis is translated into operations.
 
 \begin{figure}[h]
 	\centering
