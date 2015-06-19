@@ -5,11 +5,11 @@ import javafx.scene.control.Label;
 import javafx.scene.image.WritableImage;
 import model.data.DataColumn;
 import model.data.DataTable;
-import model.data.describer.DataDescriber;
-import model.data.describer.RowValueDescriber;
 import model.data.value.DataValue;
 import model.data.value.NumberValue;
 import model.exceptions.InputMismatchException;
+import model.process.describer.DataDescriber;
+import model.process.describer.RowValueDescriber;
 import model.process.functions.Maximum;
 import model.process.functions.Minimum;
 

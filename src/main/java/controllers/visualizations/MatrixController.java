@@ -4,8 +4,8 @@ import model.data.DataColumn;
 import model.data.DataModel;
 import model.data.DataRow;
 import model.data.DataTable;
-import model.data.describer.RowValueDescriber;
 import model.process.SortProcess;
+import model.process.describer.RowValueDescriber;
 
 import java.util.*;
 import java.util.logging.Level;
