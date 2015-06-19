@@ -5,7 +5,7 @@ import model.data.DataRow;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
 import model.process.describer.ConstantDescriber;
-import model.process.describer.ConstraintDescriber;
+import model.process.describer.OperationDescriber;
 import model.process.describer.RowValueDescriber;
 import model.process.analysis.operations.constraints.Constraint;
 import model.process.analysis.operations.constraints.EqualityCheck;
@@ -38,7 +38,7 @@ public class ConstraintAnalysisTest {
 				new ConstantDescriber<>(new StringValue("Pie"))
 		);
 
-		ConstraintAnalysis analysis = new ConstraintAnalysis(new ConstraintDescriber(pieCheck));
+		ConstraintAnalysis analysis = new ConstraintAnalysis(new OperationDescriber<>(pieCheck));
 		DataTable output = (DataTable) analysis.analyse(input);
 
 		assertEquals(1, output.getRowCount());

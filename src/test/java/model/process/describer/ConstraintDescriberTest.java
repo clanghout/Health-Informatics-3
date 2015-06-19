@@ -19,7 +19,7 @@ public class ConstraintDescriberTest {
 				new ConstantDescriber<>(new BoolValue(true)),
 				new ConstantDescriber<>(new BoolValue(true))
 		);
-		ConstraintDescriber describer = new ConstraintDescriber(check);
+		OperationDescriber<BoolValue> describer = new OperationDescriber<>(check);
 		assertTrue(describer.resolve(null).getValue());
 	}
 }
