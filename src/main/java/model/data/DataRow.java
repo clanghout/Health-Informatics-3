@@ -177,7 +177,7 @@ public class DataRow extends Row {
 
 	@Override
 	public Set<String> getCodes() {
-		return codes;
+		return Collections.unmodifiableSet(codes);
 	}
 
 	@Override

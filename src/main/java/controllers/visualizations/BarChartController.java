@@ -13,13 +13,6 @@ import javafx.scene.layout.VBox;
 import model.data.DataColumn;
 import model.data.DataRow;
 import model.data.DataTable;
-import model.process.describer.DataDescriber;
-import model.process.describer.RowValueDescriber;
-import model.data.value.DataValue;
-import model.data.value.NumberValue;
-import model.exceptions.InputMismatchException;
-import model.process.functions.Maximum;
-import model.process.functions.Minimum;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,7 +29,6 @@ public class BarChartController extends ChartController {
 	private VBox vBox;
 
 	private DataColumn xCol;
-	private DataColumn yCol;
 	private ComboBox<ColumnWrapper> xAxisBox;
 	private ComboBox<ColumnWrapper> yAxisBox;
 	private Label xAxisErrorLabel;
@@ -44,8 +36,6 @@ public class BarChartController extends ChartController {
 
 	private boolean xSet = false;
 	private boolean ySet = false;
-	private boolean maxSet = false;
-	private boolean minSet = false;
 
 	private CategoryAxis xAxis;
 	private NumberAxis yAxis;
@@ -85,33 +75,6 @@ public class BarChartController extends ChartController {
 	}
 
 	/**
-	 * Sets the Listener for the yAxis ComboBox.
-	 * The NumberAxis is created and the scale is set.
-	 */
-	public void setYAxisEventListener() {
-		yAxisBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-			ySet = false;
-			yCol = newValue.getColumn();
-			DataDescriber<DataValue<?>> yColDescriber = new RowValueDescriber<>(yCol);
-			try {
-				NumberValue maxValue = (NumberValue) new Maximum(table, yColDescriber).calculate();
-				NumberValue minValue = (NumberValue) new Minimum(table, yColDescriber).calculate();
-				float max = Float.valueOf(maxValue.getValue().toString());
-				float min = Float.valueOf(minValue.getValue().toString()) - 1;
-				int sep = computeSeparatorValue(max, min);
-				yAxis = new NumberAxis(yCol.getName(), min, max, sep);
-				setErrorLabel(yAxisErrorLabel, "");
-				ySet = true;
-			} catch (ClassCastException e) {
-				setErrorLabel(yAxisErrorLabel, "Something went wrong with the numbers.");
-			} catch (InputMismatchException e) {
-				setErrorLabel(yAxisErrorLabel, "Please select a column containing just numbers.");
-			}
-		});
-
-	}
-
-	/**
 	 * Initialize the fxml objects for BarChartController.
 	 */
 	public void initializeFields() {
@@ -134,7 +97,7 @@ public class BarChartController extends ChartController {
 	public void initialize() {
 		initializeFields();
 		setXAxisEventListener();
-		setYAxisEventListener();
+		setYAxisEventListener(yAxisBox, table, yAxisErrorLabel);
 		vBox.getChildren().addAll(xAxisErrorLabel, xAxisBox, yAxisErrorLabel, yAxisBox);
 	}
 
@@ -156,11 +119,11 @@ public class BarChartController extends ChartController {
 	public BarChart create() {
 		BarChart res = new BarChart<>(xAxis, yAxis);
 		XYChart.Series<String, Number> series1 = new XYChart.Series<>();
-		series1.setName(yCol.getName());
+		series1.setName(getyCol().getName());
 
 		for (DataRow row : table.getRows()) {
 			series1.getData().add(new XYChart.Data(row.getValue(xCol).toString(),
-					Float.valueOf(row.getValue(yCol).getValue().toString())));
+					Float.valueOf(row.getValue(getyCol()).getValue().toString())));
 		}
 		res.getData().add(series1);
 		res.setAnimated(false);
@@ -180,5 +143,12 @@ public class BarChartController extends ChartController {
 		box.setMaxHeight(Double.MAX_VALUE);
 		box.getChildren().add(chart);
 		return box.snapshot(new SnapshotParameters(), new WritableImage(SIZE, SIZE));
+	}
+
+	public void createYaxis(float min, float max, int sep) {
+		ySet = false;
+		yAxis = new NumberAxis(getyCol().getName(), min, max, sep);
+		setErrorLabel(yAxisErrorLabel, "");
+		ySet = true;
 	}
 }

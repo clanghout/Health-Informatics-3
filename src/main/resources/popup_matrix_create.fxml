@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:controller="controllers.popup.PopupMatrixController" xmlns="http://javafx.com/javafx/8"
+	  xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<AnchorPane>
+			<children>
+				<VBox styleClass="popup-box">
+					<children>
+						<VBox>
+							<children>
+								<Label text="Select table"/>
+								<ComboBox fx:id="tableComboBox" promptText="Table to use"/>
+								<Label text="Select column to determine order"/>
+								<ComboBox fx:id="columnComboBox" promptText="Column to use"/>
+								<Label fx:id="createMessage"/>
+								<VBox fx:id="codesList" styleClass="codesList"/>
+								<HBox styleClass="hbox-button" AnchorPane.bottomAnchor="14.0">
+									<children>
+										<Button styleClass="button"
+												onAction="#handleMatrixCreateButtonAction"
+												text="Make matrix"
+												fx:id="makeButton"/>
+										<Button styleClass="button"
+												onAction="#handleCancelButtonAction"
+												text="Cancel"/>
+									</children>
+								</HBox>
+							</children>
+						</VBox>
+					</children>
+				</VBox>
+			</children>
+		</AnchorPane>
+	</children>
+	<stylesheets>
+		<URL value="@popup.css"/>
+	</stylesheets>
+</VBox>
