@@ -26,7 +26,7 @@ import model.process.DataProcess;
  * 
  * @author Louis Gosschalk 12-06-2015
  */
-public class TimeBetween extends DataProcess {
+public class TimeBetween extends DataAnalysis {
 
 	private String dateName;
 	private DataValue value;
@@ -41,24 +41,30 @@ public class TimeBetween extends DataProcess {
 		this.dateName = date.getName();
 	}
 
+
+
 	/**
 	 * Check the type of the given column and call calculation.
 	 */
 	@Override
-	public Table doProcess() {
-		value = ((DataTable) getInput()).getRow(0).getValue(
-				((DataTable) getInput()).getColumn(dateName));
+	public Table analyse(Table input) {
+		if (!(input instanceof DataTable)) {
+			throw new IllegalArgumentException("Expected datatable");
+		}
+		DataTable table = (DataTable) input;
+		value = table.getRow(0).getValue(
+				table.getColumn(dateName));
 
 		DataTableConversionBuilder builder = new DataTableConversionBuilder(
-				((DataTable) getInput()), ((DataTable) getInput()).getName());
-		builder.addRowsFromTable((DataTable) getInput());
+				table, table.getName());
+		builder.addRowsFromTable(table);
 
 		if (!value.getClass().equals(TimeValue.class)) {
-			builder.addColumn((DataTable) getInput(), new PeriodValue(null,
+			builder.addColumn(table, new PeriodValue(null,
 					null, null), "Difference date");
 		}
 		if (!value.getClass().equals(DateValue.class)) {
-			builder.addColumn((DataTable) getInput(), new TimeValue(null, null,
+			builder.addColumn(table, new TimeValue(null, null,
 					null), "Difference time");
 		}
 
