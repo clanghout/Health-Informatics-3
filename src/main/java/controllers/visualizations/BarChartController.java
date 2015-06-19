@@ -44,8 +44,6 @@ public class BarChartController extends ChartController {
 
 	private boolean xSet = false;
 	private boolean ySet = false;
-	private boolean maxSet = false;
-	private boolean minSet = false;
 
 	private CategoryAxis xAxis;
 	private NumberAxis yAxis;

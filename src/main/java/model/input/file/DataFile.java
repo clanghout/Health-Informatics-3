@@ -24,8 +24,6 @@ import java.util.logging.Logger;
  */
 public abstract class DataFile {
 
-	private Logger log = Logger.getLogger("DataFile");
-
 	private String metaDataColumnName;
 	private DataValue<?> metaDataValue;
 	private Class<? extends DataValue> metaDataType;

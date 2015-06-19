@@ -83,8 +83,6 @@ public class XmlReader {
 	 */
 	private static final String DATE_FORMAT_ATTRIBUTE = "format";
 
-	private Logger log = Logger.getLogger("XmlReader");
-
 	private Document document;
 	private NodeList filesList;
 	private List<DataFile> dataFiles;

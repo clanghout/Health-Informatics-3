@@ -18,8 +18,6 @@ import java.util.logging.Logger;
  */
 public class PlainTextFile extends DataFile {
 
-	private Logger logger = Logger.getLogger("PlainTextFile");
-
 	private int counter;
 	private String delimiter = ",";
 
