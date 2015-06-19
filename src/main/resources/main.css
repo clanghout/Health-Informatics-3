@@ -104,3 +104,17 @@
 .space {
 	-fx-spacing: 5px;
 }
+
+.progressBox {
+	-fx-padding: 10px, 10px, 10px, 10px;
+}
+
+.progressBox > Label {
+	-fx-padding: 10px, 0px, 0px, 0px;;
+}
+
+ProgressIndicator {
+	-fx-pref-height: 20px;
+	-fx-pref-width: 20px;
+	visibility: hidden;
+}

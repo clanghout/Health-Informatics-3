@@ -1,6 +1,7 @@
 package controllers.wizard;
 
 import controllers.MainUIController;
+import controllers.Reader;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -13,8 +14,9 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+
 import javafx.stage.Popup;
-import model.data.DataModel;
+
 import model.exceptions.DataFileNotRecognizedException;
 import model.input.file.ColumnInfo;
 import model.input.file.DataFile;
@@ -115,7 +117,7 @@ public class XmlWizardController {
 			if (!(newValue.equals(String.valueOf(selectedFile.getStartLine())))) {
 				try {
 					selectedFile.setStartLine(Integer.parseInt(startLine.getText()));
-				} catch(NumberFormatException e) {
+				} catch (NumberFormatException e) {
 					logger.log(Level.SEVERE, "Can not parse the chosen value to an integer. "
 							+ e.getMessage());
 				}
@@ -128,7 +130,7 @@ public class XmlWizardController {
 			if (!(newValue.equals(String.valueOf(selectedFile.getEndLine())))) {
 				try {
 					selectedFile.setEndLine(Integer.parseInt(endLine.getText()));
-				} catch(NumberFormatException e) {
+				} catch (NumberFormatException e) {
 					logger.log(Level.SEVERE, "Can not parse the selected value to an integer. "
 							+ e.getMessage());
 				}
@@ -207,6 +209,7 @@ public class XmlWizardController {
 	};
 
 	private DataFile template;
+	private Label errorLabel;
 
 	/**
 	 * Initializes the controller by filling the static content of elements in the view.
@@ -257,9 +260,10 @@ public class XmlWizardController {
 	 * @param mainUIController The MainUIController
 	 * @param dialog The dialog that is shown to the user
 	 */
-	public void initializeView(MainUIController mainUIController, Dialog dialog) {
+	public void initializeView(MainUIController mainUIController, Dialog dialog, Label error) {
 		this.dialog = dialog;
 		this.mainUIcontroller = mainUIController;
+		this.errorLabel = error;
 	}
 
 	/**
@@ -495,21 +499,15 @@ public class XmlWizardController {
 		if (file != null) {
 			writeXmlToFile(file);
 			try {
-				mainUIcontroller.setModel(createModel());
+				Reader reader = new Reader(file, mainUIcontroller, errorLabel);
+				reader.execute();
 				dialog.close();
-			} catch (IOException e) {
+			} catch (Exception e) {
 				logger.log(Level.SEVERE, "Error creating datamodel " + e.getMessage());
 			}
 		}
 	}
 
-	private DataModel createModel() throws IOException {
-		DataModel res = new DataModel();
-		for (DataFile datafile: datafiles.getItems()) {
-			res.add(datafile.createDataTable());
-		}
-		return res;
-	}
 
 	private void writeXmlToFile(File file) {
 		XmlWriter writer = new XmlWriter(createDataFiles());

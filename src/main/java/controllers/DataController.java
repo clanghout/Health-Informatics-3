@@ -1,16 +1,20 @@
 package controllers;
 
+
 import controllers.wizard.XmlWizardController;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+
+
+import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import model.data.DataModel;
-import model.input.reader.DataReader;
-import model.input.reader.XmlReader;
+
+
 import view.Dialog;
 import view.XMLCreationDialog;
 
@@ -25,6 +29,9 @@ import java.util.logging.Logger;
  * Created by Boudewijn on 6-5-2015.
  */
 public class DataController {
+	@FXML
+	private Button importButton;
+
 
 	@FXML
 	private TextField fileNameField;
@@ -39,16 +46,13 @@ public class DataController {
 	private Label errorLabel;
 
 	private MainUIController mainUIController;
-	
-	private Logger logger = Logger.getLogger("DataController");
 
 	private File file;
-	private DataModel model;
 
 	private static final double WIZARD_DIALOG_WIDTH = 1000;
 	private static final double WIZARD_DIALOG_HEIGHT = 800;
 
-
+	private Logger logger = Logger.getLogger("DataController");
 	/**
 	 * Creates a new TableViewController.
 	 */
@@ -77,7 +81,8 @@ public class DataController {
 			errorLabel.setText("ERROR: No file selected for import.");
 		} else {
 			fileNameField.setText(file.getAbsolutePath());
-			read();
+			Reader reader = new Reader(file, mainUIController, errorLabel);
+			reader.execute();
 			errorLabel.setTextFill(Color.BLACK);
 			errorLabel.setText("File Selected:");
 		}
@@ -89,7 +94,7 @@ public class DataController {
 			Dialog wizardDialog = new XMLCreationDialog();
 			XmlWizardController wizardController =
 					wizardDialog.getFxml().getController();
-			wizardController.initializeView(mainUIController, wizardDialog);
+			wizardController.initializeView(mainUIController, wizardDialog, errorLabel);
 			wizardDialog.setSize(WIZARD_DIALOG_WIDTH, WIZARD_DIALOG_HEIGHT);
 			wizardDialog.show();
 		} catch (IOException e) {
@@ -115,18 +120,22 @@ public class DataController {
 		return fileChooser.showOpenDialog(root.getScene().getWindow());
 	}
 
+
 	/**
-	 * Read the data and set the model in the mainUIController.
+	 * Disable the import button.
 	 */
-	private void read() {
-		try {
-			DataReader reader = new DataReader(new XmlReader());
-			reader.read(file);
-			model = reader.createDataModel();
-			mainUIController.setModel(model);
-			
-		} catch (Exception e) {
-			logger.log(Level.WARNING, "An error occurred while reading the file", e);
-		}
+	public void disableImport() {
+		importButton.setDisable(true);
+	}
+
+	/**
+	 * Enable the import button.
+	 */
+	public void enableImport() {
+		importButton.setDisable(false);
+	}
+
+	public Label getErrorLabel() {
+		return errorLabel;
 	}
 }
