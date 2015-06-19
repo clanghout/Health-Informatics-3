@@ -28,8 +28,8 @@
 				</VBox>
 				<HBox styleClass="hbox-button" AnchorPane.bottomAnchor="14.0">
 					<children>
-						<Button onAction="#handleGraphCreateButtonAction" text="Make graph"/>
-						<Button onAction="#handleCancelButtonAction" text="Cancel"/>
+						<Button styleClass="button" onAction="#handleGraphCreateButtonAction" text="Make graph"/>
+						<Button styleClass="button" onAction="#handleCancelButtonAction" text="Cancel"/>
 					</children>
 				</HBox>
 			</children>
