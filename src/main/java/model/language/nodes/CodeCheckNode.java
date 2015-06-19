@@ -1,8 +1,8 @@
 package model.language.nodes;
 
 import model.data.DataModel;
-import model.data.describer.ConstraintDescriber;
-import model.data.describer.DataDescriber;
+import model.process.describer.ConstraintDescriber;
+import model.process.describer.DataDescriber;
 import model.data.value.BoolValue;
 import model.data.value.StringValue;
 import model.process.analysis.operations.constraints.CodeCheck;

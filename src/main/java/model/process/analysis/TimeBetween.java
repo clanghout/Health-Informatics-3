@@ -1,4 +1,4 @@
-package model.process.analysis.operations.comparisons;
+package model.process.analysis;
 
 import java.time.Duration;
 import java.time.LocalDate;

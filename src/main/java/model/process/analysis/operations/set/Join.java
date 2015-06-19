@@ -1,8 +1,8 @@
-package model.process.setOperations;
+package model.process.analysis.operations.set;
 
 import model.data.*;
-import model.data.describer.ConstantDescriber;
-import model.data.describer.DataDescriber;
+import model.process.describer.ConstantDescriber;
+import model.process.describer.DataDescriber;
 import model.data.value.BoolValue;
 import model.data.value.DataValue;
 import model.language.ColumnIdentifier;

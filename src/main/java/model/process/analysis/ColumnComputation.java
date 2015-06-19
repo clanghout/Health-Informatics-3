@@ -1,8 +1,8 @@
-package model.process.analysis.operations;
+package model.process.analysis;
 
 import model.data.*;
-import model.data.describer.DataDescriber;
-import model.data.describer.TableValueDescriber;
+import model.process.describer.DataDescriber;
+import model.process.describer.TableValueDescriber;
 import model.data.value.DataValue;
 import model.language.ColumnIdentifier;
 import model.language.Identifier;

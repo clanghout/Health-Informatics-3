@@ -1,7 +1,7 @@
 package model.process.analysis.operations.constraints.constraints;
 
 import model.data.DataRow;
-import model.data.describer.ConstantDescriber;
+import model.process.describer.ConstantDescriber;
 import model.data.value.StringValue;
 import model.process.analysis.operations.constraints.CodeCheck;
 import org.junit.Test;

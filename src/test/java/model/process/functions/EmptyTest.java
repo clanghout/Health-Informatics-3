@@ -1,9 +1,8 @@
 package model.process.functions;
 
-import model.exceptions.InputMismatchException;
 import model.data.DataColumn;
 import model.data.DataTable;
-import model.data.describer.RowValueDescriber;
+import model.process.describer.RowValueDescriber;
 import model.data.value.FloatValue;
 
 import org.junit.Before;

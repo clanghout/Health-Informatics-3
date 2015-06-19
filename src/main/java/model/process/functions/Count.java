@@ -1,7 +1,7 @@
 package model.process.functions;
 
 import model.data.DataTable;
-import model.data.describer.DataDescriber;
+import model.process.describer.DataDescriber;
 import model.data.value.IntValue;
 import model.data.value.NumberValue;
 

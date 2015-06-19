@@ -1,7 +1,7 @@
 package model.process.analysis.operations.dates.computations;
 
-import model.data.describer.ConstantDescriber;
-import model.data.describer.DataDescriber;
+import model.process.describer.ConstantDescriber;
+import model.process.describer.DataDescriber;
 import model.data.value.DateTimeValue;
 import model.data.value.PeriodValue;
 import model.data.value.TemporalValue;
@@ -10,7 +10,6 @@ import org.junit.Test;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
-import java.time.temporal.TemporalField;
 
 import static org.junit.Assert.*;
 

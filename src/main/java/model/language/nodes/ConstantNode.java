@@ -1,8 +1,8 @@
 package model.language.nodes;
 
 import model.data.DataModel;
-import model.data.describer.ConstantDescriber;
-import model.data.describer.DataDescriber;
+import model.process.describer.ConstantDescriber;
+import model.process.describer.DataDescriber;
 import model.data.value.DataValue;
 
 /**

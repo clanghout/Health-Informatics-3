@@ -3,7 +3,7 @@ package model.process.functions;
 import model.data.DataColumn;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
-import model.data.describer.RowValueDescriber;
+import model.process.describer.RowValueDescriber;
 import model.data.value.IntValue;
 import model.data.value.StringValue;
 import org.junit.Test;

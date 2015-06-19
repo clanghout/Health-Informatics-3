@@ -1,6 +1,6 @@
 package model.process.analysis.operations.constraints;
 
-import model.data.describer.ConstantDescriber;
+import model.process.describer.ConstantDescriber;
 import model.data.value.BoolValue;
 import org.junit.Test;
 

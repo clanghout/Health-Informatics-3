@@ -1,8 +1,8 @@
 package model.language.nodes;
 
 import model.data.DataModel;
-import model.data.describer.DataDescriber;
-import model.data.describer.OperationDescriber;
+import model.process.describer.DataDescriber;
+import model.process.describer.OperationDescriber;
 import model.data.value.PeriodValue;
 import model.data.value.TemporalValue;
 import model.process.analysis.operations.dates.computations.Add;

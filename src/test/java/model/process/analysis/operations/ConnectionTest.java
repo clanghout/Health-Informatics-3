@@ -7,6 +7,7 @@ import model.data.value.StringValue;
 import model.data.value.TimeValue;
 import model.language.ColumnIdentifier;
 import model.language.Identifier;
+import model.process.analysis.Connection;
 import org.junit.Before;
 import org.junit.Test;
 
