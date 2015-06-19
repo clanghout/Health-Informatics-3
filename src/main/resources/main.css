@@ -35,14 +35,21 @@
     -fx-spacing: 15px;
 }
 
+.border {
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+}
+
 .analysis-text-out {
     -fx-padding: 15px;
     -fx-font-family: 'monospace';
+    -fx-max-width: 5000px;
 }
 .analysis-text {
-    -fx-pref-height: 290px;
-    -fx-pref-width: 500px;
     -fx-font-family: 'monospace';
+    -fx-pref-width: inherit;
+    -fx-max-width: 5000px;
 }
 
 .file-name-field {
