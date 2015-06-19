@@ -1,22 +1,16 @@
 package controllers;
 
-
 import controllers.wizard.XmlWizardController;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
-
-
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 
-
 import view.Dialog;
 import view.XMLCreationDialog;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;

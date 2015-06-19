@@ -4,14 +4,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
-import model.data.DataColumn;
 import model.data.DataTable;
-import model.process.describer.DataDescriber;
-import model.process.describer.RowValueDescriber;
-import model.data.value.DataValue;
-import model.data.value.NumberValue;
-import model.process.functions.Maximum;
-import model.process.functions.Minimum;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
@@ -36,7 +29,6 @@ import static javafx.embed.swing.SwingFXUtils.toFXImage;
 public class BoxPlotController extends ChartController {
 	private DataTable table;
 	private VBox vBox;
-	private DataColumn yCol;
 	private ComboBox<ColumnWrapper> yAxisBox;
 	private Label yAxisErrorLabel;
 
@@ -67,6 +59,7 @@ public class BoxPlotController extends ChartController {
 		yAxisBox.setPromptText("y-Axis");
 		yAxisErrorLabel = new Label();
 		yAxisErrorLabel.setMaxWidth(Double.MAX_VALUE);
+		setYAxisEventListener(yAxisBox, table, yAxisErrorLabel);
 		setColumnDropDown(yAxisBox, table);
 	}
 
@@ -76,7 +69,6 @@ public class BoxPlotController extends ChartController {
 	@Override
 	public void initialize() {
 		initializeFields();
-		setYAxisEventListener();
 		vBox.getChildren().addAll(yAxisErrorLabel, yAxisBox);
 	}
 
@@ -91,30 +83,6 @@ public class BoxPlotController extends ChartController {
 	}
 
 	/**
-	 * Sets the Listener for the yAxis ComboBox.
-	 * The NumberAxis is created and the scale is set.
-	 */
-	public void setYAxisEventListener() {
-		yAxisBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-			ySet = false;
-			yCol = newValue.getColumn();
-			DataDescriber<DataValue<?>> yColDescriber = new RowValueDescriber<>(yCol);
-			try {
-				NumberValue maxValue = (NumberValue) new Maximum(table, yColDescriber).calculate();
-				NumberValue minValue = (NumberValue) new Minimum(table, yColDescriber).calculate();
-				float max = Float.valueOf(maxValue.getValue().toString());
-				float min = Float.valueOf(minValue.getValue().toString()) - 1;
-				yAxis = new NumberAxis(newValue.getColumn().getName());
-				yAxis.setRange(min * SCALEDOWN_YAXIS, max * SCALEUP_YAXIS);
-				setErrorLabel(yAxisErrorLabel, "");
-				ySet = true;
-			} catch (Exception e) {
-				setErrorLabel(yAxisErrorLabel, "Please select a column with number values.");
-			}
-		});
-	}
-
-	/**
 	 * create the dataSet for the boxPlot.
 	 *
 	 * @return dataSet containing the data for the boxPlot.
@@ -122,7 +90,7 @@ public class BoxPlotController extends ChartController {
 	public DefaultBoxAndWhiskerCategoryDataset createDataset() {
 		DefaultBoxAndWhiskerCategoryDataset dataset = new DefaultBoxAndWhiskerCategoryDataset();
 		List data = table.getRows().stream()
-				.map(row -> row.getValue(yCol).getValue()).collect(Collectors.toList());
+				.map(row -> row.getValue(getyCol()).getValue()).collect(Collectors.toList());
 		dataset.add(data, "", table.getName());
 		return dataset;
 	}
@@ -152,5 +120,12 @@ public class BoxPlotController extends ChartController {
 		WritableImage image = new WritableImage(WIDTH + WIDTH, SIZE);
 		toFXImage(chart.createBufferedImage(WIDTH, SIZE), image);
 		return image;
+	}
+
+	@Override
+	public void createYaxis(float min, float max, int sep) {
+		yAxis = new NumberAxis(getyCol().getName());
+		yAxis.setRange(min * SCALEDOWN_YAXIS, max * SCALEUP_YAXIS);
+		ySet = true;
 	}
 }

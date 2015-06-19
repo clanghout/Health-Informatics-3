@@ -34,3 +34,8 @@
 .visualization-input-dropdown {
 	-fx-spacing: 5px;
 }
+
+.codesList {
+	-fx-spacing: 5px;
+	-fx-padding: 5px;
+}
