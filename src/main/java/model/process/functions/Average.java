@@ -10,7 +10,7 @@ import model.data.value.NumberValue;
  * 
  * @author Louis Gosschalk 13-05-2015
  */
-public class Average extends Function {
+public class Average extends Function<NumberValue<?>> {
 
 	/**
 	 * Construct a new average.
@@ -20,7 +20,7 @@ public class Average extends Function {
 	 * @param argument
 	 *            specified column
 	 */
-	public Average(DataTable table, DataDescriber<NumberValue> argument) {
+	public Average(DataTable table, DataDescriber<NumberValue<?>> argument) {
 		super(table, argument);
 	}
 

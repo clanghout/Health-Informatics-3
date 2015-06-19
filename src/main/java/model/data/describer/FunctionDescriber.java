@@ -4,7 +4,7 @@ import model.data.DataModel;
 import model.data.DataTable;
 import model.data.Row;
 import model.data.Table;
-import model.data.value.NumberValue;
+import model.data.value.DataValue;
 import model.language.Identifier;
 import model.process.functions.Function;
 
@@ -15,7 +15,7 @@ import java.util.Optional;
  *
  * Created by Boudewijn on 10-6-2015.
  */
-public class FunctionDescriber extends DataDescriber<NumberValue<?>> {
+public class FunctionDescriber extends DataDescriber<DataValue<?>> {
 
 	private DataModel model;
 	private Identifier<Table> table;
@@ -39,7 +39,7 @@ public class FunctionDescriber extends DataDescriber<NumberValue<?>> {
 	 * @return The result of the function.
 	 */
 	@Override
-	public NumberValue resolve(Row row) {
+	public DataValue<?> resolve(Row row) {
 		Optional<DataTable> tableOptional = model.getByName(table.getName());
 		if (!tableOptional.isPresent()) {
 			throw new IllegalArgumentException(

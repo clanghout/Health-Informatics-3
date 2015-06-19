@@ -1,5 +1,6 @@
 package model.process.functions;
 
+import model.data.value.DateTimeValue;
 import model.exceptions.InputMismatchException;
 import model.data.describer.RowValueDescriber;
 import model.data.value.DataValue;
@@ -7,6 +8,8 @@ import model.data.value.FloatValue;
 import model.data.value.IntValue;
 
 import org.junit.Test;
+
+import javax.xml.crypto.Data;
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,14 +20,10 @@ import static org.junit.Assert.assertEquals;
  */
 public class MaximumTest extends FunctionTest {
 
-	/**
-	 * column of strings should throw exception.
-	 * 
-	 * @throws Exception
-	 */
-	@Test(expected = InputMismatchException.class)
-	public void TestStringMaximum() throws Exception {
-		DataValue maximum = new Maximum(table, new RowValueDescriber<>(stringColumn)).calculate();
+	@Test
+	public void testDateMaximum() throws Exception {
+		DataValue max = new Maximum(table, new RowValueDescriber<>(dateColumn)).calculate();
+		assertEquals(new DateTimeValue(1998, 1, 17, 0, 0, 0), max);
 	}
 
 	@Test
