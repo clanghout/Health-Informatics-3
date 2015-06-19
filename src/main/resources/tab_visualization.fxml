@@ -17,22 +17,22 @@
 									<children>
 										<Button
 												fx:id="makeGraphButton"
-												styleClass="button"
+												styleClass="visualization-button"
 												onAction="#handlePopupButtonAction"
 												text="Make graph"/>
 										<Button
 												fx:id="makeMatrixButton"
-												styleClass="button"
+												styleClass="visualization-button"
 												onAction="#handlePopupMatrixButtonAction"
 												text="Make matrix"/>
 										<Button
 												fx:id="clearViewButton"
-												styleClass="button"
+												styleClass="visualization-button"
 												onAction="#handleClearButtonAction"
 												text="Clear graph"/>
 										<Button
 												fx:id="saveButton"
-												styleClass="button"
+												styleClass="visualization-button"
 												onAction="#handleSaveButtonAction"
 												text="Save graph"/>
 									</children>

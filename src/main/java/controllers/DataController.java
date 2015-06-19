@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
+
 import view.Dialog;
 import view.XMLCreationDialog;
 import java.io.File;
