@@ -578,9 +578,26 @@ class LanguageParser extends BaseParser<Object> {
 		return Sequence(
 				Identifier(),
 				".",
-				Identifier(),
+				ColumnName(),
 				swap(),
 				push(new ColumnIdentifier((Identifier) pop(), (Identifier) pop()))
+		);
+	}
+
+	Rule ColumnName() {
+		return Sequence(
+				Sequence(
+						SafeCharacter(),
+						OneOrMore(
+								FirstOf(
+										Digit(),
+										SafeCharacter(),
+										".",
+										"_"
+								)
+						)
+				),
+				push(new Identifier<>(match()))
 		);
 	}
 
