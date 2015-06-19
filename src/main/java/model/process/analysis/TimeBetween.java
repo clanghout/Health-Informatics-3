@@ -17,7 +17,6 @@ import model.data.value.DateValue;
 import model.data.value.PeriodValue;
 import model.data.value.TimeValue;
 import model.language.Identifier;
-import model.process.DataProcess;
 
 /**
  * This class will determine the time difference between rows. This is actually

@@ -383,7 +383,7 @@ public abstract class DataFile {
 				return yearMonth.atDay(1);
 			} catch (DateTimeParseException e1) {
 				try {
-					MonthDay monthDay = MonthDay.parse(value,formatter);
+					MonthDay monthDay = MonthDay.parse(value, formatter);
 					return monthDay.atYear(1);
 				} catch (DateTimeParseException e2) {
 					Year year = Year.parse(value, formatter);

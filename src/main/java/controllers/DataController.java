@@ -12,7 +12,6 @@ import javafx.scene.paint.Color;
 
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
-import model.data.DataModel;
 
 
 import view.Dialog;
