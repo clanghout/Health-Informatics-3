@@ -14,17 +14,17 @@
 							<children>
 								<Button
 										fx:id="makeGraphButton"
-										styleClass="button"
+										styleClass="visualization-button"
 										onAction="#handlePopupButtonAction"
 										text="Make graph"/>
 								<Button
 										fx:id="clearViewButton"
-										styleClass="button"
+										styleClass="visualization-button"
 										onAction="#handleClearButtonAction"
 										text="Clear graph"/>
 								<Button
 										fx:id="saveButton"
-										styleClass="button"
+										styleClass="visualization-button"
 										onAction="#handleSaveButtonAction"
 										text="Save graph"/>
 							</children>

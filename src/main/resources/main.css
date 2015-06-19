@@ -53,6 +53,25 @@
 .import-button {
 	-fx-pref-height: 25px;
 	-fx-pref-width: 150px;
+    -fx-font-size: 9pt;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+}
+
+.visualization-button {
+    -fx-pref-height: 25px;
+    -fx-pref-width: 130px;
+    -fx-font-size: 9pt;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+}
+
+.analysis-button {
+    -fx-pref-height: 25px;
+    -fx-pref-width: 80px;
+    -fx-font-size: 9pt;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
 }
 
 .button-container {
