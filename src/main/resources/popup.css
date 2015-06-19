@@ -3,6 +3,13 @@
 	-fx-padding: 0px 0px 0px 15px;
 }
 
+.button {
+    -fx-font-size: 9pt;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+    -fx-pref-width: 80px;
+}
+
 .hbox {
 	-fx-width: 340px;
 	-fx-spacing: 5px;

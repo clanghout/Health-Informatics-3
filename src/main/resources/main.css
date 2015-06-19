@@ -3,7 +3,8 @@
 	-fx-font-weight: bold;
 }
 
-.button {
+Button {
+	-fx-font-size: 9pt;
 	-fx-font-family: "Arial Narrow";
 	-fx-font-weight: bold;
 }
@@ -52,7 +53,17 @@
 
 .import-button {
 	-fx-pref-height: 25px;
-	-fx-pref-width: 150px;
+	-fx-pref-width: 170px;
+}
+
+.visualization-button {
+    -fx-pref-height: 25px;
+    -fx-pref-width: 130px;
+}
+
+.analysis-button {
+    -fx-pref-height: 25px;
+    -fx-pref-width: 80px;
 }
 
 .button-container {
