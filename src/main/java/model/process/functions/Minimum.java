@@ -2,7 +2,7 @@ package model.process.functions;
 
 import model.data.DataRow;
 import model.data.DataTable;
-import model.data.describer.DataDescriber;
+import model.process.describer.DataDescriber;
 import model.data.value.DataValue;
 import model.data.value.FloatValue;
 

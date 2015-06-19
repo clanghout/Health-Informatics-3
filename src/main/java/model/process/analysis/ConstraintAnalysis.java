@@ -2,7 +2,7 @@ package model.process.analysis;
 
 import model.data.Row;
 import model.data.Table;
-import model.data.describer.DataDescriber;
+import model.process.describer.DataDescriber;
 import model.data.value.BoolValue;
 
 import java.util.Iterator;

@@ -4,9 +4,8 @@ import static org.junit.Assert.*;
 import model.data.DataColumn;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
-import model.data.describer.RowValueDescriber;
+import model.process.describer.RowValueDescriber;
 import model.data.value.*;
-import model.process.SortProcess;
 import model.process.SortProcess.Order;
 
 import org.junit.Before;

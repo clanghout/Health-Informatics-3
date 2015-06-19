@@ -1,14 +1,14 @@
 package model.language;
 
 import model.data.DataModel;
-import model.data.describer.DataDescriber;
-import model.data.describer.TableValueDescriber;
+import model.process.describer.DataDescriber;
+import model.process.describer.TableValueDescriber;
 import model.data.value.StringValue;
 import model.language.nodes.ValueNode;
 import model.process.*;
-import model.process.analysis.operations.comparisons.TimeBetween;
-import model.process.setOperations.Difference;
-import model.process.setOperations.Union;
+import model.process.analysis.TimeBetween;
+import model.process.analysis.operations.set.Difference;
+import model.process.analysis.operations.set.Union;
 
 import java.util.Arrays;
 import java.util.Map;

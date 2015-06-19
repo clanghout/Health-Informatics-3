@@ -1,7 +1,7 @@
 package model.process.analysis.operations.computations;
 
 import model.data.Row;
-import model.data.describer.DataDescriber;
+import model.process.describer.DataDescriber;
 import model.process.analysis.operations.Operation;
 import model.data.value.NumberValue;
 

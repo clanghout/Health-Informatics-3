@@ -1,4 +1,4 @@
-package model.data.describer;
+package model.process.describer;
 
 import model.data.DataColumn;
 import model.data.DataModel;

@@ -1,6 +1,6 @@
 package model.process.analysis.operations.dates.constraint;
 
-import model.data.describer.DataDescriber;
+import model.process.describer.DataDescriber;
 import model.data.value.TemporalValue;
 
 /**

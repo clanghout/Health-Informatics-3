@@ -1,16 +1,16 @@
-package model.process.analysis.operations;
+package model.process.analysis;
 
 import model.data.DataColumn;
 import model.data.DataTable;
 
-import model.data.describer.ConstantDescriber;
-import model.data.describer.RowValueDescriber;
+import model.process.describer.ConstantDescriber;
+import model.process.describer.RowValueDescriber;
 import model.data.value.BoolValue;
 import model.language.ColumnIdentifier;
 import model.language.Identifier;
 import model.process.DataProcess;
 import model.process.SortProcess;
-import model.process.setOperations.FullJoin;
+import model.process.analysis.operations.set.FullJoin;
 
 
 /**

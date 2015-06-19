@@ -1,7 +1,7 @@
 package model.data;
 
-import model.data.describer.ConstraintDescriber;
-import model.data.describer.RowValueDescriber;
+import model.process.describer.ConstraintDescriber;
+import model.process.describer.RowValueDescriber;
 import model.process.analysis.ConstraintAnalysis;
 import model.process.analysis.operations.constraints.Constraint;
 import model.process.analysis.operations.constraints.EqualityCheck;

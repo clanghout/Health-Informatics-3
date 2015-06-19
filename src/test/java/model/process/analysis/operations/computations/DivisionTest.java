@@ -1,6 +1,6 @@
 package model.process.analysis.operations.computations;
 
-import model.data.describer.ConstantDescriber;
+import model.process.describer.ConstantDescriber;
 import model.data.value.FloatValue;
 import model.data.value.IntValue;
 import org.junit.Test;

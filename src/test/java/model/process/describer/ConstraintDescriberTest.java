@@ -1,4 +1,4 @@
-package model.data.describer;
+package model.process.describer;
 
 import model.process.analysis.operations.constraints.Constraint;
 import model.process.analysis.operations.constraints.EqualityCheck;
