@@ -78,7 +78,7 @@ The software is based on the model-view-controller design pattern. The idea is t
 
 \subsection{Subsystem decomposition}
 
-As mentioned before our program consists of modules that work together. In figure~\ref{fig:modules} these modules are laid out. The model module consists of the data that was read from files and data was outputted from performed analyses. This data can be used by the controllers to show it to the user. The user can specify an analyis in SUGAR and the controller will then update the model after the analysis is translated into operations.
+As mentioned before our program consists of modules that work together. In figure~\ref{fig:modules} these modules are laid out. The model module consists of the data that was read from files and data that was outputted from performed analyses. This data can be used by the controllers to show it to the user. The user can specify an analyis in SUGAR and the controller will then update the model after the analysis is translated into operations.
 
 \begin{figure}[h]
 	\centering
@@ -101,7 +101,7 @@ The Visualization module creates a certain visual representation of a dataModel.
 \item[View]
 The view module is responsible for the appearance of the user interface. Determining by the controller, the view can change accordingly. The user may change the view after which the controller gets notified. The controller can then perform actions on the model.
 \item[Language]
-The language module is responsible for parsing the analysis the user gives us into an executable chain of code. The parser is two fold: one is for the process-chain, the other is for the macros. The process chain is turned into various ProcessInfos and hte macros are turned into MacroInfos, which can be parsed into various kinds of ValueNodes. The ValueNodes make up the tree in which the constraints, computations, codes and all other operations are contained.
+The language module is responsible for parsing the analysis the user gives us into an executable chain of code. The parser is two fold: one is for the process-chain, the other is for the macros. The process chain is turned into various ProcessInfos and the macros are turned into MacroInfos, which can be parsed into various kinds of ValueNodes. The ValueNodes make up the tree in which the constraints, computations, codes and all other operations are contained.
 
 \end{description}
 \subsection{State diagram}
@@ -126,11 +126,11 @@ We also use the JavaFX Scene Builder as a tool to design parts of the GUI becaus
 \subsection{Data organization}
 The data that we read from the file is stored in datatables containing columns of specific types. These datatables together form the model on which we can perform the analyses. The values are stored as datavalues inside columns having the same type as the datavalue. These datavalues are divided in subclasses for strings, integers, floats, dates and booleans.
 
-Date values are a bit more complex than for example an integer. Date values can vary in being a timestamp, period of time, just a date or just a time value. The section for dates of the datavalue structure has been implemented to have multiple types of values for these varying types of dates.
+Date values are a bit more complex than, for example an integer. Date values can vary in being a timestamp, period of time, just a date or just a time value. The section for dates of the datavalue structure has been implemented to have multiple types of values for these varying types of dates.
 
 To refer to data inside methods, we use identifiers. These identifiers can point to a column or table by finding the corresponding data for its given string which is the name of the searched data. The software also has a describer implemented, which can be used to refer to proceses like a computation or a single value in a column of a row. 
 
-In week 4.8 we found an issue that reading data from a large excel file takes up a lot of time and memory. We thought this could have been caused by the fact that we used hashmaps to store the rows and the iteration over its entries could take up a lot of time. We tried using linked hashmaps instead but that did not improve the reading speed very much.
+In week 4.8 we found an issue that reading data from a large excel file takes up a lot of time and memory. We thought this could have been caused by the fact that we used hashmaps to store the rows and the iteration over its entries could take up a lot of time. We tried using linked hashmaps instead but that did not improve the reading speed very much. The conclusion to which we came was was that the POI library uses a lot of memory when reading over large excel files.
 
 
 \subsection{Used libraries}
@@ -153,7 +153,7 @@ provided to us in excel formats. Another reason is that it is developed by the
 Apache Software Foundation which also created Maven so it was easy to include in
 the build.
 
-\item[Java SAX] Reading the xml file that specifies the datafiles. This choice is
+\item[Java SAX] Reading and writing the xml file that specifies the datafiles. This choice is
 made because it is easy to use and well documented. The library is also included
 in the JDK so it did not require any additional installation effort.
 
@@ -173,7 +173,8 @@ This library offers various standard popups that the average computer user is fa
 The main element we wanted to use was the Alert dialog of JavaFX but it turned out this class 
 is not supported in the older version of javafx and the newer version was is not supported by Travis.
 
-\item[Apache Commons CSV] To write the tables to a csv file.
+\item[Apache Commons CSV] To write the tables to a csv file. We chose for this library because 
+it is also developed by Apache which also made it easy to add it to the Maven dependencies.
 
 
 \end{description}
