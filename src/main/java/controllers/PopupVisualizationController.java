@@ -138,7 +138,7 @@ public class PopupVisualizationController {
 	}
 
 	/**
-	 * This class is a simple wrapper for the DataTables.
+	 * This class is a simple wrapper for the DataTable.
 	 */
 	private final class TableWrapper {
 

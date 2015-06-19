@@ -6,12 +6,12 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
-import javafx.util.StringConverter;
 import model.data.DataColumn;
 import model.data.DataTable;
-import model.data.value.FloatValue;
-import model.data.value.IntValue;
-import model.data.value.NumberValue;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Abstract ChartController specifying the controller for a javaFX chart.
@@ -45,22 +45,9 @@ public abstract class ChartController {
 	 * @param inputBox  the comboBox that specifies the axis of the graph
 	 * @param dataTable the dataTable used for the graph
 	 */
-	public void setColumnDropDown(ComboBox<DataColumn> inputBox, DataTable dataTable) {
+	public void setColumnDropDown(ComboBox<ColumnWrapper> inputBox, DataTable dataTable) {
 		inputBox.setDisable(false);
-		ObservableList<DataColumn> columns =
-				FXCollections.observableArrayList(dataTable.getColumns());
-		inputBox.setItems(columns);
-		inputBox.setConverter(new StringConverter<DataColumn>() {
-			@Override
-			public String toString(DataColumn object) {
-				return object.getName();
-			}
-
-			@Override
-			public DataColumn fromString(String string) {
-				return dataTable.getColumn(string);
-			}
-		});
+		inputBox.setItems(wrapColumns(dataTable.getColumns()));
 	}
 
 	/**
@@ -83,5 +70,31 @@ public abstract class ChartController {
 	 */
 	public int computeSeparatorValue(float max, float min) {
 		return Math.round((max - min) / YAXIS_SEPARATION);
+	}
+
+	protected ObservableList<ColumnWrapper> wrapColumns(List<DataColumn> columns) {
+		return FXCollections.observableArrayList(new ArrayList<>(
+				columns.stream().map(ColumnWrapper::new).collect(Collectors.toList())
+		));
+	}
+
+	/**
+	 * The class is a simple wrapper for the DataColumn.
+	 */
+	protected final class ColumnWrapper {
+		private DataColumn column;
+
+		private ColumnWrapper(DataColumn column) {
+			this.column = column;
+		}
+
+		@Override
+		public String toString() {
+			return column.getName();
+		}
+
+		protected DataColumn getColumn() {
+			return column;
+		}
 	}
 }

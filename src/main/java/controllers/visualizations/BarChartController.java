@@ -15,9 +15,6 @@ import model.data.DataRow;
 import model.data.DataTable;
 import model.data.describer.DataDescriber;
 import model.data.describer.RowValueDescriber;
-import model.data.value.DataValue;
-import model.data.value.FloatValue;
-import model.data.value.IntValue;
 import model.data.value.NumberValue;
 import model.exceptions.InputMismatchException;
 import model.process.functions.Maximum;
@@ -39,8 +36,8 @@ public class BarChartController extends ChartController {
 
 	private DataColumn xCol;
 	private DataColumn yCol;
-	private ComboBox<DataColumn> xAxisBox;
-	private ComboBox<DataColumn> yAxisBox;
+	private ComboBox<ColumnWrapper> xAxisBox;
+	private ComboBox<ColumnWrapper> yAxisBox;
 	private Label xAxisErrorLabel;
 	private Label yAxisErrorLabel;
 
@@ -72,7 +69,7 @@ public class BarChartController extends ChartController {
 	public void setXAxisEventListener() {
 		xAxisBox.valueProperty().addListener((observable1, oldValue1, newValue1) -> {
 			xSet = false;
-			xCol = newValue1;
+			xCol = newValue1.getColumn();
 			List<String> dataxcol = table.getRows().stream()
 					.map(row -> row.getValue(xCol).toString())
 					.collect(Collectors.toList());
@@ -93,7 +90,7 @@ public class BarChartController extends ChartController {
 	public void setYAxisEventListener() {
 		yAxisBox.valueProperty().addListener((observable, oldValue, newValue) -> {
 			ySet = false;
-			yCol = newValue;
+			yCol = newValue.getColumn();
 			DataDescriber<NumberValue> yColDescriber = new RowValueDescriber<>(yCol);
 			try {
 				NumberValue maxValue = new Maximum(table, yColDescriber).calculate();
