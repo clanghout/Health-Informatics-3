@@ -10,10 +10,10 @@ import model.data.value.NumberValue;
  * 
  * @author Louis Gosschalk 19-05-2015
  */
-public class StandardDeviation extends Function {
+public class StandardDeviation extends Function<NumberValue<?>> {
 
 	public StandardDeviation(DataTable table,
-			DataDescriber<NumberValue> argument) {
+			DataDescriber<NumberValue<?>> argument) {
 		super(table, argument);
 	}
 
