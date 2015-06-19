@@ -39,7 +39,11 @@
 					<!--tables to save-->
 					<children>
 						<Label fx:id="tableSaveLabel">Select the tables you want to save:</Label>
-						<VBox fx:id="tablesBox"/>
+						<ScrollPane styleClass="scrollpane">
+							<content>
+								<VBox fx:id="tablesBox" />
+							</content>
+						</ScrollPane>
 					</children>
 				</VBox>
 				<VBox styleClass="inner-box">
