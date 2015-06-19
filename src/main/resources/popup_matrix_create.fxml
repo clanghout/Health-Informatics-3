@@ -21,10 +21,12 @@
 								<VBox fx:id="codesList" styleClass="codesList"/>
 								<HBox styleClass="hbox-button" AnchorPane.bottomAnchor="14.0">
 									<children>
-										<Button onAction="#handleMatrixCreateButtonAction"
+										<Button styleClass="button"
+												onAction="#handleMatrixCreateButtonAction"
 												text="Make matrix"
 												fx:id="makeButton"/>
-										<Button onAction="#handleCancelButtonAction"
+										<Button styleClass="button"
+												onAction="#handleCancelButtonAction"
 												text="Cancel"/>
 									</children>
 								</HBox>
