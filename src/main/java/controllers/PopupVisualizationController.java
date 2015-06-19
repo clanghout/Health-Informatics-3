@@ -67,13 +67,14 @@ public class PopupVisualizationController {
 		this.dialog = dialog;
 
 		tableComboBox.setDisable(false);
+
 		tableComboBox.setItems(model.getObservableList());
 		tableComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
 			this.table = newValue;
 			visualizationComboBox.setDisable(false);
 		});
 		visualizationComboBox.setItems(FXCollections.observableArrayList(
-				"BarChart", "BoxPlot", "Empty"));
+				"BarChart", "BoxPlot"));
 		visualizationComboBox.valueProperty()
 				.addListener((observable, oldValue, newValue) -> {
 					visualizationInputVBox.getChildren().clear();

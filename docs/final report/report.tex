@@ -1,0 +1,54 @@
+\documentclass{tudelft-report}
+
+
+% 1)Translates MATLAB code:
+\usepackage[framed,numbered,autolinebreaks,useliterate]{mcode}
+% enclose the MATLAB code by using begin/end{lstlisting}
+
+% 2)Multiple figures on one page
+\usepackage{float}
+\usepackage[caption = false]{subfig}
+
+\begin{document}
+
+%% Use Roman numerals for the page numbers of the title pages and table of
+%% contents.
+\frontmatter
+
+\title[The analysis of data concerning the health of renal transplant patients]{Renal Transplant \\Health Analysis}
+\author{Group C}
+\affiliation{Faculty Electrical Engineering Mathematics and Computer Science}
+
+\coverimage{cover.jpg}
+\makecover[backboxheight = 4.3in]
+
+
+%% Include an optional title page.
+\input{title}
+
+\input{chapters/abstract}
+
+\tableofcontents
+
+%% Use Arabic numerals for the page numbers of the chapters.
+\mainmatter
+
+\input{chapters/introduction}
+\input{chapters/software-overview}
+\input{chapters/engineering-reflection}
+\input{chapters/feature-description}
+\input{chapters/interaction-design}
+\input{chapters/product-evaluation}
+\input{chapters/outlook}
+
+
+%% Use letters for the chapter numbers of the appendices.
+\appendix
+
+\input{appendix/sprint-plan}
+\input{appendix/sprint-reflection}
+
+\bibliography{report}
+
+\end{document}
+

@@ -28,7 +28,7 @@ public class StringValue extends DataValue<String> {
 	}
 
 	@Override
-	public String toString() {
+	public String toStringNotNull() {
 		return value;
 	}
 

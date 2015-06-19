@@ -76,6 +76,7 @@ public class ConnectionTest {
 		DataTable res = (DataTable) con.process();
 
 		assertTrue(expected.equalsSoft(res));
+		assertTrue(expected.equalsSoft(model.getByName(res.getName()).get()));
 
 	}
 

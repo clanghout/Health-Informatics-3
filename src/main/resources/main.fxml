@@ -4,12 +4,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import com.sun.javafx.webkit.theme.ContextMenuImpl.MenuImpl?>
 <VBox fx:controller="controllers.MainUIController" styleClass="main-box" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 <children>
 	<MenuBar VBox.vgrow="NEVER">
 		<menus>
 		<Menu text="File">
 			<items>
+				<MenuItem onAction="#handleSaveAction" text="Save Tables" fx:id="save"/>
 				<MenuItem onAction="#handleQuitAction" text="Quit" />
 			</items>
 		</Menu>
@@ -30,9 +32,18 @@
 					<fx:include source="tab_visualization.fxml" fx:id="visualization"/>
 				</tabs>
 			</TabPane>
+
 		</children>
 	</AnchorPane>
+	<Region prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS" />
+		<HBox alignment="CENTER_LEFT" styleClass="progressBox">
+			<ProgressIndicator progress="-1" fx:id="indicator"></ProgressIndicator>
+			<Label fx:id="progressLabel"></Label>
+		</HBox>
+
 </children>
+
+
 
 <stylesheets>
 	<URL value="@main.css" />

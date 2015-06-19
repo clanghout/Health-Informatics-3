@@ -28,7 +28,7 @@ public final class IntValue extends NumberValue<Integer> {
 	}
 
 	@Override
-	public String toString() {
+	public String toStringNotNull() {
 		return String.valueOf(value);
 	}
 	
@@ -44,11 +44,16 @@ public final class IntValue extends NumberValue<Integer> {
 
 	@Override
 	public int compareTo(DataValue other) {
-		if (!(other instanceof IntValue)) {
+		if (!(other instanceof NumberValue)) {
 			throw new IllegalArgumentException(
-					"IntValue cannot compare to non ints");
+					"IntValue cannot compare to non numbers");
 		}
-		IntValue o = (IntValue) other;
-		return Integer.compare(value, o.value);
+		if (other instanceof IntValue) {
+			IntValue o = (IntValue) other;
+			return Integer.compare(value, o.value);
+		} else {
+			FloatValue o = (FloatValue) other;
+			return o.compareTo(this);
+		}
 	}
 }

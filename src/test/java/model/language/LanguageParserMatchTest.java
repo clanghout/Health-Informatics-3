@@ -98,7 +98,13 @@ public class LanguageParserMatchTest {
 				},
 				{
 						parser.Connection(),
-						"table1 WITH table2 AS test FROM table1.col AND table2.col",
+						"table1 ON table1.value WITH table2 ON table2.value AS test",
+						true
+				},
+				{
+						parser.Connection(),
+						"table1 ON table1.value WITH table2 ON table2.value AS test " +
+								"FROM table1.col AND table2.col",
 						true
 				},
 				{ parser.Sugar(), "test() |\n shit()    \t| stuff()", true},

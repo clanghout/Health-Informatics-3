@@ -1,51 +1,125 @@
 package controllers;
 
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.paint.Color;
+
+import javafx.scene.control.MenuItem;
 import model.data.DataModel;
+import view.SaveDialog;
+import java.io.IOException;
 
 import java.util.logging.Logger;
 
 /**
  * Controls the elements of the GUI.
- * @author Paul
  *
+ * @author Paul
  */
 public class MainUIController {
+
+	@FXML
+	private MenuItem save;
+	private DataModel model;
 
 	@FXML private TableViewController tableViewController;
 	@FXML private DataController dataController;
 	@FXML private AnalysisController analysisController;
 	@FXML private VisualizationController visualizationController;
+	@FXML private ProgressIndicator indicator;
+	@FXML private Label progressLabel;
+
 	private Logger logger = Logger.getLogger("MainUIController");
+	private boolean backgroundProcess = false;
+
+	public boolean startBackgroundProcess(Task task, String process) {
+		if (backgroundProcess) {
+			return false;
+		}
+		synchronized (MainUIController.class) {
+			indicator.setVisible(true);
+			progressLabel.setTextFill(Color.BLACK);
+			progressLabel.setText(process);
+			backgroundProcess = true;
+			dataController.disableImport();
+			analysisController.disableImport();
+			logger.info("Start process");
+
+			Thread thread = new Thread(task);
+			thread.setDaemon(true);
+			thread.setPriority(Thread.MIN_PRIORITY);
+			thread.start();
+
+
+			return true;
+		}
+	}
+
+	public void endBackgroundProcess(boolean succes) {
+		logger.info("End process");
+		backgroundProcess = false;
+		dataController.enableImport();
+		analysisController.enableImport();
+		indicator.setVisible(false);
+
+		if (succes) {
+			progressLabel.setTextFill(Color.BLACK);
+			progressLabel.setText("Done");
+		} else {
+			progressLabel.setTextFill(Color.RED);
+			progressLabel.setText("Error");
+		}
+
+	}
+
 
 	/**
 	 * Initializes other controllers that depend on this controller.
 	 */
-	@FXML public void initialize() {
+	@FXML
+	public void initialize() {
+		save.setDisable(true);
 		this.dataController.initialize(this);
 	}
-	
+
 	/**
 	 * Called when the "Quit" menubutton is pressed.
+	 *
 	 * @param event the event
 	 */
-	@FXML protected void handleQuitAction(ActionEvent event) {
+	@FXML
+	protected void handleQuitAction(ActionEvent event) {
 		logger.info("Shutting down");
 		Platform.exit();
 	}
-	
+
+	@FXML
+	protected void handleSaveAction() {
+		try {
+			SaveDialog saveDialog = new SaveDialog(model);
+			saveDialog.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Sets the model for the other controllers that need the same DataModel.
+	 *
 	 * @param model The DataModel
 	 */
 	public void setModel(DataModel model) {
+		this.model = model;
+		save.setDisable(false);
 		tableViewController.setDataModel(model);
 		analysisController.setDataModel(model);
+		analysisController.setMainUIController(this);
 		visualizationController.setModel(model);
 		visualizationController.initializeVisualisation();
-
 	}
-
 }
