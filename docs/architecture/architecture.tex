@@ -80,7 +80,7 @@ The software is based on the model-view-controller design pattern. The idea is t
 
 As mentioned before our program consists of modules that work together. In figure~\ref{fig:modules} these modules are laid out. The model module consists of the data that was read from files and data that was outputted from performed analyses. This data can be used by the controllers to show it to the user. The user can specify an analyis in SUGAR and the controller will then update the model after the analysis is translated into operations.
 
-\begin{figure}[h]
+\begin{figure}[!h]
 	\centering
     	\includegraphics[scale=0.5]{images/modules.jpg}
     \caption{Modules of the system}
@@ -103,10 +103,12 @@ The view module is responsible for the appearance of the user interface. Determi
 \item[Language]
 The language module is responsible for parsing the analysis the user gives us into an executable chain of code. The parser is two fold: one is for the process-chain, the other is for the macros. The process chain is turned into various ProcessInfos and the macros are turned into MacroInfos, which can be parsed into various kinds of ValueNodes. The ValueNodes make up the tree in which the constraints, computations, codes and all other operations are contained.
 
+\newpage
+
 \end{description}
 \subsection{State diagram}
 Figure~\ref{fig:statemachine} represents the state diagram which describes the flow of the program.
-\begin{figure}[h]
+\begin{figure}[!h]
 	\centering
 	\includegraphics[scale=0.5]{images/statemachine.png}
 	\caption{State diagram of the program}
