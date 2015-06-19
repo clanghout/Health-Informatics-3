@@ -130,8 +130,7 @@ Date values are a bit more complex than, for example an integer. Date values can
 
 To refer to data inside methods, we use identifiers. These identifiers can point to a column or table by finding the corresponding data for its given string which is the name of the searched data. The software also has a describer implemented, which can be used to refer to proceses like a computation or a single value in a column of a row. 
 
-In week 4.8 we found an issue that reading data from a large excel file takes up a lot of time and memory. We thought this could have been caused by the fact that we used hashmaps to store the rows and the iteration over its entries could take up a lot of time. We tried using linked hashmaps instead but that did not improve the reading speed very much. The conclusion to which we came was was that the POI library uses a lot of memory when reading over large excel files.
-
+In week 4.8 we found an issue that constructing a datamodel from a large excel file takes up a lot of memory. We thought this could have been caused by the fact that we used hashmaps to store columns in the model. We tried using linkedlists instead because these take up less memory but there was no significant difference. Because of the access speed of hashmaps we continued using hashmaps for the columns.
 
 \subsection{Used libraries}
 \begin{description}
