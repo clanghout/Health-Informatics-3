@@ -45,14 +45,14 @@ import java.util.logging.Logger;
 public class XmlWizardController {
 
 	private static final String DATE_FORMAT_HELP_TEXT =
-					"y = year\n" +
-					"M = month of year\n" +
-					"d = day of month \n" +
-					"------------------\n" +
-					"H = hour of day \n" +
-					"m = minute of hour \n" +
-					"s = second of minute\n" +
-					"exceldate = excel date\n";
+					"y = year\n"
+							+ "M = month of year\n"
+							+ "d = day of month \n"
+							+ "------------------\n"
+							+ "H = hour of day \n"
+							+ "m = minute of hour \n"
+							+ "s = second of minute\n"
+							+ "exceldate = excel date\n";
 
 	private Logger logger = Logger.getLogger("XmlWizardController");
 

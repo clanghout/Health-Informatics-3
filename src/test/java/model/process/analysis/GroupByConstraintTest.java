@@ -4,8 +4,9 @@ import model.data.DataColumn;
 import model.data.DataModel;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
+import model.data.value.BoolValue;
 import model.process.describer.ConstantDescriber;
-import model.process.describer.ConstraintDescriber;
+import model.process.describer.OperationDescriber;
 import model.process.describer.RowValueDescriber;
 import model.data.value.FloatValue;
 import model.data.value.StringValue;
@@ -52,7 +53,7 @@ public class GroupByConstraintTest {
 		constraints = new ArrayList<>();
 		groupNames = new ArrayList<>();
 		constraints.add(new ConstraintAnalysis(
-				new ConstraintDescriber(
+				new OperationDescriber<BoolValue>(
 						new EqualityCheck<StringValue>(
 								new RowValueDescriber<StringValue>(c1),
 								new ConstantDescriber<StringValue>(
@@ -61,7 +62,7 @@ public class GroupByConstraintTest {
 
 
 		constraints.add(new ConstraintAnalysis(
-				new ConstraintDescriber(
+				new OperationDescriber<BoolValue>(
 						new EqualityCheck<StringValue>(
 								new RowValueDescriber<StringValue>(c1),
 								new ConstantDescriber<StringValue>(
@@ -69,7 +70,7 @@ public class GroupByConstraintTest {
 		groupNames.add("bob");
 
 		constraints.add(new ConstraintAnalysis(
-				new ConstraintDescriber(
+				new OperationDescriber<BoolValue>(
 						new EqualityCheck<StringValue>(
 								new RowValueDescriber<StringValue>(c1),
 								new ConstantDescriber<StringValue>(
@@ -166,7 +167,7 @@ public class GroupByConstraintTest {
 		List<String> name = new ArrayList<>();
 
 		constraints.add(new ConstraintAnalysis(
-				new ConstraintDescriber(
+				new OperationDescriber<BoolValue>(
 						new EqualityCheck<StringValue>(
 								new RowValueDescriber<StringValue>(c1),
 								new ConstantDescriber<StringValue>(

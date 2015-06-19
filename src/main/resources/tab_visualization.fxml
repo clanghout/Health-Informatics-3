@@ -10,7 +10,7 @@
 			<children>
 				<VBox styleClass="outsidebox">
 					<children>
-						<HBox styleClass="buttons">
+						<VBox styleClass="space">
 							<children>
 								<Button
 										fx:id="makeGraphButton"
@@ -28,7 +28,7 @@
 										onAction="#handleSaveButtonAction"
 										text="Save graph"/>
 							</children>
-						</HBox>
+						</VBox>
 						<VBox fx:id="visualizationGraph">
 
 						</VBox>
