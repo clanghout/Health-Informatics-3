@@ -10,7 +10,7 @@
 		xmlns:fx="http://javafx.com/fxml/1"
 		>
 	<content>
-		<HBox fx:id="root">
+		<AnchorPane fx:id="root">
 			<VBox styleClass="analysis-buttons">
 				<Button styleClass="analysis-button" text="Load"  onAction="#handleLoadButtonAction"/>
 				<Button styleClass="analysis-button" text="Save"  onAction="#handleSaveButtonAction"/>
@@ -19,9 +19,8 @@
 				<Label />
 				<Button styleClass="analysis-button" text="Clear" onAction="#handleClearButtonAction"/>
 			</VBox>
-
-			<VBox styleClass="analysis-spacing">
-				<TextFlow styleClass="analysis-text-out">
+			<VBox maxHeight="Infinity" styleClass="analysis-spacing" AnchorPane.leftAnchor="100" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" fx:id="textBox">
+				<TextFlow styleClass="analysis-text-out" fx:id="textFlow">
 					<TextArea styleClass="analysis-text" fx:id="userscript"/>
 				</TextFlow>
 				<VBox styleClass="labels">
@@ -29,6 +28,6 @@
 					<VBox fx:id="errorBox" styleClass="labels"/>
 				</VBox>
 			</VBox>
-		</HBox>
+		</AnchorPane>
 	</content>
 </Tab>
