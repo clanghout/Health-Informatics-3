@@ -128,7 +128,7 @@ The data that we read from the file is stored in datatables containing columns o
 
 Date values are a bit more complex than for example an integer. Date values can vary in being a timestamp, period of time, just a date or just a time value. The section for dates of the datavalue structure has been implemented to have multiple types of values for these varying types of dates.
 
-To refer to data inside methods, we use identifiers. These identifiers can point to a column or table by finding the corresponding data for its given string which is the name of the searched data. The software also has a describer implemented, which can be used to refer to single values like a specific of a column in a row. 
+To refer to data inside methods, we use identifiers. These identifiers can point to a column or table by finding the corresponding data for its given string which is the name of the searched data. The software also has a describer implemented, which can be used to refer to proceses like a computation or a single value in a column of a row. 
 
 In week 4.8 we found an issue that reading data from a large excel file takes up a lot of time and memory. We thought this could have been caused by the fact that we used hashmaps to store the rows and the iteration over its entries could take up a lot of time. We tried using linked hashmaps instead but that did not improve the reading speed very much.
 
