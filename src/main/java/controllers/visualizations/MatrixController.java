@@ -1,8 +1,11 @@
 package controllers.visualizations;
 
+import model.data.DataColumn;
 import model.data.DataModel;
 import model.data.DataRow;
 import model.data.DataTable;
+import model.data.describer.RowValueDescriber;
+import model.process.SortProcess;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -12,9 +15,9 @@ import java.util.logging.Logger;
  * Controller for State Transition Matrix.
  * Created by Chris on 9-6-2015.
  */
-public class MatrixController {
+public class MatrixController extends GraphImageController {
 	private DataModel model;
-	private Set<String> codes;
+	private Map<DataTable, Set<String>> codes;
 	private Logger logger = Logger.getLogger("MatrixController");
 
 	/**
@@ -24,20 +27,37 @@ public class MatrixController {
 	 */
 	public MatrixController(DataModel model) {
 		this.model = model;
+		codes = new HashMap<>();
 	}
 
 	/**
 	 * Collect the codes from all the rows in the complete DataModel and add them to the codes set.
 	 */
 	private void collectCodes() {
-		codes = new HashSet<>();
 		logger.log(Level.INFO, "Tables in model = " + model.getObservableList());
+		Set<String> codeset;
 		for (DataTable table : model.getObservableList()) {
 			logger.log(Level.INFO, "checking table " + table);
+			codeset = new HashSet<>();
 			for (DataRow row : table.getRows()) {
-				codes.addAll(row.getCodes());
+				codeset.addAll(row.getCodes());
+			}
+			codes.put(table, codeset);
+		}
+	}
+
+	/**
+	 * checks if any code exists in the model.
+	 *
+	 * @return true if no code exists.
+	 */
+	public boolean noCodes() {
+		for (DataTable table : model) {
+			if (!codes.get(table).isEmpty()) {
+				return false;
 			}
 		}
+		return true;
 	}
 
 	/**
@@ -57,7 +77,7 @@ public class MatrixController {
 	 *
 	 * @return Set of codes.
 	 */
-	public Set<String> getCodes() {
+	public Map<DataTable, Set<String>> getCodes() {
 		initialize();
 		return codes;
 	}
@@ -69,7 +89,7 @@ public class MatrixController {
 	 * @param codes the list of codes for the right axis.
 	 * @return createImage of the tableView
 	 */
-	public int[][] create(List<String> codes) {
+	public int[][] create(List<String> codes, DataTable table, DataColumn column) {
 		Map<String, Integer> codeMap = new HashMap<>(codes.size());
 		int[][] matrix = createMatrix(codes.size());
 		for (int i = 0; i < codes.size(); i++) {
@@ -78,17 +98,20 @@ public class MatrixController {
 		}
 		String currentCode = "";
 		boolean init = true;
-		for (DataTable table : model.getTables()) {
-			for (DataRow row : table.getRows()) {
-				for (String code : row.getCodes()) {
-					if (codeMap.containsKey(code)) {
-						if (init) {
-							currentCode = code;
-							init = false;
-						} else  {
-							matrix[codeMap.get(currentCode)][codeMap.get(code)] += 1;
-							currentCode = code;
-						}
+		SortProcess sortProcess = new SortProcess(
+				new RowValueDescriber<>(column),
+				SortProcess.Order.ASCENDING);
+		sortProcess.setInput(table);
+		DataTable sortedTable = (DataTable) sortProcess.process();
+		for (DataRow row : sortedTable.getRows()) {
+			for (String code : row.getCodes()) {
+				if (codeMap.containsKey(code)) {
+					if (init) {
+						currentCode = code;
+						init = false;
+					} else {
+						matrix[codeMap.get(currentCode)][codeMap.get(code)] += 1;
+						currentCode = code;
 					}
 				}
 			}

@@ -14,12 +14,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import model.data.DataModel;
-import model.data.DataTable;
 import view.GraphCreationDialog;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Controller for the popup window that shows when the graph create button is pressed.
@@ -28,7 +23,7 @@ import java.util.stream.Collectors;
  * <p>
  * Created by Chris on 2-6-2015.
  */
-public class PopupVisualizationController {
+public class PopupVisualizationController extends PopupController {
 	@FXML
 	private ComboBox<TableWrapper> tableComboBox;
 	@FXML
@@ -37,13 +32,11 @@ public class PopupVisualizationController {
 	private VBox visualizationInputVBox;
 	@FXML
 	private Label createError;
-	private DataTable table;
 	private ChartController chartController;
 	private VisualizationController visualizationController;
 	private GraphCreationDialog dialog;
 
 	private boolean validVisualization;
-	private boolean tableSet = false;
 
 	public PopupVisualizationController() {
 	}
@@ -55,7 +48,7 @@ public class PopupVisualizationController {
 	 * This method is automatically called at the initialization of the application.
 	 */
 	public void initialize() {
-		tableComboBox.setMaxWidth(Double.MAX_VALUE);
+
 		visualizationComboBox.setMaxWidth(Double.MAX_VALUE);
 		tableComboBox.setDisable(true);
 		visualizationComboBox.setDisable(true);
@@ -73,9 +66,16 @@ public class PopupVisualizationController {
 			GraphCreationDialog dialog) {
 		this.visualizationController = visualisationController;
 		this.dialog = dialog;
-
 		tableComboBox.setDisable(false);
-		initComboBox(model);
+		initComboBox(model, tableComboBox);
+		setVisualizationComboBox();
+	}
+
+	public void tableEvent() {
+		visualizationComboBox.setDisable(false);
+	}
+
+	private void setVisualizationComboBox() {
 		visualizationComboBox.setItems(FXCollections.observableArrayList(
 				"BarChart", "BoxPlot"));
 		visualizationComboBox.valueProperty()
@@ -84,14 +84,13 @@ public class PopupVisualizationController {
 					validVisualization = true;
 					switch (newValue) {
 						case "BarChart":
-
 							chartController =
-									new BarChartController(table, visualizationInputVBox);
+									new BarChartController(getTable(), visualizationInputVBox);
 							chartController.initialize();
 							break;
 						case "BoxPlot":
 							chartController =
-									new BoxPlotController(table, visualizationInputVBox);
+									new BoxPlotController(getTable(), visualizationInputVBox);
 							chartController.initialize();
 							break;
 						default:
@@ -102,25 +101,12 @@ public class PopupVisualizationController {
 				});
 	}
 
-	private void initComboBox(DataModel model) {
-		List<TableWrapper> tables = model.getTables().stream()
-				.map(TableWrapper::new)
-				.collect(Collectors.toList());
-		List<TableWrapper> asArrayList = new ArrayList<>(tables);
-		tableComboBox.setItems(FXCollections.observableArrayList(asArrayList));
-		tableComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-			this.table = newValue.getTable();
-			visualizationComboBox.setDisable(false);
-			tableSet = true;
-		});
-	}
-
 	/**
 	 * Create a graph if possible and send it to the visualization controller.
 	 */
 	@FXML
 	protected void handleGraphCreateButtonAction() {
-		if (chartController.axesSet() && validVisualization && tableSet) {
+		if (chartController.axesSet() && isTableSet() && validVisualization) {
 			if (chartController instanceof BarChartController) {
 				BarChart chart = ((BarChartController) chartController).create();
 				chart.snapshot(new SnapshotParameters(), null);
@@ -144,24 +130,5 @@ public class PopupVisualizationController {
 		dialog.close();
 	}
 
-	/**
-	 * This class is a simple wrapper for the DataTable.
-	 */
-	private final class TableWrapper {
 
-		private DataTable table;
-
-		private TableWrapper(DataTable table) {
-			this.table = table;
-		}
-
-		@Override
-		public String toString() {
-			return table.getName();
-		}
-
-		private DataTable getTable() {
-			return table;
-		}
-	}
 }

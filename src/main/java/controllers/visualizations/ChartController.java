@@ -1,8 +1,5 @@
 package controllers.visualizations;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.WritableImage;
@@ -15,13 +12,7 @@ import model.data.value.NumberValue;
 import model.exceptions.InputMismatchException;
 import model.process.functions.Maximum;
 import model.process.functions.Minimum;
-import javafx.scene.paint.Color;
-import model.data.DataColumn;
-import model.data.DataTable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 /**
@@ -47,13 +38,8 @@ public abstract class ChartController extends GraphImageController {
 	 */
 	public abstract WritableImage createImage();
 
-
-	public void setColumnDropDown(ComboBox<ColumnWrapper> inputBox, DataTable dataTable) {
-		inputBox.setDisable(false);
-		inputBox.setItems(wrapColumns(dataTable.getColumns()));
-	}
-
-	public void setYAxisEventListener(ComboBox<ColumnWrapper> yAxisBox, DataTable table, Label yAxisErrorLabel) {
+	public void setYAxisEventListener(ComboBox<ColumnWrapper> yAxisBox,
+	                                  DataTable table, Label yAxisErrorLabel) {
 		yAxisBox.valueProperty().addListener((observable, oldValue, newValue) -> {
 			yCol = newValue.getColumn();
 			DataDescriber<DataValue<?>> yColDescriber = new RowValueDescriber<>(yCol);
@@ -87,32 +73,6 @@ public abstract class ChartController extends GraphImageController {
 	 */
 	public int computeSeparatorValue(float max, float min) {
 		return Math.round((max - min) / YAXIS_SEPARATION);
-	}
-
-	protected ObservableList<ColumnWrapper> wrapColumns(List<DataColumn> columns) {
-		return FXCollections.observableArrayList(new ArrayList<>(
-				columns.stream().map(ColumnWrapper::new).collect(Collectors.toList())
-		));
-	}
-
-	/**
-	 * The class is a simple wrapper for the DataColumn.
-	 */
-	protected final class ColumnWrapper {
-		private DataColumn column;
-
-		private ColumnWrapper(DataColumn column) {
-			this.column = column;
-		}
-
-		@Override
-		public String toString() {
-			return column.getName();
-		}
-
-		protected DataColumn getColumn() {
-			return column;
-		}
 	}
 
 	public DataColumn getyCol() {
