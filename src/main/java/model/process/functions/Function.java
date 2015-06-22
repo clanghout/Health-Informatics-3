@@ -2,7 +2,7 @@ package model.process.functions;
 
 import model.data.DataRow;
 import model.data.DataTable;
-import model.data.describer.DataDescriber;
+import model.process.describer.DataDescriber;
 import model.data.value.DataValue;
 import model.data.value.FloatValue;
 import model.data.value.IntValue;
@@ -13,14 +13,15 @@ import model.exceptions.InputMismatchException;
  * This class will provide a framework for functions resulting single data values.
  * 
  * @author louisgosschalk 13-05-2015
+ * @param <T> The type of value to be put into this function.
  */
-public abstract class Function {
+public abstract class Function<T extends DataValue<?>> {
 	private DataRow row;
 	private DataTable table;
-	private DataDescriber<NumberValue> argument;
+	private DataDescriber<T> argument;
 	private boolean isInt;
 
-	public Function(DataTable table, DataDescriber<NumberValue> argument) {
+	public Function(DataTable table, DataDescriber<T> argument) {
 		this.table = table;
 		this.argument = argument;
 	}
@@ -38,7 +39,7 @@ public abstract class Function {
 	 * Return the DataDescriber for the function.
 	 * @return the DataDescriber for the function
 	 */
-	public DataDescriber<NumberValue> getArgument() {
+	public DataDescriber<T> getArgument() {
 		return argument;
 	}
 
@@ -55,7 +56,7 @@ public abstract class Function {
 	 * 
 	 * @return DataValue The result of the calculation.
 	 */
-	public abstract NumberValue calculate();
+	public abstract DataValue<?> calculate();
 
 	/**
 	 * Initialize class checks if specified column is eligible.
@@ -89,13 +90,13 @@ public abstract class Function {
 	 *            the specific row of the value
 	 * @return float The value as a float.
 	 */
-	protected float intOrFloat(DataDescriber<NumberValue> arg, DataRow line) {
+	protected float intOrFloat(DataDescriber<NumberValue<?>> arg, DataRow line) {
 		float result = 0.0f;
 		if (arg.resolve(line) instanceof FloatValue) {
-			result = (Float) argument.resolve(line).getValue();
+			result = (Float) arg.resolve(line).getValue();
 			setInt(false);
 		} else {
-			result = (float) ((int) argument.resolve(line).getValue());
+			result = (float) ((Integer) arg.resolve(line).getValue());
 			setInt(true);
 		}
 		return result;

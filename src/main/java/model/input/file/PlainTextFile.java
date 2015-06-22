@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Logger;
 
 /**
  * Class to specify a .txt file.
@@ -17,8 +16,6 @@ import java.util.logging.Logger;
  * @author Paul
  */
 public class PlainTextFile extends DataFile {
-
-	private Logger logger = Logger.getLogger("PlainTextFile");
 
 	private int counter;
 	private String delimiter = ",";

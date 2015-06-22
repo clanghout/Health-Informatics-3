@@ -4,14 +4,9 @@ import model.data.DataColumn;
 import model.data.DataModel;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
-import model.data.describer.ConstantDescriber;
-import model.data.describer.ConstraintDescriber;
-import model.data.describer.RowValueDescriber;
-import model.data.value.DataValue;
+import model.process.describer.RowValueDescriber;
 import model.data.value.FloatValue;
-import model.data.value.NumberValue;
 import model.data.value.StringValue;
-import model.process.analysis.operations.constraints.EqualityCheck;
 import model.process.functions.Function;
 import model.process.functions.Maximum;
 import model.process.functions.Minimum;
@@ -70,7 +65,7 @@ public class GroupByColumnTest {
 		List<Function> functions = new ArrayList<>();
 		List<String> name = new ArrayList<>();
 
-		functions.add(new Maximum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		functions.add(new Maximum(new DataTable(), new RowValueDescriber<>(c2)));
 		name.add("max");
 		GroupByColumn groupBy = new GroupByColumn("test2", new RowValueDescriber<>(c1),
 				functions, name);
@@ -94,9 +89,9 @@ public class GroupByColumnTest {
 		List<Function> functions = new ArrayList<>();
 		List<String> name = new ArrayList<>();
 
-		functions.add(new Maximum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		functions.add(new Maximum(new DataTable(), new RowValueDescriber<>(c2)));
 		name.add("max");
-		functions.add(new Minimum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		functions.add(new Minimum(new DataTable(), new RowValueDescriber<>(c2)));
 		name.add("min");
 		GroupByColumn groupBy = new GroupByColumn("test2", new RowValueDescriber<>(c1),
 				functions, name);
@@ -123,9 +118,9 @@ public class GroupByColumnTest {
 		List<Function> functions = new ArrayList<>();
 		List<String> name = new ArrayList<>();
 
-		functions.add(new Maximum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		functions.add(new Maximum(new DataTable(), new RowValueDescriber<>(c2)));
 		name.add("max");
-		functions.add(new Minimum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		functions.add(new Minimum(new DataTable(), new RowValueDescriber<>(c2)));
 		GroupByColumn groupBy = new GroupByColumn("test2", new RowValueDescriber<>(c1),
 				functions, name);
 
@@ -145,9 +140,9 @@ public class GroupByColumnTest {
 
 		DataTable table = builder.build();
 
-		functions.add(new Maximum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		functions.add(new Maximum(new DataTable(), new RowValueDescriber<>(c2)));
 		name.add("max");
-		functions.add(new Minimum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		functions.add(new Minimum(new DataTable(), new RowValueDescriber<>(c2)));
 		name.add("min");
 		GroupByColumn groupBy = new GroupByColumn("test2", new RowValueDescriber<>(c1),
 				functions, name);

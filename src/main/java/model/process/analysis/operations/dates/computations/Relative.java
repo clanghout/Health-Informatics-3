@@ -1,7 +1,7 @@
 package model.process.analysis.operations.dates.computations;
 
 import model.data.Row;
-import model.data.describer.DataDescriber;
+import model.process.describer.DataDescriber;
 import model.data.value.IntValue;
 import model.data.value.TemporalValue;
 

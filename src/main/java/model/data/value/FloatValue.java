@@ -28,7 +28,7 @@ public final class FloatValue extends NumberValue<Float> {
 	}
 
 	@Override
-	public String toString() {
+	public String toStringNotNull() {
 		return String.valueOf(value);
 	}
 

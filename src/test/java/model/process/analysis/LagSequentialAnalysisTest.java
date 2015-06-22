@@ -5,16 +5,10 @@ import model.data.DataColumn;
 import model.data.DataModel;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
-import model.data.describer.ConstantDescriber;
-import model.data.describer.ConstraintDescriber;
-import model.data.describer.DataDescriber;
-import model.data.describer.RowValueDescriber;
-import model.data.value.BoolValue;
 import model.data.value.DataValue;
 import model.data.value.DateTimeValue;
 import model.data.value.IntValue;
 import model.language.Identifier;
-import model.process.analysis.operations.constraints.GreaterThanCheck;
 
 import org.junit.Before;
 import org.junit.Test;

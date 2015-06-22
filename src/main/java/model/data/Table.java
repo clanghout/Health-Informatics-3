@@ -1,6 +1,6 @@
 package model.data;
 
-import model.process.setOperations.SimpleJoin;
+import model.process.analysis.operations.set.SimpleJoin;
 
 import java.util.*;
 

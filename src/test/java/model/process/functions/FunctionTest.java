@@ -3,6 +3,7 @@ package model.process.functions;
 import model.data.DataColumn;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
+import model.data.value.DateTimeValue;
 import model.data.value.FloatValue;
 import model.data.value.IntValue;
 import model.data.value.StringValue;
@@ -22,6 +23,7 @@ public abstract class FunctionTest {
 	protected DataColumn floatColumn;
 	protected DataColumn floatsColumn;
 	protected DataColumn floatersColumn;
+	protected DataColumn dateColumn;
 	private DataTableBuilder builder;
 	
 	/**
@@ -40,6 +42,7 @@ public abstract class FunctionTest {
 		floatColumn = builder.createColumn("float", FloatValue.class);
 		floatsColumn = builder.createColumn("floats", FloatValue.class);
 		floatersColumn = builder.createColumn("floaters", FloatValue.class);
+		dateColumn = builder.createColumn("date", DateTimeValue.class);
 
 		StringValue string = new StringValue("What");
 		IntValue int1 = new IntValue(9);
@@ -47,7 +50,8 @@ public abstract class FunctionTest {
 		FloatValue float1 = new FloatValue(6.9f);
 		FloatValue float2 = new FloatValue(8.8f);
 		FloatValue float3 = new FloatValue(6.6f);
-		builder.createRow(string, int1, int2, float1, float2, float3);
+		DateTimeValue dateTimeValue = new DateTimeValue(1995, 1, 17, 0, 0, 0);
+		builder.createRow(string, int1, int2, float1, float2, float3, dateTimeValue);
 
 		string = new StringValue("Can");
 		int1 = new IntValue(5);
@@ -55,7 +59,8 @@ public abstract class FunctionTest {
 		float1 = new FloatValue(6.5f);
 		float2 = new FloatValue(6.9f);
 		float3 = new FloatValue(6.6f);
-		builder.createRow(string, int1, int2, float1, float2, float3);
+		dateTimeValue = new DateTimeValue(1996, 1, 17, 0, 0, 0);
+		builder.createRow(string, int1, int2, float1, float2, float3, dateTimeValue);
 
 		string = new StringValue("You");
 		int1 = new IntValue(3);
@@ -63,7 +68,8 @@ public abstract class FunctionTest {
 		float1 = new FloatValue(5.9f);
 		float2 = new FloatValue(8.8f);
 		float3 = new FloatValue(6.4f);
-		builder.createRow(string, int1, int2, float1, float2, float3);
+		dateTimeValue = new DateTimeValue(1997, 1, 17, 0, 0, 0);
+		builder.createRow(string, int1, int2, float1, float2, float3, dateTimeValue);
 
 		string = new StringValue("Do");
 		int1 = new IntValue(10);
@@ -71,7 +77,10 @@ public abstract class FunctionTest {
 		float1 = new FloatValue(6.2f);
 		float2 = new FloatValue(5.3f);
 		float3 = new FloatValue(6.6f);
-		builder.createRow(string, int1, int2, float1, float2, float3);
+		dateTimeValue = new DateTimeValue(1998, 1, 17, 0, 0, 0);
+		builder.createRow(string, int1, int2, float1, float2, float3, dateTimeValue);
+
+
 
 		table = builder.build();
 	}
@@ -83,7 +92,8 @@ public abstract class FunctionTest {
 		FloatValue float1 = new FloatValue(9.2f);
 		FloatValue float2 = new FloatValue(4.8f);
 		FloatValue float3 = new FloatValue(7.0f);
-		builder.createRow(string, int1, int2, float1, float2, float3);
+		DateTimeValue dateTimeValue = new DateTimeValue(1999, 1, 17, 0, 0, 0);
+		builder.createRow(string, int1, int2, float1, float2, float3, dateTimeValue);
 
 		table = builder.build();
 	}

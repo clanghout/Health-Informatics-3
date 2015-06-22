@@ -1,7 +1,7 @@
 package model.process.analysis.operations.dates.constraint;
 
-import model.data.describer.ConstantDescriber;
-import model.data.describer.DataDescriber;
+import model.process.describer.ConstantDescriber;
+import model.process.describer.DataDescriber;
 import model.data.value.BoolValue;
 import model.data.value.DateTimeValue;
 import org.junit.Test;

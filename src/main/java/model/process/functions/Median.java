@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import model.data.DataTable;
-import model.data.describer.DataDescriber;
+import model.process.describer.DataDescriber;
 import model.data.value.FloatValue;
 import model.data.value.NumberValue;
 

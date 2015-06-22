@@ -58,3 +58,7 @@
 .right-padding {
     -fx-padding: 0 0 0 20px;
 }
+
+.scrollpane {
+    -fx-fit-to-width: true;
+}

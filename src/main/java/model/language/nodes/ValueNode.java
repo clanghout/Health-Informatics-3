@@ -1,7 +1,7 @@
 package model.language.nodes;
 
 import model.data.DataModel;
-import model.data.describer.DataDescriber;
+import model.process.describer.DataDescriber;
 import model.data.value.DataValue;
 import org.parboiled.trees.ImmutableBinaryTreeNode;
 

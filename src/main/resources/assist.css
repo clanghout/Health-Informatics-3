@@ -1,0 +1,7 @@
+.message {
+	-fx-font-size: 12px;
+	-fx-font-weight: bold;
+	-fx-padding: 5px;
+	-fx-border-width: 1px;
+	-fx-border-color: black;
+}

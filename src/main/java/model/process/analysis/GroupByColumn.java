@@ -3,11 +3,12 @@ package model.process.analysis;
 import model.data.DataRow;
 import model.data.DataTable;
 import model.data.Table;
-import model.data.describer.ConstantDescriber;
-import model.data.describer.ConstraintDescriber;
-import model.data.describer.DataDescriber;
+import model.data.value.BoolValue;
+import model.process.describer.ConstantDescriber;
+import model.process.describer.DataDescriber;
 import model.data.value.DataValue;
 import model.process.analysis.operations.constraints.EqualityCheck;
+import model.process.describer.OperationDescriber;
 import model.process.functions.Function;
 
 import java.util.LinkedHashMap;
@@ -61,7 +62,7 @@ public class GroupByColumn extends GroupByAnalysis {
 		for (DataRow row : table.getRows()) {
 			DataValue<?> value = column.resolve(row);
 			constraints.put(value, new ConstraintAnalysis(
-					new ConstraintDescriber(
+					new OperationDescriber<BoolValue>(
 							new EqualityCheck(
 									column,
 									new ConstantDescriber<>(

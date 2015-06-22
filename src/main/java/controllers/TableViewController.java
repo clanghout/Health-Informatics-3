@@ -6,11 +6,12 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.paint.Color;
 import model.data.*;
+import view.SaveDialog;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -29,9 +30,14 @@ public class TableViewController implements Observer {
 	private TableView<ObservableList<StringProperty>> tableView;
 	@FXML
 	private ListView<TableWrapper> inputTables;
+	@FXML
+	private Button saveButton;
+	@FXML
+	private Label saveStatus;
 
 	private DataModel model;
 	private DataTable currentTable;
+
 
 
 	/**
@@ -45,6 +51,8 @@ public class TableViewController implements Observer {
 	 * with the tables. If the selection changes, the table will update.
 	 */
 	public void initialize() {
+		saveButton.setDisable(true);
+		saveStatus.setTextFill(Color.RED);
 		logger.info("initializing listview changelistener");
 		ChangeListener<TableWrapper> listener = (ov, oldValue, newValue) -> {
 			if (!(newValue == null)) {
@@ -61,6 +69,9 @@ public class TableViewController implements Observer {
 	 * Loads the data from the model and updates the view for the user.
 	 */
 	private void fillTable(DataTable table) {
+		if (table == null) {
+			return;
+		}
 		logger.info("update table: " + table);
 		tableView.getItems().clear();
 		tableView.getColumns().clear();
@@ -142,10 +153,24 @@ public class TableViewController implements Observer {
 	 */
 	public void setDataModel(DataModel model) {
 		this.model = model;
-		currentTable = model.get(0);
+		saveButton.setDisable(false);
+		if (model.getTables().size() > 0) {
+			currentTable = model.get(0);
+		}
 		model.addObserver(this);
 		updateList();
 		fillTable(currentTable);
+	}
+
+	@FXML
+	protected void handleSaveAction() {
+		saveStatus.setText("");
+		try {
+			SaveDialog saveDialog = new SaveDialog(model);
+			saveDialog.show();
+		} catch (IOException e) {
+			saveStatus.setText("An error occurred, data not saved!");
+		}
 	}
 
 	/**
@@ -162,6 +187,7 @@ public class TableViewController implements Observer {
 			updateList();
 			fillTable(currentTable);
 		}
+		saveStatus.setText("");
 	}
 
 	private void updateList() {

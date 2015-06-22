@@ -2,8 +2,8 @@ package model.process.analysis.operations.constraints;
 
 import model.data.DataColumn;
 import model.data.DataRow;
-import model.data.describer.ConstantDescriber;
-import model.data.describer.RowValueDescriber;
+import model.process.describer.ConstantDescriber;
+import model.process.describer.RowValueDescriber;
 import model.data.value.DataValue;
 import model.data.value.StringValue;
 import org.junit.Before;

@@ -13,7 +13,15 @@ public abstract class DataValue<Type> implements Comparable<DataValue> {
 
 	public abstract Type getValue();
 
-	public abstract String toString();
+	public abstract String toStringNotNull();
+
+	public String toString() {
+		if (isNull) {
+			return "";
+		} else {
+			return toStringNotNull();
+		}
+	}
 
 	@Override
 	public boolean equals(Object obj) {

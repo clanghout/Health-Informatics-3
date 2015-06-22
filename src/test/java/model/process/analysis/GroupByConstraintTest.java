@@ -4,12 +4,11 @@ import model.data.DataColumn;
 import model.data.DataModel;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
-import model.data.describer.ConstantDescriber;
-import model.data.describer.ConstraintDescriber;
-import model.data.describer.RowValueDescriber;
-import model.data.value.DataValue;
+import model.data.value.BoolValue;
+import model.process.describer.ConstantDescriber;
+import model.process.describer.OperationDescriber;
+import model.process.describer.RowValueDescriber;
 import model.data.value.FloatValue;
-import model.data.value.NumberValue;
 import model.data.value.StringValue;
 import model.process.analysis.operations.constraints.EqualityCheck;
 import model.process.functions.Function;
@@ -54,7 +53,7 @@ public class GroupByConstraintTest {
 		constraints = new ArrayList<>();
 		groupNames = new ArrayList<>();
 		constraints.add(new ConstraintAnalysis(
-				new ConstraintDescriber(
+				new OperationDescriber<BoolValue>(
 						new EqualityCheck<StringValue>(
 								new RowValueDescriber<StringValue>(c1),
 								new ConstantDescriber<StringValue>(
@@ -63,7 +62,7 @@ public class GroupByConstraintTest {
 
 
 		constraints.add(new ConstraintAnalysis(
-				new ConstraintDescriber(
+				new OperationDescriber<BoolValue>(
 						new EqualityCheck<StringValue>(
 								new RowValueDescriber<StringValue>(c1),
 								new ConstantDescriber<StringValue>(
@@ -71,7 +70,7 @@ public class GroupByConstraintTest {
 		groupNames.add("bob");
 
 		constraints.add(new ConstraintAnalysis(
-				new ConstraintDescriber(
+				new OperationDescriber<BoolValue>(
 						new EqualityCheck<StringValue>(
 								new RowValueDescriber<StringValue>(c1),
 								new ConstantDescriber<StringValue>(
@@ -99,7 +98,7 @@ public class GroupByConstraintTest {
 		List<Function> functions = new ArrayList<>();
 		List<String> name = new ArrayList<>();
 
-		functions.add(new Maximum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		functions.add(new Maximum(new DataTable(), new RowValueDescriber<>(c2)));
 		name.add("max");
 		GroupByConstraint groupBy = new GroupByConstraint("test2", constraints, groupNames,
 				functions, name);
@@ -123,9 +122,9 @@ public class GroupByConstraintTest {
 		List<Function> functions = new ArrayList<>();
 		List<String> name = new ArrayList<>();
 
-		functions.add(new Maximum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		functions.add(new Maximum(new DataTable(), new RowValueDescriber<>(c2)));
 		name.add("max");
-		functions.add(new Minimum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		functions.add(new Minimum(new DataTable(), new RowValueDescriber<>(c2)));
 		name.add("min");
 		GroupByConstraint groupBy = new GroupByConstraint("test2", constraints, groupNames,
 				functions, name);
@@ -152,9 +151,9 @@ public class GroupByConstraintTest {
 		List<Function> functions = new ArrayList<>();
 		List<String> name = new ArrayList<>();
 
-		functions.add(new Maximum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		functions.add(new Maximum(new DataTable(), new RowValueDescriber<>(c2)));
 		name.add("max");
-		functions.add(new Minimum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		functions.add(new Minimum(new DataTable(), new RowValueDescriber<>(c2)));
 		GroupByConstraint groupBy = new GroupByConstraint("test2", constraints, groupNames,
 				functions, name);
 
@@ -168,14 +167,14 @@ public class GroupByConstraintTest {
 		List<String> name = new ArrayList<>();
 
 		constraints.add(new ConstraintAnalysis(
-				new ConstraintDescriber(
+				new OperationDescriber<BoolValue>(
 						new EqualityCheck<StringValue>(
 								new RowValueDescriber<StringValue>(c1),
 								new ConstantDescriber<StringValue>(
 										new StringValue("geen"))))));
 		groupNames.add("geen");
 
-		functions.add(new Maximum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		functions.add(new Maximum(new DataTable(), new RowValueDescriber<>(c2)));
 		name.add("max");
 		GroupByConstraint groupBy = new GroupByConstraint("test2", constraints, groupNames,
 				functions, name);
@@ -210,9 +209,9 @@ public class GroupByConstraintTest {
 
 		DataTable table = builder.build();
 
-		functions.add(new Maximum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		functions.add(new Maximum(new DataTable(), new RowValueDescriber<>(c2)));
 		name.add("max");
-		functions.add(new Minimum(new DataTable(), new RowValueDescriber<NumberValue>(c2)));
+		functions.add(new Minimum(new DataTable(), new RowValueDescriber<>(c2)));
 		name.add("min");
 		GroupByColumn groupBy = new GroupByColumn("test2", new RowValueDescriber<>(c1),
 				functions, name);

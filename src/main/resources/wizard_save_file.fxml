@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 
 <VBox fx:id="root" styleClass="main-box-save" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-	  fx:controller="controllers.SaveWizardController">
+	  fx:controller="controllers.wizard.SaveWizardController">
 	<children>
 		<HBox styleClass="save-box">
 			<!--main top box-->
@@ -39,7 +39,11 @@
 					<!--tables to save-->
 					<children>
 						<Label fx:id="tableSaveLabel">Select the tables you want to save:</Label>
-						<VBox fx:id="tablesBox"/>
+						<ScrollPane styleClass="scrollpane">
+							<content>
+								<VBox fx:id="tablesBox" />
+							</content>
+						</ScrollPane>
 					</children>
 				</VBox>
 				<VBox styleClass="inner-box">

@@ -4,7 +4,8 @@ import model.data.DataColumn;
 import model.data.DataTable;
 import model.data.DataRow;
 import model.data.value.*;
-
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,6 +18,9 @@ import java.util.logging.Logger;
  */
 public class DataTableWriter {
 	private Logger logger = Logger.getLogger("DataTableWriter");
+
+	//Delimiter used in CSV file
+	private static final String NEW_LINE_SEPARATOR = "\n";
 
 	// Options for user
 	private boolean quotationMarks;
@@ -60,6 +64,33 @@ public class DataTableWriter {
 	}
 
 	/**
+	 * Write to csv file using the commons-csv library.
+	 * @param table table to save.
+	 * @param file file to save to.
+	 * @throws IOException when save location is invalid.
+	 */
+	public void writeCSV(DataTable table, File file) throws IOException {
+		logger.log(Level.INFO, "writing to CSV format");
+		//Create the CSVFormat object with "\n" as a record delimiter
+		CSVFormat csvFileFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR);
+
+		try (FileWriter fileWriter = new FileWriter(file)) {
+			try (CSVPrinter csvFilePrinter = new CSVPrinter(fileWriter, csvFileFormat)) {
+				for (DataRow row : table.getRows()) {
+					for (DataColumn col : table.getColumns()) {
+						DataValue value = row.getValue(col);
+						csvFilePrinter.print(formatValue(value));
+					}
+					csvFilePrinter.println();
+				}
+			}
+		} catch (IOException e) {
+			logger.log(Level.SEVERE, "Error writing file", e);
+			throw e;
+		}
+	}
+
+	/**
 	 * print the value to the file.
 	 * all the properties can be set here.
 	 *
@@ -89,6 +120,7 @@ public class DataTableWriter {
 
 	/**
 	 * Format the value to write to file.
+	 *
 	 * @param value the value that is formatted.
 	 * @return String containing formatted data.
 	 */
@@ -112,6 +144,7 @@ public class DataTableWriter {
 
 	/**
 	 * Build a string for the dateTimeValue.
+	 *
 	 * @param dateValue values
 	 * @return formatted string
 	 */
@@ -131,9 +164,10 @@ public class DataTableWriter {
 
 	/**
 	 * Create stringBuilder containing years, months and days.
-	 * @param year years
+	 *
+	 * @param year  years
 	 * @param month months
-	 * @param day days
+	 * @param day   days
 	 * @return appended StringBuilder
 	 */
 	private StringBuilder writeDate(int year, int month, int day) {

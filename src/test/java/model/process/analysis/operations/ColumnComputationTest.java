@@ -4,13 +4,12 @@ import model.data.CombinedDataTable;
 import model.data.DataModel;
 import model.data.DataTable;
 import model.data.DataTableBuilder;
-import model.data.describer.ComputationDescriber;
-import model.data.describer.ConstantDescriber;
-import model.data.describer.TableValueDescriber;
-import model.data.value.FloatValue;
+import model.process.analysis.ColumnComputation;
+import model.process.describer.ConstantDescriber;
+import model.process.describer.OperationDescriber;
+import model.process.describer.TableValueDescriber;
 import model.data.value.IntValue;
 import model.data.value.StringValue;
-import model.data.value.TimeValue;
 import model.language.ColumnIdentifier;
 import model.language.Identifier;
 import model.process.analysis.operations.computations.Addition;
@@ -156,7 +155,7 @@ public class ColumnComputationTest {
 						new ColumnIdentifier(new Identifier("table2"), new Identifier("value2"))),
 				"value");
 
-		col.addColumn(new ComputationDescriber<>(
+		col.addColumn(new OperationDescriber<>(
 				new Addition(
 						new TableValueDescriber<>(model,
 								new ColumnIdentifier(new Identifier("table1"), new Identifier("int"))),
@@ -199,7 +198,7 @@ public class ColumnComputationTest {
 		DataTable expected = builder.build();
 
 		ColumnComputation col = new ColumnComputation("res", true);
-		col.addColumn( new ComputationDescriber<>(
+		col.addColumn( new OperationDescriber<>(
 						new Addition(
 								new TableValueDescriber<>(model,
 										new ColumnIdentifier(new Identifier("table1"), new Identifier("int"))),

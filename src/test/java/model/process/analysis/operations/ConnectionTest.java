@@ -7,6 +7,7 @@ import model.data.value.StringValue;
 import model.data.value.TimeValue;
 import model.language.ColumnIdentifier;
 import model.language.Identifier;
+import model.process.analysis.Connection;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -76,6 +77,7 @@ public class ConnectionTest {
 		DataTable res = (DataTable) con.process();
 
 		assertTrue(expected.equalsSoft(res));
+		assertTrue(expected.equalsSoft(model.getByName(res.getName()).get()));
 
 	}
 

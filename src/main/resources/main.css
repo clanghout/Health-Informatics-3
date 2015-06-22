@@ -3,7 +3,8 @@
 	-fx-font-weight: bold;
 }
 
-.button {
+Button {
+	-fx-font-size: 9pt;
 	-fx-font-family: "Arial Narrow";
 	-fx-font-weight: bold;
 }
@@ -52,7 +53,21 @@
 
 .import-button {
 	-fx-pref-height: 25px;
-	-fx-pref-width: 150px;
+	-fx-pref-width: 170px;
+}
+
+.visualization-button {
+    -fx-pref-height: 25px;
+    -fx-pref-width: 130px;
+}
+
+.analysis-button {
+    -fx-pref-height: 25px;
+    -fx-pref-width: 80px;
+}
+
+.button-container {
+    -fx-padding: 15px;
 }
 
 .data-container {
@@ -89,6 +104,7 @@
 
 .outsidebox {
 	-fx-padding: 10px;
+    -fx-spacing: 10px;
 }
 
 .full-box {
@@ -98,4 +114,18 @@
 
 .space {
 	-fx-spacing: 5px;
+}
+
+.progressBox {
+	-fx-padding: 10px, 10px, 10px, 10px;
+}
+
+.progressBox > Label {
+	-fx-padding: 10px, 0px, 0px, 0px;;
+}
+
+ProgressIndicator {
+	-fx-pref-height: 20px;
+	-fx-pref-width: 20px;
+	visibility: hidden;
 }

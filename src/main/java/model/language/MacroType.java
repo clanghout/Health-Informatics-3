@@ -2,7 +2,7 @@ package model.language;
 
 import model.data.DataModel;
 import model.data.DataTable;
-import model.data.describer.DataDescriber;
+import model.process.describer.DataDescriber;
 import model.data.value.BoolValue;
 import model.data.value.DataValue;
 import model.exceptions.ParseException;
@@ -12,11 +12,11 @@ import model.process.DataProcess;
 import model.process.analysis.ConstraintAnalysis;
 import model.process.analysis.GroupByColumn;
 import model.process.analysis.GroupByConstraint;
-import model.process.analysis.operations.ColumnComputation;
+import model.process.analysis.ColumnComputation;
 import model.process.analysis.LagSequentialAnalysis;
-import model.process.analysis.operations.Connection;
+import model.process.analysis.Connection;
 import model.process.functions.Function;
-import model.process.setOperations.FullJoin;
+import model.process.analysis.operations.set.FullJoin;
 import org.parboiled.Parboiled;
 import org.parboiled.parserunners.ReportingParseRunner;
 import org.parboiled.support.ParsingResult;
@@ -120,13 +120,27 @@ class MacroType {
 		ParsingResult result = runner.run(body);
 
 		if (result.matched) {
-			Identifier<DataTable> leftTable = (Identifier<DataTable>) result.valueStack.pop();
-			Identifier<DataTable> rightTable = (Identifier<DataTable>) result.valueStack.pop();
-			Identifier name = (Identifier) result.valueStack.pop();
 			ColumnIdentifier leftColumn = (ColumnIdentifier) result.valueStack.pop();
+			Identifier<DataTable> rightTable = (Identifier<DataTable>) result.valueStack.pop();
 			ColumnIdentifier rightColumn = (ColumnIdentifier) result.valueStack.pop();
+			Identifier name = (Identifier) result.valueStack.pop();
+			List<ColumnIdentifier> leftColumns = (List<ColumnIdentifier>) result.valueStack.pop();
+			List<ColumnIdentifier> rightColumns = (List<ColumnIdentifier>) result.valueStack.pop();
+			Identifier<DataTable> leftTable = (Identifier<DataTable>) result.valueStack.pop();
 
-			return new Connection(name.getName(), leftTable, leftColumn, rightTable, rightColumn);
+
+			Connection connection = new Connection(
+					name.getName(),
+					leftTable,
+					leftColumn,
+					rightTable,
+					rightColumn);
+
+			for (int i = 0; i < leftColumns.size(); i++) {
+				connection.addOverlappingColumns(leftColumns.get(i), rightColumns.get(i));
+			}
+
+			return connection;
 		} else {
 			throw new ParseException("Failed to parse Connection", result.parseErrors);
 		}

@@ -1,0 +1,88 @@
+\begin{titlepage}
+
+\begin{center}
+
+%% Insert the TU Delft logo at the bottom of the page.
+\begin{tikzpicture}[remember picture,overlay]
+    \node at (current page.south)[anchor=south,inner sep=0pt]{
+        \includegraphics{cover/logo}
+    };
+\end{tikzpicture}
+
+%% Extra whitespace at the top.
+\vspace*{2\bigskipamount}
+
+%% Print the title in cyan.
+{\makeatletter
+\titlestyle\color{tudelft-cyan}\Huge\@title
+\makeatother}
+
+%% Print the optional subtitle in black.
+{\makeatletter
+\ifx\@subtitle\undefined\else
+    \bigskip
+    \titlefont\titleshape\LARGE\@subtitle
+\fi
+\makeatother}
+
+\bigskip
+\bigskip
+
+by
+%door
+
+\bigskip
+\bigskip
+
+%% Print the name of the author.
+{\bfseries Group C} \\
+Louis Gosschalk, Boudewijn van Groos, Jens Langerak, Chris Langhout \& Paul van Wijk \\
+lgosschalk (4214528), bvangroos (4229843), jlangerak (4317327), clanghout (4281705), pvanwijk (4285034)
+
+\vfill
+
+in partial fulfillment of the requirements for the course of
+%in overeenstemming met de vereisten voor het verkrijgen van de graad van
+
+\bigskip
+\bigskip
+
+{\bfseries Context Project}
+
+in Computer Science
+
+\bigskip
+\bigskip
+
+at the Delft University of Technology,
+%aan de Technische Universiteit Delft,
+
+to be presented publicly on Friday June  26th, 2015.
+%in het openbaar de verdedigen op dinsdag 1 januari om 10:00 uur.
+
+\vfill
+
+\begin{tabular}{ll}
+%% Add additional information here, per faculty requirements, e.g
+%    Student number: & 1234567 \\
+%    Project duration: & \multicolumn{2}{l}{March 1, 2012 -- January 1, 2013} \\
+    Project Coordinator: & Prof.\ Dr.\ A.\ Hanjalic\\
+    	& Dr.\ A.\ Bacchelli\\
+    Context Coordinator:
+        & Dr.\ ir.\ W.\ P.\ Brinkman \\
+    Software Engineering TA: & T.\ M.\ Hegeman
+\end{tabular}
+
+%% Only include the following lines if confidentiality is applicable.
+\bigskip
+\bigskip
+
+\bigskip
+\bigskip
+An electronic version of this report is available at \url{https://github.com/clanghout/Health-Informatics-3/}.
+%Een elektronische versie van dit verslag is beschikbaar op \url{http://repository.tudelft.nl/}.
+
+\end{center}
+
+\end{titlepage}
+

@@ -2,10 +2,10 @@ package model.language.nodes;
 
 
 import model.data.DataModel;
-import model.data.describer.ConstraintDescriber;
-import model.data.describer.DataDescriber;
+import model.process.describer.DataDescriber;
 import model.process.analysis.operations.constraints.*;
 import model.data.value.BoolValue;
+import model.process.describer.OperationDescriber;
 
 /**
  * Represents a boolean operation.
@@ -49,6 +49,6 @@ public class BooleanOperationNode extends ValueNode<BoolValue> {
 	 * @return A DataDescriber describing the operation.
 	 */
 	public DataDescriber<BoolValue> resolve(DataModel model) {
-		return new ConstraintDescriber(resolveCheck(model, operation));
+		return new OperationDescriber<>(resolveCheck(model, operation));
 	}
 }

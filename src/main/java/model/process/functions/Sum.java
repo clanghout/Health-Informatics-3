@@ -1,7 +1,8 @@
 package model.process.functions;
 
 import model.data.DataTable;
-import model.data.describer.DataDescriber;
+import model.process.describer.DataDescriber;
+import model.data.value.DataValue;
 import model.data.value.FloatValue;
 import model.data.value.IntValue;
 import model.data.value.NumberValue;
@@ -13,7 +14,7 @@ import model.data.value.NumberValue;
  */
 public class Sum extends Function {
 
-	public Sum(DataTable table, DataDescriber<NumberValue> argument) {
+	public Sum(DataTable table, DataDescriber<? extends DataValue<?>> argument) {
 		super(table, argument);
 	}
 

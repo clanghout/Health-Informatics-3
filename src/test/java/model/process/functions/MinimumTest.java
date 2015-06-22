@@ -1,7 +1,7 @@
 package model.process.functions;
 
-import model.exceptions.InputMismatchException;
-import model.data.describer.RowValueDescriber;
+import model.data.value.DateTimeValue;
+import model.process.describer.RowValueDescriber;
 import model.data.value.DataValue;
 import model.data.value.FloatValue;
 import model.data.value.IntValue;
@@ -17,14 +17,10 @@ import static org.junit.Assert.assertEquals;
  */
 public class MinimumTest extends FunctionTest {
 
-	/**
-	 * column of strings should throw exception.
-	 * 
-	 * @throws Exception
-	 */
-	@Test(expected = InputMismatchException.class)
-	public void TestStringMinimum() throws Exception {
-		DataValue minimum = new Minimum(table, new RowValueDescriber<>(stringColumn)).calculate();
+	@Test
+	public void testDateMinimum() throws Exception {
+		DataValue min = new Minimum(table, new RowValueDescriber<>(dateColumn)).calculate();
+		assertEquals(new DateTimeValue(1995, 1, 17, 0, 0, 0), min);
 	}
 
 	@Test

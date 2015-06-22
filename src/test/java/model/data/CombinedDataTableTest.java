@@ -1,7 +1,7 @@
 package model.data;
 
-import model.data.describer.ConstraintDescriber;
-import model.data.describer.RowValueDescriber;
+import model.process.describer.OperationDescriber;
+import model.process.describer.RowValueDescriber;
 import model.process.analysis.ConstraintAnalysis;
 import model.process.analysis.operations.constraints.Constraint;
 import model.process.analysis.operations.constraints.EqualityCheck;
@@ -225,7 +225,7 @@ public class CombinedDataTableTest {
 				new RowValueDescriber<>(column2)
 		);
 
-		ConstraintAnalysis analysis = new ConstraintAnalysis(new ConstraintDescriber(columnCheck));
+		ConstraintAnalysis analysis = new ConstraintAnalysis(new OperationDescriber<>(columnCheck));
 
 		assertEquals(5, table1.getRowCount());
 		assertEquals(5, table2.getRowCount());

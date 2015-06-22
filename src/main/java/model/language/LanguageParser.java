@@ -578,9 +578,26 @@ class LanguageParser extends BaseParser<Object> {
 		return Sequence(
 				Identifier(),
 				".",
-				Identifier(),
+				ColumnName(),
 				swap(),
 				push(new ColumnIdentifier((Identifier) pop(), (Identifier) pop()))
+		);
+	}
+
+	Rule ColumnName() {
+		return Sequence(
+				Sequence(
+						SafeCharacter(),
+						OneOrMore(
+								FirstOf(
+										Digit(),
+										SafeCharacter(),
+										".",
+										"_"
+								)
+						)
+				),
+				push(new Identifier<>(match()))
 		);
 	}
 
@@ -952,13 +969,25 @@ class LanguageParser extends BaseParser<Object> {
 
 	Rule Connection() {
 		return Sequence(
-				JoinBody(EMPTY,
-						Optional(
-								JoinColumnStart(),
-								JoinColumn()
-						)
-				),
-				swap5()
+				Identifier(),
+				SomeWhiteSpace(),
+				"ON",
+				SomeWhiteSpace(),
+				ColumnIdentifier(),
+				SomeWhiteSpace(),
+				"WITH",
+				SomeWhiteSpace(),
+				Identifier(),
+				SomeWhiteSpace(),
+				"ON",
+				SomeWhiteSpace(),
+				ColumnIdentifier(),
+				SomeWhiteSpace(),
+				"AS",
+				SomeWhiteSpace(),
+				Identifier(),
+				JoinColumns(),
+				swap6()
 		);
 	}
 
@@ -1099,8 +1128,8 @@ class LanguageParser extends BaseParser<Object> {
 						ColumnComputationColumn(),
 						",",
 						WhiteSpace(),
-						values.get().add((ValueNode<DataValue>) pop()),
-						columnIdentifiers.get().add((Identifier) pop())
+						columnIdentifiers.get().add((Identifier) pop()),
+						values.get().add((ValueNode<DataValue>) pop())
 				),
 				ColumnComputationColumn(),
 				columnIdentifiers.get().add((Identifier) pop()),

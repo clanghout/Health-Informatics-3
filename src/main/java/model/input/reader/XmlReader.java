@@ -14,7 +14,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.util.*;
-import java.util.logging.Logger;
 
 /**
  * Class for reading an xml file that was saved by the user.
@@ -82,8 +81,6 @@ public class XmlReader {
 	 * The name of the dateformat attribute in the xml file.
 	 */
 	private static final String DATE_FORMAT_ATTRIBUTE = "format";
-
-	private Logger log = Logger.getLogger("XmlReader");
 
 	private Document document;
 	private NodeList filesList;

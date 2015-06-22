@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:controller="controllers.popup.PopupVisualizationController" xmlns="http://javafx.com/javafx/8"
+	  xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<AnchorPane>
+			<children>
+				<VBox styleClass="popup-box">
+					<children>
+						<VBox styleClass="standardVBox" AnchorPane.topAnchor="14.0">
+							<children>
+								<GridPane styleClass="top-pane">
+									<Label styleClass="label" GridPane.columnIndex="0" GridPane.rowIndex="0">Data table:</Label>
+									<Label styleClass="label" GridPane.columnIndex="0" GridPane.rowIndex="1">Visualisation:</Label>
+									<ComboBox fx:id="tableComboBox" promptText="Table to use" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+									<ComboBox fx:id="visualizationComboBox" promptText="Visualization" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+								</GridPane>
+								<Label fx:id="createError" styleClass="label"/>
+							</children>
+						</VBox>
+						<VBox fx:id="visualizationInputVBox" styleClass="visualization-input-dropdown">
+						</VBox>
+					</children>
+				</VBox>
+				<HBox styleClass="hbox-button" AnchorPane.bottomAnchor="14.0">
+					<children>
+						<Button styleClass="button" onAction="#handleGraphCreateButtonAction" text="Make graph"/>
+						<Button styleClass="button" onAction="#handleCancelButtonAction" text="Cancel"/>
+					</children>
+				</HBox>
+			</children>
+		</AnchorPane>
+	</children>
+	<stylesheets>
+		<URL value="@popup.css"/>
+	</stylesheets>
+</VBox>

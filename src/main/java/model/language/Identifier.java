@@ -53,4 +53,9 @@ public class Identifier<T> {
 	public int hashCode() {
 		return name.hashCode();
 	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
 }

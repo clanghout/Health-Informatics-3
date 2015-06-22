@@ -8,13 +8,11 @@ import model.exceptions.DataFileNotRecognizedException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Class for a datafile. This class contains all the specification of a datafile such as the 
@@ -24,8 +22,6 @@ import java.util.logging.Logger;
  * @author Paul
  */
 public abstract class DataFile {
-
-	private Logger log = Logger.getLogger("DataFile");
 
 	private String metaDataColumnName;
 	private DataValue<?> metaDataValue;
@@ -376,7 +372,22 @@ public abstract class DataFile {
 	 */
 	protected LocalDate parseLocalDate(String value, String format) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
-		return LocalDate.parse(value, formatter);
+		try {
+			return LocalDate.parse(value, formatter);
+		} catch (DateTimeParseException e) {
+			try {
+				YearMonth yearMonth = YearMonth.parse(value, formatter);
+				return yearMonth.atDay(1);
+			} catch (DateTimeParseException e1) {
+				try {
+					MonthDay monthDay = MonthDay.parse(value, formatter);
+					return monthDay.atYear(1);
+				} catch (DateTimeParseException e2) {
+					Year year = Year.parse(value, formatter);
+					return year.atMonth(1).atDay(1);
+				}
+			}
+		}
 	}
 
 	/**
@@ -447,5 +458,9 @@ public abstract class DataFile {
 	 */
 	public String getMetaDataFormat() {
 		return metaDataFormat;
+	}
+
+	public void setMetaDataFormat(String metaDataFormat) {
+		this.metaDataFormat = metaDataFormat;
 	}
 }
