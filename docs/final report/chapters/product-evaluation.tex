@@ -1,10 +1,11 @@
 \chapter{Product Evaluation} %MAX 2 PAGES
 
 \section{Product}
-Even though our product has many features, it can be reduced to 4 simple modules:
+Even though our product has many features, it can be reduced to five simple modules:
 \begin{itemize}
 	\item The Data Importation Module
 	\item The Data Viewing Module
+	\item The Data Exportation Module
 	\item The Analysis Module
 	\item The Visualization Module
 \end{itemize}
@@ -15,9 +16,30 @@ As mentioned in the engineering reflection we'd hoped to finish the must haves e
 Overall we must say that it is really hard to anticipate exactly how the final product will turn out. You have an idea of which features you should provide, but the way all those features work together is something else entirely. In the end were satisfied with the result and how everything turned out. We missed the time to really polish it up and get all the bugs out of there, but it is a program which does what it is supposed to and it can do a whole lot more.
 
 \section{Modules}
+In this section we'll discuss the precise operation of the various modules.
 
+\subsection{Data Importation}
+The data importation module consists of two parts: the data reading part and the data describing part. The data reading part takes an XML file which can be generated using the data describing part. We've noticed the describing process isn't completely intuitive and it is something we should have spend more time on. That being said, the process in itself is rather complex and a UI can only get you so far.
 
-Explain the functional modules (importing analyzing visualizing and exporting (short recap of chapter 4))
+\subsection{Data Viewing}
+The data viewing module is rather simple. You have a list of the left of the various tables present in the program and a table on the right showing the contents of the table. There is also a button to save a table which opens a wizard, more on this in the next section. This module is rather simple and we're satisfied with its simplicity.
+
+\subsection{Data Exportation}
+This module consists of a dialog which can be used to save a table to a file. It's got a couple of simple options to select how exactly the file is to be saved and it's all very user-friendly.
+
+\subsection{Analysis}
+The analysis module consists of a textbox and a couple of buttons to run, save and load scripts. This is by far the largest module as the entire point of our program was performing those analyses. We support a great number of analyses and some other processes which can do some rather complicated stuff with the input data. We wish we'd implemented a couple more analyses, but there was only so much we could do in the given time. In the end we're content with the rather complicated, yet subtle workings of our language. We do realize that the complex workings of our language present the user with a bit of a challenge to learn our language.
+
+\subsection{Visualization}
+In the visualization module we support generating a box plot, frequency graph and state transition matrix. All of this is done through a simple dialog, which is simple and easily understandable. We do think that a little more time could have polished it up a bit and removed a couple of bugs. However the graphs created are pretty and useful. Also we don't think that the visualization is the core part of our program, there exist other better tools to do such things.
 
 \section{Failure Analysis}
-Talk about the failures in our system. (problems with types (defining abstract methods for float and int) problems with visualisations and importing)
+In this section we'll discuss the various issues that are still present in the program.
+
+One of the major issues we encountered in the realisation process was that Java generics aren't available in runtime. This is something we encountered along the way and didn't anticipate beforehand. Currently it means that we're not able to do type checking in our language. So multiplying a date by a boolean is okay for the parser and it will throw a non descriptive runtime exception. In the future I think it is something we'll take into account when dealing with generics.
+
+One of the other major issues is that our program isn't very user friendly. This isn't a major concern as the program is very specialistic and main target audience is very limited. However it is something we should have paid more attention to. 
+
+Another issue is one of performance. The data that is entered in our program is quite large and it  hasn't been optimized one bit. This means the user has to wait a while for the larger analyses. However it is perfectly possible to reduce the data by performing a simple analysis. This should speed things up for the user.
+
+Last of all there is a bug in the visualization module: an error message doesn't go away when it should, this could have been solved by testing more thoroughly.
