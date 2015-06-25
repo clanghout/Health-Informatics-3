@@ -22,9 +22,14 @@
 \BOOKMARK [0][-]{chapter.6}{Product Evaluation}{}% 22
 \BOOKMARK [1][-]{section.6.1}{Product}{chapter.6}% 23
 \BOOKMARK [1][-]{section.6.2}{Modules}{chapter.6}% 24
-\BOOKMARK [1][-]{section.6.3}{Failure Analysis}{chapter.6}% 25
-\BOOKMARK [0][-]{chapter.7}{Outlook}{}% 26
-\BOOKMARK [1][-]{section.7.1}{Improvements}{chapter.7}% 27
-\BOOKMARK [1][-]{section.7.2}{Future Development}{chapter.7}% 28
-\BOOKMARK [0][-]{appendix.A}{Sprint Plans}{}% 29
-\BOOKMARK [0][-]{appendix.B}{Sprint Reflections}{}% 30
+\BOOKMARK [2][-]{subsection.6.2.1}{Data Importation}{section.6.2}% 25
+\BOOKMARK [2][-]{subsection.6.2.2}{Data Viewing}{section.6.2}% 26
+\BOOKMARK [2][-]{subsection.6.2.3}{Data Exportation}{section.6.2}% 27
+\BOOKMARK [2][-]{subsection.6.2.4}{Analysis}{section.6.2}% 28
+\BOOKMARK [2][-]{subsection.6.2.5}{Visualization}{section.6.2}% 29
+\BOOKMARK [1][-]{section.6.3}{Failure Analysis}{chapter.6}% 30
+\BOOKMARK [0][-]{chapter.7}{Outlook}{}% 31
+\BOOKMARK [1][-]{section.7.1}{Improvements}{chapter.7}% 32
+\BOOKMARK [1][-]{section.7.2}{Future Development}{chapter.7}% 33
+\BOOKMARK [0][-]{appendix.A}{Sprint Plans}{}% 34
+\BOOKMARK [0][-]{appendix.B}{Sprint Reflections}{}% 35
