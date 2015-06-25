@@ -1,0 +1,5 @@
+def groupBy : GroupByColumn = NAME everyDay ON 
+((RELATIVE(admire2txt.date,#2015-06-21#, DAYS)) % 7)
+FROM COUNT(admire2txt.date) AS count;
+
+from(admire2txt)|groupBy(groupBy)

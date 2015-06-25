@@ -1,0 +1,18 @@
+def group : GroupByConstraint = NAME enterMoment ON
+	TO_TIME(filteredweb.CreatedDate) BEFORE #06:00# AS early,
+	TO_TIME(filteredweb.CreatedDate) AFTER #06:00# 
+		AND TO_TIME(filteredweb.CreatedDate) BEFORE #07:00#  AS six,
+	TO_TIME(filteredweb.CreatedDate) AFTER #07:00# 
+		AND TO_TIME(filteredweb.CreatedDate) BEFORE #08:00#  AS seven,
+	TO_TIME(filteredweb.CreatedDate) AFTER #08:00# 
+		AND TO_TIME(filteredweb.CreatedDate) BEFORE #09:00#  AS eight,
+	TO_TIME(filteredweb.CreatedDate) AFTER #09:00# 
+		AND TO_TIME(filteredweb.CreatedDate) BEFORE #10:00#  AS nine,
+	TO_TIME(filteredweb.CreatedDate) AFTER #10:00# 
+		AND TO_TIME(filteredweb.CreatedDate) BEFORE #11:00#  AS ten,
+	TO_TIME(filteredweb.CreatedDate) AFTER #11:00# 
+		AND TO_TIME(filteredweb.CreatedDate) BEFORE #12:00#  AS eleven,
+	TO_TIME(filteredweb.CreatedDate) AFTER #12:00#  AS late
+FROM COUNT(filteredweb.Moment) AS count;
+
+from(filteredweb)|groupBy(group)

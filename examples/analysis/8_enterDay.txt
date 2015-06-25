@@ -1,0 +1,5 @@
+def groupBy : GroupByColumn = NAME enterDay ON 
+((RELATIVE(TO_DATE(filteredweb.CreatedDate),#2015-06-21#, DAYS)) % 7)
+FROM COUNT(filteredweb.Moment) AS count;
+
+from(filteredweb)|groupBy(groupBy)

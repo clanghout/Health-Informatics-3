@@ -1,0 +1,5 @@
+def comp : Computation = NAME sensor 
+INCLUDE EXISTING SET COLUMNS
+COMBINE(admire2txt.date, admire2txt.time) AS datetime;
+
+from(admire2txt)|computation(comp)
