@@ -46,7 +46,7 @@ Let's begin with another example: \\
 
 $def\ idCheck : Constraint = measurement.id = 1\ AND\ (measurement.level > 5)\ OR\ NOT(true)\ AND\ (measurement.level > measurement.value);$
 
-All macros start with the word def. It is followed by the identifier for the macro (which can then be used in a process chain). In this case the identifier is idCheck. After this we see the type. We currently have several types in our language: Constraint, GroupByColumn, GroupByConstraint, Join, Computation, Comparison and Connection.
+All macros start with the word def. It is followed by the identifier for the macro (which can then be used in a process chain). In this case the identifier is idCheck. After this we see the type. We currently have several types in our language: Constraint, GroupByColumn, GroupByConstraint, Join, Connection, Computation and Comparison.
 
 After the type, we require an = to specify the actual content of the macro. The actual working depends on the type of macro. We close the macro with an ;.
 
@@ -71,11 +71,10 @@ $def\ complicated : Constraint = NOT(RELATIVE(\#1995-01-15\#, admire2.date, DAYS
 \section{Group by}
 \input{groupby}
 
-\section{Connections}
+\section{Connections and joins}
 \input{connections}
 
 \section{Comparison}
 \input{comparison}
-\section{Conversion}
-\input{conversion}
+
 \end{document}

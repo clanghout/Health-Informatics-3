@@ -1,13 +1,33 @@
-Connections should be directed and should be capable of being many to many. This means implementing such operators:
+In order to combine 2 tables, we support both joins and connections. For example:
 
-(First,) Results, Triggered by,  Constraints operands.
-
-The first means that we only connect one row to another. The results and triggered by are to be used when checking if there are any connections. The 
-
-This results in something like this: \\
 $
-def\ measurementInput(measurement, input) : Connection = FIRST\ input\ WHERE\ input.time < measurement.time\ AND\ input.date >= measurement.date\ ORDER\ input.date, input.time\ ASC
-$ \\\\
+def\ joinDif : Join = JOIN\ admire2\ \\
+WITH\ filtered\ AS\ difference\ \\
+ON\ admire2.date = filtered.Date\ \\
+AND\ NOT(admire2.Value = filtered.Value); \\
+join(joinDif)
+$ \\
+
 $
-connection(measurementInput, statSensor, website)|is(connected)
+def\ con : Connection = admire2\ ON\ admire.date \\
+WITH\ filtered\ ON\ filtered.Date\ AS\ connected \\
+FROM\ admire2.value\ AND\ filtered.Value; \\
+connection(con)
+$\\
+
+
+The syntax is:
+
+$
+def\ Identifier : Join = (FULL\ JOIN|LEFT\ JOIN|RIGHT\ JOIN|JOIN) \\ 
+Identifier\ WITH\ Identifier\ AS\ Identifier \\
+ON\ BooleanExpression \\
+(FROM\ (ColumnIdentifier\ AND\ ColumnIdentifier,)+)?
+$ \\
+
+$
+def\ Identifier : Connection = Identifier\ ON\ ColumnIdentifier \\
+WITH\ Identifier\ ON\ ColumnIdentifier\ AS\ Identifier \\
+ON\ BooleanExpression \\
+(FROM\ (ColumnIdentifier\ AND\ ColumnIdentifier,)+)?
 $
