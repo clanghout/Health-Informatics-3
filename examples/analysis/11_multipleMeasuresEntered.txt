@@ -1,0 +1,18 @@
+def joinMult : Join = JOIN timesMeasured WITH 
+	filtered AS multipleMeasures
+	ON timesMeasured.Chunk = filtered.Date 
+	AND timesMeasured.number > 1;
+
+def joinMultAdmire : Join = JOIN multipleMeasures WITH 
+	admire2txt AS multipleMeasuresSensor
+ON multipleMeasures.Chunk = admire2txt.date ;
+
+def comp : Computation = NAME multipleShort 
+NEW SET COLUMNS
+multipleMeasuresSensor.multipleMeasures_Value AS ValueWeb, 
+multipleMeasuresSensor.admire2txt_Value AS ValueAdmire,
+multipleMeasuresSensor.Chunk AS Date,
+multipleMeasuresSensor.number AS Number;
+
+join(joinMult) | join(joinMultAdmire) | 
+from(multipleMeasuresSensor) | computation(comp)

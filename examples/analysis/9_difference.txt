@@ -1,0 +1,15 @@
+def joinDif : Join = JOIN admire2txt WITH  filtered AS difference
+	ON admire2txt.date = filtered.Date 
+	AND NOT(admire2txt.Value = filtered.Value);
+
+def comp : Computation = NAME joinDifReduced 
+	NEW SET COLUMNS
+	difference.date AS Date,
+	difference.admire2txt_Value AS SensorValue,
+	difference.filtered_Value AS WebValue,
+	(difference.filtered_Value - difference.admire2txt_Value)
+		AS dif;
+	
+
+join(joinDif)|from(difference)|computation(comp)
+

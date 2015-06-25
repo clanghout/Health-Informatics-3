@@ -1,0 +1,6 @@
+def join : Join = JOIN sensorred WITH filtered AS joined
+	ON sensorred.Date = filtered.Date,
+	FROM sensorred.Date AND filtered.Date;
+
+join(join)
+

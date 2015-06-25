@@ -1,0 +1,10 @@
+def measured : Constraint = filteredweb.CustomMeasurementId = 415;
+def remeasure : Constraint = 
+	filtered.KreatinineAlgorithmActionId = "1";
+def done : Constraint = remeasure.Date = second.Date;
+
+from(filteredweb) | constraint(measured)|is(second) |
+from(filtered) | constraint(remeasure) | is(remeasure) |
+from(remeasure, second) | constraint(done) | 
+is(remeasure, temp) | setCode("Done", remeasure) |
+difference(remeasure, temp) | setCode("NotDone", remeasure)

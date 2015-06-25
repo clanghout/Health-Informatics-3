@@ -1,0 +1,22 @@
+def comp : Computation = NAME temp INCLUDE EXISTING SET COLUMNS
+MIN(filtered.Date) AS min;
+
+def filter : Constraint = temp2.week > 9 AND temp2.week < 19;
+
+def normalCount : Constraint = measures3.Count = 2;
+
+def normal : Constraint = temp3.Chunk = temp2.week;
+
+def week : Computation = NAME temp2 INCLUDE EXISTING SET COLUMNS
+((RELATIVE(temp.min, temp.Date, DAYS)) - 
+((RELATIVE(temp.min, temp.Date, DAYS)) % 7)) / 7  AS week;
+
+def groupBy : GroupByColumn = NAME measures3 ON temp2.week
+FROM COUNT(measures3.week) AS Count;
+
+from(filtered) | computation(comp) |
+from(temp) | computation(week) | computation(filter) | is(temp2) |
+ groupBy(groupBy) | constraint(normalCount) | is(temp3) |
+from(temp2, temp3) | constraint(normal) |  is(temp2, normal3) |
+difference(temp2, normal3) | is(notNormal3)
+

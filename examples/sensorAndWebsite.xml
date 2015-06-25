@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<input>
+<file name="website.xlsx">
+<path>/home/jens/session/input</path>
+<type>xlsx</type>
+<data>
+<start>1</start>
+<end>0</end>
+</data>
+<columns firstrowheader="true">
+<column format="" type="int"/>
+<column format="" type="int"/>
+<column format="" type="string"/>
+<column format="exceldate" type="date"/>
+<column format="" type="int"/>
+<column format="" type="int"/>
+<column format="" type="string"/>
+<column format="" type="string"/>
+<column format="" type="string"/>
+<column format="" type="string"/>
+<column format="" type="string"/>
+<column format="" type="string"/>
+<column format="" type="string"/>
+<column format="" type="string"/>
+<column format="exceldate" type="datetime"/>
+<column format="" type="string"/>
+<column format="exceldate" type="datetime"/>
+<column format="" type="int"/>
+<column format="" type="int"/>
+<column format="" type="string"/>
+<column format="" type="int"/>
+<column format="" type="string"/>
+<column format="" type="string"/>
+</columns>
+</file>
+<file delimiter="," name="admire2.txt">
+<path>/home/jens/session/input/measured creatinine</path>
+<metadata format="" name="name" type="string" value="admire2"/>
+<type>plaintext</type>
+<data>
+<start>7</start>
+<end>2</end>
+</data>
+<columns firstrowheader="false">
+<column format="" type="string">Type</column>
+<column format="" type="int">Value</column>
+<column format="" type="string">unit</column>
+<column format="" type="string">ignore</column>
+<column format="yyMMdd" type="date">date</column>
+<column format="HHmm" type="time">time</column>
+</columns>
+</file>
+<file delimiter="," name="ADMIRE_13.txt">
+<path>/home/jens/session/input/measured creatinine</path>
+<metadata name="name" type="string"/>
+<type>plaintext</type>
+<data>
+<start>7</start>
+<end>2</end>
+</data>
+<columns firstrowheader="false">
+<column format="" type="string">Type</column>
+<column format="" type="int">Value</column>
+<column format="" type="string">unit</column>
+<column format="" type="string">ignore</column>
+<column format="yyMMdd" type="date">date</column>
+<column format="HHmm" type="time">time</column>
+</columns>
+</file>
+</input>

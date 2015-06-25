@@ -1,0 +1,2 @@
+def con : Constraint = filteredweb.CreatedDate BEFORE filteredweb.ModifiedDate;
+from(filteredweb)|constraint(con)|is(updated)

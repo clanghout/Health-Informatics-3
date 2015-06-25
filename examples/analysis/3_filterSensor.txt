@@ -1,0 +1,8 @@
+def comp : Computation = NAME sensorred 
+NEW SET COLUMNS
+sensor.Value AS Value, 
+sensor.date AS Date,
+sensor.time AS Time,
+sensor.datetime AS DateTime;
+
+from(sensor)|computation(comp)

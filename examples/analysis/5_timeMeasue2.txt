@@ -1,0 +1,12 @@
+def group : GroupByConstraint = NAME measureMoment2 ON
+	admire2txt.time BEFORE #06:00# AS early,
+	admire2txt.time AFTER #06:00# AND admire2txt.time BEFORE #07:00#  AS six,
+	admire2txt.time AFTER #07:00# AND admire2txt.time BEFORE #08:00#  AS seven,
+	admire2txt.time AFTER #08:00# AND admire2txt.time BEFORE #09:00#  AS eight,
+	admire2txt.time AFTER #09:00# AND admire2txt.time BEFORE #10:00#  AS nine,
+	admire2txt.time AFTER #10:00# AND admire2txt.time BEFORE #11:00#  AS ten,
+	admire2txt.time AFTER #11:00# AND admire2txt.time BEFORE #12:00#  AS eleven,
+	admire2txt.time AFTER #12:00#  AS late
+FROM COUNT(admire2txt.time) AS count;
+
+from(admire2txt)|groupBy(group)
