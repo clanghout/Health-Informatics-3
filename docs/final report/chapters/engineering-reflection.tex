@@ -3,10 +3,10 @@
 In this section we'll describe how the engineering process went. We discuss how we've used scrum to develop the product. Furthermore we'll discuss the GitHub pull requests and how we ensured that our code was of good quality. Finally we will discuss the feedback we got from SIG.
 
 \section{Scrum}
-We used the scrum work flow to develop the product. Friday we created a plan for the coming week. Every week-day we started with a short dailymeeting. In that meeting we discussed what we'd done, what we were going to do and which problems we'd encountered. On Friday our sprint ended. We created a sprintreflection and we gave a demo to the client. Next we started on new sprint. 
+We used the scrum work flow to develop the product. Friday we created a plan for the coming week. Every week-day we started with a short daily meeting. In that meeting we discussed what we'd done, what we were going to do and which problems we'd encountered. On Friday our sprint ended. We created a sprint reflection and we gave a demo to the client. Next we started on new sprint. 
 At the start of the project we underestimated the time needed for tasks. Therefore a lot of task weren't done during a sprint. Later in the project we got better at estimating the time required and therefore there were less incompleted tasks.
 
-We liked that scrum was focused on features. But we also noticed that because the focus on features, there is no room for task that can not be translated into a feature. Though those task could be of importance.
+We liked that scrum was focused on features. But we also noticed that because of the focus on features, there is no room for tasks that can not be translated into a feature. Though those tasks could be of importance.
 
 \section{GitHub Pulls}
 It wasn't allowed to push changes directly to the master. When a person wanted to merge into the master he had to open a pull request. The pull request had to be approved by at least two team members before it could be merged with the master. The code for the pull request should be of good quality (see section \ref{codequality}).  We looked very critical at pull request. This meant that the person who'd performed the pull request had to improve some parts of his code. However most comments were related to code style and not directly to the implementation of the code. But still the reviews led to improvement of the code quality. 
@@ -18,7 +18,7 @@ Reviewing the code resulted in good code quality. Therefore we will try use pull
 \section{Code Quality}\label{codequality}
 During the project we tried to create code of good quality. The code had to meet a few requirements before it was considered to be good quality. First of all the code had to follow the conventions. Furthermore the code should be clear and self-explaining. If the code was not self-explaining it needed comments. The code had to be tested and had to contain JavaDoc. And at last it should work efficiently and it had to be easy to make changes.
  
-To achieve this we used some tools. The first tool we used was checkstyle. Checkstyle reported the situations where we did not follow the code conventions. For instance if there were unused imports, checkstyle would report that. 
+To achieve this we used some tools. The first tool we used was Checkstyle. Checkstyle reported the situations where we did not follow the code conventions. For instance if there were unused imports, Checkstyle would report that. 
 Another tool we used was PMD. PMD detects a variety of code smells. For instance it detects unused variables and methods, duplicated code and a lot of other things.
 Furthermore we used FindBugs. FindBugs is capable of detecting possible errors.
 
