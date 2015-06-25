@@ -1,0 +1,18 @@
+\subsection{Reading and writing tables}
+The from process has been in various examples. It simply reads the table given in the parameter and outputs it into the next process.
+
+The is process does the opposite of the from, it takes an input and saves it to the model.
+
+So renaming a table:
+$from(admire2)|is(testTable)$
+
+\subsection{Sorting tables}
+Sorting a table is done through the sort process. 
+For example: $from(test1)|sort(test1.value, "ASC")|is(sorted)$
+
+Is you'd wanted it descending just replace "ASC" with "DESC".
+
+\subsection{Set operations}
+We support both the union and difference set operations.
+
+So the following will add one table to another and then remove all the rows to return to the original: $union(test1, test2)|difference(test1, test2)$

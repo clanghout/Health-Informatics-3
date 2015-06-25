@@ -1,0 +1,10 @@
+Coding is done by specifying the rows in a table to code and specifying the codes. For example:
+
+$def\ gtNine : Constraint = admire2.value > 9; \\
+from(admire2)|constraint(gtNine)|setCode("above9",\ admire2)$
+\\
+
+To then use the code in a boolean expression we support the HAS\_CODE operation.
+
+So $def\ codeCheck : Constraint = HAS\_CODE("above9); \\
+from(admire2)|constraint(codeCheck)$ will return the same as the gtNine constraint above.
