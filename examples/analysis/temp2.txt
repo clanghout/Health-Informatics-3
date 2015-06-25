@@ -1,17 +1,10 @@
 def comp : Computation = NAME temp INCLUDE EXISTING SET COLUMNS
 MIN(filtered.Date) AS min;
 
-def filter : Constraint = 
-RELATIVE(temp.min, temp.Date, DAYS) > 21 AND
-RELATIVE(temp.min, temp.Date, DAYS) < 64;
 
-def normal : Constraint = 
-RELATIVE(temp.Date, temp2.Date, DAYS) = 2;
-def toOften : Constraint = 
-RELATIVE(temp.Date, temp2.Date, DAYS) = 1;
+def week : Computation = NAME temp2 INCLUDE EXISTING SET COLUMNS
+RELATIVE(temp.min, temp.Date, DAYS)  AS week;
 
 from(filtered) | computation(comp) |
-from(temp) | constraint(filter) | is(temp) | is(temp2) |
-from(temp, temp2) | constraint(normal) | is(temp, normal) |
-from(temp, temp2) | constraint(toOften) | is(temp, temp3) |
-difference(normal, temp3) | is(normal)
+from(temp) | computation(week)
+
