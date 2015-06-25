@@ -5,25 +5,27 @@ At the start of the project we constructed a product planning in which we descri
 There were features that were obligatory to have in the software for it to be able to work properly. The next items are the must-haves that we have implemented in our program.
 \begin{description}
 
-\item[Language] We implemented the declarative language SUGAR and can be used to perform analyses. 
+\item[Language] We implemented the declarative language SUGAR and it can be used to perform analyses. 
 
 \item[Analysis] The program can perform chunk, constraint, comparison, computation, code and connection operations on data. All these can be edited and performed in a simple editor. It is also possible to load an existing script from a text file which can be executed by the program.
 
-\item[Load Data] We can specify measurement data in an xml file. The files can then be loaded into the program so that analyses can be performed.  We also implemented a graphical wizard to create a specification of datafiles which can then be saved to an xml file.
+\item[Load Data] We can specify measurement data in an XML file. The files can then be loaded into the program so that analyses can be performed. We also implemented a graphical wizard to create a specification of datafiles which can then be saved to an XML file.
 
-\item[Visualization] We have implemented features that the user can create barchart, boxplot and state-transition matrix visualizations. It is possible to create a frequency bars plot  by making a counting analysis and plotting it into a barchart.
+\item[Visualization] We implemented features that the user can create barchart, boxplot and state-transition matrix visualizations. It is possible to create a frequency bars plot by making a counting analysis and plotting it into a barchart.
 
 \item[datatypes] It is possible to distinguish different datatypes. We have implemented classes to describe integers, floats, booleans, strings, dates, times and datetimes. The types can be distinguished in the specification of the datafile and these types will then be used to perform the analyses on.
 
-\item[Output] The application can export the data to csv or textfiles and specify delimiters so further analysis in the same, or other software, is possible.
+\item[Output] The application can export the data to csv or textfiles and specify delimiters so further analysis in the same or other software, is possible.
 
 \item[Manual] A roadmap is included which describes the basics how the program is to be used. Also a language specification document is included which describes the syntax of SUGAR.
+
+\item[GUI] We created a graphical user interface using JavaFX to add some usability to the program. The main interface consists of tabs containing their own subject.
 
 \end{description}
 
 
 \section{Should Have}
-We also planned some should have features which were not crucial for the program's main functionality but were needed for additional functionality. It is possible to export all the kinds of visualizations to png files. In the language specification document we provide basic examples of SUGAR scripts. Furthermore we implemented functionality in the language to perform a lag sequential analyis.
+We also planned some should have features which were not crucial for the program's main functionality but were needed for additional functionality. It is possible to export all the supported visualizations to png files. In the language specification document we provide basic examples of SUGAR scripts.
 
 \section{Additional Functionalities}
-We created a graphical user interface using JavaFX to add some usability to the program. The main interface consists of tabs containing their own subject. Furthermore there are wizards to specify input and output. We also added a simple editor in which the user can create a new analysis, modify an existing analysis, or execute an analysis.
+We implemented  a wizard for creating and modifying an XML file, and a wizard for saving the tables to files. We also added a simple editor in which the user can create a new analysis, modify an existing analysis, or execute an analysis.
