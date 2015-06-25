@@ -2,7 +2,8 @@
 %MAX 2 PAGES
 Our program offers a variety in features. In this chapter these features are described.
 \section{Import}
-To specify the data used in the data model we use an XML file. Using a file to specify the data makes our program generic and easy to use since the same XML file can be used more than one time. \\
+To specify the data used in the data model we use an XML file. Using a file to specify the data makes our program generic and easy to use since the same XML file can be used more than one time.
+
 In the XML file all the needed information of a file is found. The path to the file is specified as well as the delimiter used. For each column a data type is specified. 
 \subsection{XML wizard}
 \begin{figure}[h!]
@@ -14,7 +15,7 @@ To make it easier to make an XML file for our program, we created an XML wizard.
 \section{Analysis}
 To analyse the data, the user has to switch to the 'analysis' tab. In this tab a text area is present where the user can add code in the program exclusive "SUGAR" language. When a script already exists, this file can simply be loaded into the program. This script can be changed and executed to affect the data. After changes are made, the script can be saved to file again. 
 \subsection{The C's}
-Multiple different analyses exist to execute on data. Following the terminology of EDA we implemented 6 out of the Eight C's of the generic ESDA process\cite{analysis}:
+Multiple different analyses exist to execute on data. Following the terminology of EDA we implemented 6 out of the Eight C's of the generic ESDA process \cite{analysis}:
 \subsubsection{Constraint}
 A constraint can be used to select specific values from a column. Numbers can be compared to constants or other columns. Constraints can also be combined with AND, OR and NOT operations. On date values, the extra constraints "before" and "after" are available. 
 \subsubsection{Computation}
