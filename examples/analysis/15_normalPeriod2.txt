@@ -14,4 +14,5 @@ from(filtered) | computation(comp) |
 from(temp) | constraint(filter) | is(temp) | is(temp2) |
 from(temp, temp2) | constraint(normal) | is(temp, normal) |
 from(temp, temp2) | constraint(toOften) | is(temp, temp3) |
-difference(normal, temp3) | is(normal)
+difference(normal, temp3) | is(normal) |
+from(temp) | sort(temp.Date, "ASC") | from(normal) | setCode("normal", temp)
