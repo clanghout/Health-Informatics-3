@@ -1,0 +1,17 @@
+def measured : Constraint = filteredweb.CustomMeasurementId = 415;
+def remeasure : Constraint = 
+	filtered.KreatinineAlgorithmActionId = "1";
+def done : Constraint = remeasure.Date = second.Date;
+def group : GroupByConstraint = NAME remeasureAmount ON
+	HAS_CODE("Done") AS Done,
+	HAS_CODE("NotDone") AS NotDone
+	FROM COUNT(remeasure.Moment) AS Count;
+
+
+from(filteredweb) | constraint(measured)|is(second) |
+from(filtered) | constraint(remeasure) | is(remeasure) |
+from(remeasure, second) | constraint(done) | 
+
+is(remeasure, temp) | setCode("Done", remeasure) |
+difference(remeasure, temp) | setCode("NotDone", remeasure) |
+groupBy(group)

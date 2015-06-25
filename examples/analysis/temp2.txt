@@ -1,0 +1,19 @@
+def filterUser : Constraint = "admire13" = websitexlsx.Login;
+def con : Constraint = filteredweb13.CustomMeasurementId = 346;
+
+def measured : Constraint = 
+filteredweb13.CustomMeasurementId = 415;
+
+def remeasure : Constraint = 
+	filtered13.KreatinineAlgorithmDayRatingId = "4"
+	OR filtered13.KreatinineAlgorithmDayRatingId = "5";
+
+
+from(websitexlsx) | constraint(filterUser) | 
+is(filteredweb13) | 
+
+from(filteredweb13)|
+constraint(con)|is(filtered13) |
+
+from(filteredweb13) | constraint(measured)|is(second) |
+from(filtered13) | constraint(remeasure) | is(remeasure)
