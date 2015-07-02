@@ -1,0 +1,6 @@
+def groupByDay : GroupByColumn = NAME measureMoment 
+ON filteredweb.Moment 
+FROM 
+COUNT(filteredweb.Moment) AS number_of_measures;
+
+from(filteredweb)|groupBy(groupByDay)

@@ -1,0 +1,297 @@
+In this section we will provide some examples. We make use of the data from the website and the admire2 patient. The table that contains the admire2 meaurements is called admire2txt and the table for the website is called websitexlsx.
+
+\subsection{Start}
+Before we will start to answer the questions we will reduce the website data. We reduce the website, so that it only contains the row that belongs to the admire2 patients. Next we will reduce that table even further. We select only the rows that correspond to a creatinine value.
+
+\begin{figure}[H]
+	$def\ filterUser : Constraint = "admire2" = websitexlsx.Login;\\
+	def\ con : Constraint = filteredweb.CustomMeasurementId = 346;\\ \\
+	from(websitexlsx) | constraint(filterUser) |  is(filteredweb) | \\
+	from(filteredweb)| constraint(con)|is(filtered) $
+	\caption{1\_filter.txt}
+\end{figure}
+
+Next we will add a column to the sensor that contains both the time en date.
+
+\begin{figure}[H]
+	$
+	def\ comp : Computation = NAME\ sensor \\
+	INCLUDE\ EXISTING\ SET\ COLUMNS\\
+	COMBINE(admire2txt.date, admire2txt.time)\ AS\ datetime;
+	\\\\
+	from(admire2txt)|computation(comp)
+	$
+	\caption{2\_addDateTime.txt}
+\end{figure}
+
+If you want you can reduce the amount of columns in the sensor.
+
+\begin{figure}[H]
+	$
+	def\ comp : Computation = NAME\ sensorred \\
+	NEW\ SET\ COLUMNS \\
+	sensor.Value\ AS\ Value, \\
+	sensor.date\ AS\ Date,\\
+	sensor.time\ AS\ Time,\\
+	sensor.datetime\ AS\ DateTime;
+	\\\\
+	from(sensor)|computation(comp)
+	$
+	\caption{3\_filterSensor.txt}
+\end{figure}	
+	\subsection{Questions}
+	In this section we will give examples analyses for some of the example questions.
+\subsubsection{What time of the day and on what day do people measure themselves?}
+The first example shows if the patient measures in the morning, afternoon or evening.
+
+\begin{figure}[H]
+	$
+	def\ groupByDay : GroupByColumn = NAME\ measureMoment \\
+	ON\ filteredweb.Moment\ FROM \\
+	COUNT(filteredweb.Moment)\ AS\ number_of_measures;
+	\\\\
+	from(filteredweb)|groupBy(groupByDay)
+	$
+	\caption{4\_timeMeasured1.txt}
+\end{figure}
+
+The next example checks for each hour how often the patient measured.
+
+\begin{figure}[H]
+	$
+def\ group : GroupByConstraint\ =\ NAME\ measureMoment2\ ON \\
+admire2txt.time\ BEFOR\ \#06:00\#\ AS\ early,\\
+admire2txt.time\ AFTER\ \#06:00\#\ \\AND\ admire2txt.time\ BEFORE\ \#07:00\#\ AS\ six,\\
+admire2txt.time\ AFTER\ \#07:00\#\ \\AND\ admire2txt.time\ BEFORE\ \#08:00\#\ AS\ seven,\\
+admire2txt.time\ AFTER\ \#08:00\#\ \\AND\ admire2txt.time\ BEFORE\ \#09:00\#\ AS\ eight,\\
+admire2txt.time\ AFTER\ \#09:00\#\ \\AND\ admire2txt.time\ BEFORE\ \#10:00\#\ AS\ nine,\\
+admire2txt.time\ AFTER\ \#10:00\#\ \\AND\ admire2txt.time\ BEFORE\ \#11:00\#\ AS\ ten,\\
+admire2txt.time\ AFTER\ \#11:00\#\ \\AND\ admire2txt.time\ BEFORE\ \#12:00\#\ AS\ eleven,\\
+admire2txt.time\ AFTER\ \#12:00\#\ AS\ late\\
+FROM\ COUNT(admire2txt.time)\ AS\ count;\\
+\\
+from(admire2txt)|groupBy(group)
+	$
+	\caption{5\_timeMeasured2.txt}
+\end{figure}
+
+The next example shows on which days the person does a measurement.
+
+\begin{figure}[H]
+	$
+def\ groupBy : GroupByColumn = NAME\ everyDay\ ON \\ 
+((RELATIVE(admire2txt.date,\#2015-06-21\#, DAYS)) \% 7) \\
+FROM\ COUNT(admire2txt.date)\ AS\ count;
+\\
+from(admire2txt)|groupBy(groupBy)
+	$
+	\caption{6\_dayOfWeek.txt}
+\end{figure}
+
+\subsubsection{What time of the day and on what day do they enter measure measurement?}
+The next two examples are almost the same as the previous one. But these examples uses the website instead of the statsensor.
+\begin{figure}[H]
+	$
+	def\ group : GroupByConstraint = NAME\ enterMoment\ ON\\
+	TO\_TIME(filteredweb.CreatedDate)\ BEFORE\ \#06:00\#\ AS\ early,\\
+	TO\_TIME(filteredweb.CreatedDate)\ AFTER\ \#06:00\# \\
+	AND\ TO\_TIME(filteredweb.CreatedDate)\ BEFORE\ \#07:00\#\ AS\ six,\\
+	TO\_TIME(filteredweb.CreatedDate)\ AFTER\ \#07:00\# \\
+	AND\ TO\_TIME(filteredweb.CreatedDate)\ BEFORE\ \#08:00\#\ AS\ seven,\\
+	TO\_TIME(filteredweb.CreatedDate)\ AFTER\ \#08:00\# \\
+	AND\ TO\_TIME(filteredweb.CreatedDate)\ BEFORE\ \#09:00\#\ AS\ eight,\\
+	TO\_TIME(filteredweb.CreatedDate)\ AFTER\ \#09:00\# \\
+	AND\ TO\_TIME(filteredweb.CreatedDate)\ BEFORE\ \#10:00\#\ AS\ nine,\\
+	TO\_TIME(filteredweb.CreatedDate)\ AFTER\ \#10:00\# \\
+	AND\ TO\_TIME(filteredweb.CreatedDate)\ BEFORE\ \#11:00\#\ AS\ ten,\\
+	TO\_TIME(filteredweb.CreatedDate)\ AFTER\ \#11:00\# \\
+	AND\ TO\_TIME(filteredweb.CreatedDate)\ BEFORE\ \#12:00\#\ AS\ eleven,\\
+	TO\_TIME(filteredweb.CreatedDate)\ AFTER\ \#12:00\#\ AS\ late\\
+	FROM\ COUNT(filteredweb.Moment)\ AS\ count;\\
+	\\
+	from(filteredweb)|groupBy(group)
+	$
+	\caption{7\_enterMoment.txt}
+\end{figure}
+
+\begin{figure}[H]
+	$
+	def\ groupBy : GroupByColumn = NAME\ enterDay\ ON \\
+	((RELATIVE(TO_DATE(filteredweb.CreatedDate),\#2015-06-21\#, DAYS)) \% 7)
+	FROM\ COUNT(filteredweb.Moment)\ AS\ count;
+	\\\\
+	from(filteredweb)|groupBy(groupBy)
+	$
+	\caption{8\_enterDay.txt}
+\end{figure}
+
+\subsubsection{Is there a difference between StatSensor measurement and what patients enter into Mijnnierinzicht?}
+In the example we first join the two tables. Next we perform a computation. In that computation we calculate the difference and select only the relevant tables.
+\begin{figure}[H]
+	$
+def\ joinDif : Join = JOIN\ admire2txt\ WITH\ filtered\ AS\ difference\\
+ON admire2txt.date = filtered.Date \\
+AND NOT(admire2txt.Value = filtered.Value);
+\\\\
+def\ comp : Computation = NAME\ joinDifReduced \\
+NEW\ SET\ COLUMNS\\
+difference.date\ AS\ Date,\\
+difference.admire2txt_Value\ AS\ SensorValue,\\
+difference.filtered_Value\ AS\ WebValue,\\
+(difference.filtered_Value - difference.admire2txt\_Value)\ AS\ dif;
+\\\\
+join(joinDif)|from(difference)|computation(comp)
+	$
+	\caption{9\_difference.txt}
+\end{figure}
+\subsubsection{How often do patients measure themselves before they enter data into Mijnnierinzicht?}
+\begin{figure}[H]
+	$
+def\ groupByDay : GroupByColumn = NAME\ timesMeasured\\ 
+ON\ admire2txt.date\ FROM\\ 
+COUNT(admire2txt.date)\ AS\ number\_of\_measures;
+\\\\
+from(admire2txt)|groupBy(groupByDay)
+	$
+	\caption{10\_timeMeasured.txt}
+\end{figure}
+\subsubsection{If a patient did measure multiple time, what measure do he/she eventually enter into Mijnnierinzicht?}
+First we filter the situations where the patient measured multiple times. Next use a join to select only the rows that belong to those dates. Finally we select only the relevant columns.
+\begin{figure}[H]
+	$
+def\ joinMult : Join = JOIN\ timesMeasured\ WITH\ filtered\ AS\ multipleMeasures\\
+ON\ timesMeasured.Chunk = filtered.Date\ \\
+AND\ timesMeasured.number > 1;
+\\\\
+def\ joinMultAdmire : Join = JOIN\ multipleMeasures\ WITH \\
+admire2txt\ AS\ multipleMeasuresSensor\\
+ON\ multipleMeasures.Chunk = admire2txt.date;
+\\\\
+def\ comp : Computation = NAME\ multipleShort \\
+NEW\ SET\ COLUMNS\\
+multipleMeasuresSensor.multipleMeasures_Value\ AS\ ValueWeb, \\
+multipleMeasuresSensor.admire2txt_Value\ AS\ ValueAdmire,\\
+multipleMeasuresSensor.Chunk\ AS\ Date,\\
+multipleMeasuresSensor.number\ AS\ Number;
+\\\\
+join(joinMult) | join(joinMultAdmire) | from(multipleMeasuresSensor) | computation(comp)
+	$
+	\caption{11\_timeMeasured.txt}
+\end{figure}
+\subsubsection{How well do patients follow up advice of Mijnnierinzicht to re-measure again?}
+We select the rows that are a second measurement. Furthermore we select the rows where the website advices to remeasure. Than we we set code "Done" on the rows where the patient had to remeasure and also remeasures. Next we set a code "NotDone" on all the other code.
+Finally we count the rows based on the codes.
+\begin{figure}[H]
+	$
+def\ measured : Constraint = filteredweb.CustomMeasurementId = 415;\\\\
+def\ remeasure : Constraint = \\
+filtered.KreatinineAlgorithmActionId = "1";\\\\
+def\ done : Constraint = remeasure.Date = second.Date;\\\\
+def\ group : GroupByConstraint = NAME\ remeasureAmount\ ON\\
+HAS\_CODE("Done")\ AS\ Done,\\
+HAS\_CODE("NotDone")\ AS\ NotDone\\
+FROM\ COUNT(remeasure.Moment)\ AS\ Count;
+\\\\
+from(filteredweb) | constraint(measured)|is(second) |\\
+from(filtered) | constraint(remeasure) | is(remeasure) |\\
+from(remeasure, second) | constraint(done) | \\
+is(remeasure, temp) | setCode("Done", remeasure) |\\
+difference(remeasure, temp) | setCode("NotDone", remeasure) | \\
+groupBy(group)
+$
+	\caption{12\_countRemeasure.txt}
+\end{figure}
+
+\subsubsection{What are the conditions under which people overwrite their initial data entered in Mijnnierinzicht?}
+\begin{figure}[H]
+	$
+def\ con : Constraint = filteredweb.CreatedDate\ BEFORE\ filteredweb.ModifiedDate;
+from(filteredweb)|constraint(con)|is(updated)
+	$
+	\caption{13\_updated.txt}
+\end{figure}
+
+\subsubsection{Find cases where Mijnnierinzicht advice to contact the hospital}
+First we check for the situations where the dayRating is 5. In these situations the patient should contact to the hospital.
+Next we select the rows that have a rating of 3 or 4. Than we select the rows with a rating of 4 and where the day is the day after one of the previous selected rows. In these situations the patient should also contact the hospital.
+Finally we combine the two cases, so we have one result for all the situation where the patient had to contact the hospital.
+\begin{figure}[H]
+	$
+	def\ filterUser : Constraint = "admire56" = websitexlsx.Login;
+	\\\\
+	def\ con : Constraint =	filteredweb56.KreatinineAlgorithmDayRatingId = "5";
+	\\\\
+	def filter : Constraint = \\
+	filteredweb56.KreatinineAlgorithmDayRatingId = "4"\ OR\\
+	filteredweb56.KreatinineAlgorithmDayRatingId = "3";
+	\\\\
+	def\ hosp : Constraint = \\
+	filteredweb56.KreatinineAlgorithmDayRatingId = "4"\ AND\\
+	RELATIVE(temp.Date, filteredweb56.Date, DAYS) = 1;
+	\\\\
+	from(websitexlsx) | constraint(filterUser) | is(filteredweb56) | \\
+	from(filteredweb56) | constraint(con) | is(hosp1) |\\
+	from(filteredweb56) | constraint(filter) | is(temp) |\\
+	from(filteredweb56, temp) | constraint(hosp) \\
+	| is(filteredweb56, hosp2) | union(hosp1, hosp2) | is(hospital)
+	$
+	\caption{14\_hospital.txt}
+\end{figure}
+\subsubsection{What are the conditions under which people start deviating from their normal measurement routine?}
+In the first example we set a code normal on the measurements in the second period that are normal measurements. We also sort the result on the time. This is not necessary, but it makes inspecting the result easier.
+\\
+The normal routine is every other day.
+First we select only the rows from the second period. Next we select the rows where there is also a row two days in the future. Than we remove the rows for where there is also a row one day in the future. Next we set a code on the normal rows.
+\begin{figure}[H]
+	$
+def\ comp : Computation = NAME\ temp\\
+INCLUDE\ EXISTING\ SET\ COLUMNS\\
+MIN(filtered.Date)\ AS\ min;
+\\\\
+def\ filter : Constraint = \\
+RELATIVE(temp.min, temp.Date, DAYS) > 21\ AND\\
+RELATIVE(temp.min, temp.Date, DAYS) < 64;
+\\\\
+def\ normal : Constraint = \\
+RELATIVE(temp.Date, temp2.Date, DAYS) = 2;\\\\
+def\ toOften : Constraint = \\
+RELATIVE(temp.Date, temp2.Date, DAYS) = 1;
+\\\\
+from(filtered) | computation(comp) |\\
+from(temp) | constraint(filter) | is(temp) | is(temp2) |\\
+from(temp, temp2) | constraint(normal) | is(temp, normal) |\\
+from(temp, temp2) | constraint(toOften) | is(temp, temp3) |\\
+difference(normal, temp3) | is(normal) |\\
+from(temp) | sort(temp.Date, "ASC") | from(normal) | setCode("normal", temp)
+	$
+	\caption{15\_normalPeriod2.txt}
+\end{figure}
+In the next example we filter the normal and the abnormal measurements from the third period. We add a column which specifies the week of the measurement. We select only the weeks from the third period. The patient should measure once a week. So we count how often the patient measures. 
+\begin{figure}[H]
+	$
+def\ comp : Computation = NAME\ temp\\
+INCLUDE\ EXISTING\ SET\ COLUMNS\\
+MIN(filtered.Date)\ AS\ min;
+\\
+def\ filter : Constraint = temp2.week > 9\ AND\ temp2.week < 19;
+\\\\
+def\ normalCount : Constraint = measures3.Count = 2;
+\\\\
+def\ normal : Constraint = temp3.Chunk = temp2.week;
+\\\\
+def\ week : Computation = NAME\ temp2\\
+ INCLUDE\ EXISTING\ SET\ COLUMNS\\
+((RELATIVE(temp.min, temp.Date, DAYS)) - \\
+((RELATIVE(temp.min, temp.Date, DAYS)) \% 7)) / 7\ AS\ week;
+\\\\
+def\ groupBy : GroupByColumn = NAME measures3\ ON\ temp2.week\\
+FROM\ COUNT(measures3.week)\ AS\ Count;
+\\\\
+from(filtered) | computation(comp) |\\
+from(temp) | computation(week) | computation(filter) | is(temp2) |\\
+groupBy(groupBy) | constraint(normalCount) | is(temp3) |\\
+from(temp2, temp3) | constraint(normal) |  is(temp2, normal3) |\\
+difference(temp2, normal3) | is(notNormal3)
+	$
+	\caption{16\_normalPeriod3.txt}
+\end{figure}
