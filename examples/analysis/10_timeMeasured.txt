@@ -1,0 +1,6 @@
+def groupByDay : GroupByColumn = NAME timesMeasured 
+ON admire2txt.date 
+FROM 
+COUNT(admire2txt.date) AS number_of_measures;
+
+from(admire2txt)|groupBy(groupByDay)

@@ -1,0 +1,10 @@
+def filterUser : Constraint = "admire2" = websitexlsx.Login;
+
+def con : Constraint = filteredweb.CustomMeasurementId = 346;
+
+
+from(websitexlsx) | constraint(filterUser) | 
+is(filteredweb) | 
+
+from(filteredweb)|
+constraint(con)|is(filtered)

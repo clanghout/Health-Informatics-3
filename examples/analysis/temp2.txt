@@ -1,0 +1,10 @@
+def comp : Computation = NAME temp INCLUDE EXISTING SET COLUMNS
+MIN(filtered.Date) AS min;
+
+
+def week : Computation = NAME temp2 INCLUDE EXISTING SET COLUMNS
+RELATIVE(temp.min, temp.Date, DAYS)  AS week;
+
+from(filtered) | computation(comp) |
+from(temp) | computation(week)
+

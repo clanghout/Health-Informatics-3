@@ -1,0 +1,19 @@
+def filterUser : Constraint = "admire56" = websitexlsx.Login;
+
+def con : Constraint = 
+filteredweb56.KreatinineAlgorithmDayRatingId = "5";
+
+def filter : Constraint = 
+filteredweb56.KreatinineAlgorithmDayRatingId = "4"  OR
+filteredweb56.KreatinineAlgorithmDayRatingId = "3";
+
+def hosp : Constraint = 
+	filteredweb56.KreatinineAlgorithmDayRatingId = "4" AND
+	RELATIVE(temp.Date, filteredweb56.Date, DAYS) = 1;
+
+from(websitexlsx) | constraint(filterUser) | 
+is(filteredweb56) | 
+from(filteredweb56) | constraint(con) | is(hosp1) |
+from(filteredweb56) | constraint(filter) | is(temp) |
+from(filteredweb56, temp) | constraint(hosp) 
+| is(filteredweb56, hosp2) | union(hosp1, hosp2) | is(hospital)
