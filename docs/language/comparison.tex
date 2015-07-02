@@ -1,1 +1,13 @@
-TBD
+Comparisons allow you to compare 2 tables. For example:
+
+$def\ comp : Comparison = admire2\ WITH\ filtered\ AS\ compared \\
+ON\ admire2.date\ TO\ filtered.Date; \\
+compare(comp)$
+
+The syntax is:
+$
+def\ Identifier : Comparison = Identifier\ WITH\ Identifier\ AS Identifier\ \\
+ON\ ColumnIdentifier\ TO\ ColumnIdentifier;$ \\
+
+There is also a time between process which calculates the time between the rows of a table. For example:
+$from(admire2)|timeBetween(date)$

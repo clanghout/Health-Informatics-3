@@ -1,0 +1,33 @@
+Since all languages require some hardcoding to make everyone's live easier, we also support it. You have several types of literals.
+
+\subsection{String literals}
+Example: $"Hello"$ \\
+String literals are denoted by $""$s. Unfortunately that means we don't support the use of $"$ in string literals. We encourage any future developers to work on supporting this.
+
+\subsection{Boolean literals}
+Examples: $true$, $false$ \\
+Boolean literals are true or false.
+
+\subsection{Integer literals}
+Example: $5$ \\
+Integer literals are quite simple. They are any number not containing a dot.
+
+\subsection{Float literals}
+Example: $5.0$ \\
+Float literals are also doable. They are any number containing a dot.
+
+\subsection{Date literals}
+Examples: $\#1995-01-17\#$, $\#13:33\#$, $\#1995-01-23\ 23:35:54\#$
+
+Dates are more tricky. We only support one date format which is year-month-day. This is to prevent ambiguity between the day-month-year and month-day-year formats. The time format is hour:minutes:seconds or hour:minutes. In the latter case the seconds are set to 0.
+
+Dates are always enclosed between hashtags.
+
+Combined the two will result in a datetime.
+
+\subsection{Period literals}
+Examples: $\#5\ DAYS\#$, $\#0\ MOTNHS\#$, $\#5\ YEARS\#$
+
+Periods are a number of days, months or years. This is most useful when adding or subtracting a period of time from a date.
+
+Periods are also enclosed between hashtags and the supported units are DAYS, MONTHS and YEARS.
