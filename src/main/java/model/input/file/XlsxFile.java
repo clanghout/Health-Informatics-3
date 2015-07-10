@@ -35,7 +35,7 @@ public class XlsxFile extends ExcelFile {
 
 		FileInputStream file = new FileInputStream(getFile());
 		try {
-			Workbook workbook =  WorkbookFactory.create(file);
+			Workbook workbook =  WorkbookFactory.create(getFile());
 			Sheet sheet = workbook.getSheetAt(0);
 			Iterator<Row> rowIterator = sheet.iterator();
 			return createTable(rowIterator);
