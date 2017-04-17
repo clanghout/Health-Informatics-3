@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import model.exceptions.ParseException;
 import model.language.Parser;
@@ -38,6 +39,10 @@ public class AnalysisController {
 	@FXML
 	private Parent root;
 	@FXML
+	private VBox textBox;
+	@FXML
+	private TextFlow textFlow;
+	@FXML
 	private TextArea userscript;
 	@FXML
 	private Label errorLabel;
@@ -46,6 +51,20 @@ public class AnalysisController {
 	private MainUIController mainUIController;
 	private Logger logger = Logger.getLogger("AnalysisController");
 	private static final int ERROR_RANGE = 5;
+	private static final double PADDING = 30;
+	private static final double HEIGHT_PADDING = 200;
+
+
+	public void initialize() {
+		textBox.widthProperty().addListener((observable, oldValue, newValue) -> {
+			textFlow.setMinWidth(newValue.doubleValue() - PADDING);
+			userscript.setMinWidth(newValue.doubleValue() - PADDING);
+		});
+		textBox.heightProperty().addListener((observable, oldValue, newValue) -> {
+			textFlow.setMinHeight(newValue.doubleValue() - HEIGHT_PADDING);
+			userscript.setMinHeight(newValue.doubleValue() - HEIGHT_PADDING);
+		});
+	}
 
 	/**
 	 * Sets the model that will be observed.

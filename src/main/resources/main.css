@@ -34,6 +34,14 @@ Button {
 
 .analysis-spacing {
     -fx-spacing: 15px;
+
+}
+
+.border {
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+
 }
 
 .analysis-text-out {
@@ -41,8 +49,6 @@ Button {
     -fx-font-family: 'monospace';
 }
 .analysis-text {
-    -fx-pref-height: 290px;
-    -fx-pref-width: 500px;
     -fx-font-family: 'monospace';
 }
 
